@@ -2,12 +2,12 @@ export interface User {
     email: string;
     firstName: string;
     lastName: string;
-    userId: number;
+    id: string;
     gender: Gender;
     school: string;
     education: Education;
     yearOfEducation: YearOfEducation;
-    ethnicities: Ethnicities;
+    ethnicities: Array<Ethnicity>;
     shirtSize: ShirtSize;
     applicationStatus: ApplicationStatus;
     major: string;
@@ -24,23 +24,23 @@ export interface PortalState {
     numAttendees: number;
     totalConfirmed: number;
 }
-enum Gender {
+export enum Gender {
     Nonbinary = "Nonbinary", Female = "Female", Male = "Male", Unspecified = "Unspecified"
 }
-enum Education {
+export enum Education {
     HighSchool = "High School", Undergraduate = "Undergraduate", Graduate = "Graduate",
     Doctorate = "Doctorate"
 }
 type YearOfEducation = 1 | 2 | 3 | 4 | 5 | "5+";
-enum Ethnicities {
+export enum Ethnicity {
     IndigenousAlaskaNative = "Indigenous / Alaska Native", Asian = "Asian", BlackAfricanAmerican = "Black / African American",
     HispanicLatino = "Hispanic / Latino", NativeHawaiianPacificIslander = "Native Hawaiian / Pacific Islander", White = "White",
     Other = "Other"
 }
-enum ShirtSize {
+export enum ShirtSize {
     XSmall = "XSmall", Small = "Small", Medium = "Medium", Large = "Large", XLarge = "XLarge"
 }
-enum ApplicationStatus {
+export enum ApplicationStatus {
     Unverified = "Unverified",
     IncompleteRegistrationOpen = "Incomplete / RegistrationOpen",
     IncompleteRegistrationClosed = "Incomplete / RegistrationClosed",
@@ -58,10 +58,10 @@ enum QuestionType {
     Dropdown = "Dropdown",
     LongText = "Long Text"
 }
-type Question = Checkboxes | ShortText | Dropdown | LongText;
+export type Question = Checkboxes | ShortText | Dropdown | LongText;
 interface IQuestion {
     content: string;
-    id: number;
+    id: string;
     required: boolean;
 }
 interface Checkboxes extends IQuestion {
@@ -84,29 +84,22 @@ interface LongText extends IQuestion {
     maxLength: number;
     minLength: number;
 }
+
+/**
+ * @param response is a single string for text responses, and an array of the choices for multi-select responses
+ */
 interface QuestionResponse {
-    userID: number;
-    question: IQuestion;
-    response: Array<string>; // <- can change
+    id: string;
+    response: string | Array<string>
 }
-// example json User to use for now
-export const exampleUser: User =
-{
-    email: 'judysu@gmail.com',
-    firstName: 'Judy',
-    lastName: 'Su',
-    userId: 2,
-    gender: Gender.Female,
-    school: 'Northeastern',
-    education: Education.Undergraduate,
-    yearOfEducation: 4,
-    ethnicities: Ethnicities.Asian,
-    shirtSize: ShirtSize.Small,
-    applicationStatus: ApplicationStatus.Declined,
-    major: 'cs',
-    minor: 'cs',
-    resumeLink: 'cs',
-    timeZone: 'cs',
-    learningGoals: 'cs',
-    responses: []
+
+/**
+ * @param responses mapping from question id to response value
+ */
+export type RegistrationResponse = {
+    userId: string;
+    /**
+     * maps from question id to response value
+     */
+    responses: Record<string, QuestionResponse["response"]>;
 }
