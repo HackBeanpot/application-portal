@@ -9,7 +9,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       return res.status(200).json([EXAMPLE_USER, EXAMPLE_USER]);
     default:
       // only allow post on the /api/v1/applicants/:id route (for updating)
-      res.setHeader("Allow", "GET");
-      return res.status(405).send(undefined);
+      return res.status(405).setHeader("Allow", "GET").send(undefined);
   }
 }

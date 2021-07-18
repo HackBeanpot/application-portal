@@ -10,7 +10,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     case "POST":
       return res.status(201).send(undefined);
     default:
-      res.setHeader("Allow", "GET, POST");
-      return res.status(405).send(undefined);
+      return res.status(405).setHeader("Allow", "GET, POST").send(undefined);
   }
 }
