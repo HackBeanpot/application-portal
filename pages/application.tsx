@@ -1,9 +1,7 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement } from "react";
 
 const Application = (): ReactElement => {
-  return (
-    <div>Application Page</div>
-  )
-}
+  return <div>Application Page</div>;
+};
 
 export default Application;
