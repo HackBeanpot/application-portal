@@ -1,7 +1,22 @@
-import React, { ReactElement } from "react";
+import { signIn, signOut, useSession } from 'next-auth/client'
 
-const Login = (): ReactElement => {
-  return <div>Login Page</div>;
-};
+export default function Page() {
+  const [session, loading] = useSession()
 
-export default Login;
+  return (
+    <>
+      {!session && (
+        <>
+          Not signed in <br />
+          <button onClick={() => signIn()}>Sign in</button>
+        </>
+      )}
+      {session && session.user && (
+        <>
+          Signed in as {session.user.email} <br />
+          <button onClick={() => signOut()}>Sign out</button>
+        </>
+      )}
+    </>
+  )
+}
