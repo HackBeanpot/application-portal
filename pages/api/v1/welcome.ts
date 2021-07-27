@@ -1,6 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { protect } from '../../../server/protect'
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export default protect(function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   switch (req.method) {
     case 'GET':
       return res
@@ -13,4 +17,4 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     default:
       return res.status(405).setHeader('Allow', 'GET, POST').send(undefined)
   }
-}
+})

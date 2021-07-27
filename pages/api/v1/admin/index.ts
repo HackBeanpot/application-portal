@@ -1,7 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { EXAMPLE_USER } from '../../../../common/constants'
+import { protect } from '../../../../server/protect'
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export default protect(function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   switch (req.method) {
     // get all the admins
     case 'GET':
@@ -9,4 +13,4 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     default:
       return res.status(405).setHeader('Allow', 'GET').send(undefined)
   }
-}
+})
