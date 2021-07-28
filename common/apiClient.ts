@@ -18,7 +18,6 @@ export function getApplicantById(id: number) {
   return Axios.get<User>(`/v1/applicants/${id}`, { baseURL: host })
 }
 
-// do we need to take in body parameters separately
 export function updateApplicantById(id: number, user: User) {
   Axios.post(`/v1/applicants/${id}`, user, { baseURL: host })
 }
@@ -27,15 +26,13 @@ export function getAllApplicants() {
   return Axios.get<Array<User>>(`/v1/applicants`, { baseURL: host })
 }
 
-export function updateLogin(email: string, password: string) {
-  Axios.post(
-    `/v1/login`,
-    {
-      email: email,
-      password: password,
-    },
-    { baseURL: host }
-  )
+export function getWelcome() {
+  return Axios.get<string>(`/v1/welcome`, { baseURL: host })
+}
+
+const welcomeMessage = ''
+export function postWelcome() {
+  Axios.post(`/v1/welcome`, welcomeMessage, { baseURL: host })
 }
 
 // status functions need bearer token
