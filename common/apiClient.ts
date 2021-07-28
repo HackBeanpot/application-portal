@@ -38,8 +38,4 @@ export function updateLogin(email: string, password: string) {
   )
 }
 
-// TODO ADD GET AND POST registration functions
-
-// request verification
-
-// status
+// status functions need bearer token
