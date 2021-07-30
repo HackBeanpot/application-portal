@@ -1,7 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { EXAMPLE_APPLICATION_STATUS } from '../../../common/constants'
+import { protect } from '../../../server/protect'
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export default protect(function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   switch (req.method) {
     case 'GET':
       // stringify bc for some reason, next was removing the quotes in the response
@@ -11,4 +15,4 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     default:
       return res.status(405).setHeader('Allow', 'GET, POST').send(undefined)
   }
-}
+})
