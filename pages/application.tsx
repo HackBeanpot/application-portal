@@ -1,68 +1,10 @@
 import React, { ReactElement } from 'react'
-import {
-  QuestionType,
-  ShortText,
-  LongText,
-  Dropdown,
-  Checkboxes,
-} from '../common/types'
+import { QuestionType } from '../common/types'
 import { EXAMPLE_QUESTIONS } from '../common/constants'
-// export async function getStaticProps() {
-//   return {
-//     props: { EXAMPLE_QUESTIONS }
-//   }
-// }
-const shortText = (q: ShortText) => {
-  return (
-    <div>
-      <h2>{q.content}</h2>
-      {q.required ? '*' : ''}
-      min-length = {q.minLength}
-      <br />
-      max-length = {q.maxLength}
-      <br />
-      <textarea />
-    </div>
-  )
-}
-const longText = (q: LongText) => {
-  return (
-    <div>
-      <h2>{q.content}</h2>
-      {q.required ? '*' : ''}
-      min-length = {q.minLength}
-      <br />
-      max-length = {q.maxLength}
-      <br />
-      <textarea />
-    </div>
-  )
-}
-const dropDown = (q: Dropdown) => {
-  return (
-    <div>
-      <h2>{q.content}</h2>
-      {q.required ? '*' : ''}
-      {q.options.map((o) => (
-        <ul key={q.id}>{o.name}</ul>
-      ))}
-    </div>
-  )
-}
-const checkBoxes = (q: Checkboxes) => {
-  return (
-    <div>
-      <h2>{q.content}</h2>
-      {q.required ? '*' : ''}
-      {q.options.map((o) => (
-        <ul key={q.id}>{o.name}</ul>
-      ))}
-      min number = {q.minNumber}
-      <br />
-      max number = {q.maxNumber}
-    </div>
-  )
-}
+import ShortTextQuestion from '../components/ShortTextQuestion'
+import LongTextQuestion from '../components/LongTextQuestion'
+import CheckboxesQuestion from '../components/CheckboxesQuestion'
+import DropdownQuestion from '../components/CheckboxesQuestion'
 const Application = (): ReactElement => {
   return (
     <>
@@ -71,13 +13,13 @@ const Application = (): ReactElement => {
         {EXAMPLE_QUESTIONS.map((q) => {
           switch (q.type) {
             case QuestionType.ShortText:
-              return shortText(q)
+              return <ShortTextQuestion question={q} />
             case QuestionType.LongText:
-              return longText(q)
+              return <LongTextQuestion question={q} />
             case QuestionType.Checkboxes:
-              return checkBoxes(q)
+              return <CheckboxesQuestion question={q} />
             case QuestionType.Dropdown:
-              return dropDown(q)
+              return <DropdownQuestion question={q} />
           }
         })}
       </div>
