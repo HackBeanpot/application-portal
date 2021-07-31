@@ -65,7 +65,7 @@ export enum ApplicationStatus {
   Confirmed = 'Confirmed',
   Declined = 'Declined',
 }
-enum QuestionType {
+export enum QuestionType {
   Checkboxes = 'Checkboxes',
   ShortText = 'Short Text',
   Dropdown = 'Dropdown',
@@ -77,27 +77,26 @@ interface IQuestion {
   id: string
   required: boolean
 }
-interface Checkboxes extends IQuestion {
+export interface Checkboxes extends IQuestion {
   type: QuestionType.Checkboxes
   options: Array<{ name: string }>
   maxNumber: number
   minNumber: number
 }
-interface ShortText extends IQuestion {
+export interface ShortText extends IQuestion {
   type: QuestionType.ShortText
   maxLength: number
   minLength: number
 }
-interface Dropdown extends IQuestion {
+export interface Dropdown extends IQuestion {
   type: QuestionType.Dropdown
   options: Array<{ name: string }>
 }
-interface LongText extends IQuestion {
+export interface LongText extends IQuestion {
   type: QuestionType.LongText
   maxLength: number
   minLength: number
 }
-
 /**
  * @param response is a single string for text responses, and an array of the choices for multi-select responses
  */
@@ -105,7 +104,6 @@ interface QuestionResponse {
   id: string
   response: string | Array<string>
 }
-
 /**
  * @param responses mapping from question id to response value
  */
