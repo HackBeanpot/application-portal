@@ -1,11 +1,15 @@
 import React, { ReactElement } from 'react'
+import { useSession } from 'next-auth/client'
+import Router, { useRouter } from 'next/router'
 import { QuestionType } from '../common/types'
 import { EXAMPLE_QUESTIONS } from '../common/constants'
 import ShortTextQuestion from '../components/ShortTextQuestion'
 import LongTextQuestion from '../components/LongTextQuestion'
 import CheckboxesQuestion from '../components/CheckboxesQuestion'
 import DropdownQuestion from '../components/CheckboxesQuestion'
+
 const Application = (): ReactElement => {
+  const session = useSignIn()
   return (
     <>
       <h1>Application Page</h1>
@@ -27,3 +31,14 @@ const Application = (): ReactElement => {
   )
 }
 export default Application
+
+export function useSignIn() {
+  const [session, loading] = useSession()
+  const { pathname } = useRouter()
+
+  if (session) {
+    return session
+  } else if (!loading && pathname !== '/login') {
+    Router.push('/login')
+  }
+}
