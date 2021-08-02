@@ -1,8 +1,8 @@
-import React, { FC } from 'react'
-import { LongText } from '../common/types'
+import React, { FC } from 'react';
+import { LongText } from '../common/types';
 type LongTextProps = {
-  question: LongText
-}
+  question: LongText;
+};
 const LongTextQuestion: FC<LongTextProps> = ({ question }) => {
   return (
     <div>
@@ -14,6 +14,6 @@ const LongTextQuestion: FC<LongTextProps> = ({ question }) => {
       <br />
       <textarea />
     </div>
-  )
-}
-export default LongTextQuestion
+  );
+};
+export default LongTextQuestion;

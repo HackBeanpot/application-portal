@@ -1,8 +1,8 @@
-import React, { FC } from 'react'
-import { Dropdown } from '../common/types'
+import React, { FC } from 'react';
+import { Dropdown } from '../common/types';
 type DropdownProps = {
-  question: Dropdown
-}
+  question: Dropdown;
+};
 const DropdownQuestion: FC<DropdownProps> = ({ question }) => {
   return (
     <div>
@@ -12,6 +12,6 @@ const DropdownQuestion: FC<DropdownProps> = ({ question }) => {
         <ul key={question.id}>{o.name}</ul>
       ))}
     </div>
-  )
-}
-export default DropdownQuestion
+  );
+};
+export default DropdownQuestion;

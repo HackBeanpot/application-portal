@@ -1,6 +1,6 @@
-import { NextApiRequest, NextApiResponse } from 'next'
-import { EXAMPLE_USER } from '../../../../common/constants'
-import { protect } from '../../../../server/protect'
+import { NextApiRequest, NextApiResponse } from 'next';
+import { EXAMPLE_USER } from '../../../../common/constants';
+import { protect } from '../../../../server/protect';
 
 export default protect(function handler(
   req: NextApiRequest,
@@ -9,8 +9,8 @@ export default protect(function handler(
   switch (req.method) {
     // get all the admins
     case 'GET':
-      return res.status(200).json([EXAMPLE_USER, EXAMPLE_USER])
+      return res.status(200).json([EXAMPLE_USER, EXAMPLE_USER]);
     default:
-      return res.status(405).setHeader('Allow', 'GET').send(undefined)
+      return res.status(405).setHeader('Allow', 'GET').send(undefined);
   }
-})
+});

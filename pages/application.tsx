@@ -1,15 +1,15 @@
-import React, { ReactElement } from 'react'
-import { useSession } from 'next-auth/client'
-import Router, { useRouter } from 'next/router'
-import { QuestionType } from '../common/types'
-import { EXAMPLE_QUESTIONS } from '../common/constants'
-import ShortTextQuestion from '../components/ShortTextQuestion'
-import LongTextQuestion from '../components/LongTextQuestion'
-import CheckboxesQuestion from '../components/CheckboxesQuestion'
-import DropdownQuestion from '../components/CheckboxesQuestion'
+import React, { ReactElement } from 'react';
+import { useSession } from 'next-auth/client';
+import Router, { useRouter } from 'next/router';
+import { QuestionType } from '../common/types';
+import { EXAMPLE_QUESTIONS } from '../common/constants';
+import ShortTextQuestion from '../components/ShortTextQuestion';
+import LongTextQuestion from '../components/LongTextQuestion';
+import CheckboxesQuestion from '../components/CheckboxesQuestion';
+import DropdownQuestion from '../components/DropdownQuestion';
 
 const Application = (): ReactElement => {
-  const session = useSignIn()
+  const session = useSignIn();
   return (
     <>
       <h1>Application Page</h1>
@@ -17,28 +17,28 @@ const Application = (): ReactElement => {
         {EXAMPLE_QUESTIONS.map((q) => {
           switch (q.type) {
             case QuestionType.ShortText:
-              return <ShortTextQuestion question={q} />
+              return <ShortTextQuestion question={q} />;
             case QuestionType.LongText:
-              return <LongTextQuestion question={q} />
+              return <LongTextQuestion question={q} />;
             case QuestionType.Checkboxes:
-              return <CheckboxesQuestion question={q} />
+              return <CheckboxesQuestion question={q} />;
             case QuestionType.Dropdown:
-              return <DropdownQuestion question={q} />
+              return <DropdownQuestion question={q} />;
           }
         })}
       </div>
     </>
-  )
-}
-export default Application
+  );
+};
+export default Application;
 
 export function useSignIn() {
-  const [session, loading] = useSession()
-  const { pathname } = useRouter()
+  const [session, loading] = useSession();
+  const { pathname } = useRouter();
 
   if (session) {
-    return session
+    return session;
   } else if (!loading && pathname !== '/login') {
-    Router.push('/login')
+    Router.push('/login');
   }
 }
