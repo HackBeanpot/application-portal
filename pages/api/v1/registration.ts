@@ -25,8 +25,13 @@ export default protect(async function handler(
 
       const { client, db } = await connectToDatabase()
       const data = await db
-        .collection('your colelciton here')
-        .findOne({ email: session.user?.email })
+        .collection('users')
+        .findOne(
+          { email: session.user?.email },
+          { projection: { _id: 0, email: 1 } }
+        )
+
+      console.log(data)
 
       return res.status(200).json(data)
 >>>>>>> started get /registration
