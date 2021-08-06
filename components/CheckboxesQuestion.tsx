@@ -1,8 +1,8 @@
-import React, { FC } from 'react'
-import { Checkboxes } from '../common/types'
+import React, { FC } from 'react';
+import { Checkboxes } from '../common/types';
 type CheckboxesProps = {
-  question: Checkboxes
-}
+  question: Checkboxes;
+};
 const CheckboxesQuestion: FC<CheckboxesProps> = ({ question }) => {
   return (
     <div>
@@ -15,6 +15,6 @@ const CheckboxesQuestion: FC<CheckboxesProps> = ({ question }) => {
       <br />
       max number = {question.maxNumber}
     </div>
-  )
-}
-export default CheckboxesQuestion
+  );
+};
+export default CheckboxesQuestion;

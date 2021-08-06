@@ -1,8 +1,8 @@
-import React, { FC } from 'react'
-import { ShortText } from '../common/types'
+import React, { FC } from 'react';
+import { ShortText } from '../common/types';
 type ShortTextProps = {
-  question: ShortText
-}
+  question: ShortText;
+};
 const ShortTextQuestion: FC<ShortTextProps> = ({ question }) => {
   return (
     <div>
@@ -14,6 +14,6 @@ const ShortTextQuestion: FC<ShortTextProps> = ({ question }) => {
       <br />
       <textarea />
     </div>
-  )
-}
-export default ShortTextQuestion
+  );
+};
+export default ShortTextQuestion;

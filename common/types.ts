@@ -1,28 +1,28 @@
 export interface User {
-  email: string
-  firstName: string
-  lastName: string
-  id: string
-  gender: Gender
-  school: string
-  education: Education
-  yearOfEducation: YearOfEducation
-  ethnicities: Array<Ethnicity>
-  shirtSize: ShirtSize
-  applicationStatus: ApplicationStatus
-  major: string
-  minor: string
-  resumeLink: string
-  timeZone: string
-  learningGoals: string
-  responses: Array<QuestionResponse>
+  email: string;
+  firstName: string;
+  lastName: string;
+  id: string;
+  gender: Gender;
+  school: string;
+  education: Education;
+  yearOfEducation: YearOfEducation;
+  ethnicities: Array<Ethnicity>;
+  shirtSize: ShirtSize;
+  applicationStatus: ApplicationStatus;
+  major: string;
+  minor: string;
+  resumeLink: string;
+  timeZone: string;
+  learningGoals: string;
+  responses: Array<QuestionResponse>;
 }
 export interface PortalState {
-  openDate: Date
-  closeDate: Date
-  maxAttendees: number
-  numAttendees: number
-  totalConfirmed: number
+  openDate: Date;
+  closeDate: Date;
+  maxAttendees: number;
+  numAttendees: number;
+  totalConfirmed: number;
 }
 export enum Gender {
   Nonbinary = 'Nonbinary',
@@ -36,7 +36,7 @@ export enum Education {
   Graduate = 'Graduate',
   Doctorate = 'Doctorate',
 }
-type YearOfEducation = 1 | 2 | 3 | 4 | 5 | '5+'
+type YearOfEducation = 1 | 2 | 3 | 4 | 5 | '5+';
 export enum Ethnicity {
   IndigenousAlaskaNative = 'Indigenous / Alaska Native',
   Asian = 'Asian',
@@ -71,46 +71,46 @@ export enum QuestionType {
   Dropdown = 'Dropdown',
   LongText = 'Long Text',
 }
-export type Question = Checkboxes | ShortText | Dropdown | LongText
+export type Question = Checkboxes | ShortText | Dropdown | LongText;
 interface IQuestion {
-  content: string
-  id: string
-  required: boolean
+  content: string;
+  id: string;
+  required: boolean;
 }
 export interface Checkboxes extends IQuestion {
-  type: QuestionType.Checkboxes
-  options: Array<{ name: string }>
-  maxNumber: number
-  minNumber: number
+  type: QuestionType.Checkboxes;
+  options: Array<{ name: string }>;
+  maxNumber: number;
+  minNumber: number;
 }
 export interface ShortText extends IQuestion {
-  type: QuestionType.ShortText
-  maxLength: number
-  minLength: number
+  type: QuestionType.ShortText;
+  maxLength: number;
+  minLength: number;
 }
 export interface Dropdown extends IQuestion {
-  type: QuestionType.Dropdown
-  options: Array<{ name: string }>
+  type: QuestionType.Dropdown;
+  options: Array<{ name: string }>;
 }
 export interface LongText extends IQuestion {
-  type: QuestionType.LongText
-  maxLength: number
-  minLength: number
+  type: QuestionType.LongText;
+  maxLength: number;
+  minLength: number;
 }
 /**
  * @param response is a single string for text responses, and an array of the choices for multi-select responses
  */
 interface QuestionResponse {
-  id: string
-  response: string | Array<string>
+  id: string;
+  response: string | Array<string>;
 }
 /**
  * @param responses mapping from question id to response value
  */
 export type RegistrationResponse = {
-  userId: string
+  userId: string;
   /**
    * maps from question id to response value
    */
-  responses: Record<string, QuestionResponse['response']>
-}
+  responses: Record<string, QuestionResponse['response']>;
+};
