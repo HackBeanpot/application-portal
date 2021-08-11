@@ -15,8 +15,13 @@ export default protect(async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const session = (await getSession({ req }))!
+  session.user?.email
+
+  const { client, db } = await connectToDatabase()
   switch (req.method) {
     case 'GET':
+<<<<<<< HEAD
 <<<<<<< HEAD
       return res.status(200).json(EXAMPLE_RESPONSE);
 =======
@@ -24,8 +29,10 @@ export default protect(async function handler(
       session.user?.email
 
       const { client, db } = await connectToDatabase()
+=======
+>>>>>>> started post
       const data = await db
-        .collection('users')
+        .collection('user')
         .findOne(
           { email: session.user?.email },
           { projection: { _id: 0, email: 1 } }
@@ -36,7 +43,24 @@ export default protect(async function handler(
       return res.status(200).json(data)
 >>>>>>> started get /registration
     case 'POST':
+<<<<<<< HEAD
       return res.status(201).send(undefined);
+=======
+      const { responses } = req.body
+      for (let i = 0; i < responses.length; i += 1) {
+        switch (i) {
+          case 0:
+            if (responses[0] === 'Alex' || 'Jess' || 'Jamie' || 'Karen') {
+            }
+          case 1:
+
+          case 2:
+
+          case 3:
+        }
+      }
+      return res.status(201).send(undefined)
+>>>>>>> started post
     default:
       return res.status(405).setHeader('Allow', 'GET, POST').send(undefined);
   }
