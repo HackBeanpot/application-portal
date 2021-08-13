@@ -71,11 +71,22 @@ export enum QuestionType {
   Dropdown = 'Dropdown',
   LongText = 'Long Text',
 }
+<<<<<<< HEAD
 export type Question = Checkboxes | ShortText | Dropdown | LongText;
 interface IQuestion {
   content: string;
   id: string;
   required: boolean;
+=======
+export type Question = Checkboxes | ShortText | Dropdown | LongText
+
+export type QuestionId = string
+
+interface IQuestion {
+  content: string
+  id: QuestionId
+  required: boolean
+>>>>>>> work in prog
 }
 export interface Checkboxes extends IQuestion {
   type: QuestionType.Checkboxes;
@@ -98,12 +109,18 @@ export interface LongText extends IQuestion {
   minLength: number;
 }
 /**
- * @param response is a single string for text responses, and an array of the choices for multi-select responses
+ * is a single string for text responses, and an array of the choices for multi-select responses
  */
+<<<<<<< HEAD
 interface QuestionResponse {
   id: string;
   response: string | Array<string>;
 }
+=======
+export type QuestionResponse = string | Array<string>
+
+export type QuestionIdToResponseMap = Record<QuestionId, QuestionResponse>
+>>>>>>> work in prog
 /**
  * @param responses mapping from question id to response value
  */
@@ -112,5 +129,10 @@ export type RegistrationResponse = {
   /**
    * maps from question id to response value
    */
+<<<<<<< HEAD
   responses: Record<string, QuestionResponse['response']>;
 };
+=======
+  responses: QuestionIdToResponseMap
+}
+>>>>>>> work in prog

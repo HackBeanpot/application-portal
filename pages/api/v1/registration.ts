@@ -6,6 +6,7 @@ import { protect } from '../../../server/protect';
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession, useSession } from 'next-auth/client'
 import { EXAMPLE_RESPONSE } from '../../../common/constants'
+import { RegistrationResponse } from '../../../common/types'
 import { connectToDatabase } from '../../../server/mongoDB'
 import { protect } from '../../../server/protect'
 import { useSignIn } from '../../application'
@@ -44,13 +45,39 @@ export default protect(async function handler(
 >>>>>>> started get /registration
     case 'POST':
 <<<<<<< HEAD
+<<<<<<< HEAD
       return res.status(201).send(undefined);
 =======
+=======
+      // TO DO: add validation : valid json, valid list of registrationResponse
+      const body: RegistrationResponse = req.body
+      // check that the # of questions matched expected
+      if (
+        Object.keys(body.responses).length !== Object.keys(QUESTIONS).length
+      ) {
+        return res.status(400).send(undefeined)
+      }
+
+      for (const [questionId, questionRepsonse] of Object.entries(
+        body.responses
+      )) {
+        const QUESTION = OQUESTIONS[questionId]
+        // if this doesn't match, then 400
+        // otherwise, check that type (either string[] or string)matches question type
+        // validate response constraints against question requirements
+        // (for example, text length for text responsese
+      }
+
+      // finally, query database (insert)
+      // return 202
+
+>>>>>>> work in prog
       const { responses } = req.body
       for (let i = 0; i < responses.length; i += 1) {
-        switch (i) {
+        switch (responses.get(i)) {
           case 0:
             if (responses[0] === 'Alex' || 'Jess' || 'Jamie' || 'Karen') {
+            } else {
             }
           case 1:
 
