@@ -5,14 +5,18 @@ frontend & validated on backend
 */
 
 import { EXAMPLE_CHECKBOX_1, EXAMPLE_DROPDOWN_1 } from './constants'
-import { RegistrationResponse, QuestionResponse } from './types'
+import {
+  RegistrationResponse,
+  QuestionIdToResponseMap,
+  QuestionIdToQuestionContent,
+} from './types'
 
 const questionCount = 0
 
 // convenience constructors for questions
 
 // expor big object mapping of id -> question
-export const Questions: Record<string, QuestionResponse['response']> = {
+export const Questions: QuestionIdToQuestionContent = {
   questionid1: EXAMPLE_CHECKBOX_1,
   questionid2: EXAMPLE_DROPDOWN_1,
 }

@@ -120,7 +120,12 @@ interface QuestionResponse {
 export type QuestionResponse = string | Array<string>
 
 export type QuestionIdToResponseMap = Record<QuestionId, QuestionResponse>
+<<<<<<< HEAD
 >>>>>>> work in prog
+=======
+
+export type QuestionIdToQuestionContent = Record<QuestionId, Question>
+>>>>>>> take 4
 /**
  * @param responses mapping from question id to response value
  */
