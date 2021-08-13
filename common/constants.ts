@@ -71,7 +71,15 @@ export const EXAMPLE_SHORT_TEXT_1: ShortText = {
   type: QuestionType.ShortText,
   minLength: 200,
   maxLength: 500,
+<<<<<<< HEAD
 };
+=======
+}
+
+// with arrays, dropdown, has to be one of 5 choices, ORMAP over options to see if
+// at least one of the options is equal to the response
+// make function that validates a function
+>>>>>>> added requirement checks unfinished in registration
 export const EXAMPLE_DROPDOWN_1: Dropdown = {
   id: '3',
   content: "What's your favorite color?",
@@ -92,7 +100,17 @@ export const EXAMPLE_LONG_TEXT_1: LongText = {
   type: QuestionType.LongText,
   minLength: 500,
   maxLength: 1000,
+<<<<<<< HEAD
 };
+=======
+}
+
+// switch case where you check the type, then you can check it's required (same for all qs)
+// if required == true, and response is null -> return 404
+// if response valid, keep going, then check if answer type matches expected answer type
+// response is string? -> good then keep going, if length of string in boundaries
+
+>>>>>>> added requirement checks unfinished in registration
 export const EXAMPLE_QUESTIONS: Array<Question> = [
   EXAMPLE_CHECKBOX_1,
   EXAMPLE_SHORT_TEXT_1,

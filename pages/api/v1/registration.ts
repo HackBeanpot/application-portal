@@ -6,6 +6,7 @@ import { protect } from '../../../server/protect';
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession, useSession } from 'next-auth/client'
 import { EXAMPLE_RESPONSE } from '../../../common/constants'
+import { Questions } from '../../../common/questions'
 import { RegistrationResponse } from '../../../common/types'
 import { connectToDatabase } from '../../../server/mongoDB'
 import { protect } from '../../../server/protect'
@@ -53,15 +54,50 @@ export default protect(async function handler(
       const body: RegistrationResponse = req.body
       // check that the # of questions matched expected
       if (
-        Object.keys(body.responses).length !== Object.keys(QUESTIONS).length
+        // only want to check required question's length
+        // ask Alex how we're planning on using question count, required question count
+        // can we store the number of required question in questions.ts
+        // pretend everything is an array, in questions.ts, export array and object to use
+        // if iterating, easier with array, lookup (object)
+        // array is total number of question (required and nonrequired)
+        // null if person didn't fill it out
+        // if response is null (check if required or nonrequired)
+        // iterate through all questions, DONT ASSUME FRONTEND PRESERVES REQUIRED
+        // Ar <Questions>.length === Ar <QuestionResponse> all good
+        Object.keys(body.responses).length !== Object.keys(Questions).length
       ) {
-        return res.status(400).send(undefeined)
+        return res.status(400).send(undefined)
       }
 
-      for (const [questionId, questionRepsonse] of Object.entries(
+      for (const [QuestionId, QuestionResponse] of Object.entries(
         body.responses
       )) {
-        const QUESTION = OQUESTIONS[questionId]
+        const QUESTIONID = QuestionId
+        if (
+          QUESTIONID !== '1' ||
+          QUESTIONID !== '2' ||
+          QUESTIONID !== '3' ||
+          QUESTIONID !== '4'
+        ) {
+          return res.status(400).send(undefined)
+        }
+        if (
+          QUESTIONID === '1' &&
+          (QuestionResponse === 'Alex' ||
+            QuestionResponse === 'Jess' ||
+            QuestionResponse === 'Jamie' ||
+            QuestionResponse === 'Karen')
+        ) {
+          // post to database
+          // need to check question type, see if response is of that response type
+        } else if (
+          QUESTIONID === '2' &&
+          QuestionResponse.length >= 200 &&
+          QuestionResponse.length <= 500
+        ) {
+        } else {
+          return res.status(400).send(undefined)
+        }
         // if this doesn't match, then 400
         // otherwise, check that type (either string[] or string)matches question type
         // validate response constraints against question requirements

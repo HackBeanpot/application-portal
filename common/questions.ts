@@ -9,11 +9,14 @@ import {
   RegistrationResponse,
   QuestionIdToResponseMap,
   QuestionIdToQuestionContent,
+<<<<<<< HEAD
   QuestionType,
   Checkboxes,
   ShortText,
   LongText,
   Dropdown,
+=======
+>>>>>>> added requirement checks unfinished in registration
   Question,
 } from './types'
 
@@ -25,6 +28,7 @@ const minLengthShort = 0
 const maxLengthLong = 3000
 const minLengthLong = 0
 
+<<<<<<< HEAD
 // convenience constructors for questions (constructors in java)
 function makeCheckbox(
   content: string,
@@ -38,6 +42,14 @@ function makeCheckbox(
     options: options.map((name) => ({ name })),
     maxNumber: maxNumberCheck,
     minNumber: minNumberCheck,
+=======
+// list of the question schemas (list of questions), for order and the length in registration
+export const PretendQuestions: Question[] = []
+
+// list of responses is from the request
+
+// convenience constructors for questions
+>>>>>>> added requirement checks unfinished in registration
 
     content: content,
     id: String(questionCount), // need to access questionID from questionidtoquestioncontent
