@@ -99,3 +99,9 @@ export const EXAMPLE_QUESTIONS: Array<Question> = [
   EXAMPLE_DROPDOWN_1,
   EXAMPLE_LONG_TEXT_1,
 ];
+
+export const adminTabs = {
+  VIEW_STATS: 'View Stats',
+  CONFIGURE_PORTAL_SETTINGS: 'Configure Portal Settings',
+  VIEW_AND_MODIFY_APPLICANTS: 'View / Modify Applicants',
+};

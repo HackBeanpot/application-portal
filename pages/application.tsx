@@ -3,10 +3,10 @@ import { useSession } from 'next-auth/client';
 import Router, { useRouter } from 'next/router';
 import { QuestionType } from '../common/types';
 import { EXAMPLE_QUESTIONS } from '../common/constants';
-import ShortTextQuestion from '../components/ShortTextQuestion';
-import LongTextQuestion from '../components/LongTextQuestion';
-import CheckboxesQuestion from '../components/CheckboxesQuestion';
-import DropdownQuestion from '../components/DropdownQuestion';
+import ShortTextQuestion from '../components/questions/ShortTextQuestion';
+import LongTextQuestion from '../components/questions/LongTextQuestion';
+import CheckboxesQuestion from '../components/questions/CheckboxesQuestion';
+import DropdownQuestion from '../components/questions/DropdownQuestion';
 
 const Application = (): ReactElement => {
   const session = useSignIn();

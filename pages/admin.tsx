@@ -1,15 +1,10 @@
 import React, { ReactElement, useState } from 'react';
-import { getApplicationStatus, getWelcome } from '../common/apiClient';
-import { APPLY_BY_DATE } from '../common/constants';
-import useSWR from 'swr';
+import { adminTabs } from '../common/constants';
+import PortalSettings from '../components/admin-tabs/PortalSettings';
+import Stats from '../components/admin-tabs/Stats';
 
 const Admin = (): ReactElement => {
-  const adminTabs = {
-    VIEW_STATS: 'View Stats',
-    CONFIGURE_PORTAL_SETTINGS: 'Configure Portal Settings',
-    VIEW_AND_MODIFY_APPLICANTS: 'View / Modify Applicants',
-  };
-  const [currTab, setCurrTab] = useState('');
+  const [currTab, setCurrTab] = useState(adminTabs.VIEW_STATS);
 
   return (
     <>
@@ -26,16 +21,8 @@ const Admin = (): ReactElement => {
           {adminTabs.VIEW_AND_MODIFY_APPLICANTS}
         </button>
       </div>
-      {currTab === adminTabs.VIEW_STATS && (
-        <div>
-          <h3>{adminTabs.VIEW_STATS}</h3>
-        </div>
-      )}
-      {currTab === adminTabs.CONFIGURE_PORTAL_SETTINGS && (
-        <div>
-          <h3>{adminTabs.CONFIGURE_PORTAL_SETTINGS}</h3>
-        </div>
-      )}
+      {currTab === adminTabs.VIEW_STATS && <Stats />}
+      {currTab === adminTabs.CONFIGURE_PORTAL_SETTINGS && <PortalSettings />}
       {currTab == adminTabs.VIEW_AND_MODIFY_APPLICANTS && (
         <div>
           <h3>{adminTabs.VIEW_AND_MODIFY_APPLICANTS}</h3>

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Checkboxes } from '../common/types';
+import { Checkboxes } from '../../common/types';
 type CheckboxesProps = {
   question: Checkboxes;
 };
