@@ -7,7 +7,7 @@ export function protect(handler: NextApiHandler): NextApiHandler {
     if (session) {
       await handler(req, res);
     } else {
-      res.status(401);
+      res.status(401).send(undefined);
     }
   };
 }
