@@ -5,10 +5,10 @@ import ShortTextQuestion from '../components/ShortTextQuestion';
 import LongTextQuestion from '../components/LongTextQuestion';
 import CheckboxesQuestion from '../components/CheckboxesQuestion';
 import DropdownQuestion from '../components/DropdownQuestion';
-import { useSignIn } from '../hooks/useSignIn';
+import { useSessionOrRedirect } from '../hooks/useSessionOrRedirect';
 
 const Application = (): ReactElement => {
-  useSignIn();
+  useSessionOrRedirect();
   return (
     <>
       <h1>Application Page</h1>

@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react';
-import { useSignIn } from '../hooks/useSignIn';
+import { useSessionOrRedirect } from '../hooks/useSessionOrRedirect';
 
 const Home = (): ReactElement => {
-  useSignIn();
+  useSessionOrRedirect();
   return <div>Home Page</div>;
 };
 

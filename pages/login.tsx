@@ -1,8 +1,8 @@
 import { signIn, signOut } from 'next-auth/client';
-import { useSignIn } from '../hooks/useSignIn';
+import { useSessionOrRedirect as useSessionOrRedirect } from '../hooks/useSessionOrRedirect';
 
 export default function Page() {
-  const session = useSignIn();
+  const session = useSessionOrRedirect();
 
   return (
     <>

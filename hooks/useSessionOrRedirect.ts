@@ -2,7 +2,11 @@ import { Session } from 'next-auth';
 import { useSession } from 'next-auth/client';
 import Router, { useRouter } from 'next/router';
 
-export const useSignIn = (): Session | null => {
+/**
+ * returns the session if the user is logged in, otherwise null. will automatically
+ * redirect to /login if the user is not logged in.
+ */
+export const useSessionOrRedirect = (): Session | null => {
   const [session, loading] = useSession();
   const { pathname } = useRouter();
 
@@ -10,6 +14,6 @@ export const useSignIn = (): Session | null => {
     return session;
   } else if (!loading && pathname !== '/login') {
     Router.push('/login');
-    return null;
   }
+  return null;
 };
