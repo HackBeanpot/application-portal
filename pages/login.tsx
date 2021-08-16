@@ -1,7 +1,8 @@
-import { signIn, signOut, useSession } from 'next-auth/client';
+import { signIn, signOut } from 'next-auth/client';
+import { useSignIn } from '../hooks/useSignIn';
 
 export default function Page() {
-  const [session, loading] = useSession();
+  const session = useSignIn();
 
   return (
     <>
