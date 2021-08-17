@@ -10,6 +10,7 @@ const Stats = () => {
           <th>Stat</th>
           <th>Value</th>
         </tr>
+        <br />
         <tr>
           <td>Total</td>
           <td>250</td>
@@ -38,6 +39,7 @@ const Stats = () => {
           <td>Checked in</td>
           <td>150</td>
         </tr>
+        <br />
         <tr>
           <td>T-Shirt XS</td>
           <td>20</td>
@@ -56,6 +58,31 @@ const Stats = () => {
         </tr>
         <tr>
           <td>T-Shirt XL</td>
+          <td>20</td>
+        </tr>
+        <br />
+        <tr>
+          <td>Year 1</td>
+          <td>20</td>
+        </tr>
+        <tr>
+          <td>Year 2</td>
+          <td>20</td>
+        </tr>
+        <tr>
+          <td>Year 3</td>
+          <td>20</td>
+        </tr>
+        <tr>
+          <td>Year 4</td>
+          <td>20</td>
+        </tr>
+        <tr>
+          <td>Year 5</td>
+          <td>20</td>
+        </tr>
+        <tr>
+          <td>Year 5+</td>
           <td>20</td>
         </tr>
       </table>

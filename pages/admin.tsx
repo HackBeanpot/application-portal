@@ -1,5 +1,6 @@
 import React, { ReactElement, useState } from 'react';
 import { adminTabs } from '../common/constants';
+import Applicants from '../components/admin-tabs/Applicants';
 import PortalSettings from '../components/admin-tabs/PortalSettings';
 import Stats from '../components/admin-tabs/Stats';
 
@@ -23,11 +24,7 @@ const Admin = (): ReactElement => {
       </div>
       {currTab === adminTabs.VIEW_STATS && <Stats />}
       {currTab === adminTabs.CONFIGURE_PORTAL_SETTINGS && <PortalSettings />}
-      {currTab == adminTabs.VIEW_AND_MODIFY_APPLICANTS && (
-        <div>
-          <h3>{adminTabs.VIEW_AND_MODIFY_APPLICANTS}</h3>
-        </div>
-      )}
+      {currTab == adminTabs.VIEW_AND_MODIFY_APPLICANTS && <Applicants />}
     </>
   );
 };
