@@ -4,31 +4,26 @@ Serves as a single point of truth for what questions are displayed on applicatio
 frontend & validated on backend
 */
 
-import { EXAMPLE_CHECKBOX_1, EXAMPLE_DROPDOWN_1 } from './constants'
+import { EXAMPLE_CHECKBOX_1, EXAMPLE_DROPDOWN_1 } from './constants';
 import {
   RegistrationResponse,
   QuestionIdToResponseMap,
-  QuestionIdToQuestionContent,
-<<<<<<< HEAD
-  QuestionType,
-  Checkboxes,
-  ShortText,
-  LongText,
-  Dropdown,
-=======
->>>>>>> added requirement checks unfinished in registration
   Question,
-} from './types'
+  Checkboxes,
+  Dropdown,
+  LongText,
+  QuestionType,
+  ShortText,
+} from './types';
 
-let questionCount = 0
+let questionCount = 0;
 // constants for min/max length of q + others
-const minNumberCheck = 0
-const maxLengthShort = 500
-const minLengthShort = 0
-const maxLengthLong = 3000
-const minLengthLong = 0
+const minNumberCheck = 0;
+const maxLengthShort = 500;
+const minLengthShort = 0;
+const maxLengthLong = 3000;
+const minLengthLong = 0;
 
-<<<<<<< HEAD
 // convenience constructors for questions (constructors in java)
 function makeCheckbox(
   content: string,
@@ -36,29 +31,20 @@ function makeCheckbox(
   required: boolean,
   maxNumberCheck: number
 ): Checkboxes {
-  questionCount++
+  questionCount++;
   return {
     type: QuestionType.Checkboxes,
     options: options.map((name) => ({ name })),
     maxNumber: maxNumberCheck,
     minNumber: minNumberCheck,
-=======
-// list of the question schemas (list of questions), for order and the length in registration
-export const PretendQuestions: Question[] = []
-
-// list of responses is from the request
-
-// convenience constructors for questions
->>>>>>> added requirement checks unfinished in registration
-
     content: content,
     id: String(questionCount), // need to access questionID from questionidtoquestioncontent
     required: required,
-  }
+  };
 }
 
 function makeShortText(content: string, required: boolean): ShortText {
-  questionCount++
+  questionCount++;
   return {
     type: QuestionType.ShortText,
     maxLength: maxLengthShort,
@@ -67,7 +53,7 @@ function makeShortText(content: string, required: boolean): ShortText {
     content: content,
     id: String(questionCount), // need to access questionID from questionidtoquestioncontent
     required: required,
-  }
+  };
 }
 
 function makeDropdown(
@@ -75,7 +61,7 @@ function makeDropdown(
   options: Array<string>,
   required: boolean
 ): Dropdown {
-  questionCount++
+  questionCount++;
   return {
     type: QuestionType.Dropdown,
     options: options.map((name) => ({ name })),
@@ -83,11 +69,11 @@ function makeDropdown(
     content: content,
     id: String(questionCount), // need to access questionID from questionidtoquestioncontent
     required: required,
-  }
+  };
 }
 
 function makeLongText(content: string, required: boolean): LongText {
-  questionCount++
+  questionCount++;
   return {
     type: QuestionType.LongText,
     maxLength: maxLengthLong,
@@ -96,11 +82,11 @@ function makeLongText(content: string, required: boolean): LongText {
     content: content,
     id: String(questionCount), // need to access questionID from questionidtoquestioncontent
     required: required,
-  }
+  };
 }
 
 // write questions for portal here
-export const QUESTIONS: Array<Question> = [
+export const Questions: Array<Question> = [
   makeShortText('What is your name?', true),
   makeDropdown(
     'What year are you?',
@@ -114,6 +100,6 @@ export const QUESTIONS: Array<Question> = [
     false,
     5
   ),
-]
+];
 
 // constructors for people writing the portal qs
