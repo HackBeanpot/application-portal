@@ -6,7 +6,6 @@ import ApplicantRow from './ApplicantRow';
 
 const Applicants = () => {
   const { data: applicants } = useSWR('/api/v1/applicants', getAllApplicants);
-  const [isEditing, setIsEditing] = useState(false);
 
   return (
     <div>
