@@ -5,8 +5,8 @@ import {
   Ethnicity,
   ShirtSize,
   ApplicationStatus,
-  RegistrationResponse,
-  Question,
+  RegistrationApiRequest,
+  QuestionDefinition,
   Checkboxes,
   ShortText,
   Dropdown,
@@ -43,12 +43,8 @@ export const EXAMPLE_USER: User = {
   learningGoals: 'cs',
   responses: [],
 };
-export const EXAMPLE_RESPONSE: RegistrationResponse = {
-  userId: EXAMPLE_USER_ID,
-  responses: {
-    question1: 'Judy Su',
-    question2: EXAMPLE_ETHNICITIES,
-  },
+export const EXAMPLE_RESPONSE: RegistrationApiRequest = {
+  responses: ['Judy Su', EXAMPLE_ETHNICITIES],
 };
 export const EXAMPLE_CHECKBOX_1: Checkboxes = {
   id: '1',
@@ -103,7 +99,7 @@ export const EXAMPLE_LONG_TEXT_1: LongText = {
 // if response valid, keep going, then check if answer type matches expected answer type
 // response is string? -> good then keep going, if length of string in boundaries
 
-export const EXAMPLE_QUESTIONS: Array<Question> = [
+export const EXAMPLE_QUESTIONS: Array<QuestionDefinition> = [
   EXAMPLE_CHECKBOX_1,
   EXAMPLE_SHORT_TEXT_1,
   EXAMPLE_DROPDOWN_1,

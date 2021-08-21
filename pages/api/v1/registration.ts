@@ -1,102 +1,59 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { getSession, useSession } from 'next-auth/client';
-import { EXAMPLE_RESPONSE } from '../../../common/constants';
-import { Questions } from '../../../common/questions';
-import { QuestionType, RegistrationResponse } from '../../../common/types';
+import { NextApiHandler } from 'next';
+import { getSession } from 'next-auth/client';
+import { RegistrationApiRequest } from '../../../common/types';
 import { connectToDatabase } from '../../../server/mongoDB';
 import { protect } from '../../../server/protect';
+import { attemptToValidateRegistrationApiRequest } from '../../../server/validators';
+import Joi from 'joi';
 
-export default protect(async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  const session = (await getSession({ req }))!;
-  session.user?.email;
-
-  const { client, db } = await connectToDatabase();
+const registrationHandler: NextApiHandler = async (req, res) => {
   switch (req.method) {
     case 'GET':
-      const data = await db
-        .collection('user')
-        .findOne(
-          { email: session.user?.email },
-          { projection: { _id: 0, email: 1 } }
-        );
-
-      console.log(data);
-
-      return res.status(200).json(data);
+      await getHandler(req, res);
+      break;
     case 'POST':
-      // TO DO: add validation : valid json, valid list of registrationResponse
-      const body: RegistrationResponse = req.body;
-      // check that the # of questions matched expected
-      if (
-        // only want to check required question's length
-        // ask Alex how we're planning on using question count, required question count
-        // can we store the number of required question in questions.ts
-        // pretend everything is an array, in questions.ts, export array and object to use
-        // if iterating, easier with array, lookup (object)
-        // array is total number of question (required and nonrequired)
-        // null if person didn't fill it out
-        // if response is null (check if required or nonrequired)
-        // iterate through all questions, DONT ASSUME FRONTEND PRESERVES REQUIRED
-        // Ar <Questions>.length === Ar <QuestionResponse> all good
-        Object.keys(body.responses).length !== Object.keys(Questions).length
-      ) {
-        return res.status(400).send(undefined);
-      }
-
-      Questions.forEach((q) => {
-        // q.id => compare to RegistrationResponse[id]
-        // validate that response, check non-null if required
-        const response = body.responses[q.id];
-        if (response === null && q.required) {
-          return res.status(400);
-        }
-
-        switch (q.type) {
-          case QuestionType.Checkboxes:
-            // take in the response
-            // min, max value
-            if (
-              response.length <= q.maxNumber &&
-              response.length >= q.minNumber
-            ) {
-            } else {
-              return res.status(400);
-            }
-            break;
-          case QuestionType.ShortText:
-            if (
-              response.length <= q.maxLength &&
-              response.length >= q.minLength
-            ) {
-            } else {
-              return res.status(400);
-            }
-            break;
-          case QuestionType.LongText:
-            if (
-              response.length <= q.maxLength &&
-              response.length >= q.minLength
-            ) {
-            } else {
-              return res.status(400);
-            }
-            break;
-          case QuestionType.Dropdown:
-            if (response.length === 1) {
-            } else {
-              return res.status(400);
-            }
-            break;
-        }
-      });
-
-      // finally, query database (insert)
-      // return 202
-      return res.status(201).send(undefined);
+      await postHandler(req, res);
+      break;
     default:
       return res.status(405).setHeader('Allow', 'GET, POST').send(undefined);
   }
-});
+};
+
+// non-null assertions are ok because users must have an email, and also are guaranteed to be logged in by protect
+const assumeLoggedInGetEmail = async () => (await getSession())!.user!.email!;
+
+const getHandler: NextApiHandler = async (req, res) => {
+  const email = await assumeLoggedInGetEmail();
+  const { applicantDataCollection } = await connectToDatabase();
+  const data = await applicantDataCollection.findOne({ email });
+  return res.status(200).json(data);
+};
+
+const postHandler: NextApiHandler = async (req, res) => {
+  let result: RegistrationApiRequest;
+  try {
+    result = attemptToValidateRegistrationApiRequest(req.body);
+  } catch (e: unknown) {
+    if (Joi.isError(e)) {
+      return res.status(400).json(e.message);
+    }
+    return res
+      .status(500)
+      .json('something broke. please email us immediately.');
+  }
+
+  const email = await assumeLoggedInGetEmail();
+  const { applicantDataCollection } = await connectToDatabase();
+  // upsert = update, or if object doesn't exist, insert
+  await applicantDataCollection.updateOne(
+    { email },
+    {
+      responses: result.responses,
+      email,
+    },
+    { upsert: true }
+  );
+  return res.status(200).send(undefined);
+};
+
+export default protect(registrationHandler);

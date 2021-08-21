@@ -6,14 +6,15 @@ frontend & validated on backend
 
 import { EXAMPLE_CHECKBOX_1, EXAMPLE_DROPDOWN_1 } from './constants';
 import {
-  RegistrationResponse,
+  RegistrationApiRequest,
   QuestionIdToResponseMap,
-  Question,
+  QuestionDefinition,
   Checkboxes,
   Dropdown,
   LongText,
   QuestionType,
   ShortText,
+  QuestionIdToDefinitionMap,
 } from './types';
 
 let questionCount = 0;
@@ -86,7 +87,7 @@ function makeLongText(content: string, required: boolean): LongText {
 }
 
 // write questions for portal here
-export const Questions: Array<Question> = [
+export const Questions: Array<QuestionDefinition> = [
   makeShortText('What is your name?', true),
   makeDropdown(
     'What year are you?',
@@ -101,5 +102,18 @@ export const Questions: Array<Question> = [
     5
   ),
 ];
+
+// also export the questions as a mapping, to make it easier to validate
+export const toIdMapping = <T extends { id: string }>(
+  questions: Array<T>
+): Record<string, T> => {
+  const mapping: Record<string, T> = {};
+  for (const q of questions) {
+    mapping[q.id] = q;
+  }
+  return mapping;
+};
+
+export const questionIdToDefinitionMap = toIdMapping(Questions);
 
 // constructors for people writing the portal qs
