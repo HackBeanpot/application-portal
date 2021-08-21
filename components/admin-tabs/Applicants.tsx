@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { adminTabs } from '../../common/constants';
 import { getAllApplicants } from '../../common/apiClient';
 import useSWR from 'swr';
