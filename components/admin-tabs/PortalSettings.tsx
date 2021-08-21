@@ -1,7 +1,11 @@
 import React from 'react';
 import { adminTabs } from '../../common/constants';
+import { getWelcome } from '../../common/apiClient';
+import useSWR from 'swr';
 
 const PortalSettings = () => {
+  const { data: welcome } = useSWR('/api/v1/welcome', getWelcome);
+
   return (
     <div>
       <h3>{adminTabs.CONFIGURE_PORTAL_SETTINGS}</h3>
@@ -36,7 +40,7 @@ const PortalSettings = () => {
         </tr>
         <tr>
           <td>Weclome Message</td>
-          <td>Welcome to the HackBeanpot Application Portal!</td>
+          <td>{welcome?.data}</td>
           <td>
             <input />
             <button>Update</button>

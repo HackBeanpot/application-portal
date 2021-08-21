@@ -3,9 +3,13 @@ import { adminTabs } from '../common/constants';
 import Applicants from '../components/admin-tabs/Applicants';
 import PortalSettings from '../components/admin-tabs/PortalSettings';
 import Stats from '../components/admin-tabs/Stats';
+import { populateSchoolsList } from '../common/constants';
+import { useSessionOrRedirect } from '../hooks/useSessionOrRedirect';
 
 const Admin = (): ReactElement => {
+  useSessionOrRedirect();
   const [currTab, setCurrTab] = useState(adminTabs.VIEW_STATS);
+  //populateSchoolsList();
 
   return (
     <>

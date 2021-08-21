@@ -13,6 +13,8 @@ import {
   LongText,
   QuestionType,
 } from './types';
+//import { readFileSync } from 'fs';
+
 export const APPLY_BY_DATE = '12/20/2021';
 
 export const EXAMPLE_GENDER = Gender.Female;
@@ -104,4 +106,9 @@ export const adminTabs = {
   VIEW_STATS: 'View Stats',
   CONFIGURE_PORTAL_SETTINGS: 'Configure Portal Settings',
   VIEW_AND_MODIFY_APPLICANTS: 'View / Modify Applicants',
+};
+
+export const populateSchoolsList = () => {
+  const data = readFileSync('./schools.txt');
+  console.log(data);
 };
