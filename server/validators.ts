@@ -30,10 +30,18 @@ export const convertQuestionDefinitionToJoiSchema = (
 export const makeRequiredIfNeeded = (
   q: QuestionDefinition,
   schema: Joi.Schema
-): Joi.Schema => (q.required ? schema.required() : schema);
+): Joi.Schema => {
+  // by default, joi allows undefined, but not null.
+  if (q.required) {
+    // required means don't allow undefined
+    return schema.required();
+  }
+  // if not required, then allow undefined (implicitly), and null
+  return schema.valid(null);
+};
 export const convertCheckboxesToJoiSchema = (q: Checkboxes): Joi.Schema => {
   // checkboxes expects an array of strings back
-  const itemSchema = Joi.string().valid(...q.options.map((s) => s.name));
+  const itemSchema = Joi.valid(...q.options.map((s) => s.name));
   const arraySchema = Joi.array()
     .items(itemSchema)
     .unique()
@@ -43,7 +51,7 @@ export const convertCheckboxesToJoiSchema = (q: Checkboxes): Joi.Schema => {
 };
 export const convertDropdownToJoiSchema = (q: Dropdown): Joi.Schema => {
   // dropdown expects a single string
-  const answerSchema = Joi.string().valid(...q.options.map((s) => s.name));
+  const answerSchema = Joi.valid(...q.options.map((s) => s.name));
   return makeRequiredIfNeeded(q, answerSchema);
 };
 export const convertLongTextToJoiSchema = (q: LongText): Joi.Schema => {
