@@ -1,4 +1,6 @@
+import { DatePicker } from 'antd';
 import React, { FC, useState } from 'react';
+import moment from 'moment';
 
 type PortalSettingsRowProps = {
   setting: string;
@@ -10,6 +12,7 @@ const PortalSettingsRow: FC<PortalSettingsRowProps> = ({ setting, value }) => {
   const [currValue, setCurrValue] = useState({
     val: value,
   });
+  const isDate = Number.isInteger(Date.parse(value));
 
   const updateCurrVal = (e: React.FormEvent<HTMLInputElement>) => {
     const newCurrVal = e.currentTarget.value;
@@ -17,15 +20,17 @@ const PortalSettingsRow: FC<PortalSettingsRowProps> = ({ setting, value }) => {
     currVal.val = newCurrVal;
     setCurrValue(currVal);
   };
-
   return (
     <tr>
       <td>{setting}</td>
       <td>
-        {isEditing && (
+        {!isDate && isEditing && (
           <input value={currValue.val} onChange={(e) => updateCurrVal(e)} />
         )}
-        {!isEditing && <label>{currValue.val}</label>}
+        {!isDate && !isEditing && <label>{currValue.val}</label>}
+        {isDate && (
+          <DatePicker defaultValue={moment('2015-01-01', 'YYYY-MM-DD')} />
+        )}
       </td>
       <button onClick={() => setIsEditing(true)}>Edit</button>
       <button onClick={() => setIsEditing(false)}>Update</button>

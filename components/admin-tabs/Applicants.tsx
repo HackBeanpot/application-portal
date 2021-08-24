@@ -19,8 +19,8 @@ const Applicants = () => {
           <th>Year</th>
           <th>Application Status</th>
         </tr>
-        {applicants?.data.map((a, k) => (
-          <ApplicantRow applicant={a} key={k} />
+        {applicants?.data.map((a) => (
+          <ApplicantRow applicant={a} key={a.email} />
         ))}
       </table>
     </div>
