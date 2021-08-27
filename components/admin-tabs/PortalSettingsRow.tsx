@@ -53,7 +53,7 @@ const PortalSettingsRow: FC<PortalSettingsRowProps> = ({ setting, value }) => {
             <label>{currValue.val}</label>
           </td>
           <td>
-            <DatePicker onChange={(m, ds) => setNewDate(ds)} />
+            <DatePicker onChange={(m, ds) => setNewDate(ds)} showTime />
             <button onClick={() => updateCurrDate()}>Update</button>
           </td>
         </>
