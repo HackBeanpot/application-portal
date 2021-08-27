@@ -1,6 +1,5 @@
 import { DatePicker } from 'antd';
 import React, { FC, useState } from 'react';
-import moment from 'moment';
 
 type PortalSettingsRowProps = {
   setting: string;
@@ -13,31 +12,52 @@ const PortalSettingsRow: FC<PortalSettingsRowProps> = ({ setting, value }) => {
     val: value,
   });
   const isDate = Number.isInteger(Date.parse(value));
+  const [newDate, setNewDate] = useState('');
 
-  const updateCurrVal = (e: React.FormEvent<HTMLInputElement>) => {
-    const newCurrVal = e.currentTarget.value;
-    const currVal = { ...currValue };
-    currVal.val = newCurrVal;
-    setCurrValue(currVal);
+  const updateCurrString = (e: React.FormEvent<HTMLInputElement>) => {
+    const newStr = e.currentTarget.value;
+    const currStr = { ...currValue };
+    currStr.val = newStr;
+    setCurrValue(currStr);
   };
 
-  console.log(new Date('2021-12-20'));
+  const updateCurrDate = () => {
+    if (newDate == '') {
+      alert('Please enter date');
+    } else {
+      setCurrValue({ ...currValue, val: newDate });
+    }
+  };
 
   return (
     <tr>
       <td>{setting}</td>
-      <td>
-        {!isDate && isEditing && (
-          <input value={currValue.val} onChange={(e) => updateCurrVal(e)} />
-        )}
-        {!isDate && !isEditing && <label>{currValue.val}</label>}
-        {isDate && (
-          <DatePicker defaultValue={moment('2021-12-20', 'YYYY-MM-DD')} />
-        )}
-      </td>
-
-      <button onClick={() => setIsEditing(true)}>Edit</button>
-      <button onClick={() => setIsEditing(false)}>Update</button>
+      {!isDate && (
+        <>
+          <td>
+            {isEditing && (
+              <input
+                value={currValue.val}
+                onChange={(e) => updateCurrString(e)}
+              />
+            )}
+            {!isEditing && <label>{currValue.val}</label>}
+          </td>
+          <button onClick={() => setIsEditing(true)}>Edit</button>
+          <button onClick={() => setIsEditing(false)}>Update</button>
+        </>
+      )}
+      {isDate && (
+        <>
+          <td>
+            <label>{currValue.val}</label>
+          </td>
+          <td>
+            <DatePicker onChange={(m, ds) => setNewDate(ds)} />
+            <button onClick={() => updateCurrDate()}>Update</button>
+          </td>
+        </>
+      )}
     </tr>
   );
 };
