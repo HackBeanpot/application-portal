@@ -17,6 +17,7 @@ export interface User {
   learningGoals: string;
   responses: Array<QuestionResponse>;
   isAdmin: boolean;
+  rsvpStatus: RSVPStatus;
 }
 export interface PortalState {
   openDate: Date;

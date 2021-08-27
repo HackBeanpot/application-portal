@@ -20,7 +20,8 @@ const registrationHandler: NextApiHandler = async (req, res) => {
 };
 
 // non-null assertions are ok because users must have an email, and also are guaranteed to be logged in by protect
-const assumeLoggedInGetEmail = async () => (await getSession())!.user!.email!;
+export const assumeLoggedInGetEmail = async () =>
+  (await getSession())!.user!.email!;
 
 const getHandler: NextApiHandler = async (req, res) => {
   const email = await assumeLoggedInGetEmail();
