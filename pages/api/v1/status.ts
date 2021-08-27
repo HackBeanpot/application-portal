@@ -1,4 +1,4 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
+import { NextApiHandler } from 'next';
 import {
   EXAMPLE_APPLICATION_STATUS,
   RESPONSE_BY_DATE,
@@ -8,10 +8,7 @@ import { RSVPStatus } from '../../../common/types';
 import { connectToDatabase } from '../../../server/mongoDB';
 import { assumeLoggedInGetEmail } from './registration';
 
-export default protect(async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+const statusHandler: NextApiHandler = async (req, res) => {
   switch (req.method) {
     case 'GET':
       // stringify bc for some reason, next was removing the quotes in the response
@@ -22,13 +19,11 @@ export default protect(async function handler(
     default:
       return res.status(405).setHeader('Allow', 'GET, POST').send(undefined);
   }
-});
+};
 
 const postHandler: NextApiHandler = async (req, res) => {
-  // check req.rsvp is valid
-  // check can still update status
-  // update in DB
   const userStatus = req.body;
+  console.log('gets here');
 
   // Check that req status is one of enum type
   if (!Object.values(RSVPStatus).includes(userStatus['rsvpStatus'])) {
@@ -55,3 +50,5 @@ const postHandler: NextApiHandler = async (req, res) => {
 
   return res.status(201).send('Successfully updated RSVP');
 };
+
+export default protect(statusHandler);
