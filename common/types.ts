@@ -66,6 +66,11 @@ export enum ApplicationStatus {
   Confirmed = 'Confirmed',
   Declined = 'Declined',
 }
+export enum RSVPStatus {
+  InPerson = 'In Person',
+  Virtual = 'Virtual',
+  NotAttending = 'Not Attending',
+}
 export enum QuestionType {
   Checkboxes = 'Checkboxes',
   ShortText = 'Short Text',
