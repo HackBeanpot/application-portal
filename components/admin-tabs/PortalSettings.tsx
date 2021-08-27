@@ -3,7 +3,6 @@ import { adminTabs } from '../../common/constants';
 import { getWelcome } from '../../common/apiClient';
 import useSWR from 'swr';
 import PortalSettingsRow from './PortalSettingsRow';
-import 'moment/locale/zh-cn';
 
 const PortalSettings = () => {
   const { data: welcome } = useSWR('/api/v1/welcome', getWelcome);
