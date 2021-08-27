@@ -8,11 +8,11 @@ import 'moment/locale/zh-cn';
 const PortalSettings = () => {
   const { data: welcome } = useSWR('/api/v1/welcome', getWelcome);
   const dummyData = [
-    { setting: 'Open Date', value: JSON.stringify(new Date('2021-12-20')) },
-    { setting: 'Close Date', value: JSON.stringify(new Date('2021-12-20')) },
+    { setting: 'Open Date', value: new Date('2021-12-20').toDateString() },
+    { setting: 'Close Date', value: new Date('2021-12-20').toDateString() },
     {
       setting: 'Confirm By Date',
-      value: JSON.stringify(new Date('2021-12-20')),
+      value: new Date('2021-12-20').toDateString(),
     },
     { setting: 'Welcome Message', value: welcome?.data.toString() ?? '' },
   ];

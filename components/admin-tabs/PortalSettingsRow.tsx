@@ -32,11 +32,10 @@ const PortalSettingsRow: FC<PortalSettingsRowProps> = ({ setting, value }) => {
         )}
         {!isDate && !isEditing && <label>{currValue.val}</label>}
         {isDate && (
-          <DatePicker
-            defaultValue={moment(Date.parse(currValue.val), 'YYYY-MM-DD')}
-          />
+          <DatePicker defaultValue={moment('2021-12-20', 'YYYY-MM-DD')} />
         )}
       </td>
+
       <button onClick={() => setIsEditing(true)}>Edit</button>
       <button onClick={() => setIsEditing(false)}>Update</button>
     </tr>
