@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react';
 import { QuestionType } from '../common/types';
 import { EXAMPLE_QUESTIONS } from '../common/constants';
-import ShortTextQuestion from '../components/ShortTextQuestion';
-import LongTextQuestion from '../components/LongTextQuestion';
-import CheckboxesQuestion from '../components/CheckboxesQuestion';
-import DropdownQuestion from '../components/DropdownQuestion';
+import ShortTextQuestion from '../components/questions/ShortTextQuestion';
+import LongTextQuestion from '../components/questions/LongTextQuestion';
+import CheckboxesQuestion from '../components/questions/CheckboxesQuestion';
+import DropdownQuestion from '../components/questions/DropdownQuestion';
 import { useSessionOrRedirect } from '../hooks/useSessionOrRedirect';
 
 const Application = (): ReactElement => {

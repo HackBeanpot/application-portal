@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
-import { LongText } from '../common/types';
-type LongTextProps = {
-  question: LongText;
+import { ShortText } from '../../common/types';
+type ShortTextProps = {
+  question: ShortText;
 };
-const LongTextQuestion: FC<LongTextProps> = ({ question }) => {
+const ShortTextQuestion: FC<ShortTextProps> = ({ question }) => {
   return (
     <div>
       <h2>{question.content}</h2>
@@ -16,4 +16,4 @@ const LongTextQuestion: FC<LongTextProps> = ({ question }) => {
     </div>
   );
 };
-export default LongTextQuestion;
+export default ShortTextQuestion;

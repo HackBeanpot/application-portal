@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Dropdown } from '../common/types';
+import { Dropdown } from '../../common/types';
 type DropdownProps = {
   question: Dropdown;
 };
