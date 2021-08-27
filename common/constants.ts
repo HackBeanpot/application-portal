@@ -5,8 +5,8 @@ import {
   Ethnicity,
   ShirtSize,
   ApplicationStatus,
-  RegistrationResponse,
-  Question,
+  RegistrationApiRequest,
+  QuestionDefinition,
   Checkboxes,
   ShortText,
   Dropdown,
@@ -43,12 +43,8 @@ export const EXAMPLE_USER: User = {
   learningGoals: 'cs',
   responses: [],
 };
-export const EXAMPLE_RESPONSE: RegistrationResponse = {
-  userId: EXAMPLE_USER_ID,
-  responses: {
-    question1: 'Judy Su',
-    question2: EXAMPLE_ETHNICITIES,
-  },
+export const EXAMPLE_RESPONSE: RegistrationApiRequest = {
+  responses: ['Judy Su', EXAMPLE_ETHNICITIES],
 };
 export const EXAMPLE_CHECKBOX_1: Checkboxes = {
   id: '1',
@@ -72,6 +68,10 @@ export const EXAMPLE_SHORT_TEXT_1: ShortText = {
   minLength: 200,
   maxLength: 500,
 };
+
+// with arrays, dropdown, has to be one of 5 choices, ORMAP over options to see if
+// at least one of the options is equal to the response
+// make function that validates a function
 export const EXAMPLE_DROPDOWN_1: Dropdown = {
   id: '3',
   content: "What's your favorite color?",
@@ -93,7 +93,13 @@ export const EXAMPLE_LONG_TEXT_1: LongText = {
   minLength: 500,
   maxLength: 1000,
 };
-export const EXAMPLE_QUESTIONS: Array<Question> = [
+
+// switch case where you check the type, then you can check it's required (same for all qs)
+// if required == true, and response is null -> return 404
+// if response valid, keep going, then check if answer type matches expected answer type
+// response is string? -> good then keep going, if length of string in boundaries
+
+export const EXAMPLE_QUESTIONS: Array<QuestionDefinition> = [
   EXAMPLE_CHECKBOX_1,
   EXAMPLE_SHORT_TEXT_1,
   EXAMPLE_DROPDOWN_1,

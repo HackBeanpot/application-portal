@@ -71,10 +71,13 @@ export enum QuestionType {
   Dropdown = 'Dropdown',
   LongText = 'Long Text',
 }
-export type Question = Checkboxes | ShortText | Dropdown | LongText;
+export type QuestionDefinition = Checkboxes | ShortText | Dropdown | LongText;
+
+export type QuestionId = string;
+
 interface IQuestion {
   content: string;
-  id: string;
+  id: QuestionId;
   required: boolean;
 }
 export interface Checkboxes extends IQuestion {
@@ -97,20 +100,18 @@ export interface LongText extends IQuestion {
   maxLength: number;
   minLength: number;
 }
+
 /**
- * @param response is a single string for text responses, and an array of the choices for multi-select responses
+ * is a single string for text responses, and an array of the choices for multi-select responses
  */
-interface QuestionResponse {
-  id: string;
-  response: string | Array<string>;
-}
+export type QuestionResponse = string | Array<string>;
+
+export type QuestionIdToDefinitionMap = Record<QuestionId, QuestionDefinition>;
+export type QuestionIdToResponseMap = Record<QuestionId, QuestionResponse>;
+
 /**
  * @param responses mapping from question id to response value
  */
-export type RegistrationResponse = {
-  userId: string;
-  /**
-   * maps from question id to response value
-   */
-  responses: Record<string, QuestionResponse['response']>;
+export type RegistrationApiRequest = {
+  responses: Array<QuestionResponse>;
 };
