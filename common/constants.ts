@@ -43,6 +43,7 @@ export const EXAMPLE_USER: User = {
   timeZone: 'cs',
   learningGoals: 'cs',
   responses: [],
+  isAdmin: true,
 };
 export const EXAMPLE_RESPONSE: RegistrationApiRequest = {
   responses: ['Judy Su', EXAMPLE_ETHNICITIES],
