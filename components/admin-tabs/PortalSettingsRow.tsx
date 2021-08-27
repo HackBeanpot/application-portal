@@ -20,6 +20,9 @@ const PortalSettingsRow: FC<PortalSettingsRowProps> = ({ setting, value }) => {
     currVal.val = newCurrVal;
     setCurrValue(currVal);
   };
+
+  console.log(new Date('2021-12-20'));
+
   return (
     <tr>
       <td>{setting}</td>
@@ -29,7 +32,9 @@ const PortalSettingsRow: FC<PortalSettingsRowProps> = ({ setting, value }) => {
         )}
         {!isDate && !isEditing && <label>{currValue.val}</label>}
         {isDate && (
-          <DatePicker defaultValue={moment('2015-01-01', 'YYYY-MM-DD')} />
+          <DatePicker
+            defaultValue={moment(Date.parse(currValue.val), 'YYYY-MM-DD')}
+          />
         )}
       </td>
       <button onClick={() => setIsEditing(true)}>Edit</button>
