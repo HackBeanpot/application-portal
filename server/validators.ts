@@ -7,6 +7,7 @@ import {
   QuestionType,
   RegistrationApiRequest,
   ShortText,
+  ApplicationStatus,
 } from '../common/types';
 import Joi from 'joi';
 import { Questions } from '../common/questions';
@@ -63,6 +64,14 @@ export const convertShortTextToJoiSchema = (q: ShortText): Joi.Schema => {
   // expects a long text response
   const answerSchema = Joi.string().min(q.minLength).max(q.maxLength);
   return makeRequiredIfNeeded(q, answerSchema);
+};
+
+export const convertApplicationStatusToJoiSchema = (
+  s: ApplicationStatus
+): Joi.Schema => {
+  // expects a application status
+  const statusSchema = Joi.string().valid(...Object.values(s));
+  return statusSchema;
 };
 
 export const makeQuestionResponseSchemas = (
