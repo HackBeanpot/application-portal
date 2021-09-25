@@ -1,3 +1,5 @@
+import { CheckboxValueType } from 'antd/lib/checkbox/Group';
+
 export interface User {
   email: string;
   firstName: string;
@@ -68,10 +70,10 @@ export enum ApplicationStatus {
 export enum QuestionType {
   Checkboxes = 'Checkboxes',
   ShortText = 'Short Text',
-  Dropdown = 'Dropdown',
+  DropDown = 'DropDown',
   LongText = 'Long Text',
 }
-export type QuestionDefinition = Checkboxes | ShortText | Dropdown | LongText;
+export type QuestionDefinition = Checkboxes | ShortText | DropDown | LongText;
 
 export type QuestionId = string;
 
@@ -91,8 +93,8 @@ export interface ShortText extends IQuestion {
   maxLength: number;
   minLength: number;
 }
-export interface Dropdown extends IQuestion {
-  type: QuestionType.Dropdown;
+export interface DropDown extends IQuestion {
+  type: QuestionType.DropDown;
   options: Array<{ name: string }>;
 }
 export interface LongText extends IQuestion {
@@ -115,3 +117,8 @@ export type QuestionIdToResponseMap = Record<QuestionId, QuestionResponse>;
 export type RegistrationApiRequest = {
   responses: Array<QuestionResponse>;
 };
+
+export interface Answer {
+  id: string;
+  answer: string | CheckboxValueType[];
+}

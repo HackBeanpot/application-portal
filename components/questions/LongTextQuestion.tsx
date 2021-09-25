@@ -2,8 +2,9 @@ import React, { FC } from 'react';
 import { LongText } from '../../common/types';
 type LongTextProps = {
   question: LongText;
+  addTextAnswer: (id: string, answer: string) => void;
 };
-const LongTextQuestion: FC<LongTextProps> = ({ question }) => {
+const LongTextQuestion: FC<LongTextProps> = ({ question, addTextAnswer }) => {
   return (
     <div>
       <h2>{question.content}</h2>
@@ -12,7 +13,7 @@ const LongTextQuestion: FC<LongTextProps> = ({ question }) => {
       <br />
       max-length = {question.maxLength}
       <br />
-      <textarea />
+      <textarea onChange={(e) => addTextAnswer(question.id, e.target.value)} />
     </div>
   );
 };
