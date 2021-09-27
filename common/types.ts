@@ -122,3 +122,8 @@ export interface Answer {
   id: string;
   answer: string | CheckboxValueType[];
 }
+
+export interface Error {
+  id: string;
+  error: string;
+}
