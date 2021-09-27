@@ -3,7 +3,7 @@ import { ShortText } from '../../common/types';
 type ShortTextProps = {
   question: ShortText;
   addTextAnswer: (id: string, answer: string) => void;
-  errorMessage: string;
+  errorMessage: (id: string) => string;
 };
 
 const ShortTextQuestion: FC<ShortTextProps> = ({
@@ -11,7 +11,6 @@ const ShortTextQuestion: FC<ShortTextProps> = ({
   addTextAnswer,
   errorMessage,
 }) => {
-  const hasError = errorMessage.length > 0;
   return (
     <div>
       <h2>{question.content}</h2>
@@ -21,7 +20,7 @@ const ShortTextQuestion: FC<ShortTextProps> = ({
       max-length = {question.maxLength}
       <br />
       <textarea onChange={(e) => addTextAnswer(question.id, e.target.value)} />
-      {errorMessage}
+      {errorMessage(question.id)}
     </div>
   );
 };

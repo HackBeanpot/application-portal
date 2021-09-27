@@ -109,7 +109,7 @@ const Application = (): ReactElement => {
                 <ShortTextQuestion
                   question={q}
                   addTextAnswer={addTextAnswer}
-                  errorMessage={findError(q.id)!}
+                  errorMessage={(id: string) => findError(id)}
                 />
               );
             case QuestionType.LongText:
