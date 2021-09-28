@@ -1,5 +1,6 @@
 import { MongoClient, Db, Collection } from 'mongodb';
-import { User } from '../common/types';
+import { HBPDate, User } from '../common/types';
+import { NextApiHandler } from 'next';
 
 const MONGODB_URI = process.env.DATABASE_URL || '';
 const MONGODB_DB = process.env.MONGODB_DB || '';
@@ -24,7 +25,7 @@ if (MONGODB_DB === '') {
 type MongoCtx = {
   client: MongoClient;
   db: Db;
-  applicantDataCollection: Collection<User>;
+  dataCollection: Collection<User | HBPDate>;
 };
 
 type GlobalWithMongo = {
@@ -38,7 +39,9 @@ if (!g.mongo) {
   g.mongo = {};
 }
 
-export async function connectToDatabase(): Promise<MongoCtx> {
+export async function connectToDatabase(
+  collectionName: string
+): Promise<MongoCtx> {
   // we know because of L36 that this is defined
   const cached = g.mongo!;
 
@@ -55,8 +58,8 @@ export async function connectToDatabase(): Promise<MongoCtx> {
       useUnifiedTopology: true,
     }).then((client) => {
       const db = client.db(MONGODB_DB);
-      const applicantDataCollection = db.collection('applicant_data');
-      return { client, db, applicantDataCollection };
+      const dataCollection = db.collection(collectionName);
+      return { client, db, dataCollection };
     });
   }
 

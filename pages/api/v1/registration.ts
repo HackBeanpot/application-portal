@@ -25,8 +25,8 @@ export const assumeLoggedInGetEmail = async () =>
 
 const getHandler: NextApiHandler = async (req, res) => {
   const email = await assumeLoggedInGetEmail();
-  const { applicantDataCollection } = await connectToDatabase();
-  const data = await applicantDataCollection.findOne({ email });
+  const { dataCollection } = await connectToDatabase('applicant_data');
+  const data = await dataCollection.findOne({ email });
   return res.status(200).json(data);
 };
 
@@ -44,9 +44,9 @@ const postHandler: NextApiHandler = async (req, res) => {
   }
 
   const email = await assumeLoggedInGetEmail();
-  const { applicantDataCollection } = await connectToDatabase();
+  const { dataCollection } = await connectToDatabase('applicant_data');
   // upsert = update, or if object doesn't exist, insert
-  await applicantDataCollection.updateOne(
+  await dataCollection.updateOne(
     { email },
     {
       responses: result.responses,

@@ -19,6 +19,10 @@ export interface User {
   isAdmin: boolean;
   rsvpStatus: RSVPStatus;
 }
+export interface HBPDate {
+  dateType: string;
+  date: string; // TODO: Figure out type
+}
 export interface PortalState {
   openDate: Date;
   closeDate: Date;
