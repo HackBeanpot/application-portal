@@ -15,18 +15,18 @@ const regOpenHandler: NextApiHandler = async (req, res) => {
 };
 
 const getHandler: NextApiHandler = async (req, res) => {
-  const { dataCollection } = await connectToDatabase('date_data');
-  const data = await dataCollection.findOne({ dateType: 'confirm_by' });
-  return res.status(200).json(data);
+  const { dataCollection } = await connectToDatabase('singleton_data');
+  const data = await dataCollection.findOne({ type: 'date' });
+  return res.status(200).json(data['confirm']);
 };
 
 const postHandler: NextApiHandler = async (req, res) => {
   const newDate: string = req.body.date;
-  const { dataCollection } = await connectToDatabase('date_data');
+  const { dataCollection } = await connectToDatabase('singleton_data');
   await dataCollection.updateOne(
-    { dateType: 'confirm_by' },
+    { type: 'date' },
     {
-      date: newDate,
+      $set: { confirm: newDate },
     },
     { upsert: true }
   );
