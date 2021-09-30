@@ -43,13 +43,14 @@ const Application = (): ReactElement => {
     }
 
     const exists = textAnswers.find((a) => a.id === id);
+    const updatedTextAnswers = textAnswers.slice();
     if (exists) {
       const objIndex = textAnswers.findIndex((a) => a.id === id);
-      textAnswers[objIndex] = { id, answer };
+      updatedTextAnswers[objIndex] = { id, answer };
     } else {
-      textAnswers.push({ id, answer });
+      updatedTextAnswers.push({ id, answer });
     }
-    updateTextAnswers(textAnswers);
+    updateTextAnswers(updatedTextAnswers);
   };
 
   const addCheckboxAnswer = (id: string, answer: CheckboxValueType[]) => {
@@ -107,18 +108,24 @@ const Application = (): ReactElement => {
             case QuestionType.ShortText:
               return (
                 <ShortTextQuestion
+                  key={q.id}
                   question={q}
                   addTextAnswer={addTextAnswer}
-                  errorMessage={(id: string) => findError(id)}
+                  errorMessage={findError(q.id)}
                 />
               );
             case QuestionType.LongText:
               return (
-                <LongTextQuestion question={q} addTextAnswer={addTextAnswer} />
+                <LongTextQuestion
+                  key={q.id}
+                  question={q}
+                  addTextAnswer={addTextAnswer}
+                />
               );
             case QuestionType.Checkboxes:
               return (
                 <CheckboxesQuestion
+                  key={q.id}
                   question={q}
                   addCheckboxAnswer={addCheckboxAnswer}
                 />
@@ -126,6 +133,7 @@ const Application = (): ReactElement => {
             case QuestionType.DropDown:
               return (
                 <DropdownQuestion
+                  key={q.id}
                   question={q}
                   addDropdownAnswer={addDropdownAnswer}
                 />
