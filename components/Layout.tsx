@@ -2,8 +2,9 @@ import { Layout, Menu } from 'antd';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import { getApplicantById } from '../common/apiClient';
-import { Logo } from './Logo';
 import styles from '../styles/components/Layout.module.scss';
+import Logo from '../public/logo.svg';
+import Image from 'next/image';
 
 const { Header, Content, Sider } = Layout;
 
@@ -21,16 +22,17 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
   return (
     <Layout>
       <Header className={styles.header}>
-        <div className="logo">
-          <Logo />
+        <Image src={Logo} alt="HackBeanpot logo" width={32} height={32} />
+        <div className={styles.header__text}>
+          HackBeanpot Application Portal
         </div>
       </Header>
-      <Layout>
-        <Sider width={200} className={styles.sider}>
+      <Layout className={styles.sider_content_layout}>
+        <Sider className={styles.sider}>
           <Menu
             mode="inline"
             defaultSelectedKeys={[currentPage]}
-            style={{ height: '100%', borderRight: 0, marginTop: '100px' }}
+            className={styles.sider__menu}
           >
             <Menu.Item key="home" onClick={() => router.push('/dashboard')}>
               Dashboard
@@ -51,18 +53,8 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
             </Menu.Item>
           </Menu>
         </Sider>
-        <Layout style={{ padding: '0 24px 24px' }}>
-          <Content
-            className="site-layout-background"
-            style={{
-              paddingTop: 100,
-              paddingLeft: 200,
-              margin: 0,
-              minHeight: 280,
-            }}
-          >
-            {children}
-          </Content>
+        <Layout className={styles.content__layout}>
+          <Content className={styles.content}>{children}</Content>
         </Layout>
       </Layout>
     </Layout>

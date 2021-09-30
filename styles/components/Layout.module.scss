@@ -1,16 +1,39 @@
+$header-color: #CFE8E8;
+$header-height: 64px;
+
 .header {
-  color: azure;
-  background-color: azure;
+  height: $header-height;
   position: fixed;
-  left: 0;
-  z-index: 1;
   width: 100%;
-  height: 100px;
+  background-color: $header-color;
+  display: flex;
+
+  &__text {
+    margin-left: 16px;
+  }
+}
+
+.sider_content_layout {
+  height: 100vh;
+  margin-top: $header-height;
 }
 
 .sider {
   overflow: auto;
-  height: 100vh;
+  height: 100%;
   position: fixed;
   left: 0;
+
+  &__menu {
+    height: 100%;
+  }
+}
+
+.content {
+  padding: 32px 24px 0;
+  overflow: initial;
+  
+  &__layout {
+    margin-left: 200px;
+  }
 }
