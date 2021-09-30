@@ -130,7 +130,7 @@ const Application = (): ReactElement => {
                   addCheckboxAnswer={addCheckboxAnswer}
                 />
               );
-            case QuestionType.DropDown:
+            case QuestionType.Dropdown:
               return (
                 <DropdownQuestion
                   key={q.id}

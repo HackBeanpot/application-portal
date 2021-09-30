@@ -9,7 +9,7 @@ import {
   QuestionDefinition,
   Checkboxes,
   ShortText,
-  DropDown,
+  Dropdown,
   LongText,
   QuestionType,
 } from './types';
@@ -73,11 +73,11 @@ export const EXAMPLE_SHORT_TEXT_1: ShortText = {
 // with arrays, dropdown, has to be one of 5 choices, ORMAP over options to see if
 // at least one of the options is equal to the response
 // make function that validates a function
-export const EXAMPLE_DROPDOWN_1: DropDown = {
+export const EXAMPLE_DROPDOWN_1: Dropdown = {
   id: '3',
   content: "What's your favorite color?",
   required: true,
-  type: QuestionType.DropDown,
+  type: QuestionType.Dropdown,
   options: [
     { name: 'blue' },
     { name: 'green' },

@@ -1,10 +1,10 @@
 import React, { FC, useState } from 'react';
-import { DropDown } from '../../common/types';
+import { Dropdown as DropdownType } from '../../common/types';
 import { Menu, Dropdown, message, Button } from 'antd';
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
 
 type DropdownProps = {
-  question: DropDown;
+  question: DropdownType;
   addDropdownAnswer: (id: string, addDropdownAnswer: string) => void;
 };
 const DropdownQuestion: FC<DropdownProps> = ({

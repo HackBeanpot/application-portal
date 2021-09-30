@@ -70,10 +70,10 @@ export enum ApplicationStatus {
 export enum QuestionType {
   Checkboxes = 'Checkboxes',
   ShortText = 'Short Text',
-  DropDown = 'DropDown',
+  Dropdown = 'Dropdown',
   LongText = 'Long Text',
 }
-export type QuestionDefinition = Checkboxes | ShortText | DropDown | LongText;
+export type QuestionDefinition = Checkboxes | ShortText | Dropdown | LongText;
 
 export type QuestionId = string;
 
@@ -93,8 +93,8 @@ export interface ShortText extends IQuestion {
   maxLength: number;
   minLength: number;
 }
-export interface DropDown extends IQuestion {
-  type: QuestionType.DropDown;
+export interface Dropdown extends IQuestion {
+  type: QuestionType.Dropdown;
   options: Array<{ name: string }>;
 }
 export interface LongText extends IQuestion {
