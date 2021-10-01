@@ -34,7 +34,7 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
             defaultSelectedKeys={[currentPage]}
             className={styles.sider__menu}
           >
-            <Menu.Item key="home" onClick={() => router.push('/dashboard')}>
+            <Menu.Item key="home" onClick={() => router.push('/')}>
               Dashboard
             </Menu.Item>
             <Menu.Item
