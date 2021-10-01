@@ -3,6 +3,7 @@ import { adminTabs } from '../common/constants';
 import Applicants from '../components/admin-tabs/Applicants';
 import PortalSettings from '../components/admin-tabs/PortalSettings';
 import Stats from '../components/admin-tabs/Stats';
+import { PageLayout } from '../components/Layout';
 import { useSessionOrRedirect } from '../hooks/useSessionOrRedirect';
 
 const Admin = (): ReactElement => {
@@ -10,7 +11,7 @@ const Admin = (): ReactElement => {
   const [currTab, setCurrTab] = useState(adminTabs.VIEW_STATS);
 
   return (
-    <>
+    <PageLayout currentPage="admin">
       <div>
         <button onClick={() => setCurrTab(adminTabs.VIEW_STATS)}>
           {adminTabs.VIEW_STATS}
@@ -27,7 +28,7 @@ const Admin = (): ReactElement => {
       {currTab === adminTabs.VIEW_STATS && <Stats />}
       {currTab === adminTabs.CONFIGURE_PORTAL_SETTINGS && <PortalSettings />}
       {currTab == adminTabs.VIEW_AND_MODIFY_APPLICANTS && <Applicants />}
-    </>
+    </PageLayout>
   );
 };
 export default Admin;
