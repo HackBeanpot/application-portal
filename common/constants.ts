@@ -21,6 +21,11 @@ export const EXAMPLE_EDUCATION = Education.Undergraduate;
 export const EXAMPLE_ETHNICITIES = [Ethnicity.Asian];
 export const EXAMPLE_SHIRTSIZE = ShirtSize.Small;
 export const EXAMPLE_APPLICATION_STATUS = ApplicationStatus.Declined;
+
+export const WELCOME_MESSAGE = 'Welcome to the Application Portal!';
+export const REJECTION_MESSAGE =
+  'Unfortunately, we were not able to accept your application' +
+  'for the 2022 HackBeanpot Hackathon.';
 /**
  * example json User to use for now
  */
