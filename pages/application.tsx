@@ -6,11 +6,12 @@ import LongTextQuestion from '../components/questions/LongTextQuestion';
 import CheckboxesQuestion from '../components/questions/CheckboxesQuestion';
 import DropdownQuestion from '../components/questions/DropdownQuestion';
 import { useSessionOrRedirect } from '../hooks/useSessionOrRedirect';
+import { PageLayout } from '../components/Layout';
 
 const Application = (): ReactElement => {
   useSessionOrRedirect();
   return (
-    <>
+    <PageLayout currentPage={'application'}>
       <h1>Application Page</h1>
       <div>
         {EXAMPLE_QUESTIONS.map((q) => {
@@ -26,7 +27,7 @@ const Application = (): ReactElement => {
           }
         })}
       </div>
-    </>
+    </PageLayout>
   );
 };
 export default Application;

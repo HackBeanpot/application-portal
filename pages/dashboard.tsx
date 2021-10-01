@@ -3,6 +3,7 @@ import { getApplicationStatus, getWelcome } from '../common/apiClient';
 import { APPLY_BY_DATE } from '../common/constants';
 import useSWR from 'swr';
 import { useSessionOrRedirect } from '../hooks/useSessionOrRedirect';
+import { PageLayout } from '../components/Layout';
 
 const Dashboard = (): ReactElement => {
   useSessionOrRedirect();
@@ -10,12 +11,12 @@ const Dashboard = (): ReactElement => {
   const { data: status } = useSWR('/api/v1/status', getApplicationStatus);
 
   return (
-    <>
+    <PageLayout currentPage={'home'}>
       <h1>Dashboard</h1>
       <p>{welcome?.data}</p>
       <p>{`Apply by ${APPLY_BY_DATE}`}</p>
       <p>{status?.data}</p>
-    </>
+    </PageLayout>
   );
 };
 export default Dashboard;

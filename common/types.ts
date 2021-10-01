@@ -16,6 +16,7 @@ export interface User {
   timeZone: string;
   learningGoals: string;
   responses: Array<QuestionResponse>;
+  isAdmin: boolean;
 }
 export interface PortalState {
   openDate: Date;
