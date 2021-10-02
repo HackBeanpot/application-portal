@@ -1,11 +1,9 @@
 import React from 'react';
 import { adminTabs } from '../../common/constants';
-import { getWelcome } from '../../common/apiClient';
 import useSWR from 'swr';
 import PortalSettingsRow from './PortalSettingsRow';
 
 const PortalSettings = () => {
-  const { data: welcome } = useSWR('/api/v1/welcome', getWelcome);
   const dummyData = [
     { setting: 'Open Date', value: new Date('2021-12-20').toDateString() },
     { setting: 'Close Date', value: new Date('2021-12-20').toDateString() },
@@ -13,7 +11,6 @@ const PortalSettings = () => {
       setting: 'Confirm By Date',
       value: new Date('2021-12-20').toDateString(),
     },
-    { setting: 'Welcome Message', value: welcome?.data.toString() ?? '' },
   ];
 
   return (

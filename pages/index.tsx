@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { getApplicationStatus, getWelcome } from '../common/apiClient';
+import { getApplicationStatus } from '../common/apiClient';
 import { APPLY_BY_DATE, WELCOME_MESSAGE } from '../common/constants';
 import useSWR from 'swr';
 import { useSessionOrRedirect } from '../hooks/useSessionOrRedirect';
