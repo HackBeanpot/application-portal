@@ -1,6 +1,5 @@
 import { MongoClient, Db, Collection } from 'mongodb';
-import { HBPDate, User } from '../common/types';
-import { NextApiHandler } from 'next';
+import { SingletonInfo, User } from '../common/types';
 
 const MONGODB_URI = process.env.DATABASE_URL || '';
 const MONGODB_DB = process.env.MONGODB_DB || '';
@@ -25,7 +24,7 @@ if (MONGODB_DB === '') {
 type MongoCtx = {
   client: MongoClient;
   db: Db;
-  dataCollection: Collection<User | HBPDate>;
+  dataCollection: Collection<User | SingletonInfo>;
 };
 
 type GlobalWithMongo = {

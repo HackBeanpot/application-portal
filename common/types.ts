@@ -21,6 +21,9 @@ export interface User {
 }
 export interface SingletonInfo {
   type: string;
+  open: string;
+  close: string;
+  confirm: string;
 }
 export interface PortalState {
   openDate: Date;

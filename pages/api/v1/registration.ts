@@ -2,7 +2,7 @@ import { NextApiHandler } from 'next';
 import { getSession } from 'next-auth/client';
 import { RegistrationApiRequest } from '../../../common/types';
 import { connectToDatabase } from '../../../server/mongoDB';
-import { protect } from '../../../server/protect';
+import { assumeLoggedInGetEmail, protect } from '../../../server/protect';
 import { attemptToValidateRegistrationApiRequest } from '../../../server/validators';
 import Joi from 'joi';
 
@@ -19,9 +19,9 @@ const registrationHandler: NextApiHandler = async (req, res) => {
   }
 };
 
-// non-null assertions are ok because users must have an email, and also are guaranteed to be logged in by protect
-export const assumeLoggedInGetEmail = async () =>
-  (await getSession())!.user!.email!;
+// // non-null assertions are ok because users must have an email, and also are guaranteed to be logged in by protect
+// export const assumeLoggedInGetEmail = async () =>
+//   (await getSession())!.user!.email!;
 
 const getHandler: NextApiHandler = async (req, res) => {
   const email = await assumeLoggedInGetEmail();

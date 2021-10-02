@@ -1,6 +1,7 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { isAdmin, protect } from '../../../../server/protect';
 import { connectToDatabase } from '../../../../server/mongoDB';
+import { SingletonInfo } from '../../../../common/types';
 
 const regOpenHandler: NextApiHandler = async (req, res) => {
   switch (req.method) {
@@ -16,15 +17,18 @@ const regOpenHandler: NextApiHandler = async (req, res) => {
   }
 };
 
-// TODO: abstraction 100%
+// TODO: there's probably an abstraction but types are (s)pain
 const getHandler: NextApiHandler = async (req, res) => {
   const { dataCollection } = await connectToDatabase('singleton_data');
-  const data = await dataCollection.findOne({ type: 'date' });
-  return res.status(200).json(data['open']);
+  const data = (await dataCollection.findOne({
+    type: 'date',
+  })) as SingletonInfo;
+  return res.status(200).json(data.open);
 };
 
 const postHandler: NextApiHandler = async (req, res) => {
   const adminCheck = await isAdmin();
+  console.log('gets here');
   if (!adminCheck) {
     return res.status(401).send({ message: 'this hoe wont send' });
   }
