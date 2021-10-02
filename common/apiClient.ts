@@ -25,15 +25,6 @@ export function getAllApplicants() {
   return Axios.get<Array<User>>(`/api/v1/applicants`);
 }
 
-export function getWelcome() {
-  return Axios.get<string>(`/api/v1/welcome`);
-}
-
-const welcomeMessage = '';
-export function postWelcome() {
-  Axios.post(`/api/v1/welcome`, welcomeMessage);
-}
-
 export function getApplicationStatus() {
   return Axios.get<string>(`/api/v1/status`);
 }
