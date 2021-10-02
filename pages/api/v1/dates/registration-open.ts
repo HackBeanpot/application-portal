@@ -1,5 +1,5 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
-import { protect } from '../../../../server/protect';
+import { isAdmin, protect } from '../../../../server/protect';
 import { connectToDatabase } from '../../../../server/mongoDB';
 
 const regOpenHandler: NextApiHandler = async (req, res) => {
@@ -16,6 +16,7 @@ const regOpenHandler: NextApiHandler = async (req, res) => {
   }
 };
 
+// TODO: abstraction 100%
 const getHandler: NextApiHandler = async (req, res) => {
   const { dataCollection } = await connectToDatabase('singleton_data');
   const data = await dataCollection.findOne({ type: 'date' });
@@ -23,6 +24,11 @@ const getHandler: NextApiHandler = async (req, res) => {
 };
 
 const postHandler: NextApiHandler = async (req, res) => {
+  const adminCheck = await isAdmin();
+  if (!adminCheck) {
+    return res.status(401).send({ message: 'this hoe wont send' });
+  }
+
   const newDate: string = req.body.date;
   const { dataCollection } = await connectToDatabase('singleton_data');
   await dataCollection.updateOne(
