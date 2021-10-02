@@ -1,6 +1,7 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { protect } from '../../../../server/protect';
 import { connectToDatabase } from '../../../../server/mongoDB';
+import { SingletonInfo } from '../../../../common/types';
 
 const regOpenHandler: NextApiHandler = async (req, res) => {
   switch (req.method) {
@@ -16,7 +17,9 @@ const regOpenHandler: NextApiHandler = async (req, res) => {
 
 const getHandler: NextApiHandler = async (req, res) => {
   const { dataCollection } = await connectToDatabase('singleton_data');
-  const data = await dataCollection.findOne({ type: 'date' });
+  const data = (await dataCollection.findOne({
+    type: 'date',
+  })) as SingletonInfo;
   return res.status(200).json(data['confirm']);
 };
 
