@@ -1,5 +1,5 @@
 import { NextApiHandler } from 'next';
-import { getSession } from 'next-auth/client';
+import { getSession } from 'next-auth/react';
 import { RegistrationApiRequest } from '../../../common/types';
 import { connectToDatabase } from '../../../server/mongoDB';
 import { protect } from '../../../server/protect';

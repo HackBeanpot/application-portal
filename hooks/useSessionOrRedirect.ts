@@ -1,5 +1,5 @@
 import { Session } from 'next-auth';
-import { useSession } from 'next-auth/client';
+import { useSession } from 'next-auth/react';
 import Router, { useRouter } from 'next/router';
 
 /**
