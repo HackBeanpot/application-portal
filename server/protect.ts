@@ -1,7 +1,6 @@
 import { NextApiHandler, NextApiRequest } from 'next';
-import { getSession } from 'next-auth/client';
 import { connectToDatabase } from './mongoDB';
-import { Session } from 'next-auth';
+import { getSession } from 'next-auth/react';
 
 export function protect(handler: NextApiHandler): NextApiHandler {
   return async (req, res) => {

@@ -1,14 +1,21 @@
 import NextAuth from 'next-auth';
-import Providers from 'next-auth/providers';
+import EmailProvider from 'next-auth/providers/email';
+import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
+import { connectToDatabase } from '../../../server/mongoDB';
 
 export default NextAuth({
+  theme: {
+    colorScheme: 'auto', // "auto" | "dark" | "light"
+    brandColor: '', // Hex color code
+    logo: '/public/logo.svg',
+  },
   // Configure one or more authentication providers
   providers: [
     // Providers.GitHub({
     //   clientId: process.env.GITHUB_ID,
     //   clientSecret: process.env.GITHUB_SECRET,
     // }),
-    Providers.Email({
+    EmailProvider({
       server: {
         host: process.env.EMAIL_SERVER_HOST,
         port: process.env.EMAIL_SERVER_PORT,
@@ -22,5 +29,7 @@ export default NextAuth({
     }),
   ],
   // A database is optional, but required to persist accounts in a database
-  database: process.env.DATABASE_URL,
+  adapter: MongoDBAdapter({
+    db: (await connectToDatabase()).client.db('next-auth'),
+  }),
 });
