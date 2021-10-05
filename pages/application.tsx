@@ -16,6 +16,8 @@ const Application = (): ReactElement => {
   const [checkboxAnswers, updateCheckboxAnswers] = useState<Answer[]>([]);
   const [dropdownAnswers, updateDropdownAnswer] = useState<Answer[]>([]);
   const [errors, updateErrors] = useState<Error[]>([]);
+  const [answers, updateAnswers] = useState<Answer[]>([]);
+  const [hasSubmitted, updateSubmit] = useState<boolean>(false);
 
   const addTextAnswer = (id: string, answer: string) => {
     const question = questions.find((q) => q.id === id)!;
@@ -30,8 +32,8 @@ const Application = (): ReactElement => {
       maxLength = question.maxLength;
     }
 
-    if (wordCount <= maxLength && answer.split(' ').length >= minLength) {
-      addError(id, '');
+    if (wordCount <= maxLength && wordCount >= minLength) {
+      removeError(id);
     }
 
     if (wordCount < minLength) {
@@ -39,7 +41,7 @@ const Application = (): ReactElement => {
     }
 
     if (wordCount > maxLength) {
-      addError(id, 'Required maximum word length is ' + maxLength);
+      addError(id, 'Maximum word length is ' + maxLength);
     }
 
     const exists = textAnswers.find((a) => a.id === id);
@@ -54,15 +56,36 @@ const Application = (): ReactElement => {
   };
 
   const addCheckboxAnswer = (id: string, answer: CheckboxValueType[]) => {
+    const question = questions.find((q) => q.id === id)!;
+    const selectedNumber = answer.length;
+    let minNumber = 0;
+    let maxNumber = 0;
+    if (question.type === QuestionType.Checkboxes) {
+      minNumber = question.minNumber;
+      maxNumber = question.maxNumber;
+    }
+
+    if (selectedNumber <= maxNumber && selectedNumber >= minNumber) {
+      removeError(id);
+    }
+
+    if (selectedNumber < minNumber) {
+      addError(id, 'Required minimum checkboxes selected is ' + minNumber);
+    }
+
+    if (selectedNumber > maxNumber) {
+      addError(id, 'Maximum checkboxes selected is ' + maxNumber);
+    }
+
     const exists = checkboxAnswers.find((a) => a.id === id);
+    const updatedCheckboxAnswers = checkboxAnswers.slice();
     if (exists) {
       const objIndex = checkboxAnswers.findIndex((a) => a.id === id);
-      checkboxAnswers[objIndex] = { id, answer };
+      updatedCheckboxAnswers[objIndex] = { id, answer };
     } else {
-      checkboxAnswers.push({ id, answer });
+      updatedCheckboxAnswers.push({ id, answer });
     }
-    updateCheckboxAnswers(checkboxAnswers);
-    console.log(checkboxAnswers);
+    updateCheckboxAnswers(updatedCheckboxAnswers);
   };
 
   const addDropdownAnswer = (id: string, answer: string) => {
@@ -74,29 +97,62 @@ const Application = (): ReactElement => {
       dropdownAnswers.push({ id, answer });
     }
     updateDropdownAnswer(dropdownAnswers);
-    console.log(dropdownAnswers);
   };
 
   const addError = (id: string, error: string) => {
     const exists = errors.find((e) => e.id === id);
+    const updatedErrors = errors.slice();
     if (exists) {
-      const objIndex = errors.findIndex((e) => e.id === id);
-      errors[objIndex] = { id, error };
+      const objIndex = updatedErrors.findIndex((e) => e.id === id);
+      updatedErrors[objIndex] = { id, error };
     } else {
-      errors.push({ id, error });
+      updatedErrors.push({ id, error });
     }
-    updateErrors(errors);
+    updateErrors(updatedErrors);
+  };
+
+  const removeError = (id: string) => {
+    const exists = errors.find((e) => e.id === id);
+    const updatedErrors = errors.slice();
+    if (exists) {
+      const objIndex = updatedErrors.findIndex((e) => e.id === id);
+      updatedErrors.splice(objIndex, 1);
+    }
+    updateErrors(updatedErrors);
   };
 
   const findError = (id: string) => {
     const exists = errors.find((e) => e.id === id);
-    console.log(errors);
     if (exists) {
-      console.log(errors.find((e) => e.id === id)!.error);
       return errors.find((e) => e.id === id)!.error;
     } else {
-      return 'does not have error';
+      return '';
     }
+  };
+
+  const validate = () => {
+    const updatedAnswers = textAnswers.concat(checkboxAnswers, dropdownAnswers);
+    updateAnswers(updatedAnswers);
+
+    for (let i = 0; i < questions.length; i++) {
+      const isRequired = questions[i].required;
+      const currId = questions[i].id;
+
+      if (isRequired) {
+        const exists = answers.find((e) => e.id === currId);
+        // add error if question is required
+        if (exists) {
+          // remove error if previous error was that the question is required
+          removeError(currId);
+        } else {
+          addError(currId, 'This question is required');
+        }
+      }
+    }
+    updateSubmit(errors.length > 0);
+    console.log('answers', answers);
+    console.log('errors', errors);
+    console.log('questions', questions);
   };
 
   return (
@@ -120,6 +176,7 @@ const Application = (): ReactElement => {
                   key={q.id}
                   question={q}
                   addTextAnswer={addTextAnswer}
+                  errorMessage={findError(q.id)}
                 />
               );
             case QuestionType.Checkboxes:
@@ -128,6 +185,7 @@ const Application = (): ReactElement => {
                   key={q.id}
                   question={q}
                   addCheckboxAnswer={addCheckboxAnswer}
+                  errorMessage={findError(q.id)}
                 />
               );
             case QuestionType.Dropdown:
@@ -136,12 +194,14 @@ const Application = (): ReactElement => {
                   key={q.id}
                   question={q}
                   addDropdownAnswer={addDropdownAnswer}
+                  errorMessage={findError(q.id)}
                 />
               );
           }
         })}
       </div>
-      <button onClick={() => console.log(textAnswers)}>Submit</button>
+      <button onClick={validate}>Submit</button>
+      {hasSubmitted && <div>Please fix errors before submitting.</div>}
     </>
   );
 };

@@ -6,14 +6,14 @@ import { DownOutlined, UserOutlined } from '@ant-design/icons';
 type DropdownProps = {
   question: DropdownType;
   addDropdownAnswer: (id: string, addDropdownAnswer: string) => void;
+  errorMessage: string;
 };
 const DropdownQuestion: FC<DropdownProps> = ({
   question,
   addDropdownAnswer,
+  errorMessage,
 }) => {
-  const [selectedOption, updateSelectedOption] = useState(
-    question.options[0].name
-  );
+  const [selectedOption, updateSelectedOption] = useState('select');
   const menu = (
     <Menu
       selectable
@@ -42,6 +42,7 @@ const DropdownQuestion: FC<DropdownProps> = ({
       ))} */}
         </Button>
       </Dropdown>
+      <div>{errorMessage}</div>
     </>
   );
 };

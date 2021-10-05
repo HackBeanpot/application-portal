@@ -3,8 +3,13 @@ import { LongText } from '../../common/types';
 type LongTextProps = {
   question: LongText;
   addTextAnswer: (id: string, answer: string) => void;
+  errorMessage: string;
 };
-const LongTextQuestion: FC<LongTextProps> = ({ question, addTextAnswer }) => {
+const LongTextQuestion: FC<LongTextProps> = ({
+  question,
+  addTextAnswer,
+  errorMessage,
+}) => {
   return (
     <div>
       <h2>{question.content}</h2>
@@ -14,6 +19,7 @@ const LongTextQuestion: FC<LongTextProps> = ({ question, addTextAnswer }) => {
       max-length = {question.maxLength}
       <br />
       <textarea onChange={(e) => addTextAnswer(question.id, e.target.value)} />
+      <div>{errorMessage}</div>
     </div>
   );
 };

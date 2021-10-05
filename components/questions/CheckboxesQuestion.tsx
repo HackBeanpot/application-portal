@@ -9,10 +9,12 @@ type CheckboxesProps = {
     id: string,
     addCheckboxAnswer: CheckboxValueType[]
   ) => void;
+  errorMessage: string;
 };
 const CheckboxesQuestion: FC<CheckboxesProps> = ({
   question,
   addCheckboxAnswer,
+  errorMessage,
 }) => {
   const options: string[] = [];
   question.options.map((o) => options.push(o.name));
@@ -28,6 +30,7 @@ const CheckboxesQuestion: FC<CheckboxesProps> = ({
       min number = {question.minNumber}
       <br />
       max number = {question.maxNumber}
+      <div>{errorMessage}</div>
     </>
   );
 };

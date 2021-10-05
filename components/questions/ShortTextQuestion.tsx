@@ -20,7 +20,7 @@ const ShortTextQuestion: FC<ShortTextProps> = ({
       max-length = {question.maxLength}
       <br />
       <textarea onChange={(e) => addTextAnswer(question.id, e.target.value)} />
-      {errorMessage}
+      <div>{errorMessage}</div>
     </div>
   );
 };
