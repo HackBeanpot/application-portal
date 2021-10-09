@@ -35,13 +35,14 @@ const postHandler: NextApiHandler = async (req, res) => {
   }
 
   // Update in DB here
+  // this email line is not tested - but works with my email
   const email = await assumeLoggedInGetEmail();
   const { applicantDataCollection } = await connectToDatabase();
 
   await applicantDataCollection.updateOne(
     { email },
     {
-      rsvpStatus: userStatus['rsvpStatus'],
+      $set: { rsvpStatus: userStatus['rsvpStatus'] },
     },
     { upsert: true }
   );
