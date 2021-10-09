@@ -23,7 +23,6 @@ const statusHandler: NextApiHandler = async (req, res) => {
 
 const postHandler: NextApiHandler = async (req, res) => {
   const userStatus = req.body;
-  console.log('gets here');
 
   // Check that req status is one of enum type
   if (!Object.values(RSVPStatus).includes(userStatus['rsvpStatus'])) {
@@ -43,7 +42,6 @@ const postHandler: NextApiHandler = async (req, res) => {
     { email },
     {
       rsvpStatus: userStatus['rsvpStatus'],
-      email,
     },
     { upsert: true }
   );

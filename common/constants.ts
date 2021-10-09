@@ -1,17 +1,18 @@
 import {
-  User,
-  Gender,
+  ApplicationStatus,
+  Checkboxes,
+  Dropdown,
   Education,
   Ethnicity,
-  ShirtSize,
-  ApplicationStatus,
-  RegistrationApiRequest,
-  QuestionDefinition,
-  Checkboxes,
-  ShortText,
-  Dropdown,
+  Gender,
   LongText,
+  QuestionDefinition,
   QuestionType,
+  RegistrationApiRequest,
+  RSVPStatus,
+  ShirtSize,
+  ShortText,
+  User,
 } from './types';
 
 export const APPLY_BY_DATE = '12/20/2021';
@@ -50,6 +51,7 @@ export const EXAMPLE_USER: User = {
   learningGoals: 'cs',
   responses: [],
   isAdmin: true,
+  rsvpStatus: RSVPStatus.InPerson,
 };
 export const EXAMPLE_RESPONSE: RegistrationApiRequest = {
   responses: ['Judy Su', EXAMPLE_ETHNICITIES],
