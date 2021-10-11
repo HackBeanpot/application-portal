@@ -17,7 +17,8 @@ const Application = (): ReactElement => {
   const [dropdownAnswers, updateDropdownAnswer] = useState<Answer[]>([]);
   const [errors, updateErrors] = useState<Error[]>([]);
   const [answers, updateAnswers] = useState<Answer[]>([]);
-  const [hasSubmitted, updateSubmit] = useState<boolean>(false);
+  const [hasSubmittedAndErrors, updateSubmitAndErrors] =
+    useState<boolean>(false);
 
   const addTextAnswer = (id: string, answer: string) => {
     const question = questions.find((q) => q.id === id)!;
@@ -90,20 +91,22 @@ const Application = (): ReactElement => {
 
   const addDropdownAnswer = (id: string, answer: string) => {
     const exists = dropdownAnswers.find((a) => a.id === id);
+    const updatedDropdownAnswers = dropdownAnswers.slice();
     if (exists) {
       const objIndex = dropdownAnswers.findIndex((a) => a.id === id);
-      dropdownAnswers[objIndex] = { id, answer };
+      updatedDropdownAnswers[objIndex] = { id, answer };
     } else {
-      dropdownAnswers.push({ id, answer });
+      updatedDropdownAnswers.push({ id, answer });
     }
-    updateDropdownAnswer(dropdownAnswers);
+    // add a remove error
+    updateDropdownAnswer(updatedDropdownAnswers);
   };
 
   const addError = (id: string, error: string) => {
     const exists = errors.find((e) => e.id === id);
     const updatedErrors = errors.slice();
     if (exists) {
-      const objIndex = updatedErrors.findIndex((e) => e.id === id);
+      const objIndex = errors.findIndex((e) => e.id === id);
       updatedErrors[objIndex] = { id, error };
     } else {
       updatedErrors.push({ id, error });
@@ -138,18 +141,25 @@ const Application = (): ReactElement => {
       const isRequired = questions[i].required;
       const currId = questions[i].id;
 
+      debugger;
       if (isRequired) {
-        const exists = answers.find((e) => e.id === currId);
-        // add error if question is required
-        if (exists) {
+        const exists = updatedAnswers.find((e) => e.id === currId);
+        const isErrorRequiredError = errors.find(
+          (e) => e.error === 'This question is required' && e.id == currId
+        );
+        if (exists && isErrorRequiredError) {
           // remove error if previous error was that the question is required
+          console.log('got here ' + currId);
           removeError(currId);
         } else {
-          addError(currId, 'This question is required');
+          // add error if no answer exists
+          if (!exists) {
+            addError(currId, 'This question is required');
+          }
         }
       }
     }
-    updateSubmit(errors.length > 0);
+    updateSubmitAndErrors(errors.length > 0);
     console.log('answers', answers);
     console.log('errors', errors);
     console.log('questions', questions);
@@ -201,7 +211,7 @@ const Application = (): ReactElement => {
         })}
       </div>
       <button onClick={validate}>Submit</button>
-      {hasSubmitted && <div>Please fix errors before submitting.</div>}
+      {hasSubmittedAndErrors && <div>Please fix errors before submitting.</div>}
     </>
   );
 };
