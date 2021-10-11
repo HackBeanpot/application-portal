@@ -144,7 +144,6 @@ const Application = (): ReactElement => {
       const isRequired = questions[i].required;
       const currId = questions[i].id;
 
-      debugger;
       if (isRequired) {
         const exists = updatedAnswers.find((e) => e.id === currId);
         const isErrorRequiredError = errors.find(
