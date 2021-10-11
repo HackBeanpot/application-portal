@@ -22,7 +22,7 @@ const Application = (): ReactElement => {
 
   const addTextAnswer = (id: string, answer: string) => {
     const question = questions.find((q) => q.id === id)!;
-    const wordCount = answer.split(' ').length;
+    const charcterLength = answer.length;
     let minLength = 0;
     let maxLength = 0;
     if (
@@ -33,16 +33,19 @@ const Application = (): ReactElement => {
       maxLength = question.maxLength;
     }
 
-    if (wordCount <= maxLength && wordCount >= minLength) {
+    if (charcterLength <= maxLength && charcterLength >= minLength) {
       removeError(id);
     }
 
-    if (wordCount < minLength) {
-      addError(id, 'Required minimum word length is ' + minLength);
+    if (charcterLength < minLength) {
+      addError(
+        id,
+        'Required minimum response length is ' + minLength + ' characters.'
+      );
     }
 
-    if (wordCount > maxLength) {
-      addError(id, 'Maximum word length is ' + maxLength);
+    if (charcterLength > maxLength) {
+      addError(id, 'Maximum response length is ' + maxLength + ' characters.');
     }
 
     const exists = textAnswers.find((a) => a.id === id);
