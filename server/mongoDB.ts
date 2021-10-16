@@ -43,7 +43,7 @@ export async function connectToDatabase(): Promise<MongoCtx> {
   // we know because of L36 that this is defined
   const cached = g.mongo!;
 
-  // if cached is to correct collection, use it
+  // if cached connection exists, use it
   if (cached.conn) {
     return cached.conn;
   }
