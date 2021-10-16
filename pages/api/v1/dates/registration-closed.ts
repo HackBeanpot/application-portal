@@ -2,7 +2,7 @@ import { NextApiHandler } from 'next';
 import { protect } from '../../../../server/protect';
 import { getDate, postDate } from '../../../../server/dates';
 
-const regOpenHandler: NextApiHandler = async (req, res) => {
+const regClosedHandler: NextApiHandler = async (req, res) => {
   switch (req.method) {
     case 'GET':
       await getDate(req, res, 'registration-closed');
@@ -15,4 +15,4 @@ const regOpenHandler: NextApiHandler = async (req, res) => {
   }
 };
 
-export default protect(regOpenHandler);
+export default protect(regClosedHandler);
