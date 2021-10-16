@@ -32,4 +32,18 @@ export default NextAuth({
   adapter: MongoDBAdapter({
     db: (await connectToDatabase()).client.db('next-auth'),
   }),
+  // callback so that we can add a user to the database
+  callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {
+      const isAllowedToSignIn = true;
+      if (isAllowedToSignIn) {
+        return true;
+      } else {
+        // return false to display a default error message
+        return false;
+        // or we can return a URL to redirect to:
+        // return /unauthorized
+      }
+    },
+  },
 });
