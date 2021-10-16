@@ -17,6 +17,7 @@ export interface User {
   learningGoals: string;
   responses: Array<QuestionResponse>;
   isAdmin: boolean;
+  rsvpStatus: RSVPStatus;
 }
 export interface PortalState {
   openDate: Date;
@@ -65,6 +66,11 @@ export enum ApplicationStatus {
   Waitlisted = 'Waitlisted',
   Confirmed = 'Confirmed',
   Declined = 'Declined',
+}
+export enum RSVPStatus {
+  InPerson = 'In Person',
+  Virtual = 'Virtual',
+  NotAttending = 'Not Attending',
 }
 export enum QuestionType {
   Checkboxes = 'Checkboxes',

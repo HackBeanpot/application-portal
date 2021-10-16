@@ -1,20 +1,22 @@
 import {
-  User,
-  Gender,
+  ApplicationStatus,
+  Checkboxes,
+  Dropdown,
   Education,
   Ethnicity,
-  ShirtSize,
-  ApplicationStatus,
-  RegistrationApiRequest,
-  QuestionDefinition,
-  Checkboxes,
-  ShortText,
-  Dropdown,
+  Gender,
   LongText,
+  QuestionDefinition,
   QuestionType,
+  RegistrationApiRequest,
+  RSVPStatus,
+  ShirtSize,
+  ShortText,
+  User,
 } from './types';
 
 export const APPLY_BY_DATE = '12/20/2021';
+export const RESPONSE_BY_DATE = new Date('02/01/2022'); // TODO: MAKE SINGLETON IN DB
 
 export const EXAMPLE_GENDER = Gender.Female;
 export const EXAMPLE_EDUCATION = Education.Undergraduate;
@@ -49,6 +51,7 @@ export const EXAMPLE_USER: User = {
   learningGoals: 'cs',
   responses: [],
   isAdmin: true,
+  rsvpStatus: RSVPStatus.InPerson,
 };
 export const EXAMPLE_RESPONSE: RegistrationApiRequest = {
   responses: ['Judy Su', EXAMPLE_ETHNICITIES],
