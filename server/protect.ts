@@ -24,6 +24,5 @@ export async function isAdmin(): Promise<boolean> {
   const email = assumeLoggedInGetEmail();
   const { dataCollection } = await connectToDatabase('applicant_data');
   const data = (await dataCollection.findOne({ email })) as User;
-
   return data.isAdmin;
 }

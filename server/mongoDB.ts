@@ -44,23 +44,23 @@ export async function connectToDatabase(
   // we know because of L36 that this is defined
   const cached = g.mongo!;
 
-  // if there already is a connection, then use it
-  if (cached.conn) {
+  // if cached is to correct collection, use it
+  if (
+    cached.conn &&
+    collectionName === cached.conn.dataCollection.collectionName
+  ) {
     return cached.conn;
   }
 
   // instantiate to a promise resolved with the context
-  // do this immediately, and only do this once
-  if (!cached.promise) {
-    cached.promise = MongoClient.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }).then((client) => {
-      const db = client.db(MONGODB_DB);
-      const dataCollection = db.collection(collectionName);
-      return { client, db, dataCollection };
-    });
-  }
+  cached.promise = MongoClient.connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }).then((client) => {
+    const db = client.db(MONGODB_DB);
+    const dataCollection = db.collection(collectionName);
+    return { client, db, dataCollection };
+  });
 
   // after connection is resolved, set the connection & return
   // this might happen multiple times, but that's ok

@@ -28,9 +28,8 @@ const getHandler: NextApiHandler = async (req, res) => {
 
 const postHandler: NextApiHandler = async (req, res) => {
   const adminCheck = await isAdmin();
-  console.log('gets here');
   if (!adminCheck) {
-    return res.status(401).send({ message: 'this hoe wont send' });
+    return res.status(401).send({ message: 'User is not an admin' });
   }
 
   const newDate: string = req.body.date;

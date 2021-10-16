@@ -1,5 +1,4 @@
 import { NextApiHandler } from 'next';
-import { getSession } from 'next-auth/client';
 import { RegistrationApiRequest } from '../../../common/types';
 import { connectToDatabase } from '../../../server/mongoDB';
 import { assumeLoggedInGetEmail, protect } from '../../../server/protect';
@@ -18,10 +17,6 @@ const registrationHandler: NextApiHandler = async (req, res) => {
       return res.status(405).setHeader('Allow', 'GET, POST').send(undefined);
   }
 };
-
-// // non-null assertions are ok because users must have an email, and also are guaranteed to be logged in by protect
-// export const assumeLoggedInGetEmail = async () =>
-//   (await getSession())!.user!.email!;
 
 const getHandler: NextApiHandler = async (req, res) => {
   const email = await assumeLoggedInGetEmail();
