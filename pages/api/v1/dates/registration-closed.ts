@@ -1,39 +1,18 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
+import { NextApiHandler } from 'next';
 import { protect } from '../../../../server/protect';
-import { connectToDatabase } from '../../../../server/mongoDB';
-import { SingletonInfo } from '../../../../common/types';
+import { getDate, postDate } from '../../../../server/dates';
 
 const regOpenHandler: NextApiHandler = async (req, res) => {
   switch (req.method) {
     case 'GET':
-      // stringify bc for some reason, next was removing the quotes in the response
-      await getHandler(req, res);
+      await getDate(req, res, 'registration-closed');
+      break;
     case 'POST':
-      await postHandler(req, res);
+      await postDate(req, res, 'registration-closed');
+      break;
     default:
       return res.status(405).setHeader('Allow', 'GET, POST').send(undefined);
   }
-};
-
-const getHandler: NextApiHandler = async (req, res) => {
-  const { dataCollection } = await connectToDatabase('singleton_data');
-  const data = (await dataCollection.findOne({
-    type: 'date',
-  })) as SingletonInfo;
-  return res.status(200).json(data['close']);
-};
-
-const postHandler: NextApiHandler = async (req, res) => {
-  const newDate: string = req.body.date;
-  const { dataCollection } = await connectToDatabase('singleton_data');
-  await dataCollection.updateOne(
-    { type: 'date' },
-    {
-      $set: { close: newDate },
-    },
-    { upsert: true }
-  );
-  return res.status(200).send(undefined);
 };
 
 export default protect(regOpenHandler);

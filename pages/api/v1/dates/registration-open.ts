@@ -1,5 +1,6 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
+import { NextApiHandler } from 'next';
 import { getDate, postDate } from '../../../../server/dates';
+import { protect } from '../../../../server/protect';
 
 const regOpenHandler: NextApiHandler = async (req, res) => {
   switch (req.method) {
@@ -14,5 +15,4 @@ const regOpenHandler: NextApiHandler = async (req, res) => {
   }
 };
 
-// export default protect(regOpenHandler);
-export default regOpenHandler;
+export default protect(regOpenHandler);
