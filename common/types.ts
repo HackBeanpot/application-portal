@@ -19,12 +19,21 @@ export interface User {
   isAdmin: boolean;
   rsvpStatus: RSVPStatus;
 }
-export interface SingletonInfo {
-  type: string;
-  open: string;
-  close: string;
-  confirm: string;
+export type SingletonDefinition = DateSingleton;
+
+export enum SingletonType {
+  Date = 'Date',
 }
+
+interface ISingleton {
+  name: string;
+  value: string;
+}
+
+export interface DateSingleton extends ISingleton {
+  type: SingletonType.Date;
+}
+
 export interface PortalState {
   openDate: Date;
   closeDate: Date;

@@ -1,5 +1,5 @@
 import { MongoClient, Db, Collection } from 'mongodb';
-import { SingletonInfo, User } from '../common/types';
+import { SingletonDefinition, User } from '../common/types';
 
 const MONGODB_URI = process.env.DATABASE_URL || '';
 const MONGODB_DB = process.env.MONGODB_DB || '';
@@ -24,7 +24,8 @@ if (MONGODB_DB === '') {
 type MongoCtx = {
   client: MongoClient;
   db: Db;
-  dataCollection: Collection<User | SingletonInfo>;
+  userDataCollection: Collection<User>;
+  singletonDataCollection: Collection<SingletonDefinition>;
 };
 
 type GlobalWithMongo = {
@@ -38,29 +39,27 @@ if (!g.mongo) {
   g.mongo = {};
 }
 
-export async function connectToDatabase(
-  collectionName: string
-): Promise<MongoCtx> {
+export async function connectToDatabase(): Promise<MongoCtx> {
   // we know because of L36 that this is defined
   const cached = g.mongo!;
 
   // if cached is to correct collection, use it
-  if (
-    cached.conn &&
-    collectionName === cached.conn.dataCollection.collectionName
-  ) {
+  if (cached.conn) {
     return cached.conn;
   }
 
   // instantiate to a promise resolved with the context
-  cached.promise = MongoClient.connect(MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }).then((client) => {
-    const db = client.db(MONGODB_DB);
-    const dataCollection = db.collection(collectionName);
-    return { client, db, dataCollection };
-  });
+  if (!cached.promise) {
+    cached.promise = MongoClient.connect(MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }).then((client) => {
+      const db = client.db(MONGODB_DB);
+      const userDataCollection = db.collection('applicant_data');
+      const singletonDataCollection = db.collection('singleton_data');
+      return { client, db, userDataCollection, singletonDataCollection };
+    });
+  }
 
   // after connection is resolved, set the connection & return
   // this might happen multiple times, but that's ok
