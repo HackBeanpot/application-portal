@@ -2,8 +2,6 @@ import {
   convertCheckboxesToJoiSchema,
   convertDropdownToJoiSchema,
   convertLongTextToJoiSchema,
-  convertQuestionDefinitionToJoiSchema,
-  convertShortTextToJoiSchema,
   makeQuestionResponseSchemas,
 } from '../server/validators';
 import {
