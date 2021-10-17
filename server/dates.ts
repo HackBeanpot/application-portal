@@ -1,24 +1,24 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from 'next';
 import { connectToDatabase } from './mongoDB';
-import { SingletonDefinition } from '../common/types';
+import { DateSingleton } from '../common/types';
 import { isAdmin } from './protect';
 
 export const getDate = async (
   req: NextApiRequest,
   res: NextApiResponse,
-  dateName: string
+  dateName: DateSingleton['type']
 ) => {
   const { singletonDataCollection } = await connectToDatabase();
-  const data = (await singletonDataCollection.findOne({
-    name: dateName,
-  })) as SingletonDefinition;
-  return res.status(200).json(data.value);
+  const data = await singletonDataCollection.findOne({
+    type: dateName,
+  });
+  return res.status(200).json(data?.value);
 };
 
 export const postDate = async (
   req: NextApiRequest,
   res: NextApiResponse,
-  dateName: string
+  dateName: DateSingleton['type']
 ) => {
   const adminCheck = await isAdmin();
   if (!adminCheck) {
@@ -28,7 +28,7 @@ export const postDate = async (
   const newDate: string = req.body.date;
   const { singletonDataCollection } = await connectToDatabase();
   await singletonDataCollection.updateOne(
-    { name: dateName },
+    { type: dateName },
     {
       $set: { value: newDate },
     },

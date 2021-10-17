@@ -1,7 +1,6 @@
 import { NextApiHandler } from 'next';
 import { getSession } from 'next-auth/client';
 import { connectToDatabase } from './mongoDB';
-import { User } from '../common/types';
 
 export function protect(handler: NextApiHandler): NextApiHandler {
   return async (req, res) => {
@@ -21,6 +20,6 @@ export const assumeLoggedInGetEmail = async () =>
 export async function isAdmin(): Promise<boolean> {
   const email = await assumeLoggedInGetEmail();
   const { userDataCollection } = await connectToDatabase();
-  const data = (await userDataCollection.findOne({ email })) as User;
-  return data.isAdmin;
+  const data = await userDataCollection.findOne({ email });
+  return data != undefined ? data.isAdmin : false;
 }

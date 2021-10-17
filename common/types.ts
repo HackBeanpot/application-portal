@@ -22,16 +22,17 @@ export interface User {
 export type SingletonDefinition = DateSingleton;
 
 export enum SingletonType {
-  Date = 'Date',
+  RegistrationOpen = 'registration-open',
+  RegistrationClosed = 'registration-closed',
+  ConfirmBy = 'confirm-by',
 }
 
-interface ISingleton {
-  name: string;
+export interface DateSingleton {
   value: string;
-}
-
-export interface DateSingleton extends ISingleton {
-  type: SingletonType.Date;
+  type:
+    | SingletonType.RegistrationClosed
+    | SingletonType.RegistrationOpen
+    | SingletonType.ConfirmBy;
 }
 
 export interface PortalState {
