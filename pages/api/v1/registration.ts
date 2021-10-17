@@ -19,7 +19,7 @@ const registrationHandler: NextApiHandler = async (req, res) => {
 };
 
 const getHandler: NextApiHandler = async (req, res) => {
-  const email = await assumeLoggedInGetEmail();
+  const email = await assumeLoggedInGetEmail(req);
   const { userDataCollection } = await connectToDatabase();
   const data = await userDataCollection.findOne({ email });
   return res.status(200).json(data);
@@ -38,7 +38,7 @@ const postHandler: NextApiHandler = async (req, res) => {
       .json('something broke. please email us immediately.');
   }
 
-  const email = await assumeLoggedInGetEmail();
+  const email = await assumeLoggedInGetEmail(req);
   const { userDataCollection } = await connectToDatabase();
   // upsert = update, or if object doesn't exist, insert
   await userDataCollection.updateOne(
