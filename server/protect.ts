@@ -21,5 +21,5 @@ export async function isAdmin(): Promise<boolean> {
   const email = await assumeLoggedInGetEmail();
   const { userDataCollection } = await connectToDatabase();
   const data = await userDataCollection.findOne({ email });
-  return data != undefined ? data.isAdmin : false;
+  return Boolean(data?.isAdmin);
 }
