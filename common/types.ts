@@ -19,6 +19,22 @@ export interface User {
   isAdmin: boolean;
   rsvpStatus: RSVPStatus;
 }
+export type SingletonDefinition = DateSingleton;
+
+export enum SingletonType {
+  RegistrationOpen = 'registration-open',
+  RegistrationClosed = 'registration-closed',
+  ConfirmBy = 'confirm-by',
+}
+
+export interface DateSingleton {
+  value: string;
+  type:
+    | SingletonType.RegistrationClosed
+    | SingletonType.RegistrationOpen
+    | SingletonType.ConfirmBy;
+}
+
 export interface PortalState {
   openDate: Date;
   closeDate: Date;

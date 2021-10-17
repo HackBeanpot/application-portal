@@ -3,10 +3,9 @@ import {
   EXAMPLE_APPLICATION_STATUS,
   RESPONSE_BY_DATE,
 } from '../../../common/constants';
-import { protect } from '../../../server/protect';
+import { protect, assumeLoggedInGetEmail } from '../../../server/protect';
 import { RSVPStatus } from '../../../common/types';
 import { connectToDatabase } from '../../../server/mongoDB';
-import { assumeLoggedInGetEmail } from './registration';
 
 const statusHandler: NextApiHandler = async (req, res) => {
   switch (req.method) {
@@ -36,9 +35,9 @@ const postHandler: NextApiHandler = async (req, res) => {
 
   // Update in DB here
   const email = await assumeLoggedInGetEmail();
-  const { applicantDataCollection } = await connectToDatabase();
+  const { userDataCollection } = await connectToDatabase();
 
-  await applicantDataCollection.updateOne(
+  await userDataCollection.updateOne(
     { email },
     {
       $set: { rsvpStatus: userStatus['rsvpStatus'] },
