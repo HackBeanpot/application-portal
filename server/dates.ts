@@ -20,7 +20,7 @@ export const postDate = async (
   res: NextApiResponse,
   dateName: DateSingleton['type']
 ) => {
-  const adminCheck = await isAdmin();
+  const adminCheck = await isAdmin(req);
   if (!adminCheck) {
     return res.status(401).send({ message: 'User is not an admin' });
   }

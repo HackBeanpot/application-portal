@@ -72,21 +72,17 @@ export enum ShirtSize {
   XLarge = 'XLarge',
 }
 export enum ApplicationStatus {
-  Unverified = 'Unverified',
-  IncompleteRegistrationOpen = 'Incomplete / RegistrationOpen',
-  IncompleteRegistrationClosed = 'Incomplete / RegistrationClosed',
-  SubmittedRegistrationOpen = 'Submitted / RegistrationOpen',
-  SubmittedRegistrationClosed = 'Submitted / RegistrationClosed',
-  AdmittedUnconfirmed = 'Admitted / Unconfirmed',
-  AdmittedConfirmedDeadlinePassed = 'Admitted / Confirmed Deadline Passed',
+  Incomplete = 'Incomplete',
+  Submitted = 'Submitted',
+  Admitted = 'Admitted',
   Waitlisted = 'Waitlisted',
-  Confirmed = 'Confirmed',
   Declined = 'Declined',
 }
 export enum RSVPStatus {
   InPerson = 'In Person',
   Virtual = 'Virtual',
   NotAttending = 'Not Attending',
+  Unconfirmed = 'Unconfirmed',
 }
 export enum QuestionType {
   Checkboxes = 'Checkboxes',
@@ -137,4 +133,9 @@ export type QuestionIdToResponseMap = Record<QuestionId, QuestionResponse>;
  */
 export type RegistrationApiRequest = {
   responses: Array<QuestionResponse>;
+};
+
+export type StatusApiResponse = {
+  applicationStatus: ApplicationStatus;
+  rsvpStatus: RSVPStatus;
 };

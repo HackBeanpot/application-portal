@@ -1,5 +1,5 @@
-import { User } from './types';
-import Axios from 'axios';
+import { StatusApiResponse, User } from './types';
+import Axios, { AxiosResponse } from 'axios';
 
 export function getAdminById(id: number) {
   return Axios.get<User>(`/api/v1/admin/${id}`);
@@ -25,6 +25,6 @@ export function getAllApplicants() {
   return Axios.get<Array<User>>(`/api/v1/applicants`);
 }
 
-export function getApplicationStatus() {
-  return Axios.get<string>(`/api/v1/status`);
+export function getStatus(): Promise<AxiosResponse<StatusApiResponse>> {
+  return Axios.get(`/api/v1/status`);
 }
