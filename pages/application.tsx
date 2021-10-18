@@ -17,8 +17,7 @@ const Application = (): ReactElement => {
   const [dropdownAnswers, updateDropdownAnswer] = useState<Answer[]>([]);
   const [errors, updateErrors] = useState<Error[]>([]);
   const [answers, updateAnswers] = useState<Answer[]>([]);
-  const [hasSubmittedAndErrors, updateSubmitAndErrors] =
-    useState<boolean>(false);
+  const [isErrorsOnSubmit, updateErrorsOnSubmit] = useState<boolean>(false);
 
   const addTextAnswer = (id: string, answer: string) => {
     const question = questions.find((q) => q.id === id)!;
@@ -145,24 +144,24 @@ const Application = (): ReactElement => {
       const currId = questions[i].id;
       debugger;
       if (isRequired) {
-        const exists = updatedAnswers.find((a) => a.id === currId);
-        const isErrorRequiredError = errors.find(
+        const answerExists = updatedAnswers.find((a) => a.id === currId);
+        const requiredErrorExists = errors.find(
           (e) => e.error === 'This question is required' && e.id == currId
         );
-        const isPreviousError = errors.find((e) => e.id == currId);
-        if (exists && isErrorRequiredError) {
+        const previousErrorExists = errors.find((e) => e.id == currId);
+        if (answerExists && requiredErrorExists) {
           // remove error if previous error was that the question is required
           console.log('got here ' + currId);
           removeError(currId);
         } else {
-          // add error if no answer exists and there is no previous error
-          if (!exists && !isPreviousError) {
+          // add error if no answerExists and there is no previous error
+          if (!answerExists && !previousErrorExists) {
             addError(currId, 'This question is required');
           }
         }
       }
     }
-    updateSubmitAndErrors(errors.length > 0);
+    updateErrorsOnSubmit(errors.length > 0); // errors has changed since calling this function, how do we access this
     console.log('answers', answers);
     console.log('errors', errors);
     console.log('questions', questions);
@@ -214,7 +213,7 @@ const Application = (): ReactElement => {
         })}
       </div>
       <button onClick={validate}>Submit</button>
-      {hasSubmittedAndErrors && <div>Please fix errors before submitting.</div>}
+      {isErrorsOnSubmit && <div>Please fix errors before submitting.</div>}
     </>
   );
 };
