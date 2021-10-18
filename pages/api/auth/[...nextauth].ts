@@ -2,6 +2,7 @@ import NextAuth from 'next-auth';
 import EmailProvider from 'next-auth/providers/email';
 import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
 import { connectToDatabase } from '../../../server/mongoDB';
+import { ApplicationStatus, RSVPStatus } from '../../../common/types';
 
 export default NextAuth({
   theme: {
@@ -30,13 +31,21 @@ export default NextAuth({
   ],
   // A database is optional, but required to persist accounts in a database
   adapter: MongoDBAdapter({
-    db: (await connectToDatabase()).client.db('next-auth'),
+    db: connectToDatabase().then((ctx) => ctx.client.db('next-auth')),
   }),
   // callback so that we can add a user to the database
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
+    async signIn({ user }) {
+      // can implement banned users if needed
       const isAllowedToSignIn = true;
+      const { userDataCollection } = await connectToDatabase();
       if (isAllowedToSignIn) {
+        userDataCollection.insertOne({
+          email: user.email!,
+          applicationStatus: ApplicationStatus.IncompleteRegistrationOpen,
+          isAdmin: false,
+          rsvpStatus: RSVPStatus.InPerson,
+        });
         return true;
       } else {
         // return false to display a default error message

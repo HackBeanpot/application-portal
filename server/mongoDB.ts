@@ -50,13 +50,11 @@ export async function connectToDatabase(): Promise<MongoCtx> {
 
   // instantiate to a promise resolved with the context
   if (!cached.promise) {
-    cached.promise = MongoClient.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }).then((client) => {
+    cached.promise = new MongoClient(MONGODB_URI).connect().then((client) => {
       const db = client.db(MONGODB_DB);
-      const userDataCollection = db.collection('applicant_data');
-      const singletonDataCollection = db.collection('singleton_data');
+      const userDataCollection = db.collection<User>('applicant_data');
+      const singletonDataCollection =
+        db.collection<SingletonDefinition>('singleton_data');
       return { client, db, userDataCollection, singletonDataCollection };
     });
   }
