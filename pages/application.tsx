@@ -138,33 +138,34 @@ const Application = (): ReactElement => {
   const validate = () => {
     const updatedAnswers = textAnswers.concat(checkboxAnswers, dropdownAnswers);
     updateAnswers(updatedAnswers);
+    const updatedErrors = errors.slice();
 
     for (let i = 0; i < questions.length; i++) {
       const isRequired = questions[i].required;
       const currId = questions[i].id;
-      debugger;
       if (isRequired) {
         const answerExists = updatedAnswers.find((a) => a.id === currId);
         const requiredErrorExists = errors.find(
           (e) => e.error === 'This question is required' && e.id == currId
         );
         const previousErrorExists = errors.find((e) => e.id == currId);
+        // remove error if previous error was that the question is required
         if (answerExists && requiredErrorExists) {
-          // remove error if previous error was that the question is required
-          console.log('got here ' + currId);
-          removeError(currId);
-        } else {
-          // add error if no answerExists and there is no previous error
-          if (!answerExists && !previousErrorExists) {
-            addError(currId, 'This question is required');
-          }
+          const objIndex = updatedErrors.findIndex((e) => e.id === currId);
+          updatedErrors.splice(objIndex, 1);
+        }
+        // add error if no answerExists and there is no previous error
+        if (!answerExists && !previousErrorExists) {
+          updatedErrors.push({
+            id: currId,
+            error: 'This question is required',
+          });
         }
       }
     }
-    updateErrorsOnSubmit(errors.length > 0); // errors has changed since calling this function, how do we access this
-    console.log('answers', answers);
-    console.log('errors', errors);
-    console.log('questions', questions);
+
+    updateErrors(updatedErrors);
+    updateErrorsOnSubmit(updatedErrors.length > 0);
   };
 
   return (

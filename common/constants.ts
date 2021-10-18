@@ -66,8 +66,8 @@ export const EXAMPLE_SHORT_TEXT_1: ShortText = {
   content: "What's your favorite food?",
   required: false,
   type: QuestionType.ShortText,
-  minLength: 1,
-  maxLength: 2,
+  minLength: 3,
+  maxLength: 5,
 };
 
 // with arrays, dropdown, has to be one of 5 choices, ORMAP over options to see if
