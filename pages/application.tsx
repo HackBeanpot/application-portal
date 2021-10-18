@@ -143,19 +143,20 @@ const Application = (): ReactElement => {
     for (let i = 0; i < questions.length; i++) {
       const isRequired = questions[i].required;
       const currId = questions[i].id;
-
+      debugger;
       if (isRequired) {
-        const exists = updatedAnswers.find((e) => e.id === currId);
+        const exists = updatedAnswers.find((a) => a.id === currId);
         const isErrorRequiredError = errors.find(
           (e) => e.error === 'This question is required' && e.id == currId
         );
+        const isPreviousError = errors.find((e) => e.id == currId);
         if (exists && isErrorRequiredError) {
           // remove error if previous error was that the question is required
           console.log('got here ' + currId);
           removeError(currId);
         } else {
-          // add error if no answer exists
-          if (!exists) {
+          // add error if no answer exists and there is no previous error
+          if (!exists && !isPreviousError) {
             addError(currId, 'This question is required');
           }
         }
