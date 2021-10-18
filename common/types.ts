@@ -17,7 +17,24 @@ export interface User {
   learningGoals: string;
   responses: Array<QuestionResponse>;
   isAdmin: boolean;
+  rsvpStatus: RSVPStatus;
 }
+export type SingletonDefinition = DateSingleton;
+
+export enum SingletonType {
+  RegistrationOpen = 'registration-open',
+  RegistrationClosed = 'registration-closed',
+  ConfirmBy = 'confirm-by',
+}
+
+export interface DateSingleton {
+  value: string;
+  type:
+    | SingletonType.RegistrationClosed
+    | SingletonType.RegistrationOpen
+    | SingletonType.ConfirmBy;
+}
+
 export interface PortalState {
   openDate: Date;
   closeDate: Date;
@@ -65,6 +82,11 @@ export enum ApplicationStatus {
   Waitlisted = 'Waitlisted',
   Confirmed = 'Confirmed',
   Declined = 'Declined',
+}
+export enum RSVPStatus {
+  InPerson = 'In Person',
+  Virtual = 'Virtual',
+  NotAttending = 'Not Attending',
 }
 export enum QuestionType {
   Checkboxes = 'Checkboxes',
