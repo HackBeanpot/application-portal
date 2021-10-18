@@ -58,7 +58,7 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
               key="logout"
               onClick={async () => {
                 await signOut();
-                router.push('/login');
+                router.push('/api/auth/signout');
               }}
             >
               Logout
