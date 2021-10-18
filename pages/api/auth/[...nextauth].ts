@@ -10,7 +10,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     theme: {
       colorScheme: 'auto', // "auto" | "dark" | "light"
       brandColor: '', // Hex color code
-      logo: '/public/logo.svg',
+      logo: '/logo.svg',
     },
     // Configure one or more authentication providers
     providers: [
