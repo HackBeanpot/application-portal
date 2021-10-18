@@ -7,7 +7,8 @@ import Router, { useRouter } from 'next/router';
  * redirect to /login if the user is not logged in.
  */
 export const useSessionOrRedirect = (): Session | null => {
-  const [session, loading] = useSession();
+  const { data: session, status } = useSession();
+  const loading = status === 'loading';
   const { pathname } = useRouter();
 
   if (session) {
