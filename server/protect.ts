@@ -1,4 +1,4 @@
-import { NextApiHandler } from 'next';
+import { NextApiHandler, NextApiRequest } from 'next';
 import { getSession } from 'next-auth/react';
 import { connectToDatabase } from './mongoDB';
 
@@ -14,11 +14,15 @@ export function protect(handler: NextApiHandler): NextApiHandler {
 }
 
 // non-null assertions are ok because users must have an email, and also are guaranteed to be logged in by protect
-export const assumeLoggedInGetEmail = async () =>
-  (await getSession())!.user!.email!;
+export const assumeLoggedInGetEmail = async (
+  req: NextApiRequest
+): Promise<string> => {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return (await getSession({ req }))!.user!.email!;
+};
 
-export async function isAdmin(): Promise<boolean> {
-  const email = await assumeLoggedInGetEmail();
+export async function isAdmin(req: NextApiRequest): Promise<boolean> {
+  const email = await assumeLoggedInGetEmail(req);
   const { userDataCollection } = await connectToDatabase();
   const data = await userDataCollection.findOne({ email });
   return Boolean(data?.isAdmin);
