@@ -2,9 +2,10 @@ import type { AppProps } from 'next/app';
 import { SessionProvider } from 'next-auth/react';
 import '../styles/main.scss';
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+  console.log(session);
   return (
-    <SessionProvider session={pageProps.session}>
+    <SessionProvider session={session}>
       <Component {...pageProps} />
     </SessionProvider>
   );

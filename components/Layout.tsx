@@ -56,10 +56,7 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
             )}
             <Menu.Item
               key="logout"
-              onClick={async () => {
-                await signOut();
-                router.push('/api/auth/signout');
-              }}
+              onClick={() => router.push('/api/auth/signout')}
             >
               Logout
             </Menu.Item>
