@@ -22,7 +22,9 @@ const getHandler: NextApiHandler = async (req, res) => {
   const email = await assumeLoggedInGetEmail(req);
   const { userDataCollection } = await connectToDatabase();
   const data = await userDataCollection.findOne({ email });
-  return res.status(200).json(data);
+  return res.status(200).json({
+    responses: data?.responses
+  });
 };
 
 const postHandler: NextApiHandler = async (req, res) => {
@@ -42,10 +44,12 @@ const postHandler: NextApiHandler = async (req, res) => {
   const { userDataCollection } = await connectToDatabase();
   // upsert = update, or if object doesn't exist, insert
   await userDataCollection.updateOne(
-    { email },
-    {
-      responses: result.responses,
-      email,
+      { email },
+      { $set:
+      {
+        responses: result.responses,
+            email,
+      }
     },
     { upsert: true }
   );

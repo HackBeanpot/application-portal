@@ -37,7 +37,7 @@ export const makeRequiredIfNeeded = (
     return schema.required();
   }
   // if not required, then allow undefined (implicitly), and null
-  return schema.valid(null);
+  return schema.allow(null);
 };
 export const convertCheckboxesToJoiSchema = (q: Checkboxes): Joi.Schema => {
   // checkboxes expects an array of strings back
