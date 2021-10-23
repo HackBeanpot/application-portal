@@ -7,6 +7,7 @@ import CheckboxesQuestion from '../components/questions/CheckboxesQuestion';
 import DropdownQuestion from '../components/questions/DropdownQuestion';
 import { useSessionOrRedirect } from '../hooks/useSessionOrRedirect';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
+import { updateApplicantResponses } from '../common/apiClient';
 
 const Application = (): ReactElement => {
   //useSessionOrRedirect();
@@ -168,6 +169,28 @@ const Application = (): ReactElement => {
     updateErrorsOnSubmit(updatedErrors.length > 0);
   };
 
+  const submitIfValid = () => {
+    validate();
+
+    if (errors.length == 0) {
+      const responses = questions.map(({ id }) => {
+        const answer = answers.find((e) => e.id === id);
+        if (!answer) {
+          return null;
+        } else {
+          if (Array.isArray(answer.answer)) {
+            // cast every element of list to a string
+            const stringArr = answer.answer.map(toString);
+          } else {
+            return answer.answer;
+          }
+        }
+      });
+
+      updateApplicantResponses({ responses });
+    }
+  };
+
   return (
     <>
       <h1>Application Page</h1>
@@ -213,7 +236,7 @@ const Application = (): ReactElement => {
           }
         })}
       </div>
-      <button onClick={validate}>Submit</button>
+      <button onClick={submitIfValid}>Submit</button>
       {isErrorsOnSubmit && <div>Please fix errors before submitting.</div>}
     </>
   );

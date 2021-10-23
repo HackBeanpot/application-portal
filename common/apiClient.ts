@@ -1,4 +1,4 @@
-import { User } from './types';
+import { RegistrationApiRequest, User } from './types';
 import Axios from 'axios';
 
 export function getAdminById(id: number) {
@@ -19,6 +19,10 @@ export function getApplicantById(id: number) {
 
 export function updateApplicantById(id: number, user: User) {
   Axios.post(`/api/v1/applicants/${id}`, user);
+}
+
+export function updateApplicantResponses(responses: RegistrationApiRequest) {
+  Axios.post(`/api/v1/registration`, responses);
 }
 
 export function getAllApplicants() {
