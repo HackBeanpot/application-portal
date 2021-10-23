@@ -7,6 +7,7 @@ import CheckboxesQuestion from '../components/questions/CheckboxesQuestion';
 import DropdownQuestion from '../components/questions/DropdownQuestion';
 import { useSessionOrRedirect } from '../hooks/useSessionOrRedirect';
 import { PageLayout } from '../components/Layout';
+import { Questions } from '../common/questions';
 
 const Application = (): ReactElement => {
   useSessionOrRedirect();
@@ -14,7 +15,7 @@ const Application = (): ReactElement => {
     <PageLayout currentPage={'application'}>
       <h1>Application Page</h1>
       <div>
-        {EXAMPLE_QUESTIONS.map((q) => {
+        {Questions.map((q) => {
           switch (q.type) {
             case QuestionType.ShortText:
               return <ShortTextQuestion question={q} />;

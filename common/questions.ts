@@ -94,6 +94,27 @@ export const Questions: Array<QuestionDefinition> = [
     ['Freshman', 'Sophomore', 'Junior', 'Senior', 'Other'],
     true
   ),
+  makeDropdown(
+    'What school do you attend?',
+    [
+      'Northeastern University',
+      'MIT',
+      'Harvard University',
+      'Tufts University',
+      'University of Massachusetts Amherst',
+      'Boston College',
+      'Boston University',
+      'Emerson College',
+      'Suffolk University',
+      'Brandeis University',
+      'Wellesley College',
+      'Wentworth Institute of Technology',
+      'Olin College of Engineering',
+      'Simmons University',
+      'Unlisted',
+    ],
+    true
+  ),
   makeLongText('What is your favorite food?', false),
   makeCheckbox(
     'What languages do you speak?',
