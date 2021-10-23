@@ -18,7 +18,25 @@ export interface User {
   timeZone: string;
   learningGoals: string;
   responses: Array<QuestionResponse>;
+  isAdmin: boolean;
+  rsvpStatus: RSVPStatus;
 }
+export type SingletonDefinition = DateSingleton;
+
+export enum SingletonType {
+  RegistrationOpen = 'registration-open',
+  RegistrationClosed = 'registration-closed',
+  ConfirmBy = 'confirm-by',
+}
+
+export interface DateSingleton {
+  value: string;
+  type:
+    | SingletonType.RegistrationClosed
+    | SingletonType.RegistrationOpen
+    | SingletonType.ConfirmBy;
+}
+
 export interface PortalState {
   openDate: Date;
   closeDate: Date;
@@ -56,16 +74,17 @@ export enum ShirtSize {
   XLarge = 'XLarge',
 }
 export enum ApplicationStatus {
-  Unverified = 'Unverified',
-  IncompleteRegistrationOpen = 'Incomplete / RegistrationOpen',
-  IncompleteRegistrationClosed = 'Incomplete / RegistrationClosed',
-  SubmittedRegistrationOpen = 'Submitted / RegistrationOpen',
-  SubmittedRegistrationClosed = 'Submitted / RegistrationClosed',
-  AdmittedUnconfirmed = 'Admitted / Unconfirmed',
-  AdmittedConfirmedDeadlinePassed = 'Admitted / Confirmed Deadline Passed',
+  Incomplete = 'Incomplete',
+  Submitted = 'Submitted',
+  Admitted = 'Admitted',
   Waitlisted = 'Waitlisted',
-  Confirmed = 'Confirmed',
   Declined = 'Declined',
+}
+export enum RSVPStatus {
+  InPerson = 'In Person',
+  Virtual = 'Virtual',
+  NotAttending = 'Not Attending',
+  Unconfirmed = 'Unconfirmed',
 }
 export enum QuestionType {
   Checkboxes = 'Checkboxes',
@@ -106,7 +125,7 @@ export interface LongText extends IQuestion {
 /**
  * is a single string for text responses, and an array of the choices for multi-select responses
  */
-export type QuestionResponse = string | Array<string>;
+export type QuestionResponse = string | Array<string> | null;
 
 export type QuestionIdToDefinitionMap = Record<QuestionId, QuestionDefinition>;
 export type QuestionIdToResponseMap = Record<QuestionId, QuestionResponse>;
@@ -127,3 +146,7 @@ export interface Error {
   id: string;
   error: string;
 }
+export type StatusApiResponse = {
+  applicationStatus: ApplicationStatus;
+  rsvpStatus: RSVPStatus;
+};

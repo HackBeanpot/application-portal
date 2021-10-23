@@ -1,26 +1,33 @@
 import {
-  User,
-  Gender,
+  ApplicationStatus,
+  Checkboxes,
+  Dropdown,
   Education,
   Ethnicity,
-  ShirtSize,
-  ApplicationStatus,
-  RegistrationApiRequest,
-  QuestionDefinition,
-  Checkboxes,
-  ShortText,
-  Dropdown,
+  Gender,
   LongText,
+  QuestionDefinition,
   QuestionType,
+  RegistrationApiRequest,
+  RSVPStatus,
+  ShirtSize,
+  ShortText,
+  User,
 } from './types';
 
 export const APPLY_BY_DATE = '12/20/2021';
+export const RESPONSE_BY_DATE = new Date('02/01/2022'); // TODO: MAKE SINGLETON IN DB
 
 export const EXAMPLE_GENDER = Gender.Female;
 export const EXAMPLE_EDUCATION = Education.Undergraduate;
 export const EXAMPLE_ETHNICITIES = [Ethnicity.Asian];
 export const EXAMPLE_SHIRTSIZE = ShirtSize.Small;
 export const EXAMPLE_APPLICATION_STATUS = ApplicationStatus.Declined;
+
+export const WELCOME_MESSAGE = 'Welcome to the Application Portal!';
+export const REJECTION_MESSAGE =
+  'Unfortunately, we were not able to accept your application' +
+  'for the 2022 HackBeanpot Hackathon.';
 /**
  * example json User to use for now
  */
@@ -43,6 +50,8 @@ export const EXAMPLE_USER: User = {
   timeZone: 'cs',
   learningGoals: 'cs',
   responses: [],
+  isAdmin: true,
+  rsvpStatus: RSVPStatus.InPerson,
 };
 export const EXAMPLE_RESPONSE: RegistrationApiRequest = {
   responses: ['Judy Su', EXAMPLE_ETHNICITIES],

@@ -1,5 +1,5 @@
 import { MongoClient, Db, Collection } from 'mongodb';
-import { User } from '../common/types';
+import { SingletonDefinition, User } from '../common/types';
 
 const MONGODB_URI = process.env.DATABASE_URL || '';
 const MONGODB_DB = process.env.MONGODB_DB || '';
@@ -24,7 +24,8 @@ if (MONGODB_DB === '') {
 type MongoCtx = {
   client: MongoClient;
   db: Db;
-  applicantDataCollection: Collection<User>;
+  userDataCollection: Collection<User>;
+  singletonDataCollection: Collection<SingletonDefinition>;
 };
 
 type GlobalWithMongo = {
@@ -48,15 +49,15 @@ export async function connectToDatabase(): Promise<MongoCtx> {
   }
 
   // instantiate to a promise resolved with the context
-  // do this immediately, and only do this once
   if (!cached.promise) {
     cached.promise = MongoClient.connect(MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     }).then((client) => {
       const db = client.db(MONGODB_DB);
-      const applicantDataCollection = db.collection('applicant_data');
-      return { client, db, applicantDataCollection };
+      const userDataCollection = db.collection('applicant_data');
+      const singletonDataCollection = db.collection('singleton_data');
+      return { client, db, userDataCollection, singletonDataCollection };
     });
   }
 
