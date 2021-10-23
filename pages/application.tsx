@@ -11,7 +11,7 @@ import { updateApplicantResponses } from '../common/apiClient';
 import { PageLayout } from '../components/Layout';
 
 const Application = (): ReactElement => {
-  //useSessionOrRedirect();
+  useSessionOrRedirect();
 
   const questions = EXAMPLE_QUESTIONS;
   const [textAnswers, updateTextAnswers] = useState<Answer[]>([]);
