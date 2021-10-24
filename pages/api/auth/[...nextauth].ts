@@ -48,9 +48,9 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
           if (!existingUser) {
             await userDataCollection.insertOne({
               email: user.email!,
-              applicationStatus: ApplicationStatus.IncompleteRegistrationOpen,
+              applicationStatus: ApplicationStatus.Incomplete,
               isAdmin: false,
-              rsvpStatus: RSVPStatus.InPerson,
+              rsvpStatus: RSVPStatus.Unconfirmed,
             });
           }
           return true;
