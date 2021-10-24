@@ -1,6 +1,5 @@
 import React, { ReactElement, useState } from 'react';
-import { QuestionType, Answer, Error, ShortText } from '../common/types';
-import { EXAMPLE_QUESTIONS } from '../common/constants';
+import { QuestionType, Answer, Error } from '../common/types';
 import ShortTextQuestion from '../components/questions/ShortTextQuestion';
 import LongTextQuestion from '../components/questions/LongTextQuestion';
 import CheckboxesQuestion from '../components/questions/CheckboxesQuestion';
@@ -15,12 +14,12 @@ const Application = (): ReactElement => {
   useSessionOrRedirect();
 
   const questions = Questions;
-  const [textAnswers, updateTextAnswers] = useState<Answer[]>([]);
-  const [checkboxAnswers, updateCheckboxAnswers] = useState<Answer[]>([]);
-  const [dropdownAnswers, updateDropdownAnswer] = useState<Answer[]>([]);
-  const [errors, updateErrors] = useState<Error[]>([]);
-  const [answers, updateAnswers] = useState<Answer[]>([]);
-  const [isErrorsOnSubmit, updateErrorsOnSubmit] = useState<boolean>(false);
+  const [textAnswers, setTextAnswers] = useState<Answer[]>([]);
+  const [checkboxAnswers, setCheckboxAnswers] = useState<Answer[]>([]);
+  const [dropdownAnswers, setDropdownAnswer] = useState<Answer[]>([]);
+  const [errors, setErrors] = useState<Error[]>([]);
+  const [isErrorsOnSubmit, setErrorsOnSubmit] = useState<boolean>(false);
+  const answers = textAnswers.concat(checkboxAnswers, dropdownAnswers);
 
   const addTextAnswer = (id: string, answer: string) => {
     const question = questions.find((q) => q.id === id)!;
@@ -58,7 +57,7 @@ const Application = (): ReactElement => {
     } else {
       updatedTextAnswers.push({ id, answer });
     }
-    updateTextAnswers(updatedTextAnswers);
+    setTextAnswers(updatedTextAnswers);
   };
 
   const addCheckboxAnswer = (id: string, answer: CheckboxValueType[]) => {
@@ -91,7 +90,7 @@ const Application = (): ReactElement => {
     } else {
       updatedCheckboxAnswers.push({ id, answer });
     }
-    updateCheckboxAnswers(updatedCheckboxAnswers);
+    setCheckboxAnswers(updatedCheckboxAnswers);
   };
 
   const addDropdownAnswer = (id: string, answer: string) => {
@@ -104,7 +103,7 @@ const Application = (): ReactElement => {
       updatedDropdownAnswers.push({ id, answer });
     }
     // add a remove error
-    updateDropdownAnswer(updatedDropdownAnswers);
+    setDropdownAnswer(updatedDropdownAnswers);
   };
 
   const addError = (id: string, error: string) => {
@@ -116,7 +115,7 @@ const Application = (): ReactElement => {
     } else {
       updatedErrors.push({ id, error });
     }
-    updateErrors(updatedErrors);
+    setErrors(updatedErrors);
   };
 
   const removeError = (id: string) => {
@@ -126,7 +125,7 @@ const Application = (): ReactElement => {
       const objIndex = updatedErrors.findIndex((e) => e.id === id);
       updatedErrors.splice(objIndex, 1);
     }
-    updateErrors(updatedErrors);
+    setErrors(updatedErrors);
   };
 
   const findError = (id: string) => {
@@ -139,15 +138,13 @@ const Application = (): ReactElement => {
   };
 
   const validate = () => {
-    const updatedAnswers = textAnswers.concat(checkboxAnswers, dropdownAnswers);
-    updateAnswers(updatedAnswers);
     const updatedErrors = errors.slice();
 
     for (let i = 0; i < questions.length; i++) {
       const isRequired = questions[i].required;
       const currId = questions[i].id;
       if (isRequired) {
-        const answerExists = updatedAnswers.find((a) => a.id === currId);
+        const answerExists = answers.find((a) => a.id === currId);
         const requiredErrorExists = errors.find(
           (e) => e.error === 'This question is required' && e.id == currId
         );
@@ -167,8 +164,8 @@ const Application = (): ReactElement => {
       }
     }
 
-    updateErrors(updatedErrors);
-    updateErrorsOnSubmit(updatedErrors.length > 0);
+    setErrors(updatedErrors);
+    setErrorsOnSubmit(updatedErrors.length > 0);
     return updatedErrors;
   };
 
