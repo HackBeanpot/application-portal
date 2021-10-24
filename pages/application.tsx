@@ -9,11 +9,12 @@ import { useSessionOrRedirect } from '../hooks/useSessionOrRedirect';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import { updateApplicantResponses } from '../common/apiClient';
 import { PageLayout } from '../components/Layout';
+import { Questions } from '../common/questions';
 
 const Application = (): ReactElement => {
   useSessionOrRedirect();
 
-  const questions = EXAMPLE_QUESTIONS;
+  const questions = Questions;
   const [textAnswers, updateTextAnswers] = useState<Answer[]>([]);
   const [checkboxAnswers, updateCheckboxAnswers] = useState<Answer[]>([]);
   const [dropdownAnswers, updateDropdownAnswer] = useState<Answer[]>([]);
@@ -168,10 +169,11 @@ const Application = (): ReactElement => {
 
     updateErrors(updatedErrors);
     updateErrorsOnSubmit(updatedErrors.length > 0);
+    return updatedErrors;
   };
 
   const submitIfValid = () => {
-    validate();
+    const errors = validate();
 
     if (errors.length == 0) {
       const responses = questions.map(({ id }) => {
