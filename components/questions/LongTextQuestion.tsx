@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { LongText } from '../../common/types';
 type LongTextProps = {
   question: LongText;
-  addTextAnswer: (id: string, answer: string) => void;
+  addTextAnswer: (question: LongText, answer: string) => void;
   errorMessage: string;
 };
 const LongTextQuestion: FC<LongTextProps> = ({
@@ -18,7 +18,7 @@ const LongTextQuestion: FC<LongTextProps> = ({
       <br />
       max-length = {question.maxLength}
       <br />
-      <textarea onChange={(e) => addTextAnswer(question.id, e.target.value)} />
+      <textarea onChange={(e) => addTextAnswer(question, e.target.value)} />
       <div>{errorMessage}</div>
     </div>
   );

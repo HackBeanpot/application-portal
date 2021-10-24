@@ -1,5 +1,13 @@
 import React, { ReactElement, useState } from 'react';
-import { QuestionType, Answer, Error } from '../common/types';
+import {
+  QuestionType,
+  Answer,
+  Error,
+  ShortText,
+  LongText,
+  Checkboxes,
+  Dropdown,
+} from '../common/types';
 import ShortTextQuestion from '../components/questions/ShortTextQuestion';
 import LongTextQuestion from '../components/questions/LongTextQuestion';
 import CheckboxesQuestion from '../components/questions/CheckboxesQuestion';
@@ -13,7 +21,6 @@ import { Questions } from '../common/questions';
 const Application = (): ReactElement => {
   useSessionOrRedirect();
 
-  const questions = Questions;
   const [textAnswers, setTextAnswers] = useState<Answer[]>([]);
   const [checkboxAnswers, setCheckboxAnswers] = useState<Answer[]>([]);
   const [dropdownAnswers, setDropdownAnswer] = useState<Answer[]>([]);
@@ -21,97 +28,69 @@ const Application = (): ReactElement => {
   const [isErrorsOnSubmit, setErrorsOnSubmit] = useState<boolean>(false);
   const answers = textAnswers.concat(checkboxAnswers, dropdownAnswers);
 
-  const addTextAnswer = (id: string, answer: string) => {
-    const question = questions.find((q) => q.id === id)!;
-    const charcterLength = answer.length;
-    let minLength = 0;
-    let maxLength = 0;
-    if (
-      question.type === QuestionType.LongText ||
-      question.type === QuestionType.ShortText
-    ) {
-      minLength = question.minLength;
-      maxLength = question.maxLength;
-    }
+  const addTextAnswer = (question: ShortText | LongText, answer: string) => {
+    const characterLength = answer.length;
+    const minLength = question.minLength;
+    const maxLength = question.maxLength;
+    const tooShort = characterLength < minLength;
+    const tooLong = maxLength < characterLength;
 
-    if (charcterLength <= maxLength && charcterLength >= minLength) {
-      removeError(id);
-    }
-
-    if (charcterLength < minLength) {
+    if (!tooShort && !tooLong) {
+      removeError(question.id);
+    } else if (tooShort) {
       addError(
-        id,
+        question.id,
         'Required minimum response length is ' + minLength + ' characters.'
+      );
+    } else if (tooLong) {
+      addError(
+        question.id,
+        'Maximum response length is ' + maxLength + ' characters.'
       );
     }
 
-    if (charcterLength > maxLength) {
-      addError(id, 'Maximum response length is ' + maxLength + ' characters.');
-    }
-
-    const exists = textAnswers.find((a) => a.id === id);
-    const updatedTextAnswers = textAnswers.slice();
-    if (exists) {
-      const objIndex = textAnswers.findIndex((a) => a.id === id);
-      updatedTextAnswers[objIndex] = { id, answer };
-    } else {
-      updatedTextAnswers.push({ id, answer });
-    }
-    setTextAnswers(updatedTextAnswers);
+    setTextAnswers(createOrUpdateAnswer(textAnswers, question.id, answer));
   };
 
-  const addCheckboxAnswer = (id: string, answer: CheckboxValueType[]) => {
-    const question = questions.find((q) => q.id === id)!;
+  const addCheckboxAnswer = (
+    question: Checkboxes,
+    answer: CheckboxValueType[]
+  ) => {
     const selectedNumber = answer.length;
-    let minNumber = 0;
-    let maxNumber = 0;
-    if (question.type === QuestionType.Checkboxes) {
-      minNumber = question.minNumber;
-      maxNumber = question.maxNumber;
-    }
+    const minNumber = question.minNumber;
+    const maxNumber = question.maxNumber;
 
     if (selectedNumber <= maxNumber && selectedNumber >= minNumber) {
-      removeError(id);
+      removeError(question.id);
     }
 
     if (selectedNumber < minNumber) {
-      addError(id, 'Required minimum checkboxes selected is ' + minNumber);
+      addError(
+        question.id,
+        'Required minimum checkboxes selected is ' + minNumber
+      );
     }
 
     if (selectedNumber > maxNumber) {
-      addError(id, 'Maximum checkboxes selected is ' + maxNumber);
+      addError(question.id, 'Maximum checkboxes selected is ' + maxNumber);
     }
 
-    const exists = checkboxAnswers.find((a) => a.id === id);
-    const updatedCheckboxAnswers = checkboxAnswers.slice();
-    if (exists) {
-      const objIndex = checkboxAnswers.findIndex((a) => a.id === id);
-      updatedCheckboxAnswers[objIndex] = { id, answer };
-    } else {
-      updatedCheckboxAnswers.push({ id, answer });
-    }
-    setCheckboxAnswers(updatedCheckboxAnswers);
+    setCheckboxAnswers(
+      createOrUpdateAnswer(checkboxAnswers, question.id, answer)
+    );
   };
 
-  const addDropdownAnswer = (id: string, answer: string) => {
-    const exists = dropdownAnswers.find((a) => a.id === id);
-    const updatedDropdownAnswers = dropdownAnswers.slice();
-    if (exists) {
-      const objIndex = dropdownAnswers.findIndex((a) => a.id === id);
-      updatedDropdownAnswers[objIndex] = { id, answer };
-    } else {
-      updatedDropdownAnswers.push({ id, answer });
-    }
-    // add a remove error
-    setDropdownAnswer(updatedDropdownAnswers);
+  const addDropdownAnswer = (question: Dropdown, answer: string) => {
+    setDropdownAnswer(
+      createOrUpdateAnswer(dropdownAnswers, question.id, answer)
+    );
   };
 
   const addError = (id: string, error: string) => {
-    const exists = errors.find((e) => e.id === id);
+    const existingErrorIndex = errors.findIndex((e) => e.id === id);
     const updatedErrors = errors.slice();
-    if (exists) {
-      const objIndex = errors.findIndex((e) => e.id === id);
-      updatedErrors[objIndex] = { id, error };
+    if (existingErrorIndex !== -1) {
+      updatedErrors[existingErrorIndex] = { id, error };
     } else {
       updatedErrors.push({ id, error });
     }
@@ -119,30 +98,20 @@ const Application = (): ReactElement => {
   };
 
   const removeError = (id: string) => {
-    const exists = errors.find((e) => e.id === id);
-    const updatedErrors = errors.slice();
-    if (exists) {
-      const objIndex = updatedErrors.findIndex((e) => e.id === id);
-      updatedErrors.splice(objIndex, 1);
-    }
-    setErrors(updatedErrors);
-  };
-
-  const findError = (id: string) => {
-    const exists = errors.find((e) => e.id === id);
-    if (exists) {
-      return errors.find((e) => e.id === id)!.error;
-    } else {
-      return '';
+    const existingErrorIndex = errors.findIndex((e) => e.id === id);
+    if (existingErrorIndex !== -1) {
+      const updatedErrors = errors.slice();
+      updatedErrors.splice(existingErrorIndex, 1);
+      setErrors(updatedErrors);
     }
   };
 
   const validate = () => {
     const updatedErrors = errors.slice();
 
-    for (let i = 0; i < questions.length; i++) {
-      const isRequired = questions[i].required;
-      const currId = questions[i].id;
+    for (let i = 0; i < Questions.length; i++) {
+      const isRequired = Questions[i].required;
+      const currId = Questions[i].id;
       if (isRequired) {
         const answerExists = answers.find((a) => a.id === currId);
         const requiredErrorExists = errors.find(
@@ -173,7 +142,7 @@ const Application = (): ReactElement => {
     const errors = validate();
 
     if (errors.length == 0) {
-      const responses = questions.map(({ id }) => {
+      const responses = Questions.map(({ id }) => {
         const answer = answers.find((e) => e.id === id);
         if (!answer) {
           return null;
@@ -195,7 +164,8 @@ const Application = (): ReactElement => {
     <PageLayout currentPage={'application'}>
       <h1>Application Page</h1>
       <div>
-        {questions.map((q) => {
+        {Questions.map((q) => {
+          const errorMessage = errors.find((e) => e.id === q.id)?.error ?? '';
           switch (q.type) {
             case QuestionType.ShortText:
               return (
@@ -203,7 +173,7 @@ const Application = (): ReactElement => {
                   key={q.id}
                   question={q}
                   addTextAnswer={addTextAnswer}
-                  errorMessage={findError(q.id)}
+                  errorMessage={errorMessage}
                 />
               );
             case QuestionType.LongText:
@@ -212,7 +182,7 @@ const Application = (): ReactElement => {
                   key={q.id}
                   question={q}
                   addTextAnswer={addTextAnswer}
-                  errorMessage={findError(q.id)}
+                  errorMessage={errorMessage}
                 />
               );
             case QuestionType.Checkboxes:
@@ -221,7 +191,7 @@ const Application = (): ReactElement => {
                   key={q.id}
                   question={q}
                   addCheckboxAnswer={addCheckboxAnswer}
-                  errorMessage={findError(q.id)}
+                  errorMessage={errorMessage}
                 />
               );
             case QuestionType.Dropdown:
@@ -230,7 +200,7 @@ const Application = (): ReactElement => {
                   key={q.id}
                   question={q}
                   addDropdownAnswer={addDropdownAnswer}
-                  errorMessage={findError(q.id)}
+                  errorMessage={errorMessage}
                 />
               );
           }
@@ -242,3 +212,18 @@ const Application = (): ReactElement => {
   );
 };
 export default Application;
+
+const createOrUpdateAnswer = (
+  prevAnswers: Answer[],
+  id: string,
+  answer: string | CheckboxValueType[]
+) => {
+  const updatedAnswers = prevAnswers.slice();
+  const prevAnswerIndex = prevAnswers.findIndex((a) => a.id === id);
+  if (prevAnswerIndex !== -1) {
+    updatedAnswers[prevAnswerIndex] = { id, answer };
+  } else {
+    updatedAnswers.push({ id, answer });
+  }
+  return updatedAnswers;
+};

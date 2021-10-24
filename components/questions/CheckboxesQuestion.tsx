@@ -6,7 +6,7 @@ import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 type CheckboxesProps = {
   question: Checkboxes;
   addCheckboxAnswer: (
-    id: string,
+    question: Checkboxes,
     addCheckboxAnswer: CheckboxValueType[]
   ) => void;
   errorMessage: string;
@@ -25,7 +25,7 @@ const CheckboxesQuestion: FC<CheckboxesProps> = ({
       <Checkbox.Group
         key={question.id}
         options={options}
-        onChange={(e) => addCheckboxAnswer(question.id, e)}
+        onChange={(e) => addCheckboxAnswer(question, e)}
       />
       min number = {question.minNumber}
       <br />

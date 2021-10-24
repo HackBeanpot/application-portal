@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { ShortText } from '../../common/types';
 type ShortTextProps = {
   question: ShortText;
-  addTextAnswer: (id: string, answer: string) => void;
+  addTextAnswer: (question: ShortText, answer: string) => void;
   errorMessage: string;
 };
 
@@ -19,7 +19,7 @@ const ShortTextQuestion: FC<ShortTextProps> = ({
       <br />
       max-length = {question.maxLength}
       <br />
-      <textarea onChange={(e) => addTextAnswer(question.id, e.target.value)} />
+      <textarea onChange={(e) => addTextAnswer(question, e.target.value)} />
       <div>{errorMessage}</div>
     </div>
   );

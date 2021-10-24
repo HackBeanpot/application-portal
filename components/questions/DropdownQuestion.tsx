@@ -5,7 +5,10 @@ import { DownOutlined, UserOutlined } from '@ant-design/icons';
 
 type DropdownProps = {
   question: DropdownType;
-  addDropdownAnswer: (id: string, addDropdownAnswer: string) => void;
+  addDropdownAnswer: (
+    question: DropdownType,
+    addDropdownAnswer: string
+  ) => void;
   errorMessage: string;
 };
 const DropdownQuestion: FC<DropdownProps> = ({
@@ -19,7 +22,7 @@ const DropdownQuestion: FC<DropdownProps> = ({
       selectable
       onClick={(e) => {
         updateSelectedOption(e.key);
-        addDropdownAnswer(question.id, e.key);
+        addDropdownAnswer(question, e.key);
       }}
     >
       {question.options.map((o) => (
