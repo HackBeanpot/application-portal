@@ -2,24 +2,24 @@ import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 
 export interface User {
   email: string;
-  firstName: string;
-  lastName: string;
-  id: string;
-  gender: Gender;
-  school: string;
-  education: Education;
-  yearOfEducation: YearOfEducation;
-  ethnicities: Array<Ethnicity>;
-  shirtSize: ShirtSize;
-  applicationStatus: ApplicationStatus;
-  major: string;
-  minor: string;
-  resumeLink: string;
-  timeZone: string;
-  learningGoals: string;
-  responses: Array<QuestionResponse>;
-  isAdmin: boolean;
   rsvpStatus: RSVPStatus;
+  isAdmin: boolean;
+  applicationStatus: ApplicationStatus;
+  firstName?: string;
+  lastName?: string;
+  id?: string;
+  gender?: Gender;
+  school?: string;
+  education?: Education;
+  yearOfEducation?: YearOfEducation;
+  ethnicities?: Array<Ethnicity>;
+  shirtSize?: ShirtSize;
+  major?: string;
+  minor?: string;
+  resumeLink?: string;
+  timeZone?: string;
+  learningGoals?: string;
+  responses?: Array<QuestionResponse>;
 }
 export type SingletonDefinition = DateSingleton;
 

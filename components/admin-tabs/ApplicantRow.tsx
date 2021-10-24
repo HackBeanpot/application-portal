@@ -12,7 +12,7 @@ const ApplicantRow: FC<ApplicantRowProps> = ({ applicant }) => {
     lastName: applicant.lastName,
     email: applicant.email,
     school: applicant.school,
-    yearOfEducation: applicant.yearOfEducation.toString(),
+    yearOfEducation: applicant.yearOfEducation?.toString(),
     applicationStatus: applicant.applicationStatus.toString(),
   });
 
