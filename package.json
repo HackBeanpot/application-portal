@@ -11,12 +11,14 @@
     "test": "jest"
   },
   "dependencies": {
+    "@next-auth/mongodb-adapter": "^0.0.2-next.281",
     "antd": "^4.16.7",
     "axios": "^0.21.1",
     "joi": "^17.4.2",
-    "mongodb": "^3.5.9",
+    "mongodb": "^4.1.2",
     "next": "^11.0.1",
-    "next-auth": "^3.27.3",
+    "next-auth": "^4.0.0-beta.4",
+    "nodemailer": "^6.7.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "sass": "^1.42.1",
@@ -24,7 +26,6 @@
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",
-    "@types/mongodb": "^3.6.20",
     "@types/react": "^17.0.13",
     "@typescript-eslint/eslint-plugin": "^4.28.3",
     "eslint": "^7.30.0",
