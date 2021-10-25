@@ -142,10 +142,6 @@ export interface Answer {
   answer: string | CheckboxValueType[];
 }
 
-export interface Error {
-  id: string;
-  error: string;
-}
 export type StatusApiResponse = {
   applicationStatus: ApplicationStatus;
   rsvpStatus: RSVPStatus;

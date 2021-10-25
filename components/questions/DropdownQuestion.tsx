@@ -40,9 +40,6 @@ const DropdownQuestion: FC<DropdownProps> = ({
         <Button>
           <a className="ant-dropdown-link"> {selectedOption} </a>
           <DownOutlined />
-          {/* {question.options.map((o) => (
-        <ul key={question.id}>{o.name}</ul>
-      ))} */}
         </Button>
       </Dropdown>
       <div>{errorMessage}</div>

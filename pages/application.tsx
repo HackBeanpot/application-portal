@@ -2,11 +2,11 @@ import React, { ReactElement, useState } from 'react';
 import {
   QuestionType,
   Answer,
-  Error,
   ShortText,
   LongText,
   Checkboxes,
   Dropdown,
+  QuestionDefinition,
 } from '../common/types';
 import ShortTextQuestion from '../components/questions/ShortTextQuestion';
 import LongTextQuestion from '../components/questions/LongTextQuestion';
@@ -18,6 +18,26 @@ import { updateApplicantResponses } from '../common/apiClient';
 import { PageLayout } from '../components/Layout';
 import { Questions } from '../common/questions';
 
+export interface Error {
+  id: string;
+  error: string;
+}
+
+const createOrUpdateAnswer = (
+  prevAnswers: Answer[],
+  id: string,
+  answer: string | CheckboxValueType[]
+) => {
+  const updatedAnswers = prevAnswers.slice();
+  const prevAnswerIndex = prevAnswers.findIndex((a) => a.id === id);
+  if (prevAnswerIndex !== -1) {
+    updatedAnswers[prevAnswerIndex] = { id, answer };
+  } else {
+    updatedAnswers.push({ id, answer });
+  }
+  return updatedAnswers;
+};
+
 const Application = (): ReactElement => {
   useSessionOrRedirect();
 
@@ -25,7 +45,7 @@ const Application = (): ReactElement => {
   const [checkboxAnswers, setCheckboxAnswers] = useState<Answer[]>([]);
   const [dropdownAnswers, setDropdownAnswer] = useState<Answer[]>([]);
   const [errors, setErrors] = useState<Error[]>([]);
-  const [isErrorsOnSubmit, setErrorsOnSubmit] = useState<boolean>(false);
+  const [hasErrorsOnSubmit, setHasErrorsOnSubmit] = useState<boolean>(false);
   const answers = textAnswers.concat(checkboxAnswers, dropdownAnswers);
 
   const addTextAnswer = (question: ShortText | LongText, answer: string) => {
@@ -134,7 +154,7 @@ const Application = (): ReactElement => {
     }
 
     setErrors(updatedErrors);
-    setErrorsOnSubmit(updatedErrors.length > 0);
+    setHasErrorsOnSubmit(updatedErrors.length > 0);
     return updatedErrors;
   };
 
@@ -149,81 +169,65 @@ const Application = (): ReactElement => {
         } else {
           if (Array.isArray(answer.answer)) {
             // cast every element of list to a string
-            return answer.answer.map(toString);
+            return answer.answer.map((curr) => curr.toString());
           } else {
             return answer.answer;
           }
         }
       });
-
       updateApplicantResponses({ responses });
+    }
+  };
+
+  const renderAll = (q: QuestionDefinition) => {
+    const errorMessage = errors.find((e) => e.id === q.id)?.error ?? '';
+    switch (q.type) {
+      case QuestionType.ShortText:
+        return (
+          <ShortTextQuestion
+            key={q.id}
+            question={q}
+            addTextAnswer={addTextAnswer}
+            errorMessage={errorMessage}
+          />
+        );
+      case QuestionType.LongText:
+        return (
+          <LongTextQuestion
+            key={q.id}
+            question={q}
+            addTextAnswer={addTextAnswer}
+            errorMessage={errorMessage}
+          />
+        );
+      case QuestionType.Checkboxes:
+        return (
+          <CheckboxesQuestion
+            key={q.id}
+            question={q}
+            addCheckboxAnswer={addCheckboxAnswer}
+            errorMessage={errorMessage}
+          />
+        );
+      case QuestionType.Dropdown:
+        return (
+          <DropdownQuestion
+            key={q.id}
+            question={q}
+            addDropdownAnswer={addDropdownAnswer}
+            errorMessage={errorMessage}
+          />
+        );
     }
   };
 
   return (
     <PageLayout currentPage={'application'}>
       <h1>Application Page</h1>
-      <div>
-        {Questions.map((q) => {
-          const errorMessage = errors.find((e) => e.id === q.id)?.error ?? '';
-          switch (q.type) {
-            case QuestionType.ShortText:
-              return (
-                <ShortTextQuestion
-                  key={q.id}
-                  question={q}
-                  addTextAnswer={addTextAnswer}
-                  errorMessage={errorMessage}
-                />
-              );
-            case QuestionType.LongText:
-              return (
-                <LongTextQuestion
-                  key={q.id}
-                  question={q}
-                  addTextAnswer={addTextAnswer}
-                  errorMessage={errorMessage}
-                />
-              );
-            case QuestionType.Checkboxes:
-              return (
-                <CheckboxesQuestion
-                  key={q.id}
-                  question={q}
-                  addCheckboxAnswer={addCheckboxAnswer}
-                  errorMessage={errorMessage}
-                />
-              );
-            case QuestionType.Dropdown:
-              return (
-                <DropdownQuestion
-                  key={q.id}
-                  question={q}
-                  addDropdownAnswer={addDropdownAnswer}
-                  errorMessage={errorMessage}
-                />
-              );
-          }
-        })}
-      </div>
+      <div>{Questions.map((q) => renderAll(q))}</div>
       <button onClick={submitIfValid}>Submit</button>
-      {isErrorsOnSubmit && <div>Please fix errors before submitting.</div>}
+      {hasErrorsOnSubmit && <div>Please fix errors before submitting.</div>}
     </PageLayout>
   );
 };
 export default Application;
-
-const createOrUpdateAnswer = (
-  prevAnswers: Answer[],
-  id: string,
-  answer: string | CheckboxValueType[]
-) => {
-  const updatedAnswers = prevAnswers.slice();
-  const prevAnswerIndex = prevAnswers.findIndex((a) => a.id === id);
-  if (prevAnswerIndex !== -1) {
-    updatedAnswers[prevAnswerIndex] = { id, answer };
-  } else {
-    updatedAnswers.push({ id, answer });
-  }
-  return updatedAnswers;
-};
