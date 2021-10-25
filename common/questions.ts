@@ -111,10 +111,15 @@ export const Questions: Array<QuestionDefinition> = [
       'Wentworth Institute of Technology',
       'Olin College of Engineering',
       'Simmons University',
-      'Unlisted',
+      'Other',
     ],
     true
   ),
+  makeShortText(
+    'If your school was not in the previous question, list it here!',
+    false
+  ),
+
   makeLongText('What is your favorite food?', false),
   makeCheckbox(
     'What languages do you speak?',
