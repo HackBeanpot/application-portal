@@ -1,17 +1,49 @@
-import React, { FC } from 'react';
-import { Dropdown } from '../../common/types';
+import React, { FC, useState } from 'react';
+import { Dropdown as DropdownType } from '../../common/types';
+import { Menu, Dropdown, message, Button } from 'antd';
+import { DownOutlined, UserOutlined } from '@ant-design/icons';
+
 type DropdownProps = {
-  question: Dropdown;
+  question: DropdownType;
+  addDropdownAnswer: (
+    question: DropdownType,
+    addDropdownAnswer: string
+  ) => void;
+  errorMessage: string;
 };
-const DropdownQuestion: FC<DropdownProps> = ({ question }) => {
-  return (
-    <div>
-      <h2>{question.content}</h2>
-      {question.required ? '*' : ''}
+const DropdownQuestion: FC<DropdownProps> = ({
+  question,
+  addDropdownAnswer,
+  errorMessage,
+}) => {
+  const [selectedOption, updateSelectedOption] = useState('select');
+  const menu = (
+    <Menu
+      selectable
+      onClick={(e) => {
+        updateSelectedOption(e.key);
+        addDropdownAnswer(question, e.key);
+      }}
+    >
       {question.options.map((o) => (
-        <ul key={question.id}>{o.name}</ul>
+        <Menu.Item key={o.name}>{o.name}</Menu.Item>
       ))}
-    </div>
+    </Menu>
+  );
+
+  return (
+    <>
+      <h2>
+        {question.content} {question.required ? '*' : ''}
+      </h2>
+      <Dropdown overlay={menu}>
+        <Button>
+          <a className="ant-dropdown-link"> {selectedOption} </a>
+          <DownOutlined />
+        </Button>
+      </Dropdown>
+      <div>{errorMessage}</div>
+    </>
   );
 };
 export default DropdownQuestion;

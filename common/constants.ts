@@ -75,8 +75,8 @@ export const EXAMPLE_SHORT_TEXT_1: ShortText = {
   content: "What's your favorite food?",
   required: false,
   type: QuestionType.ShortText,
-  minLength: 200,
-  maxLength: 500,
+  minLength: 3,
+  maxLength: 5,
 };
 
 // with arrays, dropdown, has to be one of 5 choices, ORMAP over options to see if
@@ -100,8 +100,8 @@ export const EXAMPLE_LONG_TEXT_1: LongText = {
   content: 'Why do you want to participate in Hackbeanpot?',
   required: true,
   type: QuestionType.LongText,
-  minLength: 500,
-  maxLength: 1000,
+  minLength: 2,
+  maxLength: 4,
 };
 
 // switch case where you check the type, then you can check it's required (same for all qs)
