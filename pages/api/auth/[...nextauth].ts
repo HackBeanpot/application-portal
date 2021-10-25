@@ -37,6 +37,15 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     }),
     // callback so that we can add a user to the database
     callbacks: {
+      // added because originally NextAuth takes us to /login after email is sent, and 
+      // when logged out
+      // hacky solution so that we can just redirect to signin
+      redirect({ url, baseUrl }) {
+        if (url === `${baseUrl}/login`) {
+          return baseUrl;
+        }
+        return url.startsWith(baseUrl) ? url : baseUrl;
+      },
       async signIn({ user }) {
         // can implement banned users if needed
         const isAllowedToSignIn = true;
