@@ -21,7 +21,15 @@ const getStats: NextApiHandler = async (
     .aggregate([{ $group: { _id: '$applicationStatus', count: { $sum: 1 } } }])
     .toArray();
 
-  return res.status(200).json({ statusData });
+  const shirtData = await userDataCollection
+    .aggregate([{ $group: { _id: '$shirtSize', count: { $sum: 1 } } }])
+    .toArray();
+
+  const yearData = await userDataCollection
+    .aggregate([{ $group: { _id: '$yearOfEducation', count: { $sum: 1 } } }])
+    .toArray();
+
+  return res.status(200).json({ statusData, shirtData, yearData });
 };
 
 export default protect(statsHandler);
