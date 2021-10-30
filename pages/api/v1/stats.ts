@@ -1,6 +1,6 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
-import { protect } from '../../../server/protect';
 import { connectToDatabase } from '../../../server/mongoDB';
+import { protect } from '../../../server/protect';
 
 const statsHandler: NextApiHandler = async (req, res) => {
   switch (req.method) {
@@ -17,11 +17,11 @@ const getStats: NextApiHandler = async (
   res: NextApiResponse
 ) => {
   const { userDataCollection } = await connectToDatabase();
-  const statusData = await userDataCollection.aggregate([
-    { $group: { _id: '$applicationStatus', count: { $sum: 1 } } },
-  ]);
+  const statusData = await userDataCollection
+    .aggregate([{ $group: { _id: '$applicationStatus', count: { $sum: 1 } } }])
+    .toArray();
 
-  return res.status(200).json(statusData);
+  return res.status(200).json({ statusData });
 };
 
 export default protect(statsHandler);
