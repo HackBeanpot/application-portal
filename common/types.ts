@@ -1,23 +1,25 @@
+import { CheckboxValueType } from 'antd/lib/checkbox/Group';
+
 export interface User {
   email: string;
-  firstName: string;
-  lastName: string;
-  id: string;
-  gender: Gender;
-  school: string;
-  education: Education;
-  yearOfEducation: YearOfEducation;
-  ethnicities: Array<Ethnicity>;
-  shirtSize: ShirtSize;
-  applicationStatus: ApplicationStatus;
-  major: string;
-  minor: string;
-  resumeLink: string;
-  timeZone: string;
-  learningGoals: string;
-  responses: Array<QuestionResponse>;
-  isAdmin: boolean;
   rsvpStatus: RSVPStatus;
+  isAdmin: boolean;
+  applicationStatus: ApplicationStatus;
+  firstName?: string;
+  lastName?: string;
+  id?: string;
+  gender?: Gender;
+  school?: string;
+  education?: Education;
+  yearOfEducation?: YearOfEducation;
+  ethnicities?: Array<Ethnicity>;
+  shirtSize?: ShirtSize;
+  major?: string;
+  minor?: string;
+  resumeLink?: string;
+  timeZone?: string;
+  learningGoals?: string;
+  responses?: Array<QuestionResponse>;
 }
 export type SingletonDefinition = DateSingleton;
 
@@ -123,7 +125,7 @@ export interface LongText extends IQuestion {
 /**
  * is a single string for text responses, and an array of the choices for multi-select responses
  */
-export type QuestionResponse = string | Array<string>;
+export type QuestionResponse = string | Array<string> | null;
 
 export type QuestionIdToDefinitionMap = Record<QuestionId, QuestionDefinition>;
 export type QuestionIdToResponseMap = Record<QuestionId, QuestionResponse>;
@@ -134,6 +136,11 @@ export type QuestionIdToResponseMap = Record<QuestionId, QuestionResponse>;
 export type RegistrationApiRequest = {
   responses: Array<QuestionResponse>;
 };
+
+export interface Answer {
+  id: string;
+  answer: string | CheckboxValueType[];
+}
 
 export type StatusApiResponse = {
   applicationStatus: ApplicationStatus;

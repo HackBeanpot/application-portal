@@ -5,6 +5,8 @@ import { getApplicantById } from '../common/apiClient';
 import styles from '../styles/components/Layout.module.scss';
 import Logo from '../public/logo.svg';
 import Image from 'next/image';
+import { signOut } from 'next-auth/react';
+import { useSessionOrRedirect } from '../hooks/useSessionOrRedirect';
 
 const { Header, Content, Sider } = Layout;
 
@@ -19,12 +21,16 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
 }) => {
   const { data: user } = useSWR('/api/v1/profile', () => getApplicantById(1));
   const router = useRouter();
+  const session = useSessionOrRedirect();
   return (
     <Layout>
       <Header className={styles.header}>
         <Image src={Logo} alt="HackBeanpot logo" width={32} height={32} />
         <div className={styles.header__text}>
           HackBeanpot Application Portal
+        </div>
+        <div className={styles.header__user}>
+          {session?.user?.email ?? 'Not Logged In'}
         </div>
       </Header>
       <Layout className={styles.sider_content_layout}>
@@ -48,7 +54,10 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
                 Admin
               </Menu.Item>
             )}
-            <Menu.Item key="logout" onClick={() => router.push('/login')}>
+            <Menu.Item
+              key="logout"
+              onClick={() => router.push('/api/auth/signout')}
+            >
               Logout
             </Menu.Item>
           </Menu>
