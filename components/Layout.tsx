@@ -7,6 +7,8 @@ import Logo from '../public/logo.svg';
 import Image from 'next/image';
 import { signOut } from 'next-auth/react';
 import { useSessionOrRedirect } from '../hooks/useSessionOrRedirect';
+import { useState } from 'react';
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 
 const { Header, Content, Sider } = Layout;
 
@@ -19,12 +21,31 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
   currentPage,
   children,
 }) => {
+  // const [isCollapsed, setIsCollapsed] = useState(true);
   const { data: user } = useSWR('/api/v1/profile', () => getApplicantById(1));
   const router = useRouter();
   const session = useSessionOrRedirect();
   return (
     <Layout>
       <Header className={styles.header}>
+        {/*<div className={styles.header__toggle}>*/}
+        {/*  {isCollapsed ? (*/}
+        {/*    <MenuUnfoldOutlined*/}
+        {/*      width={32}*/}
+        {/*      height={32}*/}
+        {/*      className={styles.header__toggle}*/}
+        {/*      onClick={() => setIsCollapsed((c) => !c)}*/}
+        {/*    />*/}
+        {/*  ) : (*/}
+        {/*    <MenuFoldOutlined*/}
+        {/*      width={32}*/}
+        {/*      height={32}*/}
+        {/*      className={styles.header__toggle}*/}
+        {/*      onClick={() => setIsCollapsed((c) => !c)}*/}
+        {/*    />*/}
+        {/*  )}*/}
+        {/*</div>*/}
+
         <Image src={Logo} alt="HackBeanpot logo" width={32} height={32} />
         <div className={styles.header__text}>
           HackBeanpot Application Portal
@@ -34,7 +55,13 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
         </div>
       </Header>
       <Layout className={styles.sider_content_layout}>
-        <Sider className={styles.sider}>
+        <Sider
+          className={styles.sider}
+          breakpoint="lg"
+          collapsedWidth="0"
+          // collapsible
+          // collapsed={isCollapsed}
+        >
           <Menu
             mode="inline"
             defaultSelectedKeys={[currentPage]}

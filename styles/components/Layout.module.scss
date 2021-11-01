@@ -8,6 +8,13 @@ $header-height: 64px;
   background-color: $header-color;
   display: flex;
 
+  //&__toggle {
+  //  display: flex;
+  //  flex-direction: row;
+  //  justify-content: center;
+  //  align-items: center;
+  //}
+
   &__text {
     margin-left: 16px;
   }
