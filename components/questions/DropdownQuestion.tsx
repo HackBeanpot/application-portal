@@ -19,6 +19,10 @@ const DropdownQuestion: FC<DropdownProps> = ({
   const [selectedOption, updateSelectedOption] = useState('select');
   const menu = (
     <Menu
+      style={{
+        maxHeight: 300,
+        overflow: 'auto',
+      }}
       selectable
       onClick={(e) => {
         updateSelectedOption(e.key);
