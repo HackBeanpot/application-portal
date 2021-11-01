@@ -111,6 +111,8 @@ export const Questions: Array<QuestionDefinition> = [
       'Wentworth Institute of Technology',
       'Olin College of Engineering',
       'Simmons University',
+      'Bristol Community College',
+      'Worcester Polytechnic Institute',
       'Other',
     ],
     true
