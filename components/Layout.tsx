@@ -34,7 +34,7 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
         </div>
       </Header>
       <Layout className={styles.sider_content_layout}>
-        <Sider className={styles.sider}>
+        <Sider className={styles.sider} breakpoint="lg" collapsedWidth="0">
           <Menu
             mode="inline"
             defaultSelectedKeys={[currentPage]}
