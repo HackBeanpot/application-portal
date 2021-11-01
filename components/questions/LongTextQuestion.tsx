@@ -12,8 +12,9 @@ const LongTextQuestion: FC<LongTextProps> = ({
 }) => {
   return (
     <div>
-      <h2>{question.content}</h2>
-      {question.required ? '*' : ''}
+      <h2>
+        {question.content} {question.required ? '*' : ''}
+      </h2>
       min-length = {question.minLength}
       <br />
       max-length = {question.maxLength}

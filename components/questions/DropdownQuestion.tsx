@@ -36,7 +36,7 @@ const DropdownQuestion: FC<DropdownProps> = ({
   );
 
   return (
-    <>
+    <div>
       <h2>
         {question.content} {question.required ? '*' : ''}
       </h2>
@@ -47,7 +47,7 @@ const DropdownQuestion: FC<DropdownProps> = ({
         </Button>
       </Dropdown>
       <div>{errorMessage}</div>
-    </>
+    </div>
   );
 };
 export default DropdownQuestion;

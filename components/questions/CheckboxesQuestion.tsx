@@ -19,9 +19,10 @@ const CheckboxesQuestion: FC<CheckboxesProps> = ({
   const options: string[] = [];
   question.options.map((o) => options.push(o.name));
   return (
-    <>
-      <h2>{question.content}</h2>
-      {question.required ? '*' : ''}
+    <div>
+      <h2>
+        {question.content} {question.required ? '*' : ''}
+      </h2>
       <Checkbox.Group
         key={question.id}
         options={options}
@@ -31,7 +32,7 @@ const CheckboxesQuestion: FC<CheckboxesProps> = ({
       <br />
       max number = {question.maxNumber}
       <div>{errorMessage}</div>
-    </>
+    </div>
   );
 };
 export default CheckboxesQuestion;
