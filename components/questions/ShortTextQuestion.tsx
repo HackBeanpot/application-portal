@@ -19,6 +19,7 @@ const ShortTextQuestion: FC<ShortTextProps> = ({
         {question.content} {question.required ? '*' : ''}
       </label>
       <Input
+        placeholder={question.placeholder}
         name={question.id}
         className={styles.textarea}
         onChange={(e) => addTextAnswer(question, e.target.value)}

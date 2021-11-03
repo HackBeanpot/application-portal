@@ -17,7 +17,9 @@ const DropdownQuestion: FC<DropdownProps> = ({
   addDropdownAnswer,
   errorMessage,
 }) => {
-  const [selectedOption, updateSelectedOption] = useState('select');
+  const [selectedOption, updateSelectedOption] = useState(
+    question.placeholder ?? 'Select'
+  );
   const menu = (
     <Menu
       style={{
@@ -44,8 +46,7 @@ const DropdownQuestion: FC<DropdownProps> = ({
       <br />
       <Dropdown overlay={menu}>
         <Button name={question.id}>
-          <a className="ant-dropdown-link"> {selectedOption} </a>
-          <DownOutlined />
+          {selectedOption} <DownOutlined />
         </Button>
       </Dropdown>
       <div>{errorMessage}</div>
