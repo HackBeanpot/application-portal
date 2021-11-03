@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 import { Dropdown as DropdownType } from '../../common/types';
 import { Menu, Dropdown, message, Button } from 'antd';
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
+import styles from '../../styles/components/Questions.module.scss';
 
 type DropdownProps = {
   question: DropdownType;
@@ -36,12 +37,13 @@ const DropdownQuestion: FC<DropdownProps> = ({
   );
 
   return (
-    <div>
-      <h2>
+    <div className={styles.question}>
+      <label htmlFor={question.id}>
         {question.content} {question.required ? '*' : ''}
-      </h2>
+      </label>
+      <br />
       <Dropdown overlay={menu}>
-        <Button>
+        <Button name={question.id}>
           <a className="ant-dropdown-link"> {selectedOption} </a>
           <DownOutlined />
         </Button>
