@@ -63,7 +63,9 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
           </Menu>
         </Sider>
         <Layout className={styles.content__layout}>
-          <Content className={styles.content}>{children}</Content>
+          <Content className={styles.content}>
+            <div>{children}</div>
+          </Content>
         </Layout>
       </Layout>
     </Layout>

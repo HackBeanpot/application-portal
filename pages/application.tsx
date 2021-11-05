@@ -17,6 +17,7 @@ import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import { updateApplicantResponses } from '../common/apiClient';
 import { PageLayout } from '../components/Layout';
 import { Questions } from '../common/questions';
+import { Button } from 'antd';
 
 export interface Error {
   id: string;
@@ -225,7 +226,9 @@ const Application = (): ReactElement => {
     <PageLayout currentPage={'application'}>
       <h1>Application Page</h1>
       <div>{Questions.map((q) => renderAll(q))}</div>
-      <button onClick={submitIfValid}>Submit</button>
+      <Button type={'primary'} onClick={submitIfValid}>
+        Submit
+      </Button>
       {hasErrorsOnSubmit && <div>Please fix errors before submitting.</div>}
     </PageLayout>
   );

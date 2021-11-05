@@ -44,13 +44,17 @@ function makeCheckbox(
   };
 }
 
-function makeShortText(content: string, required: boolean): ShortText {
+function makeShortText(
+  content: string,
+  required: boolean,
+  placeholder?: string
+): ShortText {
   questionCount++;
   return {
     type: QuestionType.ShortText,
     maxLength: maxLengthShort,
     minLength: minLengthShort,
-
+    placeholder,
     content: content,
     id: String(questionCount), // need to access questionID from questionidtoquestioncontent
     required: required,
@@ -60,13 +64,14 @@ function makeShortText(content: string, required: boolean): ShortText {
 function makeDropdown(
   content: string,
   options: Array<string>,
-  required: boolean
+  required: boolean,
+  placeholder?: string
 ): Dropdown {
   questionCount++;
   return {
     type: QuestionType.Dropdown,
     options: options.map((name) => ({ name })),
-
+    placeholder,
     content: content,
     id: String(questionCount), // need to access questionID from questionidtoquestioncontent
     required: required,
@@ -88,11 +93,12 @@ function makeLongText(content: string, required: boolean): LongText {
 
 // write questions for portal here
 export const Questions: Array<QuestionDefinition> = [
-  makeShortText('What is your name?', true),
+  makeShortText('What is your name?', true, 'Nupur Neogi'),
   makeDropdown(
     'What year are you?',
     ['Freshman', 'Sophomore', 'Junior', 'Senior', 'Other'],
-    true
+    true,
+    'Freshman'
   ),
   makeDropdown(
     'What school do you attend?',
