@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 import { Dropdown as DropdownType } from '../../common/types';
 import { Menu, Dropdown, message, Button } from 'antd';
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
+import styles from '../../styles/components/Questions.module.scss';
 
 type DropdownProps = {
   question: DropdownType;
@@ -16,7 +17,9 @@ const DropdownQuestion: FC<DropdownProps> = ({
   addDropdownAnswer,
   errorMessage,
 }) => {
-  const [selectedOption, updateSelectedOption] = useState('select');
+  const [selectedOption, updateSelectedOption] = useState(
+    question.placeholder ?? 'Select'
+  );
   const menu = (
     <Menu
       style={{
@@ -36,18 +39,18 @@ const DropdownQuestion: FC<DropdownProps> = ({
   );
 
   return (
-    <>
-      <h2>
+    <div className={styles.question}>
+      <label htmlFor={question.id}>
         {question.content} {question.required ? '*' : ''}
-      </h2>
+      </label>
+      <br />
       <Dropdown overlay={menu}>
-        <Button>
-          <a className="ant-dropdown-link"> {selectedOption} </a>
-          <DownOutlined />
+        <Button name={question.id}>
+          {selectedOption} <DownOutlined />
         </Button>
       </Dropdown>
       <div>{errorMessage}</div>
-    </>
+    </div>
   );
 };
 export default DropdownQuestion;

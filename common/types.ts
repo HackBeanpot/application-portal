@@ -109,11 +109,13 @@ export interface Checkboxes extends IQuestion {
 }
 export interface ShortText extends IQuestion {
   type: QuestionType.ShortText;
+  placeholder?: string;
   maxLength: number;
   minLength: number;
 }
 export interface Dropdown extends IQuestion {
   type: QuestionType.Dropdown;
+  placeholder?: string;
   options: Array<{ name: string }>;
 }
 export interface LongText extends IQuestion {
