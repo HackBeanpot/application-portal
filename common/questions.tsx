@@ -102,11 +102,12 @@ export const Questions: Array<QuestionDefinition> = [
       'Female',
       'Non-binary',
       'Genderqueer',
+      'Agender',
       'Unlisted',
       'Prefer not to say',
     ],
     true,
-    'Unlisted'
+    'Gender'
   ),
   makeCheckbox(
     'What ethnicities do you identify as?',
@@ -146,7 +147,7 @@ export const Questions: Array<QuestionDefinition> = [
       'Other',
     ],
     true,
-    'Other'
+    'School'
   ),
   makeShortText(
     'If your school was not listed in the previous question, list it here!',
@@ -156,13 +157,13 @@ export const Questions: Array<QuestionDefinition> = [
     'What level of education are you currently pursuing?',
     ['High school', 'Undergraduate', 'Graduate'],
     true,
-    'Undergraduate'
+    'Level'
   ),
   makeDropdown(
     'What year in your current education are you?',
     ['1st year', '2nd year', '3rd year', '4th year', '5th year+'],
     true,
-    '1st year'
+    'Year'
   ),
   makeShortText(
     'What are your major/concentration(s)? (N/A if not applicable)',
@@ -188,7 +189,7 @@ export const Questions: Array<QuestionDefinition> = [
       '4XL: 58-61"',
     ],
     true,
-    'XS'
+    'Size'
   ),
   makeShortText(
     'Are there any special accommodations you would need from us? (Note: Answers will not factor into how your application is read!)',
@@ -198,7 +199,7 @@ export const Questions: Array<QuestionDefinition> = [
     'How many hackathons have you attended?',
     ['0', '1-2', '3-5', '6+'],
     true,
-    '0'
+    'Count'
   ),
   makeShortText(
     "If you've previously attended an in-person or virtual hackthon, what did you like or dislike about it?",
