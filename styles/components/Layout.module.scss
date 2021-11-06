@@ -19,7 +19,7 @@ $header-height: 64px;
 }
 
 .sider_content_layout {
-  min-height: calc(100vh - $header-height);
+  min-height: calc(100vh - #{$header-height});
   margin-top: $header-height;
 }
 

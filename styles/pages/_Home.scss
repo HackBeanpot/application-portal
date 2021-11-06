@@ -1,0 +1,21 @@
+.home {
+  .alert {
+    margin-bottom: 20px;
+  }
+
+  .card {
+
+  }
+
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .button-container {
+      .button {
+        margin-right: 8px;
+      }
+    }
+  }
+}
