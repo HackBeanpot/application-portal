@@ -24,7 +24,7 @@ const DropdownQuestion: FC<DropdownProps> = ({
       <br />
       <Select
         className={styles.question}
-        placeholder={question.placeholder}
+        placeholder={question.placeholder ?? 'Select'}
         allowClear
         onChange={(value) =>
           value && addDropdownAnswer(question, value.toString())
