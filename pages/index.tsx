@@ -16,6 +16,7 @@ import {
 } from '../components/dashboard/StatusDialogue';
 import { getSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next';
+import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect';
 
 const Home = (): ReactElement => {
   const { data: status } = useSWR('/api/v1/status', getStatus);
@@ -70,8 +71,7 @@ function getStatusDialogueProps(
   return null;
 }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  return { props: { session: await getSession(ctx) } };
-};
+export const getServerSideProps: GetServerSideProps =
+  getServerSideSessionOrRedirect;
 
 export default Home;

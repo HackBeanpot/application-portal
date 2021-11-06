@@ -26,6 +26,7 @@ import { getSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next';
 import useSWR from 'swr';
 import { format } from '../components/dashboard/StatusDialogue';
+import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect';
 
 export interface Error {
   id: string;
@@ -281,8 +282,7 @@ const Application = (): ReactElement => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  return { props: { session: await getSession(ctx) } };
-};
+export const getServerSideProps: GetServerSideProps =
+  getServerSideSessionOrRedirect;
 
 export default Application;

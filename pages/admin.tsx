@@ -6,6 +6,7 @@ import Stats from '../components/admin-tabs/Stats';
 import { PageLayout } from '../components/Layout';
 import { getSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next';
+import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect';
 
 const Admin = (): ReactElement => {
   const [currTab, setCurrTab] = useState(adminTabs.VIEW_STATS);
@@ -32,8 +33,7 @@ const Admin = (): ReactElement => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  return { props: { session: await getSession(ctx) } };
-};
+export const getServerSideProps: GetServerSideProps =
+  getServerSideSessionOrRedirect;
 
 export default Admin;
