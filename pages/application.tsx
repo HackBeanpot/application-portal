@@ -1,24 +1,31 @@
 import React, { ReactElement, useState } from 'react';
 import {
-  QuestionType,
   Answer,
-  ShortText,
-  LongText,
+  ApplicationStatus,
   Checkboxes,
   Dropdown,
+  LongText,
   QuestionDefinition,
+  QuestionType,
+  ShortText,
 } from '../common/types';
 import ShortTextQuestion from '../components/questions/ShortTextQuestion';
 import LongTextQuestion from '../components/questions/LongTextQuestion';
 import CheckboxesQuestion from '../components/questions/CheckboxesQuestion';
 import DropdownQuestion from '../components/questions/DropdownQuestion';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
-import { updateApplicantResponses } from '../common/apiClient';
+import {
+  getRegistrationClosed,
+  getStatus,
+  updateApplicantResponses,
+} from '../common/apiClient';
 import { PageLayout } from '../components/Layout';
 import { Questions } from '../common/questions';
-import { Button } from 'antd';
+import { Alert, Button, notification } from 'antd';
 import { getSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next';
+import useSWR from 'swr';
+import { format } from '../components/dashboard/StatusDialogue';
 
 export interface Error {
   id: string;
@@ -41,6 +48,11 @@ const createOrUpdateAnswer = (
 };
 
 const Application = (): ReactElement => {
+  const { data: status } = useSWR('/api/v1/status', getStatus);
+  const { data: registrationClosed } = useSWR(
+    '/api/v1/dates/registration-closed',
+    getRegistrationClosed
+  );
   const [textAnswers, setTextAnswers] = useState<Answer[]>([]);
   const [checkboxAnswers, setCheckboxAnswers] = useState<Answer[]>([]);
   const [dropdownAnswers, setDropdownAnswer] = useState<Answer[]>([]);
@@ -175,7 +187,22 @@ const Application = (): ReactElement => {
           }
         }
       });
-      updateApplicantResponses({ responses });
+      updateApplicantResponses({ responses }).then((response) => {
+        if (200 <= response.status && response.status < 300) {
+          notification.success({
+            message: 'Application Successfully Submitted',
+            placement: 'bottomRight',
+            duration: 5,
+          });
+        } else {
+          notification.error({
+            message: 'Error Submitting Application',
+            description: response.data,
+            placement: 'bottomRight',
+            duration: 30,
+          });
+        }
+      });
     }
   };
 
@@ -223,12 +250,33 @@ const Application = (): ReactElement => {
 
   return (
     <PageLayout currentPage={'application'}>
-      <h1>Application Page</h1>
-      <div>{Questions.map((q) => renderAll(q))}</div>
-      <Button type={'primary'} onClick={submitIfValid}>
-        Submit
-      </Button>
-      {hasErrorsOnSubmit && <div>Please fix errors before submitting.</div>}
+      <div className="application">
+        <h1>Application Page</h1>
+        {status?.data.applicationStatus === ApplicationStatus.Submitted && (
+          <Alert
+            className="alert"
+            type="info"
+            message={
+              <>
+                You have already submitted your application, but you may
+                resubmit your application as many times as you{"'"}d like before
+                registration closes on{' '}
+                <b>
+                  {registrationClosed?.data &&
+                    format(new Date(registrationClosed.data))}
+                </b>
+                .
+              </>
+            }
+            showIcon
+          />
+        )}
+        <div>{Questions.map((q) => renderAll(q))}</div>
+        <Button type={'primary'} onClick={submitIfValid}>
+          Submit
+        </Button>
+        {hasErrorsOnSubmit && <div>Please fix errors before submitting.</div>}
+      </div>
     </PageLayout>
   );
 };
