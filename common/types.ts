@@ -1,4 +1,5 @@
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
+import { ReactNode } from 'react';
 
 export interface User {
   email: string;
@@ -97,7 +98,7 @@ export type QuestionDefinition = Checkboxes | ShortText | Dropdown | LongText;
 export type QuestionId = string;
 
 interface IQuestion {
-  content: string;
+  content: ReactNode;
   id: QuestionId;
   required: boolean;
 }
