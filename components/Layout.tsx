@@ -1,7 +1,7 @@
 import { Layout, Menu } from 'antd';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
-import { getApplicantById } from '../common/apiClient';
+import { getUser } from '../common/apiClient';
 import Logo from '../public/logo.svg';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
@@ -18,7 +18,7 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
   currentPage,
   children,
 }) => {
-  const { data: user } = useSWR('/api/v1/profile', () => getApplicantById(1));
+  const { data: user } = useSWR('/api/v1/user', getUser);
   const router = useRouter();
   const { data: session } = useSession();
   return (
@@ -49,7 +49,7 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
           >
             Application
           </Menu.Item>
-          {user?.data.isAdmin && (
+          {user?.data?.isAdmin && (
             <Menu.Item key="admin" onClick={() => router.push('/admin')}>
               Admin
             </Menu.Item>
