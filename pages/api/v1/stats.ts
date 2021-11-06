@@ -1,6 +1,6 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { connectToDatabase } from '../../../server/mongoDB';
-import { protect } from '../../../server/protect';
+import { isAdmin, protect } from '../../../server/protect';
 import { User } from '../../../common/types';
 
 const statsHandler: NextApiHandler = async (req, res) => {
@@ -17,6 +17,11 @@ const getStats: NextApiHandler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
+  const adminCheck = await isAdmin(req);
+  if (!adminCheck) {
+    return res.status(401).send({ message: 'User is not an admin' });
+  }
+
   const { userDataCollection } = await connectToDatabase();
 
   const statusData = await userDataCollection
@@ -38,7 +43,6 @@ const getStats: NextApiHandler = async (
   );
 
   const total = await userDataCollection.find().toArray();
-
   resData['Total'] = total.length;
 
   return res.status(200).json(resData);
@@ -54,8 +58,6 @@ const convertData = (
     // @ts-ignore
     collections[ind].forEach((category: { _id: string; count: number }) => {
       const id = category._id ? category._id : `Unknown ${c}`;
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       resData[id] = category.count;
     });
   });
@@ -64,4 +66,3 @@ const convertData = (
 };
 
 export default protect(statsHandler);
-// export default statsHandler;
