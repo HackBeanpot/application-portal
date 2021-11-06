@@ -4,10 +4,10 @@ import Applicants from '../components/admin-tabs/Applicants';
 import PortalSettings from '../components/admin-tabs/PortalSettings';
 import Stats from '../components/admin-tabs/Stats';
 import { PageLayout } from '../components/Layout';
-import { useSessionOrRedirect } from '../hooks/useSessionOrRedirect';
+import { getSession } from 'next-auth/react';
+import { GetServerSideProps } from 'next';
 
 const Admin = (): ReactElement => {
-  useSessionOrRedirect();
   const [currTab, setCurrTab] = useState(adminTabs.VIEW_STATS);
 
   return (
@@ -31,4 +31,9 @@ const Admin = (): ReactElement => {
     </PageLayout>
   );
 };
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  return { props: { session: await getSession(ctx) } };
+};
+
 export default Admin;

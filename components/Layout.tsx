@@ -5,7 +5,8 @@ import { getApplicantById } from '../common/apiClient';
 import styles from '../styles/components/Layout.module.scss';
 import Logo from '../public/logo.svg';
 import Image from 'next/image';
-import { useSessionOrRedirect } from '../hooks/useSessionOrRedirect';
+import { useSession } from 'next-auth/react';
+import React from 'react';
 
 const { Header, Content, Sider } = Layout;
 
@@ -20,7 +21,7 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
 }) => {
   const { data: user } = useSWR('/api/v1/profile', () => getApplicantById(1));
   const router = useRouter();
-  const session = useSessionOrRedirect();
+  const { data: session } = useSession();
   return (
     <Layout>
       <Header className={styles.header}>

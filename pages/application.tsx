@@ -12,12 +12,13 @@ import ShortTextQuestion from '../components/questions/ShortTextQuestion';
 import LongTextQuestion from '../components/questions/LongTextQuestion';
 import CheckboxesQuestion from '../components/questions/CheckboxesQuestion';
 import DropdownQuestion from '../components/questions/DropdownQuestion';
-import { useSessionOrRedirect } from '../hooks/useSessionOrRedirect';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import { updateApplicantResponses } from '../common/apiClient';
 import { PageLayout } from '../components/Layout';
 import { Questions } from '../common/questions';
 import { Button } from 'antd';
+import { getSession } from 'next-auth/react';
+import { GetServerSideProps } from 'next';
 
 export interface Error {
   id: string;
@@ -40,8 +41,6 @@ const createOrUpdateAnswer = (
 };
 
 const Application = (): ReactElement => {
-  useSessionOrRedirect();
-
   const [textAnswers, setTextAnswers] = useState<Answer[]>([]);
   const [checkboxAnswers, setCheckboxAnswers] = useState<Answer[]>([]);
   const [dropdownAnswers, setDropdownAnswer] = useState<Answer[]>([]);
@@ -233,4 +232,9 @@ const Application = (): ReactElement => {
     </PageLayout>
   );
 };
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  return { props: { session: await getSession(ctx) } };
+};
+
 export default Application;
