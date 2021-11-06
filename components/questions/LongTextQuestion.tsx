@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { LongText } from '../../common/types';
 import { Input } from 'antd';
-import styles from '../../styles/components/Questions.module.scss';
 
 type LongTextProps = {
   question: LongText;
@@ -14,7 +13,7 @@ const LongTextQuestion: FC<LongTextProps> = ({
   errorMessage,
 }) => {
   return (
-    <div className={styles.question}>
+    <div className="question">
       <label htmlFor={question.id}>
         {question.content} {question.required ? '*' : ''}
       </label>

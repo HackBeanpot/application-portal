@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { Checkboxes } from '../../common/types';
 import { Checkbox } from 'antd';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
-import styles from '../../styles/components/Questions.module.scss';
 
 type CheckboxesProps = {
   question: Checkboxes;
@@ -20,7 +19,7 @@ const CheckboxesQuestion: FC<CheckboxesProps> = ({
   const options: string[] = [];
   question.options.map((o) => options.push(o.name));
   return (
-    <div className={styles.question}>
+    <div className="question">
       <label htmlFor={question.id}>
         {question.content} {question.required ? '*' : ''}
       </label>

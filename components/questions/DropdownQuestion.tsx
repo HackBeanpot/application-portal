@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { Dropdown as DropdownType } from '../../common/types';
 import { Select } from 'antd';
-import styles from '../../styles/components/Questions.module.scss';
 
 type DropdownProps = {
   question: DropdownType;
@@ -17,13 +16,12 @@ const DropdownQuestion: FC<DropdownProps> = ({
   errorMessage,
 }) => {
   return (
-    <div>
+    <div className="question">
       <label htmlFor={question.id}>
         {question.content} {question.required ? '*' : ''}
       </label>
       <br />
       <Select
-        className={styles.question}
         placeholder={question.placeholder ?? 'Select'}
         allowClear
         onChange={(value) =>
