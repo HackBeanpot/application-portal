@@ -181,4 +181,4 @@ const OPTIONS = {
   month: 'long',
   day: 'numeric',
 } as const;
-const format = (d: Date) => d.toLocaleDateString('en-US', OPTIONS);
+export const format = (d: Date) => d.toLocaleDateString('en-US', OPTIONS);

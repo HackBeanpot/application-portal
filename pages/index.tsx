@@ -7,7 +7,6 @@ import {
 } from '../common/apiClient';
 import { WELCOME_MESSAGE } from '../common/constants';
 import useSWR from 'swr';
-import { useSessionOrRedirect } from '../hooks/useSessionOrRedirect';
 import { PageLayout } from '../components/Layout';
 import { Card } from 'antd';
 import { StatusApiResponse } from '../common/types';
@@ -15,9 +14,11 @@ import {
   LoadingMessage,
   StatusDialogue,
 } from '../components/dashboard/StatusDialogue';
+import { getSession } from 'next-auth/react';
+import { GetServerSideProps } from 'next';
+import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect';
 
 const Home = (): ReactElement => {
-  useSessionOrRedirect();
   const { data: status } = useSWR('/api/v1/status', getStatus);
   const { data: confirmBy } = useSWR('/api/v1/dates/confirm-by', getConfirmBy);
   const { data: registrationClosed } = useSWR(
@@ -69,5 +70,8 @@ function getStatusDialogueProps(
   }
   return null;
 }
+
+export const getServerSideProps: GetServerSideProps =
+  getServerSideSessionOrRedirect;
 
 export default Home;

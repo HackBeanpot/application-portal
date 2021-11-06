@@ -94,7 +94,7 @@ function makeLongText(content: ReactNode, required: boolean): LongText {
 
 // write questions for portal here
 export const Questions: Array<QuestionDefinition> = [
-  makeShortText('What is your name?', true, 'Nupur Neogi'),
+  makeShortText('What is your name?', true, 'Firstname Lastname'),
   makeDropdown(
     'What is your gender?',
     [

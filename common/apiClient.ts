@@ -18,17 +18,17 @@ export function getAllAdmins() {
   return Axios.get<Array<User>>(`/api/v1/admin`);
 }
 
-export function getApplicantById(id: number) {
-  return Axios.get<User>(`/api/v1/applicants/${id}`);
-}
+export const getUser = (): Promise<AxiosResponse<User>> =>
+  Axios.get(`/api/v1/user`);
 
 export function updateApplicantById(id: number, user: User) {
   Axios.post(`/api/v1/applicants/${id}`, user);
 }
 
-export function updateApplicantResponses(responses: RegistrationApiRequest) {
-  Axios.post(`/api/v1/registration`, responses);
-}
+export const updateApplicantResponses = (
+  responses: RegistrationApiRequest
+): Promise<AxiosResponse<string | null>> =>
+  Axios.post(`/api/v1/registration`, responses, { validateStatus: () => true });
 
 export function getAllApplicants() {
   return Axios.get<Array<User>>(`/api/v1/applicants`);

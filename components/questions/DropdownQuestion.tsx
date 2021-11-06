@@ -1,8 +1,6 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { Dropdown as DropdownType } from '../../common/types';
-import { Menu, Dropdown, message, Button } from 'antd';
-import { DownOutlined, UserOutlined } from '@ant-design/icons';
-import styles from '../../styles/components/Questions.module.scss';
+import { Select } from 'antd';
 
 type DropdownProps = {
   question: DropdownType;
@@ -17,38 +15,26 @@ const DropdownQuestion: FC<DropdownProps> = ({
   addDropdownAnswer,
   errorMessage,
 }) => {
-  const [selectedOption, updateSelectedOption] = useState(
-    question.placeholder ?? 'Select'
-  );
-  const menu = (
-    <Menu
-      style={{
-        maxHeight: 300,
-        overflow: 'auto',
-      }}
-      selectable
-      onClick={(e) => {
-        updateSelectedOption(e.key);
-        addDropdownAnswer(question, e.key);
-      }}
-    >
-      {question.options.map((o) => (
-        <Menu.Item key={o.name}>{o.name}</Menu.Item>
-      ))}
-    </Menu>
-  );
-
   return (
-    <div className={styles.question}>
+    <div className="question">
       <label htmlFor={question.id}>
         {question.content} {question.required ? '*' : ''}
       </label>
       <br />
-      <Dropdown overlay={menu}>
-        <Button name={question.id}>
-          {selectedOption} <DownOutlined />
-        </Button>
-      </Dropdown>
+      <Select
+        placeholder={question.placeholder ?? 'Select'}
+        allowClear
+        onChange={(value) =>
+          value && addDropdownAnswer(question, value.toString())
+        }
+        dropdownMatchSelectWidth={false}
+      >
+        {question.options.map(({ name }) => (
+          <Select.Option key={name} value={name}>
+            {name}
+          </Select.Option>
+        ))}
+      </Select>
       <div>{errorMessage}</div>
     </div>
   );

@@ -1,0 +1,63 @@
+@import "../constants";
+
+$header-height: 64px;
+$sider-width: 200px;
+
+.layout {
+  .header {
+    top: 0;
+    position: sticky;
+    z-index: 100;
+    display: flex;
+
+    .logo {
+      width: $header-height;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .user {
+      color: grey;
+      margin-left: auto;
+    }
+  }
+
+  .content {
+    min-height: calc(100vh - #{$header-height});
+    padding: 32px 24px;
+    overflow: initial;
+    margin: 0 15%;
+    @media (max-width: $md) {
+      padding: 0 50px;
+    }
+    @media (max-width: $xs) {
+      padding: 0 15px;
+    }
+  }
+}
+
+.sider_content_layout {
+
+  margin-top: $header-height;
+}
+
+.sider {
+  overflow: auto;
+  height: 100%;
+  position: fixed;
+  left: 0;
+}
+
+.content {
+
+
+  &__layout {
+    margin-left: $sider-width;
+  }
+}
