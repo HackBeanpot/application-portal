@@ -148,3 +148,5 @@ export type StatusApiResponse = {
   applicationStatus: ApplicationStatus;
   rsvpStatus: RSVPStatus;
 };
+
+export type DatesApiResponse = string;

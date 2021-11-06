@@ -1,4 +1,9 @@
-import { StatusApiResponse, RegistrationApiRequest, User } from './types';
+import {
+  StatusApiResponse,
+  RegistrationApiRequest,
+  User,
+  DatesApiResponse,
+} from './types';
 import Axios, { AxiosResponse } from 'axios';
 
 export function getAdminById(id: number) {
@@ -31,4 +36,20 @@ export function getAllApplicants() {
 
 export function getStatus(): Promise<AxiosResponse<StatusApiResponse>> {
   return Axios.get(`/api/v1/status`);
+}
+
+export function getConfirmBy(): Promise<AxiosResponse<DatesApiResponse>> {
+  return Axios.get(`/api/v1/dates/confirm-by`);
+}
+
+export function getRegistrationClosed(): Promise<
+  AxiosResponse<DatesApiResponse>
+> {
+  return Axios.get(`/api/v1/dates/registration-closed`);
+}
+
+export function getRegistrationOpen(): Promise<
+  AxiosResponse<DatesApiResponse>
+> {
+  return Axios.get(`/api/v1/dates/registration-open`);
 }

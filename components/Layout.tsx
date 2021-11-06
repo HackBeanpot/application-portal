@@ -5,7 +5,6 @@ import { getApplicantById } from '../common/apiClient';
 import styles from '../styles/components/Layout.module.scss';
 import Logo from '../public/logo.svg';
 import Image from 'next/image';
-import { signOut } from 'next-auth/react';
 import { useSessionOrRedirect } from '../hooks/useSessionOrRedirect';
 
 const { Header, Content, Sider } = Layout;
