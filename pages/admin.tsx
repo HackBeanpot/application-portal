@@ -1,34 +1,27 @@
-import React, { ReactElement, useState } from 'react';
-import { adminTabs } from '../common/constants';
+import React, { ReactElement } from 'react';
 import Applicants from '../components/admin-tabs/Applicants';
 import PortalSettings from '../components/admin-tabs/PortalSettings';
 import Stats from '../components/admin-tabs/Stats';
 import { PageLayout } from '../components/Layout';
-import { getSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next';
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect';
+import { Tabs } from 'antd';
+import { ADMIN_TABS } from '../common/constants';
 
 const Admin = (): ReactElement => {
-  const [currTab, setCurrTab] = useState(adminTabs.VIEW_STATS);
-
   return (
     <PageLayout currentPage="admin">
-      <div>
-        <button onClick={() => setCurrTab(adminTabs.VIEW_STATS)}>
-          {adminTabs.VIEW_STATS}
-        </button>
-        <button onClick={() => setCurrTab(adminTabs.CONFIGURE_PORTAL_SETTINGS)}>
-          {adminTabs.CONFIGURE_PORTAL_SETTINGS}
-        </button>
-        <button
-          onClick={() => setCurrTab(adminTabs.VIEW_AND_MODIFY_APPLICANTS)}
-        >
-          {adminTabs.VIEW_AND_MODIFY_APPLICANTS}
-        </button>
-      </div>
-      {currTab === adminTabs.VIEW_STATS && <Stats />}
-      {currTab === adminTabs.CONFIGURE_PORTAL_SETTINGS && <PortalSettings />}
-      {currTab == adminTabs.VIEW_AND_MODIFY_APPLICANTS && <Applicants />}
+      <Tabs defaultActiveKey="1">
+        <Tabs.TabPane tab={ADMIN_TABS.VIEW_STATS} key="1">
+          <Stats />
+        </Tabs.TabPane>
+        <Tabs.TabPane tab={ADMIN_TABS.CONFIGURE_PORTAL_SETTINGS} key="2">
+          <PortalSettings />
+        </Tabs.TabPane>
+        <Tabs.TabPane tab={ADMIN_TABS.VIEW_STATS} key="3">
+          <Applicants />
+        </Tabs.TabPane>
+      </Tabs>
     </PageLayout>
   );
 };

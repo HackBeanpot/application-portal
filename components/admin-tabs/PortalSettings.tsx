@@ -1,34 +1,72 @@
-import React from 'react';
-import { adminTabs } from '../../common/constants';
+import React, { useState } from 'react';
+import { ADMIN_TABS } from '../../common/constants';
 import useSWR from 'swr';
+import {
+  getConfirmBy,
+  getRegistrationClosed,
+  getRegistrationOpen,
+  updateConfirmBy,
+  updateRegistrationClosed,
+  updateRegistrationOpen,
+} from '../../common/apiClient';
+import { Button, Col, DatePicker, Row } from 'antd';
+import { format } from '../dashboard/StatusDialogue';
 import PortalSettingsRow from './PortalSettingsRow';
 
 const PortalSettings = () => {
-  const dummyData = [
-    { setting: 'Open Date', value: new Date('2021-12-20').toDateString() },
-    { setting: 'Close Date', value: new Date('2021-12-20').toDateString() },
-    {
-      setting: 'Confirm By Date',
-      value: new Date('2021-12-20').toDateString(),
-    },
-  ];
+  const { data: confirmBy, mutate: mutateConfirmBy } = useSWR(
+    '/api/v1/dates/confirm-by',
+    getConfirmBy
+  );
+  const { data: registrationClosed, mutate: mutateRegistrationClosed } = useSWR(
+    '/api/v1/dates/registration-closed',
+    getRegistrationClosed
+  );
+  const { data: registrationOpen, mutate: mutateRegistrationOpen } = useSWR(
+    '/api/v1/dates/registration-open',
+    getRegistrationOpen
+  );
+  const [myRegistrationOpen, setMyRegistrationOpen] = useState<
+    string | undefined
+  >(undefined);
+  const [myRegistrationClosed, setMyRegistrationClosed] = useState<
+    string | undefined
+  >(undefined);
+  const [myConfirmBy, setMyConfirmBy] = useState<string | undefined>(undefined);
 
   return (
     <div>
-      <h3>{adminTabs.CONFIGURE_PORTAL_SETTINGS}</h3>
-      <table>
-        <tr>
-          <th>Setting</th>
-          <th>Value</th>
-        </tr>
-        {dummyData.map((curr, k) => (
-          <PortalSettingsRow
-            setting={curr.setting}
-            value={curr.value}
-            key={k}
-          />
-        ))}
-      </table>
+      <h3>{ADMIN_TABS.CONFIGURE_PORTAL_SETTINGS}</h3>
+      <Row>
+        <Col span={4}>Name</Col>
+        <Col span={8}>Current Date</Col>
+        <Col span={8}>Picker</Col>
+        <Col span={4}>Update</Col>
+      </Row>
+      <PortalSettingsRow
+        title="Registration Open"
+        portalDate={registrationOpen?.data}
+        setDate={setMyRegistrationOpen}
+        postDate={updateRegistrationOpen}
+        uiStateDate={myRegistrationOpen}
+        refresh={mutateRegistrationOpen}
+      />
+      <PortalSettingsRow
+        title="Registration Close"
+        portalDate={registrationClosed?.data}
+        setDate={setMyRegistrationClosed}
+        postDate={updateRegistrationClosed}
+        uiStateDate={myRegistrationClosed}
+        refresh={mutateRegistrationClosed}
+      />
+      <PortalSettingsRow
+        title="Confirm-by"
+        portalDate={confirmBy?.data}
+        setDate={setMyConfirmBy}
+        postDate={updateConfirmBy}
+        uiStateDate={myConfirmBy}
+        refresh={mutateConfirmBy}
+      />
     </div>
   );
 };

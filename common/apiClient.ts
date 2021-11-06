@@ -42,14 +42,32 @@ export function getConfirmBy(): Promise<AxiosResponse<DatesApiResponse>> {
   return Axios.get(`/api/v1/dates/confirm-by`);
 }
 
+export function updateConfirmBy(
+  date: string
+): Promise<AxiosResponse<DatesApiResponse>> {
+  return Axios.post(`/api/v1/dates/confirm-by`, { date });
+}
+
 export function getRegistrationClosed(): Promise<
   AxiosResponse<DatesApiResponse>
 > {
   return Axios.get(`/api/v1/dates/registration-closed`);
 }
 
+export function updateRegistrationClosed(
+  date: string
+): Promise<AxiosResponse<DatesApiResponse>> {
+  return Axios.post(`/api/v1/dates/registration-closed`, { date });
+}
+
 export function getRegistrationOpen(): Promise<
   AxiosResponse<DatesApiResponse>
 > {
   return Axios.get(`/api/v1/dates/registration-open`);
+}
+
+export function updateRegistrationOpen(
+  date: string
+): Promise<AxiosResponse<DatesApiResponse>> {
+  return Axios.post(`/api/v1/dates/registration-open`, { date });
 }

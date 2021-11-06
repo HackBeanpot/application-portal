@@ -1,10 +1,10 @@
 import React from 'react';
-import { adminTabs } from '../../common/constants';
+import { ADMIN_TABS } from '../../common/constants';
 
 const Stats = () => {
   return (
     <div>
-      <h3>{adminTabs.VIEW_STATS}</h3>
+      <h3>{ADMIN_TABS.VIEW_STATS}</h3>
       <table>
         <tr>
           <th>Stat</th>

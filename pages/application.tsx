@@ -22,7 +22,6 @@ import {
 import { PageLayout } from '../components/Layout';
 import { Questions } from '../common/questions';
 import { Alert, Button, notification } from 'antd';
-import { getSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next';
 import useSWR from 'swr';
 import { format } from '../components/dashboard/StatusDialogue';

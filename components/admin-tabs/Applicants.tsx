@@ -1,5 +1,5 @@
 import React from 'react';
-import { adminTabs } from '../../common/constants';
+import { ADMIN_TABS } from '../../common/constants';
 import { getAllApplicants } from '../../common/apiClient';
 import useSWR from 'swr';
 import ApplicantRow from './ApplicantRow';
@@ -9,7 +9,7 @@ const Applicants = () => {
 
   return (
     <div>
-      <h3>{adminTabs.VIEW_AND_MODIFY_APPLICANTS}</h3>
+      <h3>{ADMIN_TABS.VIEW_AND_MODIFY_APPLICANTS}</h3>
       <table>
         <tr>
           <th>First name</th>
