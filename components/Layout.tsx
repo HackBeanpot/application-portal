@@ -6,6 +6,7 @@ import Logo from '../public/logo.svg';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import React from 'react';
+import Link from 'next/link';
 
 const { Header, Content } = Layout;
 
@@ -24,15 +25,14 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
   return (
     <Layout className="layout">
       <Header className="header">
-        <div className="logo">
-          <a
-            className="logo-link"
-            target="_blank"
-            href="https://hackbeanpot.com/"
-            rel="noopener noreferrer"
-          >
-            <Image src={Logo} alt="HackBeanpot logo" width={32} height={32} />
-          </a>
+        <div className="logo-container">
+          <Image
+            className="logo"
+            src={Logo}
+            alt="HackBeanpot logo"
+            width={32}
+            height={32}
+          />
         </div>
         <Menu
           className="menu"

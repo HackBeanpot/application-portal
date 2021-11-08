@@ -10,13 +10,13 @@ $sider-width: 200px;
     z-index: 100;
     display: flex;
 
-    .logo {
+    .logo-container {
       width: $header-height;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    .logo-link {
+    .logo {
       display: flex;
       align-items: center;
       justify-content: center;
