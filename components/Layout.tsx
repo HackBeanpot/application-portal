@@ -6,7 +6,7 @@ import Logo from '../public/logo.svg';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import React from 'react';
-import Link from 'next/link';
+import { LoginOutlined } from '@ant-design/icons';
 
 const { Header, Content } = Layout;
 
@@ -54,14 +54,14 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
               Admin
             </Menu.Item>
           )}
-          <Menu.Item
-            key="logout"
-            onClick={() => router.push('/api/auth/signout')}
-          >
-            Logout
-          </Menu.Item>
         </Menu>
         <div className="user">{session?.user?.email ?? 'Not Logged In'}</div>
+        <div className="logo-container">
+          <LoginOutlined
+            className="logout"
+            onClick={() => router.push('/api/auth/signout')}
+          />
+        </div>
       </Header>
       <Content className="content">
         <div>{children}</div>
