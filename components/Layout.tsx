@@ -43,6 +43,7 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
           <Menu.Item key="home" onClick={() => router.push('/')}>
             Dashboard
           </Menu.Item>
+          
           <Menu.Item
             key="application"
             onClick={() => router.push('/application')}
@@ -54,6 +55,12 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
               Admin
             </Menu.Item>
           )}
+          <Menu.Item
+            key="logout"
+            onClick={() => router.push('/api/auth/signout')}
+          >
+            Teams
+          </Menu.Item>
           <Menu.Item
             key="logout"
             onClick={() => router.push('/api/auth/signout')}
