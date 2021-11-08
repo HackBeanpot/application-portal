@@ -41,10 +41,10 @@ $sider-width: 200px;
     overflow: initial;
     margin: 0 15%;
     @media (max-width: $md) {
-      padding: 0 50px;
+      margin: 0 50px;
     }
     @media (max-width: $xs) {
-      padding: 0 15px;
+      margin: 0 15px;
     }
   }
 }
