@@ -71,3 +71,7 @@ export function updateRegistrationOpen(
 ): Promise<AxiosResponse<DatesApiResponse>> {
   return Axios.post(`/api/v1/dates/registration-open`, { date });
 }
+
+export function updateTeamById(id: number, user: User) {
+  Axios.post(`/api/v1/teams/${id}`, user);
+}

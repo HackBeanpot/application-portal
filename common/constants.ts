@@ -28,6 +28,10 @@ export const WELCOME_MESSAGE = 'Welcome to the Application Portal!';
 export const REJECTION_MESSAGE =
   'Unfortunately, we were not able to accept your application' +
   'for the 2022 HackBeanpot Hackathon.';
+export const TEAMS_MESSAGE =
+  'Welcome to the Team Formation section! This is completely ' +
+  'OPTIONAL, so if you do not already have a team in mind, no need to stress. However, ' +
+  'if you have a team that you want to work with, join below!';
 /**
  * example json User to use for now
  */

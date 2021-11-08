@@ -5,10 +5,10 @@ import {
   getRegistrationOpen,
   getStatus,
 } from '../common/apiClient';
-import { WELCOME_MESSAGE } from '../common/constants';
+import { TEAMS_MESSAGE } from '../common/constants';
 import useSWR from 'swr';
 import { PageLayout } from '../components/Layout';
-import { Card } from 'antd';
+import { Card, Button } from 'antd';
 import { StatusApiResponse } from '../common/types';
 import {
   LoadingMessage,
@@ -18,7 +18,7 @@ import { getSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next';
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect';
 
-const Home = (): ReactElement => {
+const Teams = (): ReactElement => {
   const { data: status } = useSWR('/api/v1/status', getStatus);
   const { data: confirmBy } = useSWR('/api/v1/dates/confirm-by', getConfirmBy);
   const { data: registrationClosed } = useSWR(
@@ -39,7 +39,7 @@ const Home = (): ReactElement => {
   return (
     <PageLayout currentPage={'home'}>
       <div className="home">
-        <p>{WELCOME_MESSAGE}</p>
+        <p>{TEAMS_MESSAGE}</p>
         <Card title="Your Status" className="card">
           <div className="card-content">
             {statusPropsOrNull ? (
@@ -49,6 +49,7 @@ const Home = (): ReactElement => {
             )}
           </div>
         </Card>
+        <Button type={'primary'}>Create Team</Button>
       </div>
     </PageLayout>
   );
@@ -74,4 +75,4 @@ function getStatusDialogueProps(
 export const getServerSideProps: GetServerSideProps =
   getServerSideSessionOrRedirect;
 
-export default Home;
+export default Teams;
