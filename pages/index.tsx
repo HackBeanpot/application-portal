@@ -39,7 +39,7 @@ const Home = (): ReactElement => {
   return (
     <PageLayout currentPage={'home'}>
       <div className="home">
-        <p>{WELCOME_MESSAGE}</p>
+        <h3>HackBeanpot Application Portal</h3>
         <Card title="Your Status" className="card">
           <div className="card-content">
             {statusPropsOrNull ? (
@@ -47,6 +47,7 @@ const Home = (): ReactElement => {
             ) : (
               <LoadingMessage />
             )}
+            <p>{WELCOME_MESSAGE}</p>
           </div>
         </Card>
       </div>

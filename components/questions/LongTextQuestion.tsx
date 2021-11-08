@@ -20,6 +20,9 @@ const LongTextQuestion: FC<LongTextProps> = ({
       <Input.TextArea
         name={question.id}
         onChange={(e) => addTextAnswer(question, e.target.value)}
+        autoSize={{ minRows: 4 }}
+        showCount
+        maxLength={question.maxLength}
       />
       <div>{errorMessage}</div>
     </div>
