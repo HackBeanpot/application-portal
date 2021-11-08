@@ -59,6 +59,7 @@ const Application = (): ReactElement => {
   const [errors, setErrors] = useState<Error[]>([]);
   const [hasErrorsOnSubmit, setHasErrorsOnSubmit] = useState<boolean>(false);
   const answers = textAnswers.concat(checkboxAnswers, dropdownAnswers);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const addTextAnswer = (question: ShortText | LongText, answer: string) => {
     const characterLength = answer.length;
@@ -187,7 +188,9 @@ const Application = (): ReactElement => {
           }
         }
       });
+      setIsSubmitting(true);
       updateApplicantResponses({ responses }).then((response) => {
+        setIsSubmitting(false);
         if (200 <= response.status && response.status < 300) {
           notification.success({
             message: 'Application Successfully Submitted',
@@ -272,7 +275,7 @@ const Application = (): ReactElement => {
           />
         )}
         <div>{Questions.map((q) => renderAll(q))}</div>
-        <Button type={'primary'} onClick={submitIfValid}>
+        <Button type={'primary'} onClick={submitIfValid} loading={isSubmitting}>
           Submit
         </Button>
         {hasErrorsOnSubmit && <div>Please fix errors before submitting.</div>}
