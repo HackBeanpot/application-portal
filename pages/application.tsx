@@ -278,6 +278,7 @@ const Application = (): ReactElement => {
         )}
         <div>{Questions.map((q) => renderAll(q))}</div>
         <Button
+          className="submit"
           type={'primary'}
           onClick={submitIfValid}
           loading={isSubmitting}

@@ -2,4 +2,9 @@
   .alert {
     margin-bottom: 20px;
   }
+
+  .submit {
+    height: max-content;
+    @include small-body-text;
+  }
 }

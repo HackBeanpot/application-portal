@@ -1,0 +1,92 @@
+// ---------------------------------------------------------------------------
+// Body Text
+// ---------------------------------------------------------------------------
+
+@mixin body-text() {
+  font-family: $font-body;
+  font-weight: normal;
+  font-size: 28px;
+  line-height: 1.62em;
+
+  @media (min-width: $xl) {
+    font-size: 20px;
+  }
+}
+
+@mixin xsmall-body-text() {
+  font-family: $font-body;
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 44px;
+
+  @media (min-width: $md) {
+    font-size: 12px;
+  }
+}
+
+@mixin small-body-text() {
+  font-family: $font-body;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 20px;
+
+  @media (min-width: $md) {
+    font-size: 16px;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// H1-H6
+// ---------------------------------------------------------------------------
+
+@mixin h1-text() {
+  font-family: $font-body;
+  font-size: 20px;
+  font-weight: 600;
+  z-index: 0;
+  @media (min-width: $sm) {
+    font-size: 30px;
+  }
+
+  @media (min-width: $lg) {
+    font-size: 36px;
+  }
+}
+
+@mixin h2-text() {
+  font-family: $font-body;
+  font-size: 15px;
+  font-weight: 600;
+
+  @media (min-width: $lg) {
+    font-size: 28px;
+  }
+
+  @media (min-width: $xxl) {
+    font-size: 28px;
+  }
+}
+
+@mixin h3-text() {
+  font-family: $font-body;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.4em;
+  @media (min-width: $lg) {
+    font-size: 24px;
+  }
+}
+
+@mixin h4-text() {
+  font-family: $font-body;
+  font-size: 10px;
+  font-weight: normal;
+  text-transform: uppercase;
+  @media (min-width: $md) {
+    font-size: 20px;
+  }
+
+  @media (min-width: $xxl) {
+    font-size: 20px;
+  }
+}
