@@ -26,6 +26,7 @@ import { GetServerSideProps } from 'next';
 import useSWR from 'swr';
 import { format } from '../components/dashboard/StatusDialogue';
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect';
+import Router from 'next/router';
 
 export interface Error {
   id: string;
@@ -197,6 +198,7 @@ const Application = (): ReactElement => {
             placement: 'bottomRight',
             duration: 5,
           });
+          Router.push('/');
         } else {
           notification.error({
             message: 'Error Submitting Application',
@@ -275,7 +277,12 @@ const Application = (): ReactElement => {
           />
         )}
         <div>{Questions.map((q) => renderAll(q))}</div>
-        <Button type={'primary'} onClick={submitIfValid} loading={isSubmitting}>
+        <Button
+          type={'primary'}
+          onClick={submitIfValid}
+          loading={isSubmitting}
+          size={'large'}
+        >
           Submit
         </Button>
         {hasErrorsOnSubmit && <div>Please fix errors before submitting.</div>}
