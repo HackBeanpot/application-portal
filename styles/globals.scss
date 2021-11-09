@@ -21,10 +21,19 @@ a {
   box-sizing: border-box;
 }
 
-.ant-alert-message,
 .ant-checkbox-wrapper,
 .ant-input,
 .ant-select,
-.ant-select-item-option-content {
+.ant-select-item-option-content,
+.ant-alert-description {
   @include small-body-text;
+}
+
+.ant-card-head-title {
+  @include h3-text;
+}
+
+.ant-alert-message,
+.ant-alert-with-description {
+  @include body-text;
 }
