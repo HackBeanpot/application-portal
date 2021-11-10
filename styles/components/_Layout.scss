@@ -3,28 +3,6 @@
 $header-height: 64px;
 $sider-width: 200px;
 
-// ant design, by default, uses really small font
-// however, increasing font size is hard (doesn't apply to all components, different scales, etc)
-// so, just scale everything up manually
-
-body {
-  // For IE, opera, safari and chrome.
-  zoom: $scale;
-}
-
-// https://stackoverflow.com/questions/952861/targeting-only-firefox-with-css
-@supports (-moz-appearance:none) {
-  body {
-    // Only for Firefox
-    transform: scale($scale);
-    transform-origin: 0 0;
-    // for some reason, there's a 12px difference between what we'd expect the size to be,
-    // and what it actually is.
-    width: calc((100vw / #{$scale}) - 12px);
-    height: calc(100vh / #{$scale});
-  }
-}
-
 .layout {
   .header {
     top: 0;
@@ -61,16 +39,36 @@ body {
     }
   }
 
-  .content {
+  .content-container {
     min-height: calc(100vh - #{$header-height});
-    padding: 32px 24px;
-    overflow: initial;
-    margin: 0 15%;
-    @media (max-width: $md) {
-      margin: 0 50px;
+
+    // ant design, by default, uses really small font
+    // however, increasing font size is hard (doesn't apply to all components, different scales, etc)
+    // so, just scale everything up manually
+
+    // For IE, opera, safari and chrome.
+    zoom: $scale;
+
+    // https://stackoverflow.com/questions/952861/targeting-only-firefox-with-css
+    @supports (-moz-appearance:none) {
+      // Only for Firefox
+      transform: scale($scale);
+      transform-origin: 0 0;
+      // for some reason, there's a 12px difference between what we'd expect the size to be,
+      // and what it actually is.
+      width: calc((100vw / #{$scale}) - 12px);
     }
-    @media (max-width: $xs) {
-      margin: 0 15px;
+
+    .content {
+      padding: 32px 24px;
+      overflow: initial;
+      margin: 0 15%;
+      @media (max-width: $md) {
+        margin: 0 50px;
+      }
+      @media (max-width: $xs) {
+        margin: 0 15px;
+      }
     }
   }
 }

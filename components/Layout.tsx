@@ -63,8 +63,8 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
           />
         </div>
       </Header>
-      <Content className="content">
-        <div>{children}</div>
+      <Content className="content-container">
+        <div className="content">{children}</div>
       </Content>
     </Layout>
   );
