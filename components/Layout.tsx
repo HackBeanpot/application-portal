@@ -1,4 +1,4 @@
-import { Layout, Menu } from 'antd';
+import { Dropdown, Layout, Menu } from 'antd';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import { getUser } from '../common/apiClient';
@@ -6,7 +6,7 @@ import Logo from '../public/logo.svg';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import React from 'react';
-import { LoginOutlined } from '@ant-design/icons';
+import { DownOutlined } from '@ant-design/icons';
 
 const { Header, Content } = Layout;
 
@@ -55,12 +55,21 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
             </Menu.Item>
           )}
         </Menu>
-        <div className="user">{session?.user?.email ?? 'Not Logged In'}</div>
-        <div className="logo-container">
-          <LoginOutlined
-            className="logout"
-            onClick={() => router.push('/api/auth/signout')}
-          />
+        <div className="user">
+          <Dropdown
+            className="user"
+            overlay={
+              <Menu theme={'light'}>
+                <Menu.Item onClick={() => router.push('/api/auth/signout')}>
+                  Sign out
+                </Menu.Item>
+              </Menu>
+            }
+          >
+            <a className="ant-dropdown-link">
+              {session?.user?.email ?? 'Not Logged In'} <DownOutlined />
+            </a>
+          </Dropdown>
         </div>
       </Header>
       <Content className="content-container">
