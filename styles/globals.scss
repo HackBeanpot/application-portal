@@ -6,8 +6,6 @@
 
 html,
 body {
-  @include body-text;
-
   padding: 0;
   margin: 0;
 }
@@ -19,21 +17,4 @@ a {
 
 * {
   box-sizing: border-box;
-}
-
-.ant-checkbox-wrapper,
-.ant-input,
-.ant-select,
-.ant-select-item-option-content,
-.ant-alert-description {
-  @include small-body-text;
-}
-
-.ant-card-head-title {
-  @include h3-text;
-}
-
-.ant-alert-message,
-.ant-alert-with-description {
-  @include body-text;
 }
