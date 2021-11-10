@@ -10,6 +10,18 @@ $sider-width: 200px;
     z-index: 100;
     display: flex;
 
+    // https://stackoverflow.com/questions/952861/targeting-only-firefox-with-css
+    // For IE, opera, safari and chrome.
+    zoom: $scale;
+    @supports (-moz-appearance:none) {
+      // Only for Firefox
+      transform: scale($scale);
+      transform-origin: 0 0;
+      // for some reason, there's a 12px difference between what we'd expect the size to be,
+      // and what it actually is.
+      width: calc((100vw / #{$scale}) - 12px);
+    }
+
     .logo-container {
       width: $header-height;
       display: flex;
@@ -40,7 +52,8 @@ $sider-width: 200px;
   }
 
   .content-container {
-    min-height: calc(100vh - #{$header-height});
+    min-height: calc(100vh - (#{$header-height}));
+    background: #f0f2f5;
 
     // ant design, by default, uses really small font
     // however, increasing font size is hard (doesn't apply to all components, different scales, etc)
