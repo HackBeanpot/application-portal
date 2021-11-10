@@ -256,7 +256,7 @@ const Application = (): ReactElement => {
   return (
     <PageLayout currentPage={'application'}>
       <div className="application">
-        <h3>Application Page</h3>
+        <h1>Application Page</h1>
         {status?.data.applicationStatus === ApplicationStatus.Submitted && (
           <Alert
             className="alert"

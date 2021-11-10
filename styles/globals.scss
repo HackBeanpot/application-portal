@@ -18,3 +18,7 @@ a {
 * {
   box-sizing: border-box;
 }
+
+h1 {
+  @include h1-text;
+}
