@@ -19,7 +19,7 @@ $sider-width: 200px;
       transform-origin: 0 0;
       // for some reason, there's a 12px difference between what we'd expect the size to be,
       // and what it actually is.
-      width: calc((100vw / #{$scale}) - 12px);
+      width: calc(100vw / #{$scale});
     }
 
     .logo-container {
@@ -28,6 +28,7 @@ $sider-width: 200px;
       align-items: center;
       justify-content: center;
     }
+
     .logo {
       display: flex;
       align-items: center;
@@ -52,7 +53,7 @@ $sider-width: 200px;
   }
 
   .content-container {
-    min-height: calc(100vh - (#{$header-height}));
+    min-height: calc((100vh / #{$scale}) - #{$header-height});
     background: #f0f2f5;
 
     // ant design, by default, uses really small font
@@ -69,7 +70,7 @@ $sider-width: 200px;
       transform-origin: 0 0;
       // for some reason, there's a 12px difference between what we'd expect the size to be,
       // and what it actually is.
-      width: calc((100vw / #{$scale}) - 12px);
+      width: calc(100vw / #{$scale});
     }
 
     .content {
