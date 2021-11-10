@@ -261,7 +261,7 @@ const Application = (): ReactElement => {
           <Alert
             className="alert"
             type="info"
-            message={
+            description={
               <>
                 You have already submitted your application, but you may
                 resubmit your application as many times as you{"'"}d like before
@@ -273,6 +273,7 @@ const Application = (): ReactElement => {
                 .
               </>
             }
+            message={<>Application already submitted</>}
             showIcon
           />
         )}
