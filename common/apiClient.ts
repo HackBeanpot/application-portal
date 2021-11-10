@@ -3,6 +3,7 @@ import {
   RegistrationApiRequest,
   User,
   DatesApiResponse,
+  TeamApiResponse,
 } from './types';
 import Axios, { AxiosResponse } from 'axios';
 
@@ -70,4 +71,33 @@ export function updateRegistrationOpen(
   date: string
 ): Promise<AxiosResponse<DatesApiResponse>> {
   return Axios.post(`/api/v1/dates/registration-open`, { date });
+}
+
+export function getTeamInfo(
+  teamName: string | null
+): Promise<AxiosResponse<TeamApiResponse>> {
+  return Axios.get(`/api/v1/team`, {
+    params: {
+      teamName,
+    },
+  });
+}
+
+export function updateTeamInfo(
+  teamName: string,
+  email: string
+): Promise<AxiosResponse<undefined>> {
+  return Axios.post(`/api/v1/team`, { teamName, email });
+}
+
+export function deleteTeamInfo(
+  teamName: string,
+  email: string
+): Promise<AxiosResponse<undefined>> {
+  return Axios.delete(`/api/v1/team`, {
+    data: {
+      teamName,
+      email,
+    },
+  });
 }

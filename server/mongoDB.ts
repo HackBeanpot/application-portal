@@ -1,5 +1,5 @@
 import { MongoClient, Db, Collection } from 'mongodb';
-import { SingletonDefinition, User } from '../common/types';
+import { SingletonDefinition, Team, User } from '../common/types';
 
 const MONGODB_URI = process.env.DATABASE_URL || '';
 const MONGODB_DB = process.env.MONGODB_DB || '';
@@ -26,6 +26,7 @@ type MongoCtx = {
   db: Db;
   userDataCollection: Collection<User>;
   singletonDataCollection: Collection<SingletonDefinition>;
+  teamDataCollection: Collection<Team>;
 };
 
 type GlobalWithMongo = {
@@ -55,7 +56,14 @@ export async function connectToDatabase(): Promise<MongoCtx> {
       const userDataCollection = db.collection<User>('applicant_data');
       const singletonDataCollection =
         db.collection<SingletonDefinition>('singleton_data');
-      return { client, db, userDataCollection, singletonDataCollection };
+      const teamDataCollection = db.collection<Team>('teams');
+      return {
+        client,
+        db,
+        userDataCollection,
+        singletonDataCollection,
+        teamDataCollection,
+      };
     });
   }
 
