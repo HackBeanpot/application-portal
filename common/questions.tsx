@@ -94,7 +94,7 @@ function makeLongText(content: ReactNode, required: boolean): LongText {
 
 // write questions for portal here
 export const Questions: Array<QuestionDefinition> = [
-  makeShortText('What is your name?', true, 'Firstname Lastname'),
+  makeShortText('What is your name?', true, 'First Last'),
   makeDropdown(
     'What is your gender?',
     [
@@ -114,9 +114,9 @@ export const Questions: Array<QuestionDefinition> = [
     [
       'Indigenous American or Alaska Native',
       'East Asian',
-      'South/Southeast Asian',
-      'Black/African American',
-      'Hispanic/Latinx',
+      'South / Southeast Asian',
+      'Black / African American',
+      'Hispanic / Latinx',
       'Native Hawaiian or Other Pacific Islander',
       'White',
       'Unlisted',
@@ -166,9 +166,8 @@ export const Questions: Array<QuestionDefinition> = [
     'Year'
   ),
   makeShortText(
-    'What are your major/concentration(s)? (N/A if not applicable)',
-    true,
-    'Computer Science'
+    'What are your major / concentration(s)? (N / A if not applicable)',
+    true
   ),
   makeShortText('What are your minor(s)?', false),
   // url to resume for now
@@ -235,7 +234,7 @@ export const Questions: Array<QuestionDefinition> = [
     [
       'HBP social media pages',
       'Other clubs',
-      'Email/Newsletter',
+      'Email / Newsletter',
       'Word of mouth',
       'HBP outreach events',
       'School communications',
@@ -261,8 +260,8 @@ export const Questions: Array<QuestionDefinition> = [
       'Careers in Tech',
       'Diversity in Tech',
       'Tech for Social Good',
-      'Project Ideation/Formation',
-      'None/Other',
+      'Project Ideation / Formation',
+      'None / Other',
     ],
     true,
     8
@@ -271,10 +270,10 @@ export const Questions: Array<QuestionDefinition> = [
   makeDropdown(
     <>
       Note: This question does not get factored into how your application is
-      read! If you are already part of a team before applying, we will
-      accept/reject your team together. <br />
+      read! If you are already part of a team before applying, we will accept /
+      reject your team together. <br />
       Do you plan on attending HackBeanpot with a premade team? If yes, please
-      create/join a team with your teammates in the Team tab.
+      create / join a team with your teammates in the Team tab.
     </>,
     ['Yes', 'No'],
     true
