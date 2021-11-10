@@ -1,19 +1,14 @@
 import React, { ReactElement, useState } from 'react';
 import {
-  Answer,
   ApplicationStatus,
-  Checkboxes,
-  Dropdown,
-  LongText,
   QuestionDefinition,
+  QuestionResponse,
   QuestionType,
-  ShortText,
 } from '../common/types';
 import ShortTextQuestion from '../components/questions/ShortTextQuestion';
 import LongTextQuestion from '../components/questions/LongTextQuestion';
 import CheckboxesQuestion from '../components/questions/CheckboxesQuestion';
 import DropdownQuestion from '../components/questions/DropdownQuestion';
-import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import {
   getRegistrationClosed,
   getStatus,
@@ -21,31 +16,35 @@ import {
 } from '../common/apiClient';
 import { PageLayout } from '../components/Layout';
 import { Questions } from '../common/questions';
-import { Alert, Button, notification } from 'antd';
+import { Alert, Button, Form, notification } from 'antd';
 import { GetServerSideProps } from 'next';
 import useSWR from 'swr';
 import { format } from '../components/dashboard/StatusDialogue';
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect';
 import Router from 'next/router';
 
-export interface Error {
-  id: string;
-  error: string;
-}
+const layout = {
+  // labelCol: { span: 8 },
+  // wrapperCol: { span: 16 },
+};
+const tailLayout = {
+  wrapperCol: { offset: 8, span: 16 },
+};
 
-const createOrUpdateAnswer = (
-  prevAnswers: Answer[],
-  id: string,
-  answer: string | CheckboxValueType[]
-) => {
-  const updatedAnswers = prevAnswers.slice();
-  const prevAnswerIndex = prevAnswers.findIndex((a) => a.id === id);
-  if (prevAnswerIndex !== -1) {
-    updatedAnswers[prevAnswerIndex] = { id, answer };
-  } else {
-    updatedAnswers.push({ id, answer });
+const getQuestionComponentFromType = (type: QuestionType) => {
+  switch (type) {
+    case QuestionType.ShortText:
+      return ShortTextQuestion;
+    case QuestionType.LongText:
+      return LongTextQuestion;
+    case QuestionType.Dropdown:
+      return DropdownQuestion;
+    case QuestionType.Checkboxes:
+      return CheckboxesQuestion;
+    default:
+      const _q: never = type;
+      throw new Error('unexpected question type: ' + type);
   }
-  return updatedAnswers;
 };
 
 const Application = (): ReactElement => {
@@ -54,203 +53,40 @@ const Application = (): ReactElement => {
     '/api/v1/dates/registration-closed',
     getRegistrationClosed
   );
-  const [textAnswers, setTextAnswers] = useState<Answer[]>([]);
-  const [checkboxAnswers, setCheckboxAnswers] = useState<Answer[]>([]);
-  const [dropdownAnswers, setDropdownAnswer] = useState<Answer[]>([]);
-  const [errors, setErrors] = useState<Error[]>([]);
-  const [hasErrorsOnSubmit, setHasErrorsOnSubmit] = useState<boolean>(false);
-  const answers = textAnswers.concat(checkboxAnswers, dropdownAnswers);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const addTextAnswer = (question: ShortText | LongText, answer: string) => {
-    const characterLength = answer.length;
-    const minLength = question.minLength;
-    const maxLength = question.maxLength;
-    const tooShort = characterLength < minLength;
-    const tooLong = maxLength < characterLength;
-
-    if (!tooShort && !tooLong) {
-      removeError(question.id);
-    } else if (tooShort) {
-      addError(
-        question.id,
-        'Required minimum response length is ' + minLength + ' characters.'
-      );
-    } else if (tooLong) {
-      addError(
-        question.id,
-        'Maximum response length is ' + maxLength + ' characters.'
-      );
-    }
-
-    setTextAnswers(createOrUpdateAnswer(textAnswers, question.id, answer));
+  const [form] = Form.useForm<Record<string, QuestionResponse>>();
+  const onReset = () => {
+    form.resetFields();
   };
 
-  const addCheckboxAnswer = (
-    question: Checkboxes,
-    answer: CheckboxValueType[]
-  ) => {
-    const selectedNumber = answer.length;
-    const minNumber = question.minNumber;
-    const maxNumber = question.maxNumber;
-
-    if (selectedNumber <= maxNumber && selectedNumber >= minNumber) {
-      removeError(question.id);
-    }
-
-    if (selectedNumber < minNumber) {
-      addError(
-        question.id,
-        'Required minimum checkboxes selected is ' + minNumber
-      );
-    }
-
-    if (selectedNumber > maxNumber) {
-      addError(question.id, 'Maximum checkboxes selected is ' + maxNumber);
-    }
-
-    setCheckboxAnswers(
-      createOrUpdateAnswer(checkboxAnswers, question.id, answer)
-    );
-  };
-
-  const addDropdownAnswer = (question: Dropdown, answer: string) => {
-    setDropdownAnswer(
-      createOrUpdateAnswer(dropdownAnswers, question.id, answer)
-    );
-  };
-
-  const addError = (id: string, error: string) => {
-    const existingErrorIndex = errors.findIndex((e) => e.id === id);
-    const updatedErrors = errors.slice();
-    if (existingErrorIndex !== -1) {
-      updatedErrors[existingErrorIndex] = { id, error };
+  const onSubmit = async (values: Record<string, QuestionResponse>) => {
+    const responses = Questions.map((q) => values[q.id] ?? null);
+    setIsSubmitting(true);
+    const response = await updateApplicantResponses({ responses });
+    setIsSubmitting(false);
+    if (200 <= response.status && response.status < 300) {
+      notification.success({
+        message: 'Application Successfully Submitted',
+        placement: 'bottomRight',
+        duration: 5,
+      });
+      await Router.push('/');
     } else {
-      updatedErrors.push({ id, error });
-    }
-    setErrors(updatedErrors);
-  };
-
-  const removeError = (id: string) => {
-    const existingErrorIndex = errors.findIndex((e) => e.id === id);
-    if (existingErrorIndex !== -1) {
-      const updatedErrors = errors.slice();
-      updatedErrors.splice(existingErrorIndex, 1);
-      setErrors(updatedErrors);
-    }
-  };
-
-  const validate = () => {
-    const updatedErrors = errors.slice();
-
-    for (let i = 0; i < Questions.length; i++) {
-      const isRequired = Questions[i].required;
-      const currId = Questions[i].id;
-      if (isRequired) {
-        const answerExists = answers.find((a) => a.id === currId);
-        const requiredErrorExists = errors.find(
-          (e) => e.error === 'This question is required' && e.id == currId
-        );
-        const previousErrorExists = errors.find((e) => e.id == currId);
-        // remove error if previous error was that the question is required
-        if (answerExists && requiredErrorExists) {
-          const objIndex = updatedErrors.findIndex((e) => e.id === currId);
-          updatedErrors.splice(objIndex, 1);
-        }
-        // add error if no answerExists and there is no previous error
-        if (!answerExists && !previousErrorExists) {
-          updatedErrors.push({
-            id: currId,
-            error: 'This question is required',
-          });
-        }
-      }
-    }
-
-    setErrors(updatedErrors);
-    setHasErrorsOnSubmit(updatedErrors.length > 0);
-    return updatedErrors;
-  };
-
-  const submitIfValid = () => {
-    const errors = validate();
-
-    if (errors.length == 0) {
-      const responses = Questions.map(({ id }) => {
-        const answer = answers.find((e) => e.id === id);
-        if (!answer) {
-          return null;
-        } else {
-          if (Array.isArray(answer.answer)) {
-            // cast every element of list to a string
-            return answer.answer.map((curr) => curr.toString());
-          } else {
-            return answer.answer;
-          }
-        }
-      });
-      setIsSubmitting(true);
-      updateApplicantResponses({ responses }).then((response) => {
-        setIsSubmitting(false);
-        if (200 <= response.status && response.status < 300) {
-          notification.success({
-            message: 'Application Successfully Submitted',
-            placement: 'bottomRight',
-            duration: 5,
-          });
-          Router.push('/');
-        } else {
-          notification.error({
-            message: 'Error Submitting Application',
-            description: response.data,
-            placement: 'bottomRight',
-            duration: 30,
-          });
-        }
+      notification.error({
+        message: 'Error Submitting Application',
+        description: response.data,
+        placement: 'bottomRight',
+        duration: 30,
       });
     }
   };
 
-  const renderAll = (q: QuestionDefinition) => {
-    const errorMessage = errors.find((e) => e.id === q.id)?.error ?? '';
-    switch (q.type) {
-      case QuestionType.ShortText:
-        return (
-          <ShortTextQuestion
-            key={q.id}
-            question={q}
-            addTextAnswer={addTextAnswer}
-            errorMessage={errorMessage}
-          />
-        );
-      case QuestionType.LongText:
-        return (
-          <LongTextQuestion
-            key={q.id}
-            question={q}
-            addTextAnswer={addTextAnswer}
-            errorMessage={errorMessage}
-          />
-        );
-      case QuestionType.Checkboxes:
-        return (
-          <CheckboxesQuestion
-            key={q.id}
-            question={q}
-            addCheckboxAnswer={addCheckboxAnswer}
-            errorMessage={errorMessage}
-          />
-        );
-      case QuestionType.Dropdown:
-        return (
-          <DropdownQuestion
-            key={q.id}
-            question={q}
-            addDropdownAnswer={addDropdownAnswer}
-            errorMessage={errorMessage}
-          />
-        );
-    }
+  const FormQuestion = ({ q }: { q: QuestionDefinition }) => {
+    const QuestionComponent = getQuestionComponentFromType(q.type);
+    return React.createElement(QuestionComponent as any, {
+      question: q,
+      form: form,
+    });
   };
 
   return (
@@ -277,22 +113,39 @@ const Application = (): ReactElement => {
             showIcon
           />
         )}
-        <div>{Questions.map((q) => renderAll(q))}</div>
-        <Button
-          className="submit"
-          type={'primary'}
-          onClick={submitIfValid}
-          loading={isSubmitting}
-          size={'large'}
+        <Form
+          form={form}
+          onFinish={onSubmit}
+          scrollToFirstError={{ behavior: 'smooth' }}
+          {...layout}
         >
-          Submit
-        </Button>
-        {hasErrorsOnSubmit && <div>Please fix errors before submitting.</div>}
+          {Questions.map((q) => (
+            <FormQuestion key={q.id} q={q} />
+          ))}
+          <Form.Item {...tailLayout}>
+            <Button
+              className="button"
+              type="primary"
+              htmlType="submit"
+              loading={isSubmitting}
+              size="large"
+            >
+              Submit
+            </Button>
+            <Button
+              className="button"
+              htmlType="button"
+              onClick={onReset}
+              size="large"
+            >
+              Reset
+            </Button>
+          </Form.Item>
+        </Form>
       </div>
     </PageLayout>
   );
 };
-
 export const getServerSideProps: GetServerSideProps =
   getServerSideSessionOrRedirect;
 
