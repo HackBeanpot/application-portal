@@ -172,7 +172,15 @@ export const Questions: Array<QuestionDefinition> = [
   makeShortText('What are your minor(s)?', false),
   // url to resume for now
   makeShortText(
-    'Please add an URL to your resume! We will be sharing your resumes with interested sponsors. Not including your resume will not affect your chances of acceptance!',
+    <>
+      Please add an URL to your resume!
+      <br />
+      <i>
+        (Note: We do not read resumes as a part of the HBP application process!
+        The resumes are shared with interested sponsors who may contact you
+        about internship/job opportunities, and will only be read by them.)
+      </i>
+    </>,
     false
   ),
   makeDropdown(
@@ -189,10 +197,6 @@ export const Questions: Array<QuestionDefinition> = [
     ],
     true,
     'Size'
-  ),
-  makeShortText(
-    'Are there any special accommodations you would need from us? (Note: Answers will not factor into how your application is read!)',
-    false
   ),
   makeDropdown(
     'How many hackathons have you attended?',
@@ -269,11 +273,14 @@ export const Questions: Array<QuestionDefinition> = [
 
   makeDropdown(
     <>
-      Note: This question does not get factored into how your application is
-      read! If you are already part of a team before applying, we will accept /
-      reject your team together. <br />
       Do you plan on attending HackBeanpot with a premade team? If yes, please
       create / join a team with your teammates in the Team tab.
+      <br />
+      <i>
+        (Note: This question does not get factored into how your application is
+        read! If you are already part of a team before applying, we will accept
+        / reject your team together.)
+      </i>
     </>,
     ['Yes', 'No'],
     true
