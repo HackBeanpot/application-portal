@@ -178,7 +178,7 @@ export const Questions: Array<QuestionDefinition> = [
       <i>
         (Note: We do not read resumes as a part of the HBP application process!
         The resumes are shared with interested sponsors who may contact you
-        about internship/job opportunities, and will only be read by them.)
+        about internship / job opportunities, and will only be read by them.)
       </i>
     </>,
     false
