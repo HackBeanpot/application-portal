@@ -20,8 +20,10 @@ export interface User {
   resumeLink?: string;
   timeZone?: string;
   learningGoals?: string;
+  teamName?: string;
   responses?: Array<QuestionResponse>;
 }
+
 export type SingletonDefinition = DateSingleton;
 
 export enum SingletonType {
@@ -36,6 +38,11 @@ export interface DateSingleton {
     | SingletonType.RegistrationClosed
     | SingletonType.RegistrationOpen
     | SingletonType.ConfirmBy;
+}
+
+export interface Team {
+  name: string;
+  userEmails: string[];
 }
 
 export interface PortalState {
@@ -149,5 +156,7 @@ export type StatusApiResponse = {
   applicationStatus: ApplicationStatus;
   rsvpStatus: RSVPStatus;
 };
+
+export type TeamApiResponse = Team;
 
 export type DatesApiResponse = string;
