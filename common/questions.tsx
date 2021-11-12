@@ -94,7 +94,7 @@ function makeLongText(content: ReactNode, required: boolean): LongText {
 
 // write questions for portal here
 export const Questions: Array<QuestionDefinition> = [
-  makeShortText('What is your name?', true, 'Firstname Lastname'),
+  makeShortText('What is your name?', true, 'First Last'),
   makeDropdown(
     'What is your gender?',
     [
@@ -114,9 +114,9 @@ export const Questions: Array<QuestionDefinition> = [
     [
       'Indigenous American or Alaska Native',
       'East Asian',
-      'South/Southeast Asian',
-      'Black/African American',
-      'Hispanic/Latinx',
+      'South / Southeast Asian',
+      'Black / African American',
+      'Hispanic / Latinx',
       'Native Hawaiian or Other Pacific Islander',
       'White',
       'Unlisted',
@@ -166,14 +166,21 @@ export const Questions: Array<QuestionDefinition> = [
     'Year'
   ),
   makeShortText(
-    'What are your major/concentration(s)? (N/A if not applicable)',
-    true,
-    'Computer Science'
+    'What are your major / concentration(s)? (N / A if not applicable)',
+    true
   ),
   makeShortText('What are your minor(s)?', false),
   // url to resume for now
   makeShortText(
-    'Please add an URL to your resume! We will be sharing your resumes with interested sponsors. Not including your resume will not affect your chances of acceptance!',
+    <>
+      Please add an URL to your resume!
+      <br />
+      <i>
+        (Note: We do not read resumes as a part of the HBP application process!
+        The resumes are shared with interested sponsors who may contact you
+        about internship / job opportunities, and will only be read by them.)
+      </i>
+    </>,
     false
   ),
   makeDropdown(
@@ -190,10 +197,6 @@ export const Questions: Array<QuestionDefinition> = [
     ],
     true,
     'Size'
-  ),
-  makeShortText(
-    'Are there any special accommodations you would need from us? (Note: Answers will not factor into how your application is read!)',
-    false
   ),
   makeDropdown(
     'How many hackathons have you attended?',
@@ -235,7 +238,7 @@ export const Questions: Array<QuestionDefinition> = [
     [
       'HBP social media pages',
       'Other clubs',
-      'Email/Newsletter',
+      'Email / Newsletter',
       'Word of mouth',
       'HBP outreach events',
       'School communications',
@@ -261,8 +264,8 @@ export const Questions: Array<QuestionDefinition> = [
       'Careers in Tech',
       'Diversity in Tech',
       'Tech for Social Good',
-      'Project Ideation/Formation',
-      'None/Other',
+      'Project Ideation / Formation',
+      'None / Other',
     ],
     true,
     8
@@ -270,11 +273,14 @@ export const Questions: Array<QuestionDefinition> = [
 
   makeDropdown(
     <>
-      Note: This question does not get factored into how your application is
-      read! If you are already part of a team before applying, we will
-      accept/reject your team together. <br />
       Do you plan on attending HackBeanpot with a premade team? If yes, please
-      create/join a team with your teammates in the Team tab.
+      create / join a team with your teammates in the Team tab.
+      <br />
+      <i>
+        (Note: This question does not get factored into how your application is
+        read! If you are already part of a team before applying, we will accept
+        / reject your team together.)
+      </i>
     </>,
     ['Yes', 'No'],
     true
