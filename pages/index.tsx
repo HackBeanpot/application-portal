@@ -46,7 +46,6 @@ const Home = (): ReactElement => {
             ) : (
               <LoadingMessage />
             )}
-            <p className="welcome-message">{WELCOME_MESSAGE}</p>
           </div>
         </Card>
       </div>
