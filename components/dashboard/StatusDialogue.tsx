@@ -32,7 +32,7 @@ export const StatusDialogue: React.FC<StatusDialogueProps> = ({
         <>
           <Incomplete registrationClosed={format(registrationClosed)} />
           <Link href="/application" passHref>
-            <Button type={'primary'}>Finish Registration</Button>
+            <Button type={'primary'}>Go to application</Button>
           </Link>
         </>
       );

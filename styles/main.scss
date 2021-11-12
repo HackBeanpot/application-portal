@@ -1,9 +1,10 @@
 @charset "UTF-8";
 
-@import "./constants";
+@import "constants";
 
 // global helpers
-@import "./globals.scss";
+@import "./mixins-typography";
+@import "./constants";
 
 // pages
 @import "./pages/Home";
@@ -12,3 +13,5 @@
 // components
 @import "./components/Layout";
 @import "./components/Question";
+
+@import "./globals.scss";

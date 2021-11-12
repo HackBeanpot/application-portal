@@ -14,7 +14,6 @@ import {
   LoadingMessage,
   StatusDialogue,
 } from '../components/dashboard/StatusDialogue';
-import { getSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next';
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect';
 
@@ -39,7 +38,7 @@ const Home = (): ReactElement => {
   return (
     <PageLayout currentPage={'home'}>
       <div className="home">
-        <p>{WELCOME_MESSAGE}</p>
+        <h1>HackBeanpot Application Portal</h1>
         <Card title="Your Status" className="card">
           <div className="card-content">
             {statusPropsOrNull ? (

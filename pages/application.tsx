@@ -26,6 +26,7 @@ import { GetServerSideProps } from 'next';
 import useSWR from 'swr';
 import { format } from '../components/dashboard/StatusDialogue';
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect';
+import Router from 'next/router';
 
 export interface Error {
   id: string;
@@ -59,6 +60,7 @@ const Application = (): ReactElement => {
   const [errors, setErrors] = useState<Error[]>([]);
   const [hasErrorsOnSubmit, setHasErrorsOnSubmit] = useState<boolean>(false);
   const answers = textAnswers.concat(checkboxAnswers, dropdownAnswers);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const addTextAnswer = (question: ShortText | LongText, answer: string) => {
     const characterLength = answer.length;
@@ -187,13 +189,16 @@ const Application = (): ReactElement => {
           }
         }
       });
+      setIsSubmitting(true);
       updateApplicantResponses({ responses }).then((response) => {
+        setIsSubmitting(false);
         if (200 <= response.status && response.status < 300) {
           notification.success({
             message: 'Application Successfully Submitted',
             placement: 'bottomRight',
             duration: 5,
           });
+          Router.push('/');
         } else {
           notification.error({
             message: 'Error Submitting Application',
@@ -256,7 +261,7 @@ const Application = (): ReactElement => {
           <Alert
             className="alert"
             type="info"
-            message={
+            description={
               <>
                 You have already submitted your application, but you may
                 resubmit your application as many times as you{"'"}d like before
@@ -268,11 +273,18 @@ const Application = (): ReactElement => {
                 .
               </>
             }
+            message={<>Application already submitted</>}
             showIcon
           />
         )}
         <div>{Questions.map((q) => renderAll(q))}</div>
-        <Button type={'primary'} onClick={submitIfValid}>
+        <Button
+          className="submit"
+          type={'primary'}
+          onClick={submitIfValid}
+          loading={isSubmitting}
+          size={'large'}
+        >
           Submit
         </Button>
         {hasErrorsOnSubmit && <div>Please fix errors before submitting.</div>}
