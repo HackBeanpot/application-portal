@@ -10,7 +10,7 @@ import { DownOutlined } from '@ant-design/icons';
 
 const { Header, Content } = Layout;
 
-const Pages = ['home', 'application', 'admin', 'logout'] as const;
+const Pages = ['home', 'application', 'team', 'admin', 'logout'] as const;
 type PageLayoutProps = {
   currentPage: typeof Pages[number];
 };
@@ -48,6 +48,9 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
             onClick={() => router.push('/application')}
           >
             Application
+          </Menu.Item>
+          <Menu.Item key="team" onClick={() => router.push('/team')}>
+            Team
           </Menu.Item>
           {user?.data?.isAdmin && (
             <Menu.Item key="admin" onClick={() => router.push('/admin')}>
