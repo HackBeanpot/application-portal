@@ -9,7 +9,7 @@ import { Session } from 'next-auth';
 import { Provider, ErrorBoundary } from '@rollbar/react';
 import Rollbar from 'rollbar';
 
-export const SIGN_IN_PAGE = '/api/auth/signin';
+export const SIGN_IN_PAGE = '/auth/signin';
 export const VERIFY_REQUEST_PAGE = 'api/auth/verify-request';
 
 // https://docs.rollbar.com/docs/react

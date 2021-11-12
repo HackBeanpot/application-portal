@@ -8,6 +8,9 @@ import { safe } from '../../../server/errors';
 
 const authHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   return await NextAuth(req, res, {
+    pages: {
+      signIn: '/auth/signin',
+    },
     theme: {
       colorScheme: 'auto', // "auto" | "dark" | "light"
       brandColor: '', // Hex color code
