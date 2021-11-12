@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { Checkboxes, QuestionResponse } from '../../common/types';
 import { Checkbox, Form, FormInstance } from 'antd';
+import { questionLayout } from '../../pages/application';
 
 type CheckboxesProps = {
   question: Checkboxes;
@@ -13,8 +14,7 @@ const CheckboxesQuestion: FC<CheckboxesProps> = ({ question, form }) => {
     <Form.Item
       className="question"
       name={question.id}
-      labelCol={{ span: 8 }}
-      wrapperCol={{ span: 16 }}
+      {...questionLayout}
       label={question.content}
       rules={[
         { required: question.required, message: 'This question is required' },
