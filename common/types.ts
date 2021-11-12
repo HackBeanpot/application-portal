@@ -1,4 +1,5 @@
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
+import { ReactNode } from 'react';
 
 export interface User {
   email: string;
@@ -19,8 +20,10 @@ export interface User {
   resumeLink?: string;
   timeZone?: string;
   learningGoals?: string;
+  teamName?: string;
   responses?: Array<QuestionResponse>;
 }
+
 export type SingletonDefinition = DateSingleton;
 
 export enum SingletonType {
@@ -35,6 +38,11 @@ export interface DateSingleton {
     | SingletonType.RegistrationClosed
     | SingletonType.RegistrationOpen
     | SingletonType.ConfirmBy;
+}
+
+export interface Team {
+  name: string;
+  userEmails: string[];
 }
 
 export interface PortalState {
@@ -97,7 +105,7 @@ export type QuestionDefinition = Checkboxes | ShortText | Dropdown | LongText;
 export type QuestionId = string;
 
 interface IQuestion {
-  content: string;
+  content: ReactNode;
   id: QuestionId;
   required: boolean;
 }
@@ -109,11 +117,13 @@ export interface Checkboxes extends IQuestion {
 }
 export interface ShortText extends IQuestion {
   type: QuestionType.ShortText;
+  placeholder?: string;
   maxLength: number;
   minLength: number;
 }
 export interface Dropdown extends IQuestion {
   type: QuestionType.Dropdown;
+  placeholder?: string;
   options: Array<{ name: string }>;
 }
 export interface LongText extends IQuestion {
@@ -146,3 +156,7 @@ export type StatusApiResponse = {
   applicationStatus: ApplicationStatus;
   rsvpStatus: RSVPStatus;
 };
+
+export type TeamApiResponse = Team;
+
+export type DatesApiResponse = string;

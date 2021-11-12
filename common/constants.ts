@@ -116,7 +116,7 @@ export const EXAMPLE_QUESTIONS: Array<QuestionDefinition> = [
   EXAMPLE_LONG_TEXT_1,
 ];
 
-export const adminTabs = {
+export const ADMIN_TABS = {
   VIEW_STATS: 'View Stats',
   CONFIGURE_PORTAL_SETTINGS: 'Configure Portal Settings',
   VIEW_AND_MODIFY_APPLICANTS: 'View / Modify Applicants',

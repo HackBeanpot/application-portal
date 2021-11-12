@@ -39,17 +39,20 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     callbacks: {
       async signIn({ user }) {
         // can implement banned users if needed
+        const email = user.email!;
         const isAllowedToSignIn = true;
         if (isAllowedToSignIn) {
           const { userDataCollection } = await connectToDatabase();
           const existingUser = await userDataCollection.findOne({
-            email: user.email!,
+            email,
           });
           if (!existingUser) {
+            // all users with @hackbeanpot.com are made admins by default
+            const [, domain] = email.split('@');
             await userDataCollection.insertOne({
-              email: user.email!,
+              email,
               applicationStatus: ApplicationStatus.Incomplete,
-              isAdmin: false,
+              isAdmin: domain === 'hackbeanpot.com',
               rsvpStatus: RSVPStatus.Unconfirmed,
             });
           }

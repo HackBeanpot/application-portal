@@ -19,19 +19,19 @@ const CheckboxesQuestion: FC<CheckboxesProps> = ({
   const options: string[] = [];
   question.options.map((o) => options.push(o.name));
   return (
-    <>
-      <h2>{question.content}</h2>
-      {question.required ? '*' : ''}
+    <div className="question">
+      <label htmlFor={question.id}>
+        {question.content} {question.required ? '*' : ''}
+      </label>
+      <br />
       <Checkbox.Group
+        name={question.id}
         key={question.id}
         options={options}
         onChange={(e) => addCheckboxAnswer(question, e)}
       />
-      min number = {question.minNumber}
-      <br />
-      max number = {question.maxNumber}
       <div>{errorMessage}</div>
-    </>
+    </div>
   );
 };
 export default CheckboxesQuestion;

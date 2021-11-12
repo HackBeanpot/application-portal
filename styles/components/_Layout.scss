@@ -1,0 +1,111 @@
+@import "../constants";
+
+$header-height: 64px;
+$sider-width: 200px;
+
+.layout {
+  .header {
+    top: 0;
+    position: sticky;
+    z-index: 100;
+    display: flex;
+
+    // https://stackoverflow.com/questions/952861/targeting-only-firefox-with-css
+    // For IE, opera, safari and chrome.
+    zoom: $scale;
+    @supports (-moz-appearance:none) {
+      // Only for Firefox
+      transform: scale($scale);
+      transform-origin: 0 0;
+      // for some reason, there's a 12px difference between what we'd expect the size to be,
+      // and what it actually is.
+      width: calc(100vw / #{$scale});
+    }
+
+    .logo-container {
+      width: $header-height;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    // prevent menu from auto collapsing as a flex child
+    // https://github.com/ant-design/ant-design/issues/30813#issuecomment-854625752
+    .menu {
+      flex: auto;
+    }
+
+    .user {
+      font-size: 16px;
+      color: grey;
+      margin-left: auto;
+    }
+
+    .logout {
+      color: #1890ff;
+    }
+  }
+
+  .content-container {
+    min-height: calc((100vh / #{$scale}) - #{$header-height});
+    background: #f0f2f5;
+
+    // ant design, by default, uses really small font
+    // however, increasing font size is hard (doesn't apply to all components, different scales, etc)
+    // so, just scale everything up manually
+
+    // For IE, opera, safari and chrome.
+    zoom: $scale;
+
+    // https://stackoverflow.com/questions/952861/targeting-only-firefox-with-css
+    @supports (-moz-appearance:none) {
+      // Only for Firefox
+      transform: scale($scale);
+      transform-origin: 0 0;
+      // for some reason, there's a 12px difference between what we'd expect the size to be,
+      // and what it actually is.
+      width: calc(100vw / #{$scale});
+    }
+
+    .content {
+      padding: 48px 24px;
+      overflow: initial;
+      margin: 0 20%;
+      @media (max-width: $xxl) {
+        margin: 0 10%;
+      }
+      @media (max-width: $md) {
+        margin: 0 50px;
+      }
+      @media (max-width: $xs) {
+        margin: 0 15px;
+      }
+    }
+  }
+}
+
+.sider_content_layout {
+
+  margin-top: $header-height;
+}
+
+.sider {
+  overflow: auto;
+  height: 100%;
+  position: fixed;
+  left: 0;
+}
+
+.content {
+
+
+  &__layout {
+    margin-left: $sider-width;
+  }
+}

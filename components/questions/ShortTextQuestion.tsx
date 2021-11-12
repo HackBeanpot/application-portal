@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { ShortText } from '../../common/types';
+import { Input } from 'antd';
 type ShortTextProps = {
   question: ShortText;
   addTextAnswer: (question: ShortText, answer: string) => void;
@@ -12,14 +13,15 @@ const ShortTextQuestion: FC<ShortTextProps> = ({
   errorMessage,
 }) => {
   return (
-    <div>
-      <h2>{question.content}</h2>
-      {question.required ? '*' : ''}
-      min-length = {question.minLength}
-      <br />
-      max-length = {question.maxLength}
-      <br />
-      <textarea onChange={(e) => addTextAnswer(question, e.target.value)} />
+    <div className="question">
+      <label htmlFor={question.id}>
+        {question.content} {question.required ? '*' : ''}
+      </label>
+      <Input
+        placeholder={question.placeholder}
+        name={question.id}
+        onChange={(e) => addTextAnswer(question, e.target.value)}
+      />
       <div>{errorMessage}</div>
     </div>
   );

@@ -3,16 +3,23 @@ import { connectToDatabase } from './mongoDB';
 import { DateSingleton } from '../common/types';
 import { isAdmin } from './protect';
 
+export const queryDate = async (
+  dateName: DateSingleton['type']
+): Promise<string | undefined> => {
+  const { singletonDataCollection } = await connectToDatabase();
+  const data = await singletonDataCollection.findOne({
+    type: dateName,
+  });
+  return data?.value;
+};
+
 export const getDate = async (
   req: NextApiRequest,
   res: NextApiResponse,
   dateName: DateSingleton['type']
 ) => {
-  const { singletonDataCollection } = await connectToDatabase();
-  const data = await singletonDataCollection.findOne({
-    type: dateName,
-  });
-  return res.status(200).json(data?.value);
+  const date = await queryDate(dateName);
+  return res.status(200).json(date);
 };
 
 export const postDate = async (

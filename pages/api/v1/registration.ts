@@ -1,9 +1,15 @@
 import { NextApiHandler } from 'next';
-import { RegistrationApiRequest } from '../../../common/types';
+import {
+  ApplicationStatus,
+  RegistrationApiRequest,
+  SingletonType,
+} from '../../../common/types';
 import { connectToDatabase } from '../../../server/mongoDB';
 import { assumeLoggedInGetEmail, protect } from '../../../server/protect';
 import { attemptToValidateRegistrationApiRequest } from '../../../server/validators';
 import Joi from 'joi';
+import { queryDate } from '../../../server/dates';
+import { isBefore } from 'date-fns';
 
 const registrationHandler: NextApiHandler = async (req, res) => {
   switch (req.method) {
@@ -28,6 +34,18 @@ const getHandler: NextApiHandler = async (req, res) => {
 };
 
 const postHandler: NextApiHandler = async (req, res) => {
+  const [open, closed] = await Promise.all([
+    queryDate(SingletonType.RegistrationOpen),
+    queryDate(SingletonType.RegistrationClosed),
+  ]);
+  const NOW = new Date();
+  if (isBefore(NOW, new Date(open!))) {
+    return res.status(400).json('Registration is not yet open');
+  }
+  if (isBefore(new Date(closed!), NOW)) {
+    return res.status(400).json('Registration is already closed');
+  }
+
   let result: RegistrationApiRequest;
   try {
     result = attemptToValidateRegistrationApiRequest(req.body);
@@ -49,6 +67,7 @@ const postHandler: NextApiHandler = async (req, res) => {
       $set: {
         responses: result.responses,
         email,
+        applicationStatus: ApplicationStatus.Submitted,
       },
     },
     { upsert: true }

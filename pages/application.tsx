@@ -1,22 +1,32 @@
 import React, { ReactElement, useState } from 'react';
 import {
-  QuestionType,
   Answer,
-  ShortText,
-  LongText,
+  ApplicationStatus,
   Checkboxes,
   Dropdown,
+  LongText,
   QuestionDefinition,
+  QuestionType,
+  ShortText,
 } from '../common/types';
 import ShortTextQuestion from '../components/questions/ShortTextQuestion';
 import LongTextQuestion from '../components/questions/LongTextQuestion';
 import CheckboxesQuestion from '../components/questions/CheckboxesQuestion';
 import DropdownQuestion from '../components/questions/DropdownQuestion';
-import { useSessionOrRedirect } from '../hooks/useSessionOrRedirect';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
-import { updateApplicantResponses } from '../common/apiClient';
+import {
+  getRegistrationClosed,
+  getStatus,
+  updateApplicantResponses,
+} from '../common/apiClient';
 import { PageLayout } from '../components/Layout';
 import { Questions } from '../common/questions';
+import { Alert, Button, notification } from 'antd';
+import { GetServerSideProps } from 'next';
+import useSWR from 'swr';
+import { format } from '../components/dashboard/StatusDialogue';
+import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect';
+import Router from 'next/router';
 
 export interface Error {
   id: string;
@@ -39,14 +49,18 @@ const createOrUpdateAnswer = (
 };
 
 const Application = (): ReactElement => {
-  useSessionOrRedirect();
-
+  const { data: status } = useSWR('/api/v1/status', getStatus);
+  const { data: registrationClosed } = useSWR(
+    '/api/v1/dates/registration-closed',
+    getRegistrationClosed
+  );
   const [textAnswers, setTextAnswers] = useState<Answer[]>([]);
   const [checkboxAnswers, setCheckboxAnswers] = useState<Answer[]>([]);
   const [dropdownAnswers, setDropdownAnswer] = useState<Answer[]>([]);
   const [errors, setErrors] = useState<Error[]>([]);
   const [hasErrorsOnSubmit, setHasErrorsOnSubmit] = useState<boolean>(false);
   const answers = textAnswers.concat(checkboxAnswers, dropdownAnswers);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const addTextAnswer = (question: ShortText | LongText, answer: string) => {
     const characterLength = answer.length;
@@ -175,7 +189,25 @@ const Application = (): ReactElement => {
           }
         }
       });
-      updateApplicantResponses({ responses });
+      setIsSubmitting(true);
+      updateApplicantResponses({ responses }).then((response) => {
+        setIsSubmitting(false);
+        if (200 <= response.status && response.status < 300) {
+          notification.success({
+            message: 'Application Successfully Submitted',
+            placement: 'bottomRight',
+            duration: 5,
+          });
+          Router.push('/');
+        } else {
+          notification.error({
+            message: 'Error Submitting Application',
+            description: response.data,
+            placement: 'bottomRight',
+            duration: 30,
+          });
+        }
+      });
     }
   };
 
@@ -223,11 +255,45 @@ const Application = (): ReactElement => {
 
   return (
     <PageLayout currentPage={'application'}>
-      <h1>Application Page</h1>
-      <div>{Questions.map((q) => renderAll(q))}</div>
-      <button onClick={submitIfValid}>Submit</button>
-      {hasErrorsOnSubmit && <div>Please fix errors before submitting.</div>}
+      <div className="application">
+        <h1>Application Page</h1>
+        {status?.data.applicationStatus === ApplicationStatus.Submitted && (
+          <Alert
+            className="alert"
+            type="info"
+            description={
+              <>
+                You have already submitted your application, but you may
+                resubmit your application as many times as you{"'"}d like before
+                registration closes on{' '}
+                <b>
+                  {registrationClosed?.data &&
+                    format(new Date(registrationClosed.data))}
+                </b>
+                .
+              </>
+            }
+            message={<>Application already submitted</>}
+            showIcon
+          />
+        )}
+        <div>{Questions.map((q) => renderAll(q))}</div>
+        <Button
+          className="submit"
+          type={'primary'}
+          onClick={submitIfValid}
+          loading={isSubmitting}
+          size={'large'}
+        >
+          Submit
+        </Button>
+        {hasErrorsOnSubmit && <div>Please fix errors before submitting.</div>}
+      </div>
     </PageLayout>
   );
 };
+
+export const getServerSideProps: GetServerSideProps =
+  getServerSideSessionOrRedirect;
+
 export default Application;

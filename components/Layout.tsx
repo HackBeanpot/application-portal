@@ -1,17 +1,16 @@
-import { Layout, Menu } from 'antd';
+import { Dropdown, Layout, Menu } from 'antd';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
-import { getApplicantById } from '../common/apiClient';
-import styles from '../styles/components/Layout.module.scss';
+import { getUser } from '../common/apiClient';
 import Logo from '../public/logo.svg';
 import Image from 'next/image';
-import { useSessionOrRedirect } from '../hooks/useSessionOrRedirect';
-import React, { ReactNode, useState } from 'react';
-import { Drawer, Button } from 'antd';
-import { MenuOutlined } from '@ant-design/icons';
-const { Header, Content, Sider } = Layout;
+import { useSession } from 'next-auth/react';
+import React, { ReactNode } from 'react';
+import { DownOutlined } from '@ant-design/icons';
 
-const Pages = ['home', 'application', 'admin', 'logout'] as const;
+const { Header, Content } = Layout;
+
+const Pages = ['home', 'application', 'team', 'admin', 'logout'] as const;
 type PageLayoutProps = {
   currentPage: typeof Pages[number];
 };
@@ -78,53 +77,65 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
   currentPage,
   children,
 }) => {
-  const { data: user } = useSWR('/api/v1/profile', () => getApplicantById(1));
+  const { data: user } = useSWR('/api/v1/user', getUser);
   const router = useRouter();
-  const session = useSessionOrRedirect();
+  const { data: session } = useSession();
   return (
-    <Layout>
-      <Header className={styles.header}>
-        <Image src={Logo} alt="HackBeanpot logo" width={32} height={32} />
-        <div className={styles.header__text}>
-          HackBeanpot Application Portal
+    <Layout className="layout">
+      <Header className="header">
+        <div className="logo-container">
+          <Image
+            className="logo"
+            src={Logo}
+            alt="HackBeanpot logo"
+            width={32}
+            height={32}
+          />
         </div>
-        <div className={styles.header__user}>
-          {session?.user?.email ?? 'Not Logged In'}
+        <Menu
+          className="menu"
+          theme="dark"
+          mode="horizontal"
+          defaultSelectedKeys={[currentPage]}
+        >
+          <Menu.Item key="home" onClick={() => router.push('/')}>
+            Dashboard
+          </Menu.Item>
+          <Menu.Item
+            key="application"
+            onClick={() => router.push('/application')}
+          >
+            Application
+          </Menu.Item>
+          <Menu.Item key="team" onClick={() => router.push('/team')}>
+            Team
+          </Menu.Item>
+          {user?.data?.isAdmin && (
+            <Menu.Item key="admin" onClick={() => router.push('/admin')}>
+              Admin
+            </Menu.Item>
+          )}
+        </Menu>
+        <div className="user">
+          <Dropdown
+            className="user"
+            overlay={
+              <Menu theme={'light'}>
+                <Menu.Item onClick={() => router.push('/api/auth/signout')}>
+                  Sign out
+                </Menu.Item>
+              </Menu>
+            }
+          >
+            <a className="ant-dropdown-link">
+              {session?.user?.email ?? 'Not Logged In'} <DownOutlined />
+            </a>
+          </Dropdown>
         </div>
       </Header>
-      <Layout className={styles.sider_content_layout}>
-        <Sider className={styles.sider} breakpoint="lg" collapsedWidth="0">
-          <Menu
-            mode="inline"
-            defaultSelectedKeys={[currentPage]}
-            className={styles.sider__menu}
-          >
-            <Menu.Item key="home" onClick={() => router.push('/')}>
-              Dashboard
-            </Menu.Item>
-            <Menu.Item
-              key="application"
-              onClick={() => router.push('/application')}
-            >
-              Application
-            </Menu.Item>
-            {user?.data.isAdmin && (
-              <Menu.Item key="admin" onClick={() => router.push('/admin')}>
-                Admin
-              </Menu.Item>
-            )}
-            <Menu.Item
-              key="logout"
-              onClick={() => router.push('/api/auth/signout')}
-            >
-              Logout
-            </Menu.Item>
-          </Menu>
-        </Sider>
-        <Layout className={styles.content__layout}>
-          <Content className={styles.content}>{children}</Content>
-        </Layout>
-      </Layout>
+      <Content className="content-container">
+        <div className="content">{children}</div>
+      </Content>
     </Layout>
   );
 };
