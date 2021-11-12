@@ -1,14 +1,36 @@
 @import "../constants";
 
 $header-height: 64px;
-$sider-width: 200px;
 
 .layout {
+  min-height: max-content;
+
+  .hamburger {
+    @media (min-width: $md) {
+      display: none;
+    }
+    top: 0;
+    position: fixed;
+    z-index: 100;
+    width: 100%;
+    background: #001529;
+
+    .icon {
+      margin-left: 16px;
+      padding: 8px;
+      font-size: 48px;
+      color: rgba(255, 255, 255, 0.65);
+    }
+  }
+
   .header {
     top: 0;
     position: sticky;
     z-index: 100;
     display: flex;
+    @media (max-width: $md) {
+      display: none;
+    }
 
     // https://stackoverflow.com/questions/952861/targeting-only-firefox-with-css
     // For IE, opera, safari and chrome.
@@ -23,7 +45,7 @@ $sider-width: 200px;
     }
 
     .logo-container {
-      width: $header-height;
+      width: calc(#{$header-height} / #{$scale});
       display: flex;
       align-items: center;
       justify-content: center;
@@ -53,8 +75,11 @@ $sider-width: 200px;
   }
 
   .content-container {
-    min-height: calc((100vh / #{$scale}) - #{$header-height});
+    min-height: calc((100vh / #{$scale}) - (#{$header-height} / #{$scale}));
     background: #f0f2f5;
+    @media (max-width: $md) {
+      margin-top: calc(#{$header-height} / #{$scale});
+    }
 
     // ant design, by default, uses really small font
     // however, increasing font size is hard (doesn't apply to all components, different scales, etc)
@@ -90,22 +115,3 @@ $sider-width: 200px;
   }
 }
 
-.sider_content_layout {
-
-  margin-top: $header-height;
-}
-
-.sider {
-  overflow: auto;
-  height: 100%;
-  position: fixed;
-  left: 0;
-}
-
-.content {
-
-
-  &__layout {
-    margin-left: $sider-width;
-  }
-}

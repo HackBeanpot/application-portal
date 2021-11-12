@@ -5,8 +5,8 @@ import { getUser } from '../common/apiClient';
 import Logo from '../public/logo.svg';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
-import React from 'react';
-import { DownOutlined } from '@ant-design/icons';
+import React, { useState } from 'react';
+import { DownOutlined, MenuOutlined } from '@ant-design/icons';
 
 const { Header, Content } = Layout;
 
@@ -19,11 +19,49 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
   currentPage,
   children,
 }) => {
+  const [navOpen, setNavOpen] = useState(false);
   const { data: user } = useSWR('/api/v1/user', getUser);
   const router = useRouter();
   const { data: session } = useSession();
+  const andClose = (f: () => void) => () => {
+    f();
+    setNavOpen(false);
+  };
   return (
     <Layout className="layout">
+      <div className="hamburger">
+        <MenuOutlined
+          className="icon"
+          onClick={() => setNavOpen((prev) => !prev)}
+        />
+        {navOpen && (
+          <Menu theme="dark">
+            <Menu.Item key="home" onClick={andClose(() => router.push('/'))}>
+              Dashboard
+            </Menu.Item>
+            <Menu.Item
+              key="application"
+              onClick={andClose(() => router.push('/application'))}
+            >
+              Application
+            </Menu.Item>
+            <Menu.Item
+              key="team"
+              onClick={andClose(() => router.push('/team'))}
+            >
+              Team
+            </Menu.Item>
+            {user?.data?.isAdmin && (
+              <Menu.Item
+                key="admin"
+                onClick={andClose(() => router.push('/admin'))}
+              >
+                Admin
+              </Menu.Item>
+            )}
+          </Menu>
+        )}
+      </div>
       <Header className="header">
         <div className="logo-container">
           <Image
