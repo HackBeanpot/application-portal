@@ -9,7 +9,6 @@ import { useSessionOrRedirect } from '../hooks/useSessionOrRedirect';
 import React, { ReactNode, useState } from 'react';
 import { Drawer, Button } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
-import './sider.css';
 const { Header, Content, Sider } = Layout;
 
 const Pages = ['home', 'application', 'admin', 'logout'] as const;
@@ -32,7 +31,7 @@ export const SideBar = ({ menu }: { menu: ReactNode }) => {
 };
 
 import logo from 'logo.svg';
-/**
+/*
 export const NavBar = ({ menu }: {menu: ReactNode}) => {
   const [visible, setVisible] = useState(false);  return (
     <nav className="navbar">
@@ -73,8 +72,8 @@ export const TopicMenu = ({ topics, selectedKey, changeSelectedKey }:
       {styledTopics}
     </Menu>
   );
-}
-*/
+}*/
+
 export const PageLayout: React.FC<PageLayoutProps> = ({
   currentPage,
   children,
