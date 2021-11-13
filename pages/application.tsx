@@ -33,16 +33,10 @@ import {
   isAfterRegistrationClosed,
   isBeforeRegistrationOpens,
 } from '../common/dateUtils';
+import { useWarnIfUnsavedChanges } from '../components/hooks/useWarnIfUnsavedChanges';
 
 const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
-};
-
-const onBeforeUnload = (event: BeforeUnloadEvent) => {
-  event.preventDefault();
-  event.returnValue =
-    'You are currently editing your responses! If you leave the page, your responses will not be saved!';
-  return 'You are currently editing your responses! If you leave the page, your responses will not be saved!';
 };
 
 const getQuestionComponentFromType = (type: QuestionType) => {
@@ -109,14 +103,7 @@ const Application = (): ReactElement => {
       form.resetFields();
     }
   }, [alreadySubmitted, isAfterRegistration, isBeforeRegistration]);
-  useEffect(() => {
-    if (isEditing) {
-      window.addEventListener('beforeunload', onBeforeUnload);
-    } else {
-      window.removeEventListener('beforeunload', onBeforeUnload);
-    }
-    return () => window.removeEventListener('beforeunload', onBeforeUnload);
-  }, [disabled, isEditing]);
+  useWarnIfUnsavedChanges(isEditing);
 
   const onSubmit = async (values: Record<string, QuestionResponse>) => {
     const responses = Questions.map((q) => values[q.id] ?? null);

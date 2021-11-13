@@ -38,7 +38,7 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
           className="menu"
           theme="dark"
           mode="horizontal"
-          defaultSelectedKeys={[currentPage]}
+          selectedKeys={[currentPage]}
         >
           <Menu.Item key="home" onClick={() => router.push('/')}>
             Dashboard
