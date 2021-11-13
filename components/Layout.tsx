@@ -1,5 +1,4 @@
 import { Dropdown, Layout, Menu } from 'antd';
-import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import { getUser } from '../common/apiClient';
 import Logo from '../public/logo.svg';
@@ -7,6 +6,7 @@ import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import React from 'react';
 import { DownOutlined } from '@ant-design/icons';
+import Link from 'next/link';
 
 const { Header, Content } = Layout;
 
@@ -20,7 +20,6 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
   children,
 }) => {
   const { data: user } = useSWR('/api/v1/user', getUser);
-  const router = useRouter();
   const { data: session } = useSession();
   return (
     <Layout className="layout">
@@ -40,21 +39,18 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
           mode="horizontal"
           selectedKeys={[currentPage]}
         >
-          <Menu.Item key="home" onClick={() => router.push('/')}>
-            Dashboard
+          <Menu.Item key="home">
+            <Link href="/">Dashboard</Link>
           </Menu.Item>
-          <Menu.Item
-            key="application"
-            onClick={() => router.push('/application')}
-          >
-            Application
+          <Menu.Item key="application">
+            <Link href="/application">Application</Link>
           </Menu.Item>
-          <Menu.Item key="team" onClick={() => router.push('/team')}>
-            Team
+          <Menu.Item key="team">
+            <Link href="/team">Team</Link>
           </Menu.Item>
           {user?.data?.isAdmin && (
-            <Menu.Item key="admin" onClick={() => router.push('/admin')}>
-              Admin
+            <Menu.Item key="admin">
+              <Link href="/admin">Admin</Link>
             </Menu.Item>
           )}
         </Menu>
@@ -63,8 +59,8 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
             className="user"
             overlay={
               <Menu theme={'light'}>
-                <Menu.Item onClick={() => router.push('/api/auth/signout')}>
-                  Sign out
+                <Menu.Item>
+                  <Link href="/api/auth/signout">Sign out</Link>
                 </Menu.Item>
               </Menu>
             }
