@@ -72,7 +72,7 @@ const Application = (): ReactElement => {
     '/api/v1/dates/registration-closed',
     getRegistrationClosed
   );
-  const { data: userResponses } = useSWR(
+  const { data: userResponses, mutate: fetchUserResponses } = useSWR(
     '/api/v1/applicants',
     getApplicantResponses
   );
@@ -106,6 +106,7 @@ const Application = (): ReactElement => {
   useEffect(() => {
     if (alreadySubmitted || isBeforeRegistration || isAfterRegistration) {
       setDisabled(true);
+      form.resetFields();
     }
   }, [alreadySubmitted, isAfterRegistration, isBeforeRegistration]);
   useEffect(() => {
@@ -128,6 +129,7 @@ const Application = (): ReactElement => {
         placement: 'bottomRight',
         duration: 5,
       });
+      fetchUserResponses();
       if (!alreadySubmitted) {
         await Router.push('/');
       } else {
@@ -166,10 +168,10 @@ const Application = (): ReactElement => {
             isAfterRegistration={isAfterRegistration}
             registrationCloseDate={registrationCloseDate}
             registrationOpenDate={registrationOpenDate}
+            resetFields={() => form.resetFields()}
           />
         )}
         <Form
-          key={String(alreadySubmitted) + String(isSubmitting)}
           initialValues={submittedFormData}
           form={form}
           onFinish={onSubmit}
@@ -207,6 +209,7 @@ type StatusDialogueProps = {
   registrationCloseDate: Date;
   isBeforeRegistration: boolean;
   isAfterRegistration: boolean;
+  resetFields: () => void;
 };
 const StatusDialogue: React.FC<StatusDialogueProps> = ({
   alreadySubmitted,
@@ -216,6 +219,7 @@ const StatusDialogue: React.FC<StatusDialogueProps> = ({
   setDisabled,
   isBeforeRegistration,
   isAfterRegistration,
+  resetFields,
 }) => {
   if (isBeforeRegistration) {
     return <ApplyLater registrationOpen={format(registrationOpenDate)} />;
@@ -243,8 +247,20 @@ const StatusDialogue: React.FC<StatusDialogueProps> = ({
                 disabled={!disabled}
                 onClick={() => setDisabled(false)}
               >
-                {disabled ? 'Edit my responses' : 'Currently editing responses'}
+                Edit my responses
               </Button>
+              {!disabled && (
+                <Button
+                  danger
+                  className="cancel-edit-button"
+                  onClick={() => {
+                    setDisabled(true);
+                    resetFields();
+                  }}
+                >
+                  Cancel editing
+                </Button>
+              )}
             </div>
           </>
         }

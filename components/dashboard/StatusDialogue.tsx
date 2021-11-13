@@ -28,7 +28,7 @@ export const StatusDialogue: React.FC<StatusDialogueProps> = ({
   if (isBeforeRegistrationOpens(registrationOpen)) {
     // before registration opens case
     return <ApplyLater registrationOpen={format(registrationOpen)} />;
-  } else if (isAfterRegistrationClosed(registrationClosed)) {
+  } else if (!isAfterRegistrationClosed(registrationClosed)) {
     // between registration opens and closes case
     if (applicationStatus === ApplicationStatus.Incomplete) {
       return (
