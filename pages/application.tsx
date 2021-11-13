@@ -85,9 +85,9 @@ const Application = (): ReactElement => {
   // observations
   const alreadySubmitted =
     status?.data.applicationStatus === ApplicationStatus.Submitted &&
-    (userResponses?.data.responses.length ?? 0) > 0;
+    (userResponses?.data?.responses?.length ?? 0) > 0;
   const submittedFormData: Record<string, QuestionResponse> = {};
-  userResponses?.data.responses.forEach((response, index) => {
+  userResponses?.data?.responses?.forEach((response, index) => {
     submittedFormData[String(index + 1)] = response;
   });
   const isEditing = alreadySubmitted && !disabled;
