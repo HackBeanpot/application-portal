@@ -3,6 +3,10 @@ import { Alert, AlertProps, Button } from 'antd';
 import { isBefore } from 'date-fns';
 import Link from 'next/link';
 import React from 'react';
+import {
+  isAfterRegistrationClosed,
+  isBeforeRegistrationOpens,
+} from '../../common/dateUtils';
 
 // whether or not decisions should be show in the portal
 // toggle this to true after the decision process is over
@@ -21,11 +25,10 @@ export const StatusDialogue: React.FC<StatusDialogueProps> = ({
   confirmBy,
   status: { applicationStatus },
 }) => {
-  const NOW = new Date();
-  if (isBefore(NOW, registrationOpen)) {
+  if (isBeforeRegistrationOpens(registrationOpen)) {
     // before registration opens case
     return <ApplyLater registrationOpen={format(registrationOpen)} />;
-  } else if (isBefore(NOW, registrationClosed)) {
+  } else if (isAfterRegistrationClosed(registrationClosed)) {
     // between registration opens and closes case
     if (applicationStatus === ApplicationStatus.Incomplete) {
       return (
@@ -94,7 +97,11 @@ export const LoadingMessage: React.FC = () =>
     'Loading, please wait...',
     'Loading deadlines and application status, please wait...'
   );
-const ApplyLater = ({ registrationOpen }: { registrationOpen: string }) =>
+export const ApplyLater = ({
+  registrationOpen,
+}: {
+  registrationOpen: string;
+}) =>
   ShortAlert(
     'info',
     <>
@@ -112,7 +119,7 @@ const Incomplete = ({ registrationClosed }: { registrationClosed: string }) =>
       for admission.
     </>
   );
-const Submitted = () =>
+export const Submitted = () =>
   ShortAlert(
     'info',
     'Application Submitted',
@@ -131,7 +138,7 @@ const PleaseEmailUs = () =>
       your application status!
     </>
   );
-const DeadlinePassed = ({
+export const DeadlinePassed = ({
   registrationClosed,
 }: {
   registrationClosed: string;

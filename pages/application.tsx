@@ -12,6 +12,7 @@ import DropdownQuestion from '../components/questions/DropdownQuestion';
 import {
   getApplicantResponses,
   getRegistrationClosed,
+  getRegistrationOpen,
   getStatus,
   updateApplicantResponses,
 } from '../common/apiClient';
@@ -20,12 +21,28 @@ import { Questions } from '../common/questions';
 import { Alert, Button, Form, notification } from 'antd';
 import { GetServerSideProps } from 'next';
 import useSWR from 'swr';
-import { format } from '../components/dashboard/StatusDialogue';
+import {
+  ApplyLater,
+  DeadlinePassed,
+  format,
+  Submitted,
+} from '../components/dashboard/StatusDialogue';
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect';
 import Router from 'next/router';
+import {
+  isAfterRegistrationClosed,
+  isBeforeRegistrationOpens,
+} from '../common/dateUtils';
 
 const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
+};
+
+const onBeforeUnload = (event: BeforeUnloadEvent) => {
+  event.preventDefault();
+  event.returnValue =
+    'You are currently editing your responses! If you leave the page, your responses will not be saved!';
+  return 'You are currently editing your responses! If you leave the page, your responses will not be saved!';
 };
 
 const getQuestionComponentFromType = (type: QuestionType) => {
@@ -46,6 +63,10 @@ const getQuestionComponentFromType = (type: QuestionType) => {
 
 const Application = (): ReactElement => {
   // data
+  const { data: registrationOpen } = useSWR(
+    '/api/v1/dates/registration-open',
+    getRegistrationOpen
+  );
   const { data: status } = useSWR('/api/v1/status', getStatus);
   const { data: registrationClosed } = useSWR(
     '/api/v1/dates/registration-closed',
@@ -69,13 +90,32 @@ const Application = (): ReactElement => {
   userResponses?.data.responses.forEach((response, index) => {
     submittedFormData[String(index + 1)] = response;
   });
+  const isEditing = alreadySubmitted && !disabled;
+  const registrationOpenDate =
+    registrationOpen?.data && new Date(registrationOpen?.data);
+  const registrationCloseDate =
+    registrationClosed?.data && new Date(registrationClosed?.data);
+  const isBeforeRegistration = Boolean(
+    registrationOpenDate && isBeforeRegistrationOpens(registrationOpenDate)
+  );
+  const isAfterRegistration = Boolean(
+    registrationCloseDate && isAfterRegistrationClosed(registrationCloseDate)
+  );
 
   // effects
   useEffect(() => {
-    if (alreadySubmitted) {
+    if (alreadySubmitted || isBeforeRegistration || isAfterRegistration) {
       setDisabled(true);
     }
-  }, [alreadySubmitted]);
+  }, [alreadySubmitted, isAfterRegistration, isBeforeRegistration]);
+  useEffect(() => {
+    if (isEditing) {
+      window.addEventListener('beforeunload', onBeforeUnload);
+    } else {
+      window.removeEventListener('beforeunload', onBeforeUnload);
+    }
+    return () => window.removeEventListener('beforeunload', onBeforeUnload);
+  }, [disabled, isEditing]);
 
   const onSubmit = async (values: Record<string, QuestionResponse>) => {
     const responses = Questions.map((q) => values[q.id] ?? null);
@@ -117,35 +157,15 @@ const Application = (): ReactElement => {
     <PageLayout currentPage={'application'}>
       <div className="application">
         <h1>Application Page</h1>
-        {alreadySubmitted && (
-          <Alert
-            className="alert"
-            type="info"
-            description={
-              <>
-                You have already submitted your application, but you may edit
-                and resubmit your responses as many times as you{"'"}d like
-                before registration closes on{' '}
-                <b>
-                  {registrationClosed?.data &&
-                    format(new Date(registrationClosed.data))}
-                </b>
-                .
-                <div className="edit-button-container">
-                  <Button
-                    className="edit-button"
-                    disabled={!disabled}
-                    onClick={() => setDisabled(false)}
-                  >
-                    {disabled
-                      ? 'Edit my responses'
-                      : 'Currently editing responses'}
-                  </Button>
-                </div>
-              </>
-            }
-            message={<>Application already submitted</>}
-            showIcon
+        {registrationCloseDate && registrationOpenDate && (
+          <StatusDialogue
+            disabled={disabled}
+            setDisabled={setDisabled}
+            alreadySubmitted={alreadySubmitted}
+            isBeforeRegistration={isBeforeRegistration}
+            isAfterRegistration={isAfterRegistration}
+            registrationCloseDate={registrationCloseDate}
+            registrationOpenDate={registrationOpenDate}
           />
         )}
         <Form
@@ -178,5 +198,63 @@ const Application = (): ReactElement => {
 };
 export const getServerSideProps: GetServerSideProps =
   getServerSideSessionOrRedirect;
+
+type StatusDialogueProps = {
+  disabled: boolean;
+  setDisabled: (d: boolean) => void;
+  alreadySubmitted: boolean;
+  registrationOpenDate: Date;
+  registrationCloseDate: Date;
+  isBeforeRegistration: boolean;
+  isAfterRegistration: boolean;
+};
+const StatusDialogue: React.FC<StatusDialogueProps> = ({
+  alreadySubmitted,
+  registrationCloseDate,
+  registrationOpenDate,
+  disabled,
+  setDisabled,
+  isBeforeRegistration,
+  isAfterRegistration,
+}) => {
+  if (isBeforeRegistration) {
+    return <ApplyLater registrationOpen={format(registrationOpenDate)} />;
+  } else if (isAfterRegistration) {
+    if (!alreadySubmitted) {
+      return (
+        <DeadlinePassed registrationClosed={format(registrationCloseDate)} />
+      );
+    }
+    return <Submitted />;
+  } else if (alreadySubmitted) {
+    return (
+      <Alert
+        className="alert"
+        type="info"
+        description={
+          <>
+            You have already submitted your application, but you may edit and
+            resubmit your responses as many times as you{"'"}d like before
+            registration closes on{' '}
+            <b>{registrationCloseDate && format(registrationCloseDate)}</b>.
+            <div className="edit-button-container">
+              <Button
+                className="edit-button"
+                disabled={!disabled}
+                onClick={() => setDisabled(false)}
+              >
+                {disabled ? 'Edit my responses' : 'Currently editing responses'}
+              </Button>
+            </div>
+          </>
+        }
+        message={<>Application already submitted</>}
+        showIcon
+      />
+    );
+  } else {
+    return null;
+  }
+};
 
 export default Application;

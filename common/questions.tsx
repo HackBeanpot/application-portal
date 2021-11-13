@@ -4,18 +4,14 @@ Serves as a single point of truth for what questions are displayed on applicatio
 frontend & validated on backend
 */
 
-import React, { ReactFragment, ReactNode } from 'react';
-import { EXAMPLE_CHECKBOX_1, EXAMPLE_DROPDOWN_1 } from './constants';
+import React, { ReactNode } from 'react';
 import {
-  RegistrationApiRequest,
-  QuestionIdToResponseMap,
-  QuestionDefinition,
   Checkboxes,
   Dropdown,
   LongText,
+  QuestionDefinition,
   QuestionType,
   ShortText,
-  QuestionIdToDefinitionMap,
 } from './types';
 
 let questionCount = 0;
