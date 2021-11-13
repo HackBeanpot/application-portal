@@ -3,10 +3,11 @@ import { LongText, QuestionResponse } from '../../common/types';
 import { Input, Form, FormInstance } from 'antd';
 
 type LongTextProps = {
+  disabled: boolean;
   question: LongText;
   form: FormInstance<Record<string, QuestionResponse>>;
 };
-const LongTextQuestion: FC<LongTextProps> = ({ question, form }) => {
+const LongTextQuestion: FC<LongTextProps> = ({ question, form, disabled }) => {
   return (
     <>
       <Form.Item
@@ -28,6 +29,7 @@ const LongTextQuestion: FC<LongTextProps> = ({ question, form }) => {
         ]}
       >
         <Input.TextArea
+          disabled={disabled}
           onChange={(e) =>
             form.setFieldsValue({ [question.id]: e.target.value as string })
           }

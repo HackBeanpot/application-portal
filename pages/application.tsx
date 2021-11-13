@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import {
   ApplicationStatus,
   QuestionDefinition,
@@ -10,6 +10,7 @@ import LongTextQuestion from '../components/questions/LongTextQuestion';
 import CheckboxesQuestion from '../components/questions/CheckboxesQuestion';
 import DropdownQuestion from '../components/questions/DropdownQuestion';
 import {
+  getApplicantResponses,
   getRegistrationClosed,
   getStatus,
   updateApplicantResponses,
@@ -44,16 +45,37 @@ const getQuestionComponentFromType = (type: QuestionType) => {
 };
 
 const Application = (): ReactElement => {
+  // data
   const { data: status } = useSWR('/api/v1/status', getStatus);
   const { data: registrationClosed } = useSWR(
     '/api/v1/dates/registration-closed',
     getRegistrationClosed
   );
+  const { data: userResponses } = useSWR(
+    '/api/v1/applicants',
+    getApplicantResponses
+  );
+
+  // state
+  const [disabled, setDisabled] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [form] = Form.useForm<Record<string, QuestionResponse>>();
-  const onReset = () => {
-    form.resetFields();
-  };
+
+  // observations
+  const alreadySubmitted =
+    status?.data.applicationStatus === ApplicationStatus.Submitted &&
+    (userResponses?.data.responses.length ?? 0) > 0;
+  const submittedFormData: Record<string, QuestionResponse> = {};
+  userResponses?.data.responses.forEach((response, index) => {
+    submittedFormData[String(index + 1)] = response;
+  });
+
+  // effects
+  useEffect(() => {
+    if (alreadySubmitted) {
+      setDisabled(true);
+    }
+  }, [alreadySubmitted]);
 
   const onSubmit = async (values: Record<string, QuestionResponse>) => {
     const responses = Questions.map((q) => values[q.id] ?? null);
@@ -66,7 +88,12 @@ const Application = (): ReactElement => {
         placement: 'bottomRight',
         duration: 5,
       });
-      await Router.push('/');
+      if (!alreadySubmitted) {
+        await Router.push('/');
+      } else {
+        window?.scrollTo({ top: 0, behavior: 'smooth' });
+        setDisabled(true);
+      }
     } else {
       notification.error({
         message: 'Error Submitting Application',
@@ -82,6 +109,7 @@ const Application = (): ReactElement => {
     return React.createElement(QuestionComponent as any, {
       question: q,
       form: form,
+      disabled,
     });
   };
 
@@ -89,20 +117,31 @@ const Application = (): ReactElement => {
     <PageLayout currentPage={'application'}>
       <div className="application">
         <h1>Application Page</h1>
-        {status?.data.applicationStatus === ApplicationStatus.Submitted && (
+        {alreadySubmitted && (
           <Alert
             className="alert"
             type="info"
             description={
               <>
-                You have already submitted your application, but you may
-                resubmit your application as many times as you{"'"}d like before
-                registration closes on{' '}
+                You have already submitted your application, but you may edit
+                and resubmit your responses as many times as you{"'"}d like
+                before registration closes on{' '}
                 <b>
                   {registrationClosed?.data &&
                     format(new Date(registrationClosed.data))}
                 </b>
                 .
+                <div className="edit-button-container">
+                  <Button
+                    className="edit-button"
+                    disabled={!disabled}
+                    onClick={() => setDisabled(false)}
+                  >
+                    {disabled
+                      ? 'Edit my responses'
+                      : 'Currently editing responses'}
+                  </Button>
+                </div>
               </>
             }
             message={<>Application already submitted</>}
@@ -110,6 +149,8 @@ const Application = (): ReactElement => {
           />
         )}
         <Form
+          key={String(alreadySubmitted) + String(isSubmitting)}
+          initialValues={submittedFormData}
           form={form}
           onFinish={onSubmit}
           scrollToFirstError={{ behavior: 'smooth' }}
@@ -120,21 +161,14 @@ const Application = (): ReactElement => {
           ))}
           <Form.Item {...tailLayout}>
             <Button
+              disabled={disabled}
               className="button"
               type="primary"
               htmlType="submit"
               loading={isSubmitting}
               size="large"
             >
-              Submit
-            </Button>
-            <Button
-              className="button"
-              htmlType="button"
-              onClick={onReset}
-              size="large"
-            >
-              Reset
+              {alreadySubmitted ? 'Resubmit Application' : 'Submit Application'}
             </Button>
           </Form.Item>
         </Form>

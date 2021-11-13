@@ -146,11 +146,7 @@ export type QuestionIdToResponseMap = Record<QuestionId, QuestionResponse>;
 export type RegistrationApiRequest = {
   responses: Array<QuestionResponse>;
 };
-
-export interface Answer {
-  id: string;
-  answer: string | CheckboxValueType[];
-}
+export type RegistrationApiResponse = RegistrationApiRequest;
 
 export type StatusApiResponse = {
   applicationStatus: ApplicationStatus;

@@ -228,7 +228,7 @@ export const Questions: Array<QuestionDefinition> = [
     </>,
     true
   ),
-  makeShortText(
+  makeLongText(
     'If you were the first human to meet a member of an exterrestrial intelligent species, what would you ask them?',
     true
   ),

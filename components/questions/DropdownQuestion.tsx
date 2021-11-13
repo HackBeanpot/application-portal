@@ -3,10 +3,11 @@ import { Dropdown as DropdownType, QuestionResponse } from '../../common/types';
 import { FormInstance, Select, Form } from 'antd';
 
 type DropdownProps = {
+  disabled: boolean;
   question: DropdownType;
   form: FormInstance<Record<string, QuestionResponse>>;
 };
-const DropdownQuestion: FC<DropdownProps> = ({ question, form }) => {
+const DropdownQuestion: FC<DropdownProps> = ({ question, form, disabled }) => {
   return (
     <Form.Item
       className="question"
@@ -18,6 +19,7 @@ const DropdownQuestion: FC<DropdownProps> = ({ question, form }) => {
       ]}
     >
       <Select
+        disabled={disabled}
         placeholder={question.placeholder ?? 'Select'}
         allowClear
         onChange={(e) => form.setFieldsValue({ [question.id]: e as string })}

@@ -3,8 +3,24 @@
     margin-bottom: 20px;
   }
 
+  .edit-button-container {
+    margin-top: 16px;
+  }
+
+  .back-to-top {
+    border-radius: 100%;
+    background-color: #1088e9;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .back-top-icon {
+      font-size: 32px;
+    }
+  }
+
   .button {
     height: max-content;
-    margin-left: 16px;
   }
 }

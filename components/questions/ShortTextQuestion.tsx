@@ -3,11 +3,16 @@ import { QuestionResponse, ShortText } from '../../common/types';
 import { Form, FormInstance, Input } from 'antd';
 
 type ShortTextProps = {
+  disabled: boolean;
   question: ShortText;
   form: FormInstance<Record<string, QuestionResponse>>;
 };
 
-const ShortTextQuestion: FC<ShortTextProps> = ({ question, form }) => {
+const ShortTextQuestion: FC<ShortTextProps> = ({
+  question,
+  form,
+  disabled,
+}) => {
   return (
     <Form.Item
       wrapperCol={{ span: 8 }}
@@ -19,6 +24,7 @@ const ShortTextQuestion: FC<ShortTextProps> = ({ question, form }) => {
       ]}
     >
       <Input
+        disabled={disabled}
         placeholder={question.placeholder}
         onChange={(e) =>
           form.setFieldsValue({ [question.id]: e.target.value as string })

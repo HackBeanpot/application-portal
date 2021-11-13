@@ -3,10 +3,15 @@ import { Checkboxes, QuestionResponse } from '../../common/types';
 import { Checkbox, Form, FormInstance, Row } from 'antd';
 
 type CheckboxesProps = {
+  disabled: boolean;
   question: Checkboxes;
   form: FormInstance<Record<string, QuestionResponse>>;
 };
-const CheckboxesQuestion: FC<CheckboxesProps> = ({ question, form }) => {
+const CheckboxesQuestion: FC<CheckboxesProps> = ({
+  question,
+  form,
+  disabled,
+}) => {
   const options: string[] = [];
   question.options.map((o) => options.push(o.name));
   return (
@@ -29,6 +34,7 @@ const CheckboxesQuestion: FC<CheckboxesProps> = ({ question, form }) => {
       ]}
     >
       <Checkbox.Group
+        disabled={disabled}
         key={question.id}
         onChange={(e) => form.setFieldsValue({ [question.id]: e as string[] })}
       >
