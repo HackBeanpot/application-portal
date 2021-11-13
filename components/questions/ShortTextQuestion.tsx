@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { QuestionResponse, ShortText } from '../../common/types';
 import { Form, FormInstance, Input } from 'antd';
-import { questionLayout } from '../../pages/application';
 
 type ShortTextProps = {
   question: ShortText;
@@ -11,7 +10,7 @@ type ShortTextProps = {
 const ShortTextQuestion: FC<ShortTextProps> = ({ question, form }) => {
   return (
     <Form.Item
-      {...questionLayout}
+      wrapperCol={{ span: 8 }}
       className="question"
       name={question.id}
       label={<div className="short-text-label">{question.content}</div>}

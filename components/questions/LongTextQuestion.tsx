@@ -9,13 +9,10 @@ type LongTextProps = {
 const LongTextQuestion: FC<LongTextProps> = ({ question, form }) => {
   return (
     <>
-      <Form.Item labelCol={{ span: 24, offset: 0 }}>
-        {question.content}
-      </Form.Item>
       <Form.Item
         className="question"
         name={question.id}
-        label="Response"
+        label={question.content}
         rules={[
           { required: question.required, message: 'This question is required' },
           {

@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { Dropdown as DropdownType, QuestionResponse } from '../../common/types';
 import { FormInstance, Select, Form } from 'antd';
-import { questionLayout } from '../../pages/application';
 
 type DropdownProps = {
   question: DropdownType;
@@ -12,7 +11,7 @@ const DropdownQuestion: FC<DropdownProps> = ({ question, form }) => {
     <Form.Item
       className="question"
       name={question.id}
-      {...questionLayout}
+      wrapperCol={{ span: 8 }}
       label={question.content}
       rules={[
         { required: question.required, message: 'This question is required' },

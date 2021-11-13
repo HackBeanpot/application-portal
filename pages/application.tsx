@@ -23,15 +23,6 @@ import { format } from '../components/dashboard/StatusDialogue';
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect';
 import Router from 'next/router';
 
-const layoutMode = 'horizontal' as const;
-export const questionLayout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
-};
-const layout = {
-  // labelCol: { span: 8 },
-  // wrapperCol: { span: 16 },
-};
 const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 };
@@ -122,8 +113,7 @@ const Application = (): ReactElement => {
           form={form}
           onFinish={onSubmit}
           scrollToFirstError={{ behavior: 'smooth' }}
-          layout={layoutMode}
-          {...layout}
+          layout="vertical"
         >
           {Questions.map((q) => (
             <FormQuestion key={q.id} q={q} />

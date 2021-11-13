@@ -176,9 +176,9 @@ export const Questions: Array<QuestionDefinition> = [
       Please add an URL to your resume!
       <br />
       <i>
-        (Note: We do not read resumes as a part of the HBP application process!
+        Note: We do not read resumes as a part of the HBP application process!
         The resumes are shared with interested sponsors who may contact you
-        about internship / job opportunities, and will only be read by them.)
+        about internship / job opportunities, and will only be read by them.
       </i>
     </>,
     false
@@ -277,9 +277,9 @@ export const Questions: Array<QuestionDefinition> = [
       create / join a team with your teammates in the Team tab.
       <br />
       <i>
-        (Note: This question does not get factored into how your application is
+        Note: This question does not get factored into how your application is
         read! If you are already part of a team before applying, we will accept
-        / reject your team together.)
+        / reject your team together.
       </i>
     </>,
     ['Yes', 'No'],

@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { Checkboxes, QuestionResponse } from '../../common/types';
-import { Checkbox, Form, FormInstance } from 'antd';
-import { questionLayout } from '../../pages/application';
+import { Checkbox, Form, FormInstance, Row } from 'antd';
 
 type CheckboxesProps = {
   question: Checkboxes;
@@ -14,7 +13,6 @@ const CheckboxesQuestion: FC<CheckboxesProps> = ({ question, form }) => {
     <Form.Item
       className="question"
       name={question.id}
-      {...questionLayout}
       label={question.content}
       rules={[
         { required: question.required, message: 'This question is required' },
@@ -32,9 +30,14 @@ const CheckboxesQuestion: FC<CheckboxesProps> = ({ question, form }) => {
     >
       <Checkbox.Group
         key={question.id}
-        options={options}
         onChange={(e) => form.setFieldsValue({ [question.id]: e as string[] })}
-      />
+      >
+        {options.map((option) => (
+          <Row key={option}>
+            <Checkbox value={option}>{option}</Checkbox>
+          </Row>
+        ))}
+      </Checkbox.Group>
     </Form.Item>
   );
 };
