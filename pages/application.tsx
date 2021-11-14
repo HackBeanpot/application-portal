@@ -35,10 +35,6 @@ import {
 } from '../common/dateUtils';
 import { useWarnIfUnsavedChanges } from '../components/hooks/useWarnIfUnsavedChanges';
 
-const tailLayout = {
-  wrapperCol: { offset: 8, span: 16 },
-};
-
 const getQuestionComponentFromType = (type: QuestionType) => {
   switch (type) {
     case QuestionType.ShortText:
@@ -168,17 +164,21 @@ const Application = (): ReactElement => {
           {Questions.map((q) => (
             <FormQuestion key={q.id} q={q} />
           ))}
-          <Form.Item {...tailLayout}>
-            <Button
-              disabled={disabled}
-              className="button"
-              type="primary"
-              htmlType="submit"
-              loading={isSubmitting}
-              size="large"
-            >
-              {alreadySubmitted ? 'Resubmit Application' : 'Submit Application'}
-            </Button>
+          <Form.Item noStyle>
+            <div className="submit-container">
+              <Button
+                disabled={disabled}
+                className="button"
+                type="primary"
+                htmlType="submit"
+                loading={isSubmitting}
+                size="large"
+              >
+                {alreadySubmitted
+                  ? 'Resubmit Application'
+                  : 'Submit Application'}
+              </Button>
+            </div>
           </Form.Item>
         </Form>
       </div>
