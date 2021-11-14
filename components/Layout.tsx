@@ -5,7 +5,7 @@ import { getUser } from '../common/apiClient';
 import Logo from '../public/logo.svg';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { DownOutlined } from '@ant-design/icons';
 
 const { Header, Content } = Layout;
@@ -14,64 +14,6 @@ const Pages = ['home', 'application', 'team', 'admin', 'logout'] as const;
 type PageLayoutProps = {
   currentPage: typeof Pages[number];
 };
-
-export const SideBar = ({ menu }: { menu: ReactNode }) => {
-  return (
-    <Layout.Sider
-      className="sider"
-      breakpoint={'lg'}
-      theme="light"
-      collapsedWidth={0}
-      trigger={null}
-    >
-      {menu}
-    </Layout.Sider>
-  );
-};
-
-import logo from 'logo.svg';
-/*
-export const NavBar = ({ menu }: {menu: ReactNode}) => {
-  const [visible, setVisible] = useState(false);  return (
-    <nav className="navbar">
-      <Button
-        className="menu"
-        type="primary"
-        icon={<MenuOutlined />}
-        onClick={() => setVisible(true)}
-      />
-      <Drawer
-        title="Topics"
-        placement="left"
-        onClick={() => setVisible(false)}
-        onClose={() => setVisible(false)}
-        visible={visible}
-      > 
-        {menu}
-     </Drawer>
-     <a href="/"><img src={logo} className="logo" alt="logo" /></a>     
-    </nav>
-  );
-};
-
-
-export const TopicMenu = ({ topics, selectedKey, changeSelectedKey }: 
-  { topics: ReactNode, selectedKey: string, changeSelectedKey: ReactNode }) => {
-  const styledTopics = [] as const;
-  topics!.forEach((topic : string, index : string) =>
-    styledTopics.push(
-      <Menu.Item key={index} onClick={changeSelectedKey}>
-        {topic}
-      </Menu.Item>
-    )
-  );
-  
-  return (
-    <Menu mode="inline" selectedKeys={[selectedKey]}>
-      {styledTopics}
-    </Menu>
-  );
-}*/
 
 export const PageLayout: React.FC<PageLayoutProps> = ({
   currentPage,
