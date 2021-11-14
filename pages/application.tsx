@@ -165,7 +165,7 @@ const Application = (): ReactElement => {
             if (sectionOrQuestion.type === 'SECTION') {
               return (
                 <Form.Item key={sectionOrQuestion.id} noStyle>
-                  {sectionOrQuestion.text}
+                  <div className="section">{sectionOrQuestion.text}</div>
                 </Form.Item>
               );
             }
