@@ -190,7 +190,7 @@ export const Questions: Array<QuestionDefinition> = [
     true,
     'Count'
   ),
-  makeShortText(
+  makeLongText(
     "If you've previously attended an in-person or virtual hackthon, what did you like or dislike about it?",
     false
   ),
