@@ -10,6 +10,7 @@ import {
   Dropdown,
   LongText,
   QuestionDefinition,
+  QuestionSection,
   QuestionType,
   ShortText,
 } from './types';
@@ -88,8 +89,20 @@ function makeLongText(content: ReactNode, required: boolean): LongText {
   };
 }
 
+let sectionCount = 0;
+
+function makeSection(text: ReactNode): QuestionSection {
+  sectionCount++;
+  return {
+    id: `section-${sectionCount}`,
+    text: <h2>{text}</h2>,
+    type: 'SECTION',
+  };
+}
+
 // write questions for portal here
-export const Questions: Array<QuestionDefinition> = [
+export const Sections: Array<QuestionSection | QuestionDefinition> = [
+  makeSection(<>Let{"'"}s Get to Know You!</>),
   makeShortText('What is your name?', true, 'First Last'),
   makeDropdown(
     'What is your gender?',
@@ -184,6 +197,8 @@ export const Questions: Array<QuestionDefinition> = [
     true,
     'Size'
   ),
+
+  makeSection(<>Interests and Experience</>),
   makeDropdown(
     'How many hackathons have you attended?',
     ['0', '1-2', '3-5', '6+'],
@@ -219,6 +234,7 @@ export const Questions: Array<QuestionDefinition> = [
     'If you were the first human to meet a member of an exterrestrial intelligent species, what would you ask them?',
     true
   ),
+  makeSection(<>Outreach</>),
   makeCheckbox(
     'We want to know how best to reach talented students like you! How did you hear about Hackbeanpot?',
     [
@@ -257,6 +273,7 @@ export const Questions: Array<QuestionDefinition> = [
     8
   ),
 
+  makeSection(<>Team Formation</>),
   makeDropdown(
     <div>
       <p>
@@ -287,17 +304,8 @@ export const Questions: Array<QuestionDefinition> = [
   ),
 ];
 
-// also export the questions as a mapping, to make it easier to validate
-export const toIdMapping = <T extends { id: string }>(
-  questions: Array<T>
-): Record<string, T> => {
-  const mapping: Record<string, T> = {};
-  for (const q of questions) {
-    mapping[q.id] = q;
-  }
-  return mapping;
-};
-
-export const questionIdToDefinitionMap = toIdMapping(Questions);
-
-// constructors for people writing the portal qs
+export const Questions: Array<QuestionDefinition> = Sections.filter(function (
+  sectionOrQuestion
+): sectionOrQuestion is QuestionDefinition {
+  return sectionOrQuestion.type !== 'SECTION';
+});
