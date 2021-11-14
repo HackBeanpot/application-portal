@@ -180,16 +180,7 @@ export const Questions: Array<QuestionDefinition> = [
   ),
   makeDropdown(
     "We'll be handing out t-shirts and other fun swag at the event. What's your t-shirt size?",
-    [
-      'XS: 31-34"',
-      'S: 34-37"',
-      'M: 38-41"',
-      'L: 42-45"',
-      'XL: 46-49"',
-      '2XL: 50-53"',
-      '3XL: 54-57"',
-      '4XL: 58-61"',
-    ],
+    ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL'],
     true,
     'Size'
   ),
