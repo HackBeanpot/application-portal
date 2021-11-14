@@ -109,6 +109,10 @@ export const Questions: Array<QuestionDefinition> = [
     true,
     'Gender'
   ),
+  makeShortText(
+    "If your gender isn't listed above or you selected 'Unlisted', list it here!",
+    false
+  ),
   makeCheckbox(
     'What ethnicities do you identify as?',
     [
@@ -173,28 +177,22 @@ export const Questions: Array<QuestionDefinition> = [
   // url to resume for now
   makeShortText(
     <>
-      Please add an URL to your resume!
+      Please upload your resume as a PDF url!
       <br />
       <i>
-        (Note: We do not read resumes as a part of the HBP application process!
+        Note: We do not read resumes as a part of the HBP application process.
         The resumes are shared with interested sponsors who may contact you
-        about internship / job opportunities, and will only be read by them.)
+        about internship/job opportunities, and will only be read by them.
       </i>
     </>,
     false
   ),
   makeDropdown(
-    "We'll be handing out t-shirts and other fun swag at the event. What's your t-shirt size?",
-    [
-      'XS: 31-34"',
-      'S: 34-37"',
-      'M: 38-41"',
-      'L: 42-45"',
-      'XL: 46-49"',
-      '2XL: 50-53"',
-      '3XL: 54-57"',
-      '4XL: 58-61"',
-    ],
+    <>
+      We will be handing out t-shirts and other fun swag at the event. What is
+      your t-shirt size? All sizes are unisex! <br />
+    </>,
+    ['XS', 'S', 'M', 'L', 'XL', '2XL'],
     true,
     'Size'
   ),
@@ -204,12 +202,14 @@ export const Questions: Array<QuestionDefinition> = [
     true,
     'Count'
   ),
-  makeShortText(
+  makeLongText(
     "If you've previously attended an in-person or virtual hackthon, what did you like or dislike about it?",
     false
   ),
   makeLongText(
     <>
+      <i>P.S. All responses are read by hand, so please put in effort! :D </i>
+      <br />
       At HackBeanpot 2022, we aim to create a welcoming environment by focusing
       on exploration into the “final frontier”, curiosity, and innovation! Space
       exploration relies on community, spirit, and a drive to help each other
@@ -260,11 +260,13 @@ export const Questions: Array<QuestionDefinition> = [
     [
       'Intro to Git',
       'Intro to React',
+      'Remote Hosting',
       'Hackathons for Resumes',
       'Careers in Tech',
       'Diversity in Tech',
       'Tech for Social Good',
       'Project Ideation / Formation',
+      'Entry Level Jobs in Tech',
       'None / Other',
     ],
     true,
@@ -277,9 +279,9 @@ export const Questions: Array<QuestionDefinition> = [
       create / join a team with your teammates in the Team tab.
       <br />
       <i>
-        (Note: This question does not get factored into how your application is
+        Note: This question does not get factored into how your application is
         read! If you are already part of a team before applying, we will accept
-        / reject your team together.)
+        / reject your team together.
       </i>
     </>,
     ['Yes', 'No'],
