@@ -18,9 +18,9 @@ import {
 let questionCount = 0;
 // constants for min/max length of q + others
 const minNumberCheck = 0;
-const maxLengthShort = 500;
+const maxLengthShort = 100;
 const minLengthShort = 0;
-const maxLengthLong = 3000;
+const maxLengthLong = 250;
 const minLengthLong = 0;
 
 // convenience constructors for questions (constructors in java)
@@ -118,6 +118,10 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     true,
     'Gender'
   ),
+  makeShortText(
+    "If your gender isn't listed above or you selected 'Unlisted', list it here!",
+    false
+  ),
   makeCheckbox(
     'What ethnicities do you identify as?',
     [
@@ -182,22 +186,28 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
   // url to resume for now
   makeShortText(
     <div>
-      <p>Please add an URL to your resume!</p>
+      <p>
+        If you would like to hear about opportunities from our our sponsors, add
+        a link to your resume! (Google Drive, etc)
+      </p>
       <i>
-        Note: We do not read resumes as a part of the HBP application process!
-        The resumes are shared with interested sponsors who may contact you
+        Note: We do not read resumes as a part of the HBP application process.
+        The resumes are only shared with interested sponsors who may contact you
         about internship / job opportunities, and will only be read by them.
       </i>
     </div>,
     false
   ),
   makeDropdown(
-    "We'll be handing out t-shirts and other fun swag at the event. What's your t-shirt size?",
-    ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL'],
+    <>
+      We will be handing out t-shirts and other fun swag at the event. What is
+      your t-shirt size? All sizes are unisex!
+      <br />
+    </>,
+    ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
     true,
     'Size'
   ),
-
   makeSection(<>Interests and Experience</>),
   makeDropdown(
     'How many hackathons have you attended?',
@@ -211,6 +221,8 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
   ),
   makeLongText(
     <>
+      <i>P.S. All responses are read by hand, so please put in effort! :D </i>
+      <br />
       At HackBeanpot 2022, we aim to create a welcoming environment by focusing
       on exploration into the “final frontier”, curiosity, and innovation! Space
       exploration relies on community, spirit, and a drive to help each other
@@ -231,19 +243,19 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     true
   ),
   makeLongText(
-    'If you were the first human to meet a member of an exterrestrial intelligent species, what would you ask them?',
+    'If you were the first human to meet a member of an extra-terrestrial intelligent species, what would you ask them?',
     true
   ),
   makeSection(<>Outreach</>),
   makeCheckbox(
-    'We want to know how best to reach talented students like you! How did you hear about Hackbeanpot?',
+    'We want to know how best to reach talented students like you! How did you hear about HackBeanpot?',
     [
-      'HBP social media pages',
-      'Other clubs',
-      'Email / Newsletter',
-      'Word of mouth',
-      'HBP outreach events',
+      'HackBeanpot social media pages',
+      'HackBeanpot outreach events',
+      'HackBeanpot email / newsletter',
       'School communications',
+      'Other clubs',
+      'Word of mouth',
     ],
     true,
     6
@@ -262,23 +274,25 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     [
       'Intro to Git',
       'Intro to React',
+      'Remote Hosting',
       'Hackathons for Resumes',
       'Careers in Tech',
       'Diversity in Tech',
       'Tech for Social Good',
       'Project Ideation / Formation',
+      'Entry Level Jobs in Tech',
       'None / Other',
     ],
     true,
     8
   ),
-
   makeSection(<>Team Formation</>),
   makeDropdown(
     <div>
       <p>
-        Do you plan on attending HackBeanpot with a premade team? If yes, please
-        create / join a team with your teammates in the Team tab.
+        Do you plan on attending HackBeanpot with a pre-made team? If yes,
+        please create / join a team with your teammates in the Team tab after
+        filling out your application.
       </p>
       <i>
         Note: This question does not get factored into how your application is
