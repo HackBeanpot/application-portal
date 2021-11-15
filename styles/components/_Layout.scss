@@ -18,9 +18,11 @@ $sider-width: 200px;
 
   .header {
     top: 0;
-    position: fixed;
-    // z-index to be above ant-design dropdown popout (min 1051)
-    z-index: 2000;
+    position: sticky;
+    @supports (-moz-appearance:none) {
+      position: fixed;
+    }
+    z-index: 100;
     display: flex;
 
     // https://stackoverflow.com/questions/952861/targeting-only-firefox-with-css
@@ -64,7 +66,9 @@ $sider-width: 200px;
   }
 
   .content-container {
-    margin-top: calc(#{$header-height} * #{$scale});
+    @supports (-moz-appearance:none) {
+      margin-top: calc(#{$header-height} * #{$scale});
+    }
     min-height: calc((100vh / #{$scale}) - #{$header-height});
     background: #f0f2f5;
 
@@ -81,7 +85,7 @@ $sider-width: 200px;
       transform: scale($scale);
       transform-origin: 0 0;
       width: $scaled-width;
-      // todo: fix this eventually.
+      // todo: fix this eventually (firefox only)
       // this doesn't quite work, because setting an explicit width doesn't take into account a scrollbar.
       // if the content is scrollable vertically (yes), then setting explicit width will ensure that ALL of this
       // width is visible. this means, adding a horizontal scrollbar to see the bit of width covered by the scrollbar.
