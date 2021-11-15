@@ -3,6 +3,11 @@
 $header-height: 64px;
 $sider-width: 200px;
 
+// cover the background in safari
+body {
+  background: #f0f2f5;
+}
+
 // dropdown portal popup needs to be scaled separately
 .ant-select-dropdown {
   zoom: $scale !important;
