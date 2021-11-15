@@ -101,6 +101,11 @@ export enum QuestionType {
   LongText = 'Long Text',
 }
 export type QuestionDefinition = Checkboxes | ShortText | Dropdown | LongText;
+export type QuestionSection = {
+  id: string;
+  type: 'SECTION';
+  text: ReactNode;
+};
 
 export type QuestionId = string;
 
@@ -137,20 +142,13 @@ export interface LongText extends IQuestion {
  */
 export type QuestionResponse = string | Array<string> | null;
 
-export type QuestionIdToDefinitionMap = Record<QuestionId, QuestionDefinition>;
-export type QuestionIdToResponseMap = Record<QuestionId, QuestionResponse>;
-
 /**
  * @param responses mapping from question id to response value
  */
 export type RegistrationApiRequest = {
   responses: Array<QuestionResponse>;
 };
-
-export interface Answer {
-  id: string;
-  answer: string | CheckboxValueType[];
-}
+export type RegistrationApiResponse = RegistrationApiRequest;
 
 export type StatusApiResponse = {
   applicationStatus: ApplicationStatus;

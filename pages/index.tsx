@@ -5,7 +5,6 @@ import {
   getRegistrationOpen,
   getStatus,
 } from '../common/apiClient';
-import { WELCOME_MESSAGE } from '../common/constants';
 import useSWR from 'swr';
 import { PageLayout } from '../components/Layout';
 import { Card } from 'antd';

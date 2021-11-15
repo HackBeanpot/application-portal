@@ -4,18 +4,15 @@ Serves as a single point of truth for what questions are displayed on applicatio
 frontend & validated on backend
 */
 
-import React, { ReactFragment, ReactNode } from 'react';
-import { EXAMPLE_CHECKBOX_1, EXAMPLE_DROPDOWN_1 } from './constants';
+import React, { ReactNode } from 'react';
 import {
-  RegistrationApiRequest,
-  QuestionIdToResponseMap,
-  QuestionDefinition,
   Checkboxes,
   Dropdown,
   LongText,
+  QuestionDefinition,
+  QuestionSection,
   QuestionType,
   ShortText,
-  QuestionIdToDefinitionMap,
 } from './types';
 
 let questionCount = 0;
@@ -92,8 +89,20 @@ function makeLongText(content: ReactNode, required: boolean): LongText {
   };
 }
 
+let sectionCount = 0;
+
+function makeSection(text: ReactNode): QuestionSection {
+  sectionCount++;
+  return {
+    id: `section-${sectionCount}`,
+    text: <h2>{text}</h2>,
+    type: 'SECTION',
+  };
+}
+
 // write questions for portal here
-export const Questions: Array<QuestionDefinition> = [
+export const Sections: Array<QuestionSection | QuestionDefinition> = [
+  makeSection(<>Let{"'"}s Get to Know You!</>),
   makeShortText('What is your name?', true, 'First Last'),
   makeDropdown(
     'What is your gender?',
@@ -176,26 +185,30 @@ export const Questions: Array<QuestionDefinition> = [
   makeShortText('What are your minor(s)?', false),
   // url to resume for now
   makeShortText(
-    <>
-      Please upload your resume as a PDF url!
-      <br />
+    <div>
+      <p>
+        If you would like to hear about opportunities from our our sponsors, add
+        a link to your resume! (Google Drive, etc)
+      </p>
       <i>
         Note: We do not read resumes as a part of the HBP application process.
-        The resumes are shared with interested sponsors who may contact you
-        about internship/job opportunities, and will only be read by them.
+        The resumes are only shared with interested sponsors who may contact you
+        about internship / job opportunities, and will only be read by them.
       </i>
-    </>,
+    </div>,
     false
   ),
   makeDropdown(
     <>
       We will be handing out t-shirts and other fun swag at the event. What is
-      your t-shirt size? All sizes are unisex! <br />
+      your t-shirt size? All sizes are unisex!
+      <br />
     </>,
-    ['XS', 'S', 'M', 'L', 'XL', '2XL'],
+    ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
     true,
     'Size'
   ),
+  makeSection(<>Interests and Experience</>),
   makeDropdown(
     'How many hackathons have you attended?',
     ['0', '1-2', '3-5', '6+'],
@@ -229,19 +242,20 @@ export const Questions: Array<QuestionDefinition> = [
     </>,
     true
   ),
-  makeShortText(
-    'If you were the first human to meet a member of an exterrestrial intelligent species, what would you ask them?',
+  makeLongText(
+    'If you were the first human to meet a member of an extra-terrestrial intelligent species, what would you ask them?',
     true
   ),
+  makeSection(<>Outreach</>),
   makeCheckbox(
-    'We want to know how best to reach talented students like you! How did you hear about Hackbeanpot?',
+    'We want to know how best to reach talented students like you! How did you hear about HackBeanpot?',
     [
-      'HBP social media pages',
-      'Other clubs',
-      'Email / Newsletter',
-      'Word of mouth',
-      'HBP outreach events',
+      'HackBeanpot social media pages',
+      'HackBeanpot outreach events',
+      'HackBeanpot email / newsletter',
       'School communications',
+      'Other clubs',
+      'Word of mouth',
     ],
     true,
     6
@@ -272,18 +286,20 @@ export const Questions: Array<QuestionDefinition> = [
     true,
     8
   ),
-
+  makeSection(<>Team Formation</>),
   makeDropdown(
-    <>
-      Do you plan on attending HackBeanpot with a premade team? If yes, please
-      create / join a team with your teammates in the Team tab.
-      <br />
+    <div>
+      <p>
+        Do you plan on attending HackBeanpot with a pre-made team? If yes,
+        please create / join a team with your teammates in the Team tab after
+        filling out your application.
+      </p>
       <i>
         Note: This question does not get factored into how your application is
         read! If you are already part of a team before applying, we will accept
         / reject your team together.
       </i>
-    </>,
+    </div>,
     ['Yes', 'No'],
     true
   ),
@@ -302,17 +318,8 @@ export const Questions: Array<QuestionDefinition> = [
   ),
 ];
 
-// also export the questions as a mapping, to make it easier to validate
-export const toIdMapping = <T extends { id: string }>(
-  questions: Array<T>
-): Record<string, T> => {
-  const mapping: Record<string, T> = {};
-  for (const q of questions) {
-    mapping[q.id] = q;
-  }
-  return mapping;
-};
-
-export const questionIdToDefinitionMap = toIdMapping(Questions);
-
-// constructors for people writing the portal qs
+export const Questions: Array<QuestionDefinition> = Sections.filter(function (
+  sectionOrQuestion
+): sectionOrQuestion is QuestionDefinition {
+  return sectionOrQuestion.type !== 'SECTION';
+});
