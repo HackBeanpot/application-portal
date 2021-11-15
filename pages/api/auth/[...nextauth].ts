@@ -4,8 +4,9 @@ import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
 import { connectToDatabase } from '../../../server/mongoDB';
 import { ApplicationStatus, RSVPStatus } from '../../../common/types';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { safe } from '../../../server/errors';
 
-export default async function auth(req: NextApiRequest, res: NextApiResponse) {
+const authHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   return await NextAuth(req, res, {
     theme: {
       colorScheme: 'auto', // "auto" | "dark" | "light"
@@ -72,4 +73,6 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
       },
     },
   });
-}
+};
+
+export default safe(authHandler);
