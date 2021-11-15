@@ -17,25 +17,25 @@ import {
 
 let questionCount = 0;
 // constants for min/max length of q + others
-const minNumberCheck = 0;
-const maxLengthShort = 100;
-const minLengthShort = 0;
-const maxLengthLong = 250;
-const minLengthLong = 0;
+const checkboxMinSelectedCount = 0;
+const shortTextMinLength = 0;
+const shortTextMaxLength = 500;
+const longTextMinLength = 0;
+const longTextMaxLength = 3000;
 
 // convenience constructors for questions (constructors in java)
 function makeCheckbox(
   content: ReactNode,
   options: Array<string>,
   required: boolean,
-  maxNumberCheck: number
+  checkboxMaxSelectedCount: number
 ): Checkboxes {
   questionCount++;
   return {
     type: QuestionType.Checkboxes,
     options: options.map((name) => ({ name })),
-    maxNumber: maxNumberCheck,
-    minNumber: minNumberCheck,
+    maxNumber: checkboxMaxSelectedCount,
+    minNumber: checkboxMinSelectedCount,
     content: content,
     id: String(questionCount), // need to access questionID from questionidtoquestioncontent
     required: required,
@@ -50,8 +50,8 @@ function makeShortText(
   questionCount++;
   return {
     type: QuestionType.ShortText,
-    maxLength: maxLengthShort,
-    minLength: minLengthShort,
+    maxLength: shortTextMaxLength,
+    minLength: shortTextMinLength,
     placeholder,
     content: content,
     id: String(questionCount), // need to access questionID from questionidtoquestioncontent
@@ -80,8 +80,8 @@ function makeLongText(content: ReactNode, required: boolean): LongText {
   questionCount++;
   return {
     type: QuestionType.LongText,
-    maxLength: maxLengthLong,
-    minLength: minLengthLong,
+    maxLength: longTextMaxLength,
+    minLength: longTextMinLength,
 
     content: content,
     id: String(questionCount), // need to access questionID from questionidtoquestioncontent
@@ -179,31 +179,33 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     'Year'
   ),
   makeShortText(
-    'What are your major / concentration(s)? (N / A if not applicable)',
-    true
+    'What are your major / concentration(s)? (N/A if not applicable)',
+    true,
+    'Computer Science, etc.'
   ),
-  makeShortText('What are your minor(s)?', false),
+  makeShortText('What are your minor(s)?', false, 'Interaction Design, etc.'),
+  // todo: replace with GDrive upload
   // url to resume for now
   makeShortText(
     <div>
       <p>
-        If you would like to hear about opportunities from our our sponsors, add
-        a link to your resume! (Google Drive, etc)
+        If you would like to hear about internships / job opportunities from our
+        our sponsors, add a link to your resume! (Google Drive, etc)
       </p>
       <i>
         Note: We do not read resumes as a part of the HBP application process.
-        The resumes are only shared with interested sponsors who may contact you
-        about internship / job opportunities, and will only be read by them.
+        Your resume will only shared with sponsors regarding job opportunities,
+        and will only be read by them.
       </i>
     </div>,
-    false
+    false,
+    'https://link-to-your-resume'
   ),
   makeDropdown(
-    <>
+    <div>
       We will be handing out t-shirts and other fun swag at the event. What is
-      your t-shirt size? All sizes are unisex!
-      <br />
-    </>,
+      your t-shirt size? <i>All sizes are unisex.</i>
+    </div>,
     ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
     true,
     'Size'
@@ -220,17 +222,20 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     false
   ),
   makeLongText(
-    <>
-      <i>P.S. All responses are read by hand, so please put in effort! :D </i>
-      <br />
-      At HackBeanpot 2022, we aim to create a welcoming environment by focusing
-      on exploration into the “final frontier”, curiosity, and innovation! Space
-      exploration relies on community, spirit, and a drive to help each other
-      thrive (and get back to Earth safely)! <br />
-      Whether you journey to the stars with a team or alone, what do you hope to
-      get out of HackBeanpot? What do you want to walk away having learned or
-      experienced from this weekend?
-    </>,
+    <div>
+      <p>
+        At HackBeanpot 2022, we aim to create a welcoming environment by
+        focusing on exploration into the “final frontier”, curiosity, and
+        innovation! Space exploration relies on community, spirit, and a drive
+        to help each other thrive (and get back to Earth safely)!{' '}
+      </p>
+      <p>
+        Whether you journey to the stars with a team or alone, what do you hope
+        to get out of HackBeanpot? What do you want to walk away having learned
+        or experienced from this weekend?
+      </p>
+      <i>P.S. All responses are read by hand, so please put in effort! :D</i>
+    </div>,
     true
   ),
   makeLongText(
@@ -261,16 +266,18 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     6
   ),
   makeCheckbox(
-    <>
-      As part of our space theme this year, you will be embarking on a weekend
-      journey to different planets to collect soil - or gas - samples using your
-      newly acquired tech skills. You will be given the chance to compete with
-      your fellow astronauts in exciting competitions throughout the event to
-      win the Planet Cup! You will also have mission commanders to guide you
-      through the event as well as a way to get to know the rest of your
-      teammates! <br />
+    <div>
+      <p>
+        As part of our space theme this year, you will be embarking on a weekend
+        journey to different planets to collect soil - or gas - samples using
+        your newly acquired tech skills. You will be given the chance to compete
+        with your fellow astronauts in exciting competitions throughout the
+        event to win the Planet Cup! You will also have mission commanders to
+        guide you through the event as well as a way to get to know the rest of
+        your teammates!
+      </p>
       Which of the following workshops are you excited for?
-    </>,
+    </div>,
     [
       'Intro to Git',
       'Intro to React',
@@ -284,7 +291,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       'None / Other',
     ],
     true,
-    8
+    10
   ),
   makeSection(<>Team Formation</>),
   makeDropdown(
@@ -304,15 +311,17 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     true
   ),
   makeDropdown(
-    <>
-      If you don’t have a team or would like to add more members to your team,
-      we will have a project ideation session and team formation activity we
-      would love for you to attend. In the question below, if you express
-      interest in finding a team at the event we will reach out closer to the
-      event with more details. <br />
+    <div>
+      <p>
+        If you don’t have a team or would like to add more members to your team,
+        we will have a project ideation session and team formation activity we
+        would love for you to attend. In the question below, if you express
+        interest in finding a team at the event we will reach out closer to the
+        event with more details.
+      </p>
       Would you be interested in creating a team or finding more members for
       your current team at our team formation event?
-    </>,
+    </div>,
     ['Yes', 'No'],
     true
   ),
