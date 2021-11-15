@@ -3,8 +3,24 @@
     margin-bottom: 20px;
   }
 
-  .submit {
-    height: max-content;
-    @include small-body-text;
+  .edit-button-container {
+    margin-top: 16px;
+  }
+
+  .cancel-edit-button {
+    margin-left: 8px;
+  }
+
+  .section {
+    padding-top: 16px;
+  }
+
+  .submit-container {
+    display: flex;
+    justify-content: center;
+
+    .button {
+      height: max-content;
+    }
   }
 }

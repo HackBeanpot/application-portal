@@ -44,5 +44,9 @@
     "*.{js,jsx,ts,tsx}": "eslint --cache --fix",
     "*.{js,jsx,ts,tsx,css,md}": "prettier --write",
     "*.{ts,tsx}": "tsc-files --noEmit"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "preset": "ts-jest"
   }
 }

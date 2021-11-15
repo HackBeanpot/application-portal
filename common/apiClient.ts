@@ -4,6 +4,7 @@ import {
   User,
   DatesApiResponse,
   TeamApiResponse,
+  RegistrationApiResponse,
 } from './types';
 import Axios, { AxiosResponse } from 'axios';
 
@@ -25,6 +26,10 @@ export const getUser = (): Promise<AxiosResponse<User>> =>
 export function updateApplicantById(id: number, user: User) {
   Axios.post(`/api/v1/applicants/${id}`, user);
 }
+
+export const getApplicantResponses = (): Promise<
+  AxiosResponse<RegistrationApiResponse>
+> => Axios.get('/api/v1/registration');
 
 export const updateApplicantResponses = (
   responses: RegistrationApiRequest
