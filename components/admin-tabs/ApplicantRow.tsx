@@ -108,8 +108,12 @@ const ApplicantRow: FC<ApplicantRowProps> = ({ applicant }) => {
         )}
         {!isEditing && <label>{currData.applicationStatus}</label>}
       </td>
-      <button onClick={() => setIsEditing(true)}>Edit</button>
-      <button onClick={() => setIsEditing(false)}>Update</button>
+      <td>
+        <button onClick={() => setIsEditing(true)}>Edit</button>
+      </td>
+      <td>
+        <button onClick={() => setIsEditing(false)}>Update</button>
+      </td>
     </tr>
   );
 };
