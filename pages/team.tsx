@@ -47,6 +47,13 @@ const Team = (): ReactElement => {
                 <div className="button-container">
                   {isTeamInputOpen ? (
                     <>
+                      <p>
+                        To apply as a team, first decide upon a unique team name
+                        with your teammates. After deciding, have everyone enter
+                        the same team name in the application portal and click{' '}
+                        {'"Join team"'}. After joining, you will be able to see
+                        the current members of the team.
+                      </p>
                       <Input
                         className="input"
                         placeholder="Team Name"
@@ -80,12 +87,16 @@ const Team = (): ReactElement => {
                 <Alert
                   className="alert"
                   showIcon
-                  message={<>Applying with team {`"${currentTeamName}"`}</>}
+                  message={
+                    <>
+                      Applying with team <b>{currentTeamName}</b>
+                    </>
+                  }
                   description={
                     <>
                       {team?.data && (
                         <>
-                          Current team members:
+                          <i>Current team members:</i>
                           <ul>
                             {team.data.userEmails.map((email: string) => (
                               <li key={email}>{email}</li>
