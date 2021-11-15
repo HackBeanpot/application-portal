@@ -21,9 +21,9 @@ import {
 let questionCount = 0;
 // constants for min/max length of q + others
 const minNumberCheck = 0;
-const maxLengthShort = 500;
+const maxLengthShort = 100;
 const minLengthShort = 0;
-const maxLengthLong = 3000;
+const maxLengthLong = 250;
 const minLengthLong = 0;
 
 // convenience constructors for questions (constructors in java)
