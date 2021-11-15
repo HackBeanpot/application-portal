@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@next-auth/mongodb-adapter": "^0.0.2-next.281",
+    "@rollbar/react": "^0.8.0",
     "antd": "^4.16.7",
     "axios": "^0.21.1",
     "joi": "^17.4.2",

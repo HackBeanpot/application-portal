@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse, NextApiHandler } from 'next';
 
 // Rollbar for error logging + notifications
 const rollbar = new Rollbar({
+  environment: 'production',
   accessToken: process.env.ROLLBAR_POST_SERVER_TOKEN,
   captureUncaught: true,
   captureUnhandledRejections: true,
