@@ -14,10 +14,13 @@ $sider-width: 200px;
 }
 
 .layout {
+  $scaled-width: calc(100vw / #{$scale});
+
   .header {
     top: 0;
-    position: sticky;
-    z-index: 100;
+    position: fixed;
+    // z-index to be above ant-design dropdown popout (min 1051)
+    z-index: 2000;
     display: flex;
 
     // https://stackoverflow.com/questions/952861/targeting-only-firefox-with-css
@@ -27,9 +30,7 @@ $sider-width: 200px;
       // Only for Firefox
       transform: scale($scale);
       transform-origin: 0 0;
-      // for some reason, there's a 12px difference between what we'd expect the size to be,
-      // and what it actually is.
-      width: calc(100vw / #{$scale});
+      width: $scaled-width;
     }
 
     .logo-container {
@@ -63,6 +64,7 @@ $sider-width: 200px;
   }
 
   .content-container {
+    margin-top: calc(#{$header-height} * #{$scale});
     min-height: calc((100vh / #{$scale}) - #{$header-height});
     background: #f0f2f5;
 
@@ -78,9 +80,12 @@ $sider-width: 200px;
       // Only for Firefox
       transform: scale($scale);
       transform-origin: 0 0;
-      // for some reason, there's a 12px difference between what we'd expect the size to be,
-      // and what it actually is.
-      width: calc(100vw / #{$scale});
+      width: $scaled-width;
+      // todo: fix this eventually.
+      // this doesn't quite work, because setting an explicit width doesn't take into account a scrollbar.
+      // if the content is scrollable vertically (yes), then setting explicit width will ensure that ALL of this
+      // width is visible. this means, adding a horizontal scrollbar to see the bit of width covered by the scrollbar.
+      // https://stackoverflow.com/questions/25816450/adjusting-a-div-width-taking-a-scrollbar-into-account
     }
 
     .content {

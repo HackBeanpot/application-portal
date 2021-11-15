@@ -99,7 +99,9 @@ const Application = (): ReactElement => {
       form.resetFields();
     }
   }, [alreadySubmitted, isAfterRegistration, isBeforeRegistration]);
-  useWarnIfUnsavedChanges(isEditing);
+  useWarnIfUnsavedChanges(
+    isEditing || status?.data.applicationStatus === ApplicationStatus.Incomplete
+  );
 
   const onSubmit = async (values: Record<string, QuestionResponse>) => {
     const responses = Questions.map((q) => values[q.id] ?? null);
@@ -194,8 +196,6 @@ const Application = (): ReactElement => {
     </PageLayout>
   );
 };
-export const getServerSideProps: GetServerSideProps =
-  getServerSideSessionOrRedirect;
 
 type StatusDialogueProps = {
   disabled: boolean;

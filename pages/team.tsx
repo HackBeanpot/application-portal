@@ -7,7 +7,7 @@ import {
   updateTeamInfo,
 } from '../common/apiClient';
 import { PageLayout } from '../components/Layout';
-import { Button, Spin, Input } from 'antd';
+import { Button, Input, Alert, Card } from 'antd';
 
 const Team = (): ReactElement => {
   const { data: user, mutate } = useSWR('/api/v1/user', getUser);
@@ -20,61 +20,112 @@ const Team = (): ReactElement => {
   );
 
   const [teamName, setTeamName] = useState<string>('');
+  const [isTeamInputOpen, setIsTeamInputOpen] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   return (
     <PageLayout currentPage={'team'}>
-      <div>
-        <h1>Welcome to Team Formation!</h1>
-        {userInfo == null ? (
-          <Spin size="large" />
-        ) : currentTeamName == null ? (
-          <div>
-            <h2>You do not have a team yet!</h2>
-            <div>
-              <h2>Enter a team name</h2>
-              <Input
-                style={{ marginBottom: '20px' }}
-                placeholder={'team name'}
-                value={teamName}
-                onChange={(e) => setTeamName(e.target.value)}
-              />
-              <Button
-                color="primary"
-                disabled={teamName === ''}
-                onClick={async () => {
-                  await updateTeamInfo(teamName, userInfo.email),
-                    await mutate(),
-                    await setTeamName('');
-                }}
-              >
-                Join team
-              </Button>
-            </div>
-          </div>
-        ) : (
-          <div>
-            <h2>Your team name is &quot;{currentTeamName}&quot;</h2>
-            {team?.data == null ? (
-              <Spin size="large" />
+      <div className="team">
+        <h1>Apply with Teammates</h1>
+        <Card title="Team Status">
+          {userInfo &&
+            (currentTeamName == null ? (
+              <>
+                <Alert
+                  className="alert"
+                  showIcon
+                  message="Applying Individually"
+                  description={
+                    <>
+                      Applying with or without a team does has no effect on how
+                      your application is read! However, if you are already part
+                      of a team before applying, we will accept / reject your
+                      team together.
+                    </>
+                  }
+                />
+                <div className="button-container">
+                  {isTeamInputOpen ? (
+                    <>
+                      <p>
+                        To apply as a team, first decide upon a unique team name
+                        with your teammates. After deciding, have everyone enter
+                        the same team name in the application portal and click{' '}
+                        {'"Join team"'}. After joining, you will be able to see
+                        the current members of the team.
+                      </p>
+                      <Input
+                        className="input"
+                        placeholder="Team Name"
+                        value={teamName}
+                        onChange={(e) => setTeamName(e.target.value)}
+                      />
+                      <Button
+                        type="primary"
+                        loading={isUpdating}
+                        disabled={teamName === ''}
+                        onClick={async () => {
+                          setIsUpdating(true);
+                          await updateTeamInfo(teamName, userInfo.email);
+                          await mutate();
+                          setTeamName('');
+                          setIsUpdating(false);
+                        }}
+                      >
+                        Join team
+                      </Button>
+                    </>
+                  ) : (
+                    <Button onClick={() => setIsTeamInputOpen(true)}>
+                      Apply with teammates
+                    </Button>
+                  )}
+                </div>
+              </>
             ) : (
-              <div>
-                <h3>Your teammates are:</h3>
-                {team.data.userEmails.map((email: string) => {
-                  return <h4 key={email}>{email}</h4>;
-                })}
-              </div>
-            )}
-            <Button
-              onClick={async () => {
-                await deleteTeamInfo(currentTeamName, userInfo.email),
-                  await mutate(),
-                  await mutateTeam();
-              }}
-            >
-              Leave Team
-            </Button>
-          </div>
-        )}
+              <>
+                <Alert
+                  className="alert"
+                  showIcon
+                  message={
+                    <>
+                      Applying with team <b>{currentTeamName}</b>
+                    </>
+                  }
+                  description={
+                    <>
+                      {team?.data && (
+                        <>
+                          <i>Current team members:</i>
+                          <ul>
+                            {team.data.userEmails.map((email: string) => (
+                              <li key={email}>{email}</li>
+                            ))}
+                          </ul>
+                        </>
+                      )}
+                    </>
+                  }
+                />
+                <div className="button-container">
+                  <Button
+                    loading={isUpdating}
+                    danger
+                    onClick={async () => {
+                      setIsUpdating(true);
+                      setIsTeamInputOpen(false);
+                      await deleteTeamInfo(currentTeamName, userInfo.email);
+                      await mutate();
+                      await mutateTeam();
+                      setIsUpdating(false);
+                    }}
+                  >
+                    Leave Team
+                  </Button>
+                </div>
+              </>
+            ))}
+        </Card>
       </div>
     </PageLayout>
   );

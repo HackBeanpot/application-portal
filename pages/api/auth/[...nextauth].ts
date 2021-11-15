@@ -37,20 +37,26 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     }),
     // callback so that we can add a user to the database
     callbacks: {
-      async signIn({ user }) {
+      async signIn({ user, email }) {
         // can implement banned users if needed
-        const email = user.email!;
+        if (email.verificationRequest) {
+          // don't create user on validation request, only on sign-in
+          return true;
+        }
+
+        // non-null assertion ok because email is currently the only form of sign-in
+        const userEmail = user.email!;
         const isAllowedToSignIn = true;
         if (isAllowedToSignIn) {
           const { userDataCollection } = await connectToDatabase();
           const existingUser = await userDataCollection.findOne({
-            email,
+            email: userEmail,
           });
           if (!existingUser) {
             // all users with @hackbeanpot.com are made admins by default
-            const [, domain] = email.split('@');
+            const [, domain] = userEmail.split('@');
             await userDataCollection.insertOne({
-              email,
+              email: userEmail,
               applicationStatus: ApplicationStatus.Incomplete,
               isAdmin: domain === 'hackbeanpot.com',
               rsvpStatus: RSVPStatus.Unconfirmed,
