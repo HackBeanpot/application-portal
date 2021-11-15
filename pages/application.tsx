@@ -114,9 +114,12 @@ const Application = (): ReactElement => {
         placement: 'bottomRight',
         duration: 5,
       });
-      fetchUserResponses();
+      await fetchUserResponses();
       if (!alreadySubmitted) {
-        await Router.push('/');
+        // todo: figure out how to not avoid redirect when submitting first time
+        setTimeout(() => {
+          Router.push('/');
+        }, 1000);
       } else {
         window?.scrollTo({ top: 0, behavior: 'smooth' });
         setDisabled(true);
