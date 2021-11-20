@@ -6,7 +6,6 @@ import { ApplicationStatus, RSVPStatus } from '../../../common/types';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { safe } from '../../../server/errors';
 import nodemailer from 'nodemailer';
-import { identifier } from '@babel/types';
 
 const authHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   return await NextAuth(req, res, {
@@ -61,7 +60,12 @@ const authHandler = async (req: NextApiRequest, res: NextApiResponse) => {
           const existingUser = await userDataCollection.findOne({
             email: userEmail,
           });
-          if (!existingUser) {
+
+          // Create DB entry if user does not exist and email is valid
+          const re = new RegExp(
+            '[a-zA-Z0-9_\\.\\+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-\\.]+'
+          );
+          if (!existingUser && re.test(userEmail)) {
             // all users with @hackbeanpot.com are made admins by default
             const [, domain] = userEmail.split('@');
             await userDataCollection.insertOne({
@@ -108,6 +112,7 @@ async function sendVerificationRequest({
   });
 }
 
+// Email HTML body
 function html({ url, host, email }: Record<'url' | 'host' | 'email', string>) {
   // Insert invisible space into domains and email address to prevent both the
   // email address and the domain from being turned into a hyperlink by email
