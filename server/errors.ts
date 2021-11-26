@@ -15,6 +15,8 @@ export function safe(route: NextApiHandler): NextApiHandler {
     try {
       await route(req, res);
     } catch (err) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       rollbar.error(err, req);
       console.error(err);
       const msg = `Something broke on our end. Please reach out to us immediately.`;
