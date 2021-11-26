@@ -1,7 +1,6 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { connectToDatabase } from '../../../server/mongoDB';
 import { isAdmin, protect } from '../../../server/protect';
-import { User } from '../../../common/types';
 import { Document } from 'mongodb';
 
 const statsHandler: NextApiHandler = async (req, res) => {

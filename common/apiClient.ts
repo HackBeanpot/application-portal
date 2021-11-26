@@ -40,6 +40,10 @@ export function getAllApplicants() {
   return Axios.get<Array<User>>(`/api/v1/applicants`);
 }
 
+export function getStats() {
+  return Axios.get('/api/v1/stats');
+}
+
 export function getStatus(): Promise<AxiosResponse<StatusApiResponse>> {
   return Axios.get(`/api/v1/status`);
 }

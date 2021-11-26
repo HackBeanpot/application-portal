@@ -1,6 +1,8 @@
 import React from 'react';
 import { ADMIN_TABS } from '../../common/constants';
 import { Table } from 'antd';
+import useSWR from 'swr';
+import { getAllApplicants, getStats } from '../../common/apiClient';
 
 const data = [
   { key: '01', name: 'Total', value: 250 },
@@ -36,11 +38,26 @@ const columns = [
   },
 ];
 
+interface StatsType {
+  key: string;
+  name: string;
+  value: string;
+}
+
+const manipulateData = (stats: any) => {
+  const data: StatsType[] = Object.keys(stats).map((k: string, index) => {
+    return { key: index.toString(), name: k, value: stats[k] };
+  });
+  return data;
+};
+
 const Stats = () => {
+  const { data: stats } = useSWR('/api/v1/stats', getStats);
+  console.log(`here are the stats: ${stats}`);
   return (
     <div>
       <h3>{ADMIN_TABS.VIEW_STATS}</h3>
-      <Table dataSource={data} columns={columns} />
+      <Table dataSource={manipulateData(stats?.data)} columns={columns} />
     </div>
   );
 };
