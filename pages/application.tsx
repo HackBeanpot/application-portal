@@ -146,7 +146,7 @@ const Application = (): ReactElement => {
   return (
     <PageLayout currentPage={'application'}>
       <div className="application">
-        <h1>Application Page</h1>
+        <h1 className="app-header">Application Page</h1>
         {registrationCloseDate && registrationOpenDate && (
           <StatusDialogue
             disabled={disabled}

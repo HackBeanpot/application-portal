@@ -1,4 +1,9 @@
 .application {
+
+  .app-header {
+    font-size: clamp(23px, 6vw, 30px);
+  }
+
   .alert {
     margin-bottom: 20px;
   }
