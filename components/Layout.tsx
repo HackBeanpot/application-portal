@@ -29,23 +29,26 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
   };
   return (
     <Layout className="layout">
-      <div className="hamburger">
+      <div className={navOpen ? "hamburger hamburger-open" : "hamburger"}>
         <MenuOutlined
           className="icon"
           onClick={() => setNavOpen((prev) => !prev)}
+          height={1}
         />
         {navOpen && (
-          <Menu theme="dark">
-            <Menu.Item key="home" onClick={andClose(() => router.push('/'))}>
+          <Menu theme="dark" className="menu">
+            <Menu.Item className="menu-item" key="home" onClick={andClose(() => router.push('/'))}>
               Dashboard
             </Menu.Item>
             <Menu.Item
+            className="menu-item"
               key="application"
               onClick={andClose(() => router.push('/application'))}
             >
               Application
             </Menu.Item>
             <Menu.Item
+            className="menu-item"
               key="team"
               onClick={andClose(() => router.push('/team'))}
             >
@@ -53,6 +56,7 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
             </Menu.Item>
             {user?.data?.isAdmin && (
               <Menu.Item
+              className="menu-item"
                 key="admin"
                 onClick={andClose(() => router.push('/admin'))}
               >

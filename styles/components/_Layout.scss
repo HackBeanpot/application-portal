@@ -20,6 +20,10 @@ body {
 .layout {
   min-height: max-content;
 
+  .hamburger-open {
+    height: 100%;
+  }
+
   .hamburger {
     @media (min-width: $md) {
       display: none;
@@ -31,10 +35,19 @@ body {
     background: #001529;
 
     .icon {
-      margin-left: 16px;
+      margin: 16px;
       padding: 8px;
       font-size: 48px;
       color: rgba(255, 255, 255, 0.65);
+    }
+
+    .menu {
+      margin: 50px 0 0 50px;
+      font-size: 24px;
+    }
+
+    .menu-item {
+      margin-bottom: 40px;
     }
   }
 
@@ -57,7 +70,6 @@ body {
       // Only for Firefox
       transform: scale($scale);
       transform-origin: 0 0;
-  //    width: $scaled-width;
     }
 
     .logo-container {
@@ -109,7 +121,6 @@ body {
       // Only for Firefox
       transform: scale($scale);
       transform-origin: 0 0;
-//      width: $scaled-width;
       // todo: fix this eventually (firefox only)
       // this doesn't quite work, because setting an explicit width doesn't take into account a scrollbar.
       // if the content is scrollable vertically (yes), then setting explicit width will ensure that ALL of this
