@@ -26,7 +26,4 @@ const Admin = (): ReactElement => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps =
-  getServerSideSessionOrRedirect;
-
 export default Admin;

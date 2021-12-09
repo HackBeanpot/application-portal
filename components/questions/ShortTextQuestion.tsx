@@ -1,29 +1,36 @@
 import React, { FC } from 'react';
-import { ShortText } from '../../common/types';
-import { Input } from 'antd';
+import { QuestionResponse, ShortText } from '../../common/types';
+import { Form, FormInstance, Input } from 'antd';
+
 type ShortTextProps = {
+  disabled: boolean;
   question: ShortText;
-  addTextAnswer: (question: ShortText, answer: string) => void;
-  errorMessage: string;
+  form: FormInstance<Record<string, QuestionResponse>>;
 };
 
 const ShortTextQuestion: FC<ShortTextProps> = ({
   question,
-  addTextAnswer,
-  errorMessage,
+  form,
+  disabled,
 }) => {
   return (
-    <div className="question">
-      <label htmlFor={question.id}>
-        {question.content} {question.required ? '*' : ''}
-      </label>
+    <Form.Item
+      wrapperCol={{ span: 8 }}
+      className="question"
+      name={question.id}
+      label={<div className="short-text-label">{question.content}</div>}
+      rules={[
+        { required: question.required, message: 'This question is required' },
+      ]}
+    >
       <Input
+        disabled={disabled}
         placeholder={question.placeholder}
-        name={question.id}
-        onChange={(e) => addTextAnswer(question, e.target.value)}
+        onChange={(e) =>
+          form.setFieldsValue({ [question.id]: e.target.value as string })
+        }
       />
-      <div>{errorMessage}</div>
-    </div>
+    </Form.Item>
   );
 };
 export default ShortTextQuestion;

@@ -1,37 +1,50 @@
 import React, { FC } from 'react';
-import { Checkboxes } from '../../common/types';
-import { Checkbox } from 'antd';
-import { CheckboxValueType } from 'antd/lib/checkbox/Group';
+import { Checkboxes, QuestionResponse } from '../../common/types';
+import { Checkbox, Form, FormInstance, Row } from 'antd';
 
 type CheckboxesProps = {
+  disabled: boolean;
   question: Checkboxes;
-  addCheckboxAnswer: (
-    question: Checkboxes,
-    addCheckboxAnswer: CheckboxValueType[]
-  ) => void;
-  errorMessage: string;
+  form: FormInstance<Record<string, QuestionResponse>>;
 };
 const CheckboxesQuestion: FC<CheckboxesProps> = ({
   question,
-  addCheckboxAnswer,
-  errorMessage,
+  form,
+  disabled,
 }) => {
   const options: string[] = [];
   question.options.map((o) => options.push(o.name));
   return (
-    <div className="question">
-      <label htmlFor={question.id}>
-        {question.content} {question.required ? '*' : ''}
-      </label>
-      <br />
+    <Form.Item
+      className="question"
+      name={question.id}
+      label={question.content}
+      rules={[
+        { required: question.required, message: 'This question is required' },
+        {
+          type: 'array',
+          min: question.minNumber,
+          message: `Select at least ${question.minNumber} option(s)`,
+        },
+        {
+          type: 'array',
+          max: question.maxNumber,
+          message: `Select at most ${question.maxNumber} option(s)`,
+        },
+      ]}
+    >
       <Checkbox.Group
-        name={question.id}
+        disabled={disabled}
         key={question.id}
-        options={options}
-        onChange={(e) => addCheckboxAnswer(question, e)}
-      />
-      <div>{errorMessage}</div>
-    </div>
+        onChange={(e) => form.setFieldsValue({ [question.id]: e as string[] })}
+      >
+        {options.map((option) => (
+          <Row key={option}>
+            <Checkbox value={option}>{option}</Checkbox>
+          </Row>
+        ))}
+      </Checkbox.Group>
+    </Form.Item>
   );
 };
 export default CheckboxesQuestion;

@@ -1,32 +1,28 @@
 import React, { FC } from 'react';
-import { Dropdown as DropdownType } from '../../common/types';
-import { Select } from 'antd';
+import { Dropdown as DropdownType, QuestionResponse } from '../../common/types';
+import { FormInstance, Select, Form } from 'antd';
 
 type DropdownProps = {
+  disabled: boolean;
   question: DropdownType;
-  addDropdownAnswer: (
-    question: DropdownType,
-    addDropdownAnswer: string
-  ) => void;
-  errorMessage: string;
+  form: FormInstance<Record<string, QuestionResponse>>;
 };
-const DropdownQuestion: FC<DropdownProps> = ({
-  question,
-  addDropdownAnswer,
-  errorMessage,
-}) => {
+const DropdownQuestion: FC<DropdownProps> = ({ question, form, disabled }) => {
   return (
-    <div className="question">
-      <label htmlFor={question.id}>
-        {question.content} {question.required ? '*' : ''}
-      </label>
-      <br />
+    <Form.Item
+      className="question"
+      name={question.id}
+      wrapperCol={{ span: 8 }}
+      label={question.content}
+      rules={[
+        { required: question.required, message: 'This question is required' },
+      ]}
+    >
       <Select
+        disabled={disabled}
         placeholder={question.placeholder ?? 'Select'}
         allowClear
-        onChange={(value) =>
-          value && addDropdownAnswer(question, value.toString())
-        }
+        onChange={(e) => form.setFieldsValue({ [question.id]: e as string })}
         dropdownMatchSelectWidth={false}
       >
         {question.options.map(({ name }) => (
@@ -35,8 +31,7 @@ const DropdownQuestion: FC<DropdownProps> = ({
           </Select.Option>
         ))}
       </Select>
-      <div>{errorMessage}</div>
-    </div>
+    </Form.Item>
   );
 };
 export default DropdownQuestion;

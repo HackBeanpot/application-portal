@@ -11,17 +11,23 @@ const Applicants = () => {
     <div>
       <h3>{ADMIN_TABS.VIEW_AND_MODIFY_APPLICANTS}</h3>
       <table>
-        <tr>
-          <th>First name</th>
-          <th>Last name</th>
-          <th>Email</th>
-          <th>School</th>
-          <th>Year</th>
-          <th>Application Status</th>
-        </tr>
-        {applicants?.data.map((a) => (
-          <ApplicantRow applicant={a} key={a.email} />
-        ))}
+        <thead>
+          <tr>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Email</th>
+            <th>School</th>
+            <th>Year</th>
+            <th>Application Status</th>
+            <th>Edit</th>
+            <th>Update</th>
+          </tr>
+        </thead>
+        <tbody>
+          {applicants?.data?.map((a) => (
+            <ApplicantRow applicant={a} key={a.email} />
+          ))}
+        </tbody>
       </table>
     </div>
   );

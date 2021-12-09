@@ -4,41 +4,38 @@ Serves as a single point of truth for what questions are displayed on applicatio
 frontend & validated on backend
 */
 
-import React, { ReactFragment, ReactNode } from 'react';
-import { EXAMPLE_CHECKBOX_1, EXAMPLE_DROPDOWN_1 } from './constants';
+import React, { ReactNode } from 'react';
 import {
-  RegistrationApiRequest,
-  QuestionIdToResponseMap,
-  QuestionDefinition,
   Checkboxes,
   Dropdown,
   LongText,
+  QuestionDefinition,
+  QuestionSection,
   QuestionType,
   ShortText,
-  QuestionIdToDefinitionMap,
 } from './types';
 
 let questionCount = 0;
 // constants for min/max length of q + others
-const minNumberCheck = 0;
-const maxLengthShort = 500;
-const minLengthShort = 0;
-const maxLengthLong = 3000;
-const minLengthLong = 0;
+const checkboxMinSelectedCount = 0;
+const shortTextMinLength = 0;
+const shortTextMaxLength = 500;
+const longTextMinLength = 0;
+const longTextMaxLength = 3000;
 
 // convenience constructors for questions (constructors in java)
 function makeCheckbox(
   content: ReactNode,
   options: Array<string>,
   required: boolean,
-  maxNumberCheck: number
+  checkboxMaxSelectedCount: number
 ): Checkboxes {
   questionCount++;
   return {
     type: QuestionType.Checkboxes,
     options: options.map((name) => ({ name })),
-    maxNumber: maxNumberCheck,
-    minNumber: minNumberCheck,
+    maxNumber: checkboxMaxSelectedCount,
+    minNumber: checkboxMinSelectedCount,
     content: content,
     id: String(questionCount), // need to access questionID from questionidtoquestioncontent
     required: required,
@@ -53,8 +50,8 @@ function makeShortText(
   questionCount++;
   return {
     type: QuestionType.ShortText,
-    maxLength: maxLengthShort,
-    minLength: minLengthShort,
+    maxLength: shortTextMaxLength,
+    minLength: shortTextMinLength,
     placeholder,
     content: content,
     id: String(questionCount), // need to access questionID from questionidtoquestioncontent
@@ -83,8 +80,8 @@ function makeLongText(content: ReactNode, required: boolean): LongText {
   questionCount++;
   return {
     type: QuestionType.LongText,
-    maxLength: maxLengthLong,
-    minLength: minLengthLong,
+    maxLength: longTextMaxLength,
+    minLength: longTextMinLength,
 
     content: content,
     id: String(questionCount), // need to access questionID from questionidtoquestioncontent
@@ -92,8 +89,20 @@ function makeLongText(content: ReactNode, required: boolean): LongText {
   };
 }
 
+let sectionCount = 0;
+
+function makeSection(text: ReactNode): QuestionSection {
+  sectionCount++;
+  return {
+    id: `section-${sectionCount}`,
+    text: <h2>{text}</h2>,
+    type: 'SECTION',
+  };
+}
+
 // write questions for portal here
-export const Questions: Array<QuestionDefinition> = [
+export const Sections: Array<QuestionSection | QuestionDefinition> = [
+  makeSection(<>Let{"'"}s Get to Know You!</>),
   makeShortText('What is your name?', true, 'First Last'),
   makeDropdown(
     'What is your gender?',
@@ -108,6 +117,10 @@ export const Questions: Array<QuestionDefinition> = [
     ],
     true,
     'Gender'
+  ),
+  makeShortText(
+    "If your gender isn't listed above or you selected 'Unlisted', list it here!",
+    false
   ),
   makeCheckbox(
     'What ethnicities do you identify as?',
@@ -166,58 +179,63 @@ export const Questions: Array<QuestionDefinition> = [
     'Year'
   ),
   makeShortText(
-    'What are your major / concentration(s)? (N / A if not applicable)',
-    true
+    'What are your major / concentration(s)? (N/A if not applicable)',
+    true,
+    'Computer Science, etc.'
   ),
-  makeShortText('What are your minor(s)?', false),
+  makeShortText('What are your minor(s)?', false, 'Interaction Design, etc.'),
+  // todo: replace with GDrive upload
   // url to resume for now
   makeShortText(
-    <>
-      Please add an URL to your resume!
-      <br />
+    <div>
+      <p>
+        If you would like to hear about internships / job opportunities from our
+        our sponsors, add a link to your resume! (Google Drive, etc)
+      </p>
       <i>
-        (Note: We do not read resumes as a part of the HBP application process!
-        The resumes are shared with interested sponsors who may contact you
-        about internship / job opportunities, and will only be read by them.)
+        Note: We do not read resumes as a part of the HBP application process.
+        Your resume will only shared with sponsors regarding job opportunities,
+        and will only be read by them.
       </i>
-    </>,
-    false
+    </div>,
+    false,
+    'https://link-to-your-resume'
   ),
   makeDropdown(
-    "We'll be handing out t-shirts and other fun swag at the event. What's your t-shirt size?",
-    [
-      'XS: 31-34"',
-      'S: 34-37"',
-      'M: 38-41"',
-      'L: 42-45"',
-      'XL: 46-49"',
-      '2XL: 50-53"',
-      '3XL: 54-57"',
-      '4XL: 58-61"',
-    ],
+    <div>
+      We will be handing out t-shirts and other fun swag at the event. What is
+      your t-shirt size? <i>All sizes are unisex.</i>
+    </div>,
+    ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
     true,
     'Size'
   ),
+  makeSection(<>Interests and Experience</>),
   makeDropdown(
     'How many hackathons have you attended?',
     ['0', '1-2', '3-5', '6+'],
     true,
     'Count'
   ),
-  makeShortText(
+  makeLongText(
     "If you've previously attended an in-person or virtual hackthon, what did you like or dislike about it?",
     false
   ),
   makeLongText(
-    <>
-      At HackBeanpot 2022, we aim to create a welcoming environment by focusing
-      on exploration into the “final frontier”, curiosity, and innovation! Space
-      exploration relies on community, spirit, and a drive to help each other
-      thrive (and get back to Earth safely)! <br />
-      Whether you journey to the stars with a team or alone, what do you hope to
-      get out of HackBeanpot? What do you want to walk away having learned or
-      experienced from this weekend?
-    </>,
+    <div>
+      <p>
+        At HackBeanpot 2022, we aim to create a welcoming environment by
+        focusing on exploration into the “final frontier”, curiosity, and
+        innovation! Space exploration relies on community, spirit, and a drive
+        to help each other thrive (and get back to Earth safely)!{' '}
+      </p>
+      <p>
+        Whether you journey to the stars with a team or alone, what do you hope
+        to get out of HackBeanpot? What do you want to walk away having learned
+        or experienced from this weekend?
+      </p>
+      <i>P.S. All responses are read by hand, so please put in effort! :D</i>
+    </div>,
     true
   ),
   makeLongText(
@@ -229,88 +247,88 @@ export const Questions: Array<QuestionDefinition> = [
     </>,
     true
   ),
-  makeShortText(
-    'If you were the first human to meet a member of an exterrestrial intelligent species, what would you ask them?',
+  makeLongText(
+    'If you were the first human to meet a member of an extra-terrestrial intelligent species, what would you ask them?',
     true
   ),
+  makeSection(<>Outreach</>),
   makeCheckbox(
-    'We want to know how best to reach talented students like you! How did you hear about Hackbeanpot?',
+    'We want to know how best to reach talented students like you! How did you hear about HackBeanpot?',
     [
-      'HBP social media pages',
-      'Other clubs',
-      'Email / Newsletter',
-      'Word of mouth',
-      'HBP outreach events',
+      'HackBeanpot social media pages',
+      'HackBeanpot outreach events',
+      'HackBeanpot email / newsletter',
       'School communications',
+      'Other clubs',
+      'Word of mouth',
     ],
     true,
     6
   ),
   makeCheckbox(
-    <>
-      As part of our space theme this year, you will be embarking on a weekend
-      journey to different planets to collect soil - or gas - samples using your
-      newly acquired tech skills. You will be given the chance to compete with
-      your fellow astronauts in exciting competitions throughout the event to
-      win the Planet Cup! You will also have mission commanders to guide you
-      through the event as well as a way to get to know the rest of your
-      teammates! <br />
+    <div>
+      <p>
+        As part of our space theme this year, you will be embarking on a weekend
+        journey to different planets to collect soil - or gas - samples using
+        your newly acquired tech skills. You will be given the chance to compete
+        with your fellow astronauts in exciting competitions throughout the
+        event to win the Planet Cup! You will also have mission commanders to
+        guide you through the event as well as a way to get to know the rest of
+        your teammates!
+      </p>
       Which of the following workshops are you excited for?
-    </>,
+    </div>,
     [
       'Intro to Git',
       'Intro to React',
+      'Remote Hosting',
       'Hackathons for Resumes',
       'Careers in Tech',
       'Diversity in Tech',
       'Tech for Social Good',
       'Project Ideation / Formation',
+      'Entry Level Jobs in Tech',
       'None / Other',
     ],
     true,
-    8
+    10
   ),
-
+  makeSection(<>Team Formation</>),
   makeDropdown(
-    <>
-      Do you plan on attending HackBeanpot with a premade team? If yes, please
-      create / join a team with your teammates in the Team tab.
-      <br />
+    <div>
+      <p>
+        Do you plan on attending HackBeanpot with a pre-made team? If yes,
+        please create / join a team with your teammates in the Team tab after
+        filling out your application.
+      </p>
       <i>
-        (Note: This question does not get factored into how your application is
+        Note: This question does not get factored into how your application is
         read! If you are already part of a team before applying, we will accept
-        / reject your team together.)
+        / reject your team together.
       </i>
-    </>,
+    </div>,
     ['Yes', 'No'],
     true
   ),
   makeDropdown(
-    <>
-      If you don’t have a team or would like to add more members to your team,
-      we will have a project ideation session and team formation activity we
-      would love for you to attend. In the question below, if you express
-      interest in finding a team at the event we will reach out closer to the
-      event with more details. <br />
+    <div>
+      <p>
+        If you don’t have a team or would like to add more members to your team,
+        we will have a project ideation session and team formation activity we
+        would love for you to attend. In the question below, if you express
+        interest in finding a team at the event we will reach out closer to the
+        event with more details.
+      </p>
       Would you be interested in creating a team or finding more members for
       your current team at our team formation event?
-    </>,
+    </div>,
     ['Yes', 'No'],
     true
   ),
 ];
 
-// also export the questions as a mapping, to make it easier to validate
-export const toIdMapping = <T extends { id: string }>(
-  questions: Array<T>
-): Record<string, T> => {
-  const mapping: Record<string, T> = {};
-  for (const q of questions) {
-    mapping[q.id] = q;
-  }
-  return mapping;
-};
-
-export const questionIdToDefinitionMap = toIdMapping(Questions);
-
-// constructors for people writing the portal qs
+export const Questions: Array<QuestionDefinition> = Sections.filter(function (
+  sectionOrQuestion
+): sectionOrQuestion is QuestionDefinition {
+  return sectionOrQuestion.type !== 'SECTION';
+});

@@ -2,6 +2,21 @@
 
 $header-height: 64px;
 
+// cover the background in safari
+body {
+  background: #f0f2f5;
+}
+
+// dropdown portal popup needs to be scaled separately
+.ant-select-dropdown {
+  zoom: $scale !important;
+  @supports (-moz-appearance:none) {
+    // Only for Firefox
+    transform: scale($scale) !important;
+    transform-origin: 0 0 !important;
+  }
+}
+
 .layout {
   min-height: max-content;
 
@@ -26,6 +41,9 @@ $header-height: 64px;
   .header {
     top: 0;
     position: sticky;
+    @supports (-moz-appearance:none) {
+      position: fixed;
+    }
     z-index: 100;
     display: flex;
     @media (max-width: $md) {
@@ -39,9 +57,7 @@ $header-height: 64px;
       // Only for Firefox
       transform: scale($scale);
       transform-origin: 0 0;
-      // for some reason, there's a 12px difference between what we'd expect the size to be,
-      // and what it actually is.
-      width: calc(100vw / #{$scale});
+  //    width: $scaled-width;
     }
 
     .logo-container {
@@ -93,15 +109,18 @@ $header-height: 64px;
       // Only for Firefox
       transform: scale($scale);
       transform-origin: 0 0;
-      // for some reason, there's a 12px difference between what we'd expect the size to be,
-      // and what it actually is.
-      width: calc(100vw / #{$scale});
+//      width: $scaled-width;
+      // todo: fix this eventually (firefox only)
+      // this doesn't quite work, because setting an explicit width doesn't take into account a scrollbar.
+      // if the content is scrollable vertically (yes), then setting explicit width will ensure that ALL of this
+      // width is visible. this means, adding a horizontal scrollbar to see the bit of width covered by the scrollbar.
+      // https://stackoverflow.com/questions/25816450/adjusting-a-div-width-taking-a-scrollbar-into-account
     }
 
     .content {
       padding: 48px 24px;
       overflow: initial;
-      margin: 0 20%;
+      margin: 0 22%;
       @media (max-width: $xxl) {
         margin: 0 10%;
       }

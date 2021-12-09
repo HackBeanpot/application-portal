@@ -1,299 +1,275 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import {
-  Answer,
   ApplicationStatus,
-  Checkboxes,
-  Dropdown,
-  LongText,
   QuestionDefinition,
+  QuestionResponse,
   QuestionType,
-  ShortText,
 } from '../common/types';
 import ShortTextQuestion from '../components/questions/ShortTextQuestion';
 import LongTextQuestion from '../components/questions/LongTextQuestion';
 import CheckboxesQuestion from '../components/questions/CheckboxesQuestion';
 import DropdownQuestion from '../components/questions/DropdownQuestion';
-import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import {
+  getApplicantResponses,
   getRegistrationClosed,
+  getRegistrationOpen,
   getStatus,
   updateApplicantResponses,
 } from '../common/apiClient';
 import { PageLayout } from '../components/Layout';
-import { Questions } from '../common/questions';
-import { Alert, Button, notification } from 'antd';
+import { Questions, Sections } from '../common/questions';
+import { Alert, Button, Form, notification } from 'antd';
 import { GetServerSideProps } from 'next';
 import useSWR from 'swr';
-import { format } from '../components/dashboard/StatusDialogue';
+import {
+  ApplyLater,
+  DeadlinePassed,
+  format,
+  Submitted,
+} from '../components/dashboard/StatusDialogue';
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect';
 import Router from 'next/router';
+import {
+  isAfterRegistrationClosed,
+  isBeforeRegistrationOpens,
+} from '../common/dateUtils';
+import { useWarnIfUnsavedChanges } from '../components/hooks/useWarnIfUnsavedChanges';
 
-export interface Error {
-  id: string;
-  error: string;
-}
-
-const createOrUpdateAnswer = (
-  prevAnswers: Answer[],
-  id: string,
-  answer: string | CheckboxValueType[]
-) => {
-  const updatedAnswers = prevAnswers.slice();
-  const prevAnswerIndex = prevAnswers.findIndex((a) => a.id === id);
-  if (prevAnswerIndex !== -1) {
-    updatedAnswers[prevAnswerIndex] = { id, answer };
-  } else {
-    updatedAnswers.push({ id, answer });
+const getQuestionComponentFromType = (type: QuestionType) => {
+  switch (type) {
+    case QuestionType.ShortText:
+      return ShortTextQuestion;
+    case QuestionType.LongText:
+      return LongTextQuestion;
+    case QuestionType.Dropdown:
+      return DropdownQuestion;
+    case QuestionType.Checkboxes:
+      return CheckboxesQuestion;
+    default:
+      const _q: never = type;
+      throw new Error('unexpected question type: ' + type);
   }
-  return updatedAnswers;
 };
 
 const Application = (): ReactElement => {
+  // data
+  const { data: registrationOpen } = useSWR(
+    '/api/v1/dates/registration-open',
+    getRegistrationOpen
+  );
   const { data: status } = useSWR('/api/v1/status', getStatus);
   const { data: registrationClosed } = useSWR(
     '/api/v1/dates/registration-closed',
     getRegistrationClosed
   );
-  const [textAnswers, setTextAnswers] = useState<Answer[]>([]);
-  const [checkboxAnswers, setCheckboxAnswers] = useState<Answer[]>([]);
-  const [dropdownAnswers, setDropdownAnswer] = useState<Answer[]>([]);
-  const [errors, setErrors] = useState<Error[]>([]);
-  const [hasErrorsOnSubmit, setHasErrorsOnSubmit] = useState<boolean>(false);
-  const answers = textAnswers.concat(checkboxAnswers, dropdownAnswers);
+  const { data: userResponses, mutate: fetchUserResponses } = useSWR(
+    '/api/v1/applicants',
+    getApplicantResponses
+  );
+
+  // state
+  const [disabled, setDisabled] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [form] = Form.useForm<Record<string, QuestionResponse>>();
 
-  const addTextAnswer = (question: ShortText | LongText, answer: string) => {
-    const characterLength = answer.length;
-    const minLength = question.minLength;
-    const maxLength = question.maxLength;
-    const tooShort = characterLength < minLength;
-    const tooLong = maxLength < characterLength;
+  // observations
+  const alreadySubmitted =
+    status?.data.applicationStatus === ApplicationStatus.Submitted &&
+    (userResponses?.data?.responses?.length ?? 0) > 0;
+  const submittedFormData: Record<string, QuestionResponse> = {};
+  userResponses?.data?.responses?.forEach((response, index) => {
+    submittedFormData[String(index + 1)] = response;
+  });
+  const isEditing = alreadySubmitted && !disabled;
+  const registrationOpenDate =
+    registrationOpen?.data && new Date(registrationOpen?.data);
+  const registrationCloseDate =
+    registrationClosed?.data && new Date(registrationClosed?.data);
+  const isBeforeRegistration = Boolean(
+    registrationOpenDate && isBeforeRegistrationOpens(registrationOpenDate)
+  );
+  const isAfterRegistration = Boolean(
+    registrationCloseDate && isAfterRegistrationClosed(registrationCloseDate)
+  );
 
-    if (!tooShort && !tooLong) {
-      removeError(question.id);
-    } else if (tooShort) {
-      addError(
-        question.id,
-        'Required minimum response length is ' + minLength + ' characters.'
-      );
-    } else if (tooLong) {
-      addError(
-        question.id,
-        'Maximum response length is ' + maxLength + ' characters.'
-      );
+  // effects
+  useEffect(() => {
+    if (alreadySubmitted || isBeforeRegistration || isAfterRegistration) {
+      setDisabled(true);
+      form.resetFields();
     }
+  }, [alreadySubmitted, isAfterRegistration, isBeforeRegistration]);
+  useWarnIfUnsavedChanges(
+    isEditing || status?.data.applicationStatus === ApplicationStatus.Incomplete
+  );
 
-    setTextAnswers(createOrUpdateAnswer(textAnswers, question.id, answer));
-  };
-
-  const addCheckboxAnswer = (
-    question: Checkboxes,
-    answer: CheckboxValueType[]
-  ) => {
-    const selectedNumber = answer.length;
-    const minNumber = question.minNumber;
-    const maxNumber = question.maxNumber;
-
-    if (selectedNumber <= maxNumber && selectedNumber >= minNumber) {
-      removeError(question.id);
-    }
-
-    if (selectedNumber < minNumber) {
-      addError(
-        question.id,
-        'Required minimum checkboxes selected is ' + minNumber
-      );
-    }
-
-    if (selectedNumber > maxNumber) {
-      addError(question.id, 'Maximum checkboxes selected is ' + maxNumber);
-    }
-
-    setCheckboxAnswers(
-      createOrUpdateAnswer(checkboxAnswers, question.id, answer)
-    );
-  };
-
-  const addDropdownAnswer = (question: Dropdown, answer: string) => {
-    setDropdownAnswer(
-      createOrUpdateAnswer(dropdownAnswers, question.id, answer)
-    );
-  };
-
-  const addError = (id: string, error: string) => {
-    const existingErrorIndex = errors.findIndex((e) => e.id === id);
-    const updatedErrors = errors.slice();
-    if (existingErrorIndex !== -1) {
-      updatedErrors[existingErrorIndex] = { id, error };
-    } else {
-      updatedErrors.push({ id, error });
-    }
-    setErrors(updatedErrors);
-  };
-
-  const removeError = (id: string) => {
-    const existingErrorIndex = errors.findIndex((e) => e.id === id);
-    if (existingErrorIndex !== -1) {
-      const updatedErrors = errors.slice();
-      updatedErrors.splice(existingErrorIndex, 1);
-      setErrors(updatedErrors);
-    }
-  };
-
-  const validate = () => {
-    const updatedErrors = errors.slice();
-
-    for (let i = 0; i < Questions.length; i++) {
-      const isRequired = Questions[i].required;
-      const currId = Questions[i].id;
-      if (isRequired) {
-        const answerExists = answers.find((a) => a.id === currId);
-        const requiredErrorExists = errors.find(
-          (e) => e.error === 'This question is required' && e.id == currId
-        );
-        const previousErrorExists = errors.find((e) => e.id == currId);
-        // remove error if previous error was that the question is required
-        if (answerExists && requiredErrorExists) {
-          const objIndex = updatedErrors.findIndex((e) => e.id === currId);
-          updatedErrors.splice(objIndex, 1);
-        }
-        // add error if no answerExists and there is no previous error
-        if (!answerExists && !previousErrorExists) {
-          updatedErrors.push({
-            id: currId,
-            error: 'This question is required',
-          });
-        }
-      }
-    }
-
-    setErrors(updatedErrors);
-    setHasErrorsOnSubmit(updatedErrors.length > 0);
-    return updatedErrors;
-  };
-
-  const submitIfValid = () => {
-    const errors = validate();
-
-    if (errors.length == 0) {
-      const responses = Questions.map(({ id }) => {
-        const answer = answers.find((e) => e.id === id);
-        if (!answer) {
-          return null;
-        } else {
-          if (Array.isArray(answer.answer)) {
-            // cast every element of list to a string
-            return answer.answer.map((curr) => curr.toString());
-          } else {
-            return answer.answer;
-          }
-        }
+  const onSubmit = async (values: Record<string, QuestionResponse>) => {
+    const responses = Questions.map((q) => values[q.id] ?? null);
+    setIsSubmitting(true);
+    const response = await updateApplicantResponses({ responses });
+    setIsSubmitting(false);
+    if (200 <= response.status && response.status < 300) {
+      notification.success({
+        message: 'Application Successfully Submitted',
+        placement: 'bottomRight',
+        duration: 5,
       });
-      setIsSubmitting(true);
-      updateApplicantResponses({ responses }).then((response) => {
-        setIsSubmitting(false);
-        if (200 <= response.status && response.status < 300) {
-          notification.success({
-            message: 'Application Successfully Submitted',
-            placement: 'bottomRight',
-            duration: 5,
-          });
+      await fetchUserResponses();
+      if (!alreadySubmitted) {
+        // todo: figure out how to not avoid redirect when submitting first time
+        setTimeout(() => {
           Router.push('/');
-        } else {
-          notification.error({
-            message: 'Error Submitting Application',
-            description: response.data,
-            placement: 'bottomRight',
-            duration: 30,
-          });
-        }
+        }, 1000);
+      } else {
+        window?.scrollTo({ top: 0, behavior: 'smooth' });
+        setDisabled(true);
+      }
+    } else {
+      notification.error({
+        message: 'Error Submitting Application',
+        description: response.data,
+        placement: 'bottomRight',
+        duration: 30,
       });
     }
   };
 
-  const renderAll = (q: QuestionDefinition) => {
-    const errorMessage = errors.find((e) => e.id === q.id)?.error ?? '';
-    switch (q.type) {
-      case QuestionType.ShortText:
-        return (
-          <ShortTextQuestion
-            key={q.id}
-            question={q}
-            addTextAnswer={addTextAnswer}
-            errorMessage={errorMessage}
-          />
-        );
-      case QuestionType.LongText:
-        return (
-          <LongTextQuestion
-            key={q.id}
-            question={q}
-            addTextAnswer={addTextAnswer}
-            errorMessage={errorMessage}
-          />
-        );
-      case QuestionType.Checkboxes:
-        return (
-          <CheckboxesQuestion
-            key={q.id}
-            question={q}
-            addCheckboxAnswer={addCheckboxAnswer}
-            errorMessage={errorMessage}
-          />
-        );
-      case QuestionType.Dropdown:
-        return (
-          <DropdownQuestion
-            key={q.id}
-            question={q}
-            addDropdownAnswer={addDropdownAnswer}
-            errorMessage={errorMessage}
-          />
-        );
-    }
+  const FormQuestion = ({ q }: { q: QuestionDefinition }) => {
+    const QuestionComponent = getQuestionComponentFromType(q.type);
+    return React.createElement(QuestionComponent as any, {
+      question: q,
+      form: form,
+      disabled,
+    });
   };
 
   return (
     <PageLayout currentPage={'application'}>
       <div className="application">
         <h1>Application Page</h1>
-        {status?.data.applicationStatus === ApplicationStatus.Submitted && (
-          <Alert
-            className="alert"
-            type="info"
-            description={
-              <>
-                You have already submitted your application, but you may
-                resubmit your application as many times as you{"'"}d like before
-                registration closes on{' '}
-                <b>
-                  {registrationClosed?.data &&
-                    format(new Date(registrationClosed.data))}
-                </b>
-                .
-              </>
-            }
-            message={<>Application already submitted</>}
-            showIcon
+        {registrationCloseDate && registrationOpenDate && (
+          <StatusDialogue
+            disabled={disabled}
+            setDisabled={setDisabled}
+            alreadySubmitted={alreadySubmitted}
+            isBeforeRegistration={isBeforeRegistration}
+            isAfterRegistration={isAfterRegistration}
+            registrationCloseDate={registrationCloseDate}
+            registrationOpenDate={registrationOpenDate}
+            resetFields={() => form.resetFields()}
           />
         )}
-        <div>{Questions.map((q) => renderAll(q))}</div>
-        <Button
-          className="submit"
-          type={'primary'}
-          onClick={submitIfValid}
-          loading={isSubmitting}
-          size={'large'}
+        <Form
+          initialValues={submittedFormData}
+          form={form}
+          onFinish={onSubmit}
+          scrollToFirstError={{ behavior: 'smooth' }}
+          layout="vertical"
         >
-          Submit
-        </Button>
-        {hasErrorsOnSubmit && <div>Please fix errors before submitting.</div>}
+          {Sections.map((sectionOrQuestion) => {
+            if (sectionOrQuestion.type === 'SECTION') {
+              return (
+                <Form.Item key={sectionOrQuestion.id} noStyle>
+                  <div className="section">{sectionOrQuestion.text}</div>
+                </Form.Item>
+              );
+            }
+            return (
+              <FormQuestion key={sectionOrQuestion.id} q={sectionOrQuestion} />
+            );
+          })}
+          <Form.Item noStyle>
+            <div className="submit-container">
+              <Button
+                disabled={disabled}
+                className="button"
+                type="primary"
+                htmlType="submit"
+                loading={isSubmitting}
+                size="large"
+              >
+                {alreadySubmitted
+                  ? 'Resubmit Application'
+                  : 'Submit Application'}
+              </Button>
+            </div>
+          </Form.Item>
+        </Form>
       </div>
     </PageLayout>
   );
 };
 
-export const getServerSideProps: GetServerSideProps =
-  getServerSideSessionOrRedirect;
+type StatusDialogueProps = {
+  disabled: boolean;
+  setDisabled: (d: boolean) => void;
+  alreadySubmitted: boolean;
+  registrationOpenDate: Date;
+  registrationCloseDate: Date;
+  isBeforeRegistration: boolean;
+  isAfterRegistration: boolean;
+  resetFields: () => void;
+};
+const StatusDialogue: React.FC<StatusDialogueProps> = ({
+  alreadySubmitted,
+  registrationCloseDate,
+  registrationOpenDate,
+  disabled,
+  setDisabled,
+  isBeforeRegistration,
+  isAfterRegistration,
+  resetFields,
+}) => {
+  if (isBeforeRegistration) {
+    return <ApplyLater registrationOpen={format(registrationOpenDate)} />;
+  } else if (isAfterRegistration) {
+    if (!alreadySubmitted) {
+      return (
+        <DeadlinePassed registrationClosed={format(registrationCloseDate)} />
+      );
+    }
+    return <Submitted />;
+  } else if (alreadySubmitted) {
+    return (
+      <Alert
+        className="alert"
+        type="info"
+        description={
+          <>
+            You have already submitted your application, but you may edit and
+            resubmit your responses as many times as you{"'"}d like before
+            registration closes on{' '}
+            <b>{registrationCloseDate && format(registrationCloseDate)}</b>.
+            <div className="edit-button-container">
+              <Button
+                className="edit-button"
+                disabled={!disabled}
+                onClick={() => setDisabled(false)}
+              >
+                Edit my responses
+              </Button>
+              {!disabled && (
+                <Button
+                  danger
+                  className="cancel-edit-button"
+                  onClick={() => {
+                    setDisabled(true);
+                    resetFields();
+                  }}
+                >
+                  Cancel editing
+                </Button>
+              )}
+            </div>
+          </>
+        }
+        message={<>Application already submitted</>}
+        showIcon
+      />
+    );
+  } else {
+    return null;
+  }
+};
 
 export default Application;
