@@ -60,25 +60,28 @@ const SignIn = (): ReactElement => {
           await loginOnPress(e, { redirect: false, email })
         }
       >
-        <div className="input-button-wrapper">
-          <Form.Item
-            name="email"
-            rules={[
-              {
-                required: true,
-                type: 'email',
-                message: 'Please input a valid email!',
-              },
-            ]}
-          >
-            <Input className="email-input" onChange={updateEmail} value={email} placeholder="Email address" />
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit" className="submitButton">
-              Sign in with Email
-            </Button>
-          </Form.Item>
-        </div>
+        <Form.Item
+          name="email"
+          rules={[
+            {
+              required: true,
+              type: 'email',
+              message: 'Please input a valid email!',
+            },
+          ]}
+        >
+          <Input
+            className="email-input"
+            onChange={updateEmail}
+            value={email}
+            placeholder="Email address"
+          />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit" className="submitButton">
+            Sign in with Email
+          </Button>
+        </Form.Item>
       </Form>
     </div>
   );
