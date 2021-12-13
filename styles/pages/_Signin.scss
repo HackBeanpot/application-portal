@@ -2,6 +2,8 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
+  justify-content: center;
+  align-items: center;
 }
 
 .logoWrapper {
@@ -10,9 +12,23 @@
 
 .signinForm {
   margin: 0 15%;
+  width: 20%;
 }
 
 .submitButton {
-  float: right;
+  width: 100%;
+  height: 40px;
+  font-size: 18px;
 }
 
+.input-button-wrapper {
+
+}
+
+.content-wrapper {
+}
+
+.email-input {
+  height: 40px;
+  font-size: 18px;
+}

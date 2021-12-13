@@ -47,8 +47,8 @@ const SignIn = (): ReactElement => {
       <div className="logoWrapper">
         <Image
           className="signinLogo"
-          width={300}
-          height={270}
+          width={200}
+          height={180}
           src="/logo_big.png"
         />
       </div>
@@ -60,25 +60,25 @@ const SignIn = (): ReactElement => {
           await loginOnPress(e, { redirect: false, email })
         }
       >
-        <Form.Item
-          label="Email"
-          name="email"
-          rules={[
-            {
-              required: true,
-              type: 'email',
-              message: 'Please input a valid email!',
-            },
-          ]}
-        >
-          <Input onChange={updateEmail} value={email} />
-        </Form.Item>
-
-        <Form.Item className="submitButton">
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-        </Form.Item>
+        <div className="input-button-wrapper">
+          <Form.Item
+            name="email"
+            rules={[
+              {
+                required: true,
+                type: 'email',
+                message: 'Please input a valid email!',
+              },
+            ]}
+          >
+            <Input className="email-input" onChange={updateEmail} value={email} placeholder="Email address" />
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" className="submitButton">
+              Sign in with Email
+            </Button>
+          </Form.Item>
+        </div>
       </Form>
     </div>
   );
