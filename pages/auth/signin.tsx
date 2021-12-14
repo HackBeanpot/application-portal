@@ -14,6 +14,7 @@ import Image from 'next/image';
 
 const SignIn = (): ReactElement => {
   const [email, setEmail] = useState<string>('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const router = useRouter();
   const session = useSession();
 
@@ -34,7 +35,7 @@ const SignIn = (): ReactElement => {
 
     if (response.ok) {
       console.log('email sent');
-      await router.push('/api/auth/verify-request');
+      setIsSubmitted(true);
     }
   };
 
@@ -60,28 +61,33 @@ const SignIn = (): ReactElement => {
           await loginOnPress(e, { redirect: false, email })
         }
       >
-        <Form.Item
-          name="email"
-          rules={[
-            {
-              required: true,
-              type: 'email',
-              message: 'Please input a valid email!',
-            },
-          ]}
-        >
-          <Input
-            className="email-input"
-            onChange={updateEmail}
-            value={email}
-            placeholder="Email address"
-          />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" className="submitButton">
-            Sign in with Email
-          </Button>
-        </Form.Item>
+        {!isSubmitted && (
+          <>
+            <Form.Item
+              name="email"
+              rules={[
+                {
+                  required: true,
+                  type: 'email',
+                  message: 'Please input a valid email!',
+                },
+              ]}
+            >
+              <Input
+                className="email-input"
+                onChange={updateEmail}
+                value={email}
+                placeholder="Email address"
+              />
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" htmlType="submit" className="submitButton">
+                Sign in with Email
+              </Button>
+            </Form.Item>
+          </>
+        )}
+        {isSubmitted && <a>Has been sent to email</a>}
       </Form>
     </div>
   );
