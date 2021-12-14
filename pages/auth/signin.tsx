@@ -15,6 +15,7 @@ import Image from 'next/image';
 const SignIn = (): ReactElement => {
   const [email, setEmail] = useState<string>('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const session = useSession();
 
@@ -30,13 +31,14 @@ const SignIn = (): ReactElement => {
     options: SignInOptions
   ) => {
     console.log('gets here on submit');
-
+    setIsLoading(true);
     const response: SignInResponse = (await signIn('email', options)) as any;
 
     if (response.ok) {
       console.log('email sent');
       setIsSubmitted(true);
     }
+    setIsLoading(false);
   };
 
   const updateEmail = (event: ChangeEvent<HTMLInputElement>) => {
@@ -54,7 +56,7 @@ const SignIn = (): ReactElement => {
         />
       </div>
       <Form
-        className="signinForm"
+        className= {isSubmitted ? "signinForm centered-text" : "signinForm"}
         name="signin"
         autoComplete="off"
         onFinish={async (e) =>
@@ -81,13 +83,13 @@ const SignIn = (): ReactElement => {
               />
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit" className="submitButton">
+              <Button type="primary" htmlType="submit" className="submitButton" loading={isLoading}>
                 Sign in with Email
               </Button>
             </Form.Item>
           </>
         )}
-        {isSubmitted && <a>Has been sent to email</a>}
+        {isSubmitted && <p className="success-message">A sign in link has been sent to your email address.</p>}
       </Form>
     </div>
   );

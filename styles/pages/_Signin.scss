@@ -6,6 +6,10 @@
   align-items: center;
 }
 
+.centered-text {
+  text-align: center;
+}
+
 .logoWrapper {
   margin: 0 auto;
 }
@@ -23,5 +27,9 @@
 
 .email-input {
   height: 40px;
+  font-size: 18px;
+}
+
+.success-message {
   font-size: 18px;
 }
