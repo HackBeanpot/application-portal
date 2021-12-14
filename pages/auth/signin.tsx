@@ -21,7 +21,6 @@ const SignIn = (): ReactElement => {
 
   useEffect(() => {
     if (session.data?.user?.email) {
-      console.log('user already logged in');
       router.push('/');
     }
   }, [session.data?.user?.email]);
@@ -30,12 +29,10 @@ const SignIn = (): ReactElement => {
     event: FormEvent<HTMLInputElement>,
     options: SignInOptions
   ) => {
-    console.log('gets here on submit');
     setIsLoading(true);
     const response: SignInResponse = (await signIn('email', options)) as any;
 
     if (response.ok) {
-      console.log('email sent');
       setIsSubmitted(true);
     }
     setIsLoading(false);
