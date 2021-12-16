@@ -15,8 +15,10 @@
 }
 
 .signinForm {
-  margin: 0 15%;
-  width: 20%;
+  width: 400px;
+  @media (max-width: $xs) {
+    width: 90%;
+  }
 }
 
 .submitButton {

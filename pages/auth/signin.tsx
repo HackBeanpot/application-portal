@@ -1,45 +1,34 @@
-import React, {
-  ChangeEvent,
-  FormEvent,
-  ReactElement,
-  useEffect,
-  useState,
-} from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { Form, Input, Button } from 'antd';
-import { getSession, signIn, SignInOptions, useSession } from 'next-auth/react';
+import { getSession, signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { SignInResponse } from 'next-auth/react/types';
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 
 const SignIn = (): ReactElement => {
-  const [email, setEmail] = useState<string>('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const session = useSession();
 
+  const [form] = Form.useForm();
+
   useEffect(() => {
     if (session.data?.user?.email) {
       router.push('/');
     }
-  }, [session.data?.user?.email]);
+  }, [router, session.data?.user?.email]);
 
-  const loginOnPress = async (
-    event: FormEvent<HTMLInputElement>,
-    options: SignInOptions
-  ) => {
+  const onSubmit = async (values: { email: string }) => {
     setIsLoading(true);
-    const response: SignInResponse = (await signIn('email', options)) as any;
-
-    if (response.ok) {
+    const response = await signIn<'email'>('email', {
+      redirect: false,
+      email: values.email,
+    });
+    if (response?.ok) {
       setIsSubmitted(true);
     }
     setIsLoading(false);
-  };
-
-  const updateEmail = (event: ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
   };
 
   return (
@@ -50,15 +39,16 @@ const SignIn = (): ReactElement => {
           width={200}
           height={180}
           src="/logo_big.png"
+          alt="HackBeanpot logo"
         />
       </div>
       <Form
-        className= {isSubmitted ? "signinForm centered-text" : "signinForm"}
+        className={isSubmitted ? 'signinForm centered-text' : 'signinForm'}
+        form={form}
         name="signin"
         autoComplete="off"
-        onFinish={async (e) =>
-          await loginOnPress(e, { redirect: false, email })
-        }
+        onFinish={onSubmit}
+        validateTrigger={'onSubmit'}
       >
         {!isSubmitted && (
           <>
@@ -72,21 +62,25 @@ const SignIn = (): ReactElement => {
                 },
               ]}
             >
-              <Input
-                className="email-input"
-                onChange={updateEmail}
-                value={email}
-                placeholder="Email address"
-              />
+              <Input className="email-input" placeholder="Email address" />
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit" className="submitButton" loading={isLoading}>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="submitButton"
+                loading={isLoading}
+              >
                 Sign in with Email
               </Button>
             </Form.Item>
           </>
         )}
-        {isSubmitted && <p className="success-message">A sign in link has been sent to your email address.</p>}
+        {isSubmitted && (
+          <p className="success-message">
+            A sign in link has been sent to your email address.
+          </p>
+        )}
       </Form>
     </div>
   );
