@@ -3,7 +3,7 @@ import useSWR from 'swr';
 import { getUser } from '../common/apiClient';
 import Logo from '../public/logo.svg';
 import Image from 'next/image';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import React, { useState } from 'react';
 import { DownOutlined, MenuOutlined } from '@ant-design/icons';
 import Link from 'next/link';
@@ -29,7 +29,7 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
   };
   return (
     <Layout className="layout">
-      <div className={navOpen ? "hamburger hamburger-open" : "hamburger"}>
+      <div className={navOpen ? 'hamburger hamburger-open' : 'hamburger'}>
         <MenuOutlined
           className="icon"
           onClick={() => setNavOpen((prev) => !prev)}
@@ -37,18 +37,22 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
         />
         {navOpen && (
           <Menu theme="dark" className="menu">
-            <Menu.Item className="menu-item" key="home" onClick={andClose(() => router.push('/'))}>
+            <Menu.Item
+              className="menu-item"
+              key="home"
+              onClick={andClose(() => router.push('/'))}
+            >
               Dashboard
             </Menu.Item>
             <Menu.Item
-            className="menu-item"
+              className="menu-item"
               key="application"
               onClick={andClose(() => router.push('/application'))}
             >
               Application
             </Menu.Item>
             <Menu.Item
-            className="menu-item"
+              className="menu-item"
               key="team"
               onClick={andClose(() => router.push('/team'))}
             >
@@ -56,13 +60,20 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
             </Menu.Item>
             {user?.data?.isAdmin && (
               <Menu.Item
-              className="menu-item"
+                className="menu-item"
                 key="admin"
                 onClick={andClose(() => router.push('/admin'))}
               >
                 Admin
               </Menu.Item>
             )}
+            <Menu.Item
+              className="menu-item"
+              key="signout"
+              onClick={andClose(() => signOut())}
+            >
+              Sign out
+            </Menu.Item>
           </Menu>
         )}
       </div>
@@ -102,8 +113,8 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
             className="user"
             overlay={
               <Menu theme={'light'}>
-                <Menu.Item>
-                  <Link href="/api/auth/signout">Sign out</Link>
+                <Menu.Item key="signout" onClick={() => signOut()}>
+                  Sign out
                 </Menu.Item>
               </Menu>
             }
