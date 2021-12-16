@@ -11,6 +11,9 @@ const authHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   return await NextAuth(req, res, {
     pages: {
       signIn: '/auth/signin',
+      signOut: '/auth/signin',
+      error: '/auth/signin',
+      verifyRequest: '/auth/signin',
     },
     theme: {
       colorScheme: 'auto', // "auto" | "dark" | "light"
