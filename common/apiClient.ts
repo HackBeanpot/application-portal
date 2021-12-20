@@ -7,6 +7,8 @@ import {
   RegistrationApiResponse,
 } from './types';
 import Axios, { AxiosResponse } from 'axios';
+import { TablePaginationConfig } from 'antd';
+import { TableFilters, TableSorter } from '../components/admin-tabs/Applicants';
 
 export function getAdminById(id: number) {
   return Axios.get<User>(`/api/v1/admin/${id}`);
@@ -36,8 +38,27 @@ export const updateApplicantResponses = (
 ): Promise<AxiosResponse<string | null>> =>
   Axios.post(`/api/v1/registration`, responses, { validateStatus: () => true });
 
-export function getAllApplicants(url: string) {
-  return Axios.get<Array<User>>(`/api/v1/applicants`);
+type ApplicantsApiResponse = {
+  data: Array<User>;
+  totalCount: number;
+  page: number;
+  pageSize: number;
+};
+
+export function getAllApplicants(
+  url: string,
+  pagination: TablePaginationConfig,
+  filters: TableFilters,
+  sorter: TableSorter
+) {
+  return Axios.get<ApplicantsApiResponse>(`/api/v1/applicants`, {
+    params: {
+      page: pagination.current,
+      pageSize: pagination.pageSize,
+      filters,
+      sorter,
+    },
+  });
 }
 
 export function getStatus(): Promise<AxiosResponse<StatusApiResponse>> {

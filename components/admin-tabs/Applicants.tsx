@@ -3,7 +3,7 @@ import { ADMIN_TABS, EXAMPLE_USER } from '../../common/constants';
 import { getAllApplicants } from '../../common/apiClient';
 import useSWR, { useSWRInfinite } from 'swr';
 import ApplicantRow from './ApplicantRow';
-import { Table, TablePaginationConfig, TableProps } from 'antd';
+import { Pagination, Table, TablePaginationConfig, TableProps } from 'antd';
 import { User } from '../../common/types';
 
 // table columns: name, email, school, application status
@@ -57,8 +57,8 @@ const getRandomuserParams = (params: any) => ({
 });
 
 type TableOnChange = NonNullable<TableProps<User>['onChange']>;
-type TableFilters = Parameters<TableOnChange>['1'];
-type TableSorter = Parameters<TableOnChange>['2'];
+export type TableFilters = Parameters<TableOnChange>['1'];
+export type TableSorter = Parameters<TableOnChange>['2'];
 type TableConfig = {
   pagination: TablePaginationConfig;
   filters: TableFilters;
@@ -88,13 +88,13 @@ const Applicants: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="admin">
       <h3>{ADMIN_TABS.VIEW_AND_MODIFY_APPLICANTS}</h3>
       <Table
         columns={columns}
         rowKey={(record) => record.email}
-        dataSource={data?.data ?? []}
-        pagination={pagination}
+        dataSource={data?.data.data ?? []}
+        pagination={{ ...pagination, total: data?.data.totalCount }}
         loading={!data}
         onChange={onChange}
       />
