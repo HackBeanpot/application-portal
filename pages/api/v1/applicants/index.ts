@@ -9,8 +9,6 @@ const handler: NextApiHandler = async (req, res) => {
   }
 
   switch (req.method) {
-    // get all the users
-    // in the future, we probably want pagination on this (there will be 100+ applicants lol)
     case 'GET':
       await getHandler(req, res);
       break;
@@ -23,7 +21,7 @@ const handler: NextApiHandler = async (req, res) => {
 const getHandler: NextApiHandler = async (req, res) => {
   const params = req.query;
 
-  // assume page is 1 indexed, handle errors later
+  // assume page is 1 indexed
   const page = Number(params?.page ?? 1);
   const pageSize = Number(params?.pageSize ?? 10);
   const filters = parseFilters(params?.filters);
@@ -60,16 +58,14 @@ function parseFilters(queryString: string | string[]): Record<string, any> {
 }
 
 function parseSort(queryString: string | string[]): any {
-  const sortString = Array.isArray(queryString)
-    ? queryString[0]
-    : queryString;
+  const sortString = Array.isArray(queryString) ? queryString[0] : queryString;
   const sort = JSON.parse(sortString);
-  const field = Array.isArray(sort.field) ? sort.field.join(".") : sort.field;
-  if (field === "email") {
-    return { [field]: sort.order === "ascend" ? 1 : -1 }
+  const field = Array.isArray(sort.field) ? sort.field.join('.') : sort.field;
+  if (field === 'email') {
+    return { [field]: sort.order === 'ascend' ? 1 : -1 };
   }
   // sort may not be stable, so sort by email as well
-  return { [field]: sort.order === "ascend" ? 1 : -1, email: -1 }
+  return { [field]: sort.order === 'ascend' ? 1 : -1, email: -1 };
 }
 
 export default protect(handler);
