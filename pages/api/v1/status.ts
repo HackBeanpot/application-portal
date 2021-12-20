@@ -1,7 +1,11 @@
 import { NextApiHandler } from 'next';
 import { RESPONSE_BY_DATE } from '../../../common/constants';
-import { protect, assumeLoggedInGetEmail } from '../../../server/protect';
-import { RSVPStatus, StatusApiResponse } from '../../../common/types';
+import { assumeLoggedInGetEmail, protect } from '../../../server/protect';
+import {
+  ApplicationStatus,
+  RSVPStatus,
+  StatusApiResponse,
+} from '../../../common/types';
 import { connectToDatabase } from '../../../server/mongoDB';
 
 const statusHandler: NextApiHandler = async (req, res) => {
@@ -41,10 +45,17 @@ const postHandler: NextApiHandler = async (req, res) => {
     return res.status(403).send({ error: 'Deadline has passed' });
   }
 
-  // Update in DB here
   const email = await assumeLoggedInGetEmail(req);
   const { userDataCollection } = await connectToDatabase();
+  const user = await userDataCollection.findOne({ email });
+  if (user?.applicationStatus !== ApplicationStatus.Admitted) {
+    // if they were not accepted, they cannot rsvp
+    return res
+      .status(400)
+      .json('user not marked as accepted, not expecting an RSVP');
+  }
 
+  // Update in DB here
   await userDataCollection.updateOne(
     { email },
     {
