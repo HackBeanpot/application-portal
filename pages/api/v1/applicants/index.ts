@@ -28,6 +28,7 @@ const getHandler: NextApiHandler = async (req, res) => {
   const page = Number(params?.page ?? 1);
   const pageSize = Number(params?.pageSize ?? 10);
   const filters = parseFilters(params?.filters);
+  const sort = parseSort(params?.sorter);
 
   console.log(filters);
   const { userDataCollection } = await connectToDatabase();
@@ -35,6 +36,7 @@ const getHandler: NextApiHandler = async (req, res) => {
     .find()
     .skip((page - 1) * pageSize)
     .filter(filters)
+    .sort(sort)
     .limit(pageSize);
   const totalCount = await userDataCollection.countDocuments(filters);
 
@@ -57,6 +59,19 @@ function parseFilters(queryString: string | string[]): Record<string, any> {
     filters[key] = { $in: value };
   }
   return filters;
+}
+
+function parseSort(queryString: string | string[]): any {
+  const sortString = Array.isArray(queryString)
+    ? queryString[0]
+    : queryString;
+  const sort = JSON.parse(sortString);
+  const field = Array.isArray(sort.field) ? sort.field.join(".") : sort.field;
+  if (field === "email") {
+    return { [field]: sort.order === "ascend" ? 1 : -1 }
+  }
+  // sort may not be stable, so sort by email as well
+  return { [field]: sort.order === "ascend" ? 1 : -1, email: -1 }
 }
 
 export default protect(handler);

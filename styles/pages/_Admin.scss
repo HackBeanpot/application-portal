@@ -1,8 +1,25 @@
 .admin {
-  overflow: visible;
+  @media (min-width: $xxl) {
+    width: 160%;
+    margin-left: -30%;
+  }
+
+  .tabs {
+    overflow: visible !important;
+  }
+
+  .applicants {
+
+  }
 
   .ant-select-dropdown {
+    zoom: 1 !important;
+    @supports (-moz-appearance:none) {
+      // Only for Firefox
+      transform: scale(1) !important;
+      transform-origin: 0 0 !important;
+    }
     left: 0 !important;
-    top: 35px !important;
+    top: 27px !important;
   }
 }

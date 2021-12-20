@@ -3,7 +3,7 @@ import { ADMIN_TABS, EXAMPLE_USER } from '../../common/constants';
 import { getAllApplicants } from '../../common/apiClient';
 import useSWR, { useSWRInfinite } from 'swr';
 import ApplicantRow from './ApplicantRow';
-import { Pagination, Table, TablePaginationConfig, TableProps } from 'antd';
+import { Pagination, Space, Table, TablePaginationConfig, TableProps } from 'antd';
 import { ApplicationStatus, Dropdown, User } from '../../common/types';
 import { Questions } from '../../common/questions';
 
@@ -17,6 +17,7 @@ const columns = [
   {
     title: 'Email',
     dataIndex: 'email',
+    sorter: true
   },
   {
     title: 'School',
@@ -30,6 +31,7 @@ const columns = [
       (record.responses[4] === 'Other'
         ? record.responses[5]
         : record.responses[4]),
+    sorter: true
   },
   {
     title: 'Application Status',
@@ -38,6 +40,7 @@ const columns = [
       text: value,
       value,
     })),
+    sorter: true
   },
   {
     title: 'Year',
@@ -46,23 +49,13 @@ const columns = [
       text: name,
       value: name,
     })),
+    sorter: true
   },
 ];
-
-const getRandomuserParams = (params: any) => ({
-  results: params.pagination.pageSize,
-  page: params.pagination.current,
-  ...params,
-});
 
 type TableOnChange = NonNullable<TableProps<User>['onChange']>;
 export type TableFilters = Parameters<TableOnChange>['1'];
 export type TableSorter = Parameters<TableOnChange>['2'];
-type TableConfig = {
-  pagination: TablePaginationConfig;
-  filters: TableFilters;
-  sorter: TableSorter;
-};
 
 const Applicants: React.FC = () => {
   const [pagination, setPagination] = useState<TablePaginationConfig>({
@@ -87,9 +80,11 @@ const Applicants: React.FC = () => {
   };
 
   return (
-    <div className="admin">
+    <div className={"applicants"}>
       <h3>{ADMIN_TABS.VIEW_AND_MODIFY_APPLICANTS}</h3>
       <Table
+        size={"small"}
+        className={"applicants"}
         columns={columns}
         rowKey={(record) => record.email}
         dataSource={data?.data.data ?? []}
@@ -102,25 +97,7 @@ const Applicants: React.FC = () => {
         loading={!data}
         onChange={onChange}
       />
-      {/*<table>*/}
-      {/*  <thead>*/}
-      {/*    <tr>*/}
-      {/*      <th>First name</th>*/}
-      {/*      <th>Last name</th>*/}
-      {/*      <th>Email</th>*/}
-      {/*      <th>School</th>*/}
-      {/*      <th>Year</th>*/}
-      {/*      <th>Application Status</th>*/}
-      {/*      <th>Edit</th>*/}
-      {/*      <th>Update</th>*/}
-      {/*    </tr>*/}
-      {/*  </thead>*/}
-      {/*  <tbody>*/}
-      {/*    {applicants?.data?.map((a) => (*/}
-      {/*      <ApplicantRow applicant={a} key={a.email} />*/}
-      {/*    ))}*/}
-      {/*  </tbody>*/}
-      {/*</table>*/}
+      <div className={"filler"}/>
     </div>
   );
 };
