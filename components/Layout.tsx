@@ -1,7 +1,8 @@
 import { Dropdown, Layout, Menu } from 'antd';
 import useSWR from 'swr';
 import { getUser } from '../common/apiClient';
-import Logo from '../public/logo.svg';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const Logo = require('../public/logo.svg');
 import Image from 'next/image';
 import { signOut, useSession } from 'next-auth/react';
 import React, { useState } from 'react';
