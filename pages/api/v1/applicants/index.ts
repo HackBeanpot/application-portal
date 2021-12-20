@@ -1,5 +1,4 @@
 import { NextApiHandler } from 'next';
-import { EXAMPLE_USER } from '../../../../common/constants';
 import { isAdmin, protect } from '../../../../server/protect';
 import { connectToDatabase } from '../../../../server/mongoDB';
 
@@ -28,17 +27,36 @@ const getHandler: NextApiHandler = async (req, res) => {
   // assume page is 1 indexed, handle errors later
   const page = Number(params?.page ?? 1);
   const pageSize = Number(params?.pageSize ?? 10);
+  const filters = parseFilters(params?.filters);
 
+  console.log(filters);
   const { userDataCollection } = await connectToDatabase();
   const data = userDataCollection
     .find()
     .skip((page - 1) * pageSize)
+    .filter(filters)
     .limit(pageSize);
-  const totalCount = await userDataCollection.countDocuments();
+  const totalCount = await userDataCollection.countDocuments(filters);
 
   return res
     .status(200)
     .json({ data: await data.toArray(), totalCount, page, pageSize });
 };
+
+function parseFilters(queryString: string | string[]): Record<string, any> {
+  const filterString = Array.isArray(queryString)
+    ? queryString[0]
+    : queryString;
+  const filters: Record<string, any> = JSON.parse(filterString);
+  for (const key in filters) {
+    const value = filters[key];
+    if (!value) {
+      delete filters[key];
+      continue;
+    }
+    filters[key] = { $in: value };
+  }
+  return filters;
+}
 
 export default protect(handler);

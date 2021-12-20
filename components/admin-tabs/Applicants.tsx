@@ -4,7 +4,8 @@ import { getAllApplicants } from '../../common/apiClient';
 import useSWR, { useSWRInfinite } from 'swr';
 import ApplicantRow from './ApplicantRow';
 import { Pagination, Table, TablePaginationConfig, TableProps } from 'antd';
-import { User } from '../../common/types';
+import { ApplicationStatus, Dropdown, User } from '../../common/types';
+import { Questions } from '../../common/questions';
 
 // table columns: name, email, school, application status
 const columns = [
@@ -12,41 +13,39 @@ const columns = [
     title: 'Name',
     dataIndex: ['responses', '0'],
     sorter: true,
-    // render: name => `${name.first} ${name.last}`,
-    // width: '20%',
   },
   {
     title: 'Email',
     dataIndex: 'email',
-    // filters: [
-    //   { text: 'Male', value: 'male' },
-    //   { text: 'Female', value: 'female' },
-    // ],
-    // width: '20%',
   },
   {
     title: 'School',
     dataIndex: ['responses', '4'],
-    // filters: [
-    //   { text: 'Male', value: 'male' },
-    //   { text: 'Female', value: 'female' },
-    // ],
+    filters: (Questions[4] as Dropdown).options.map(({ name }) => ({
+      text: name,
+      value: name,
+    })),
+    render: (text: any, record: User) =>
+      record.responses &&
+      (record.responses[4] === 'Other'
+        ? record.responses[5]
+        : record.responses[4]),
   },
   {
     title: 'Application Status',
     dataIndex: 'applicationStatus',
-    // filters: [
-    //   { text: 'Male', value: 'male' },
-    //   { text: 'Female', value: 'female' },
-    // ],
+    filters: Object.values(ApplicationStatus).map((value) => ({
+      text: value,
+      value,
+    })),
   },
   {
     title: 'Year',
     dataIndex: ['responses', '7'],
-    // filters: [
-    //   { text: 'Male', value: 'male' },
-    //   { text: 'Female', value: 'female' },
-    // ],
+    filters: (Questions[7] as Dropdown).options.map(({ name }) => ({
+      text: name,
+      value: name,
+    })),
   },
 ];
 
@@ -72,7 +71,7 @@ const Applicants: React.FC = () => {
   });
   const [filters, setFilters] = useState<TableFilters>({});
   const [sorter, setSorter] = useState<TableSorter>({});
-  const { data, isValidating } = useSWR(
+  const { data } = useSWR(
     [`/api/v1/applicants`, pagination, filters, sorter],
     getAllApplicants
   );
@@ -94,7 +93,12 @@ const Applicants: React.FC = () => {
         columns={columns}
         rowKey={(record) => record.email}
         dataSource={data?.data.data ?? []}
-        pagination={{ ...pagination, total: data?.data.totalCount }}
+        pagination={{
+          ...pagination,
+          total: data?.data.totalCount,
+          position: ['topLeft', 'bottomRight'],
+          showTotal: (t) => `${t} results`,
+        }}
         loading={!data}
         onChange={onChange}
       />
