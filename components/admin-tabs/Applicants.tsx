@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { ADMIN_TABS, EXAMPLE_USER } from '../../common/constants';
+import React, { useState } from 'react';
+import { ADMIN_TABS } from '../../common/constants';
 import { getAllApplicants } from '../../common/apiClient';
-import useSWR, { useSWRInfinite } from 'swr';
-import ApplicantRow from './ApplicantRow';
-import { Pagination, Space, Table, TablePaginationConfig, TableProps } from 'antd';
+import useSWR from 'swr';
+import { Table, TablePaginationConfig, TableProps } from 'antd';
 import { ApplicationStatus, Dropdown, User } from '../../common/types';
 import { Questions } from '../../common/questions';
 

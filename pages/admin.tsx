@@ -3,8 +3,6 @@ import Applicants from '../components/admin-tabs/Applicants';
 import PortalSettings from '../components/admin-tabs/PortalSettings';
 import Stats from '../components/admin-tabs/Stats';
 import { PageLayout } from '../components/Layout';
-import { GetServerSideProps } from 'next';
-import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect';
 import { Tabs } from 'antd';
 import { ADMIN_TABS } from '../common/constants';
 

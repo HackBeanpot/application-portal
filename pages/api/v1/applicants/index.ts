@@ -22,7 +22,6 @@ const handler: NextApiHandler = async (req, res) => {
 
 const getHandler: NextApiHandler = async (req, res) => {
   const params = req.query;
-  console.log(params);
 
   // assume page is 1 indexed, handle errors later
   const page = Number(params?.page ?? 1);
@@ -30,7 +29,6 @@ const getHandler: NextApiHandler = async (req, res) => {
   const filters = parseFilters(params?.filters);
   const sort = parseSort(params?.sorter);
 
-  console.log(filters);
   const { userDataCollection } = await connectToDatabase();
   const data = userDataCollection
     .find()
