@@ -10,6 +10,7 @@ export default protect(function handler(
     // get all the users
     // in the future, we probably want pagination on this (there will be 100+ applicants lol)
     case 'GET':
+      console.log(req.url);
       return res.status(200).json([EXAMPLE_USER]);
     default:
       // only allow post on the /api/v1/applicants/:id route (for updating)

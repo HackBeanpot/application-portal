@@ -36,7 +36,7 @@ export const updateApplicantResponses = (
 ): Promise<AxiosResponse<string | null>> =>
   Axios.post(`/api/v1/registration`, responses, { validateStatus: () => true });
 
-export function getAllApplicants() {
+export function getAllApplicants(url: string) {
   return Axios.get<Array<User>>(`/api/v1/applicants`);
 }
 
