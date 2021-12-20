@@ -54,6 +54,7 @@ export async function connectToDatabase(): Promise<MongoCtx> {
     cached.promise = new MongoClient(MONGODB_URI).connect().then((client) => {
       const db = client.db(MONGODB_DB);
       const userDataCollection = db.collection<User>('applicant_data');
+
       const singletonDataCollection =
         db.collection<SingletonDefinition>('singleton_data');
       const teamDataCollection = db.collection<Team>('teams');

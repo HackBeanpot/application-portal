@@ -45,15 +45,20 @@ interface StatsType {
 }
 
 const manipulateData = (stats: any) => {
-  const data: StatsType[] = Object.keys(stats).map((k: string, index) => {
-    return { key: index.toString(), name: k, value: stats[k] };
-  });
+  let data: StatsType[] = [];
+  if (stats != null) {
+    data = Object.keys(stats).map((k: string, index) => {
+      return { key: index.toString(), name: k, value: stats[k] };
+    });
+  } else {
+    data = [];
+  }
+
   return data;
 };
 
 const Stats = () => {
   const { data: stats } = useSWR('/api/v1/stats', getStats);
-  console.log(`here are the stats: ${stats}`);
   return (
     <div>
       <h3>{ADMIN_TABS.VIEW_STATS}</h3>
