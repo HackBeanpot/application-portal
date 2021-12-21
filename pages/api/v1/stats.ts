@@ -29,11 +29,29 @@ const getStats: NextApiHandler = async (
     .toArray();
 
   const shirtData = await userDataCollection
-    .aggregate([{ $group: { _id: '$shirtSize', count: { $sum: 1 } } }])
+    .aggregate([
+      {
+        $group: {
+          _id: {
+            $arrayElemAt: ['$responses', 11],
+          },
+          count: { $sum: 1 },
+        },
+      },
+    ])
     .toArray();
 
   const yearData = await userDataCollection
-    .aggregate([{ $group: { _id: '$yearOfEducation', count: { $sum: 1 } } }])
+    .aggregate([
+      {
+        $group: {
+          _id: {
+            $arrayElemAt: ['$responses', 7],
+          },
+          count: { $sum: 1 },
+        },
+      },
+    ])
     .toArray();
 
   const resData = convertData(
