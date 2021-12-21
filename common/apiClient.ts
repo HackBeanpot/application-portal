@@ -61,6 +61,10 @@ export function getAllApplicants(
   });
 }
 
+export function getStats() {
+  return Axios.get('/api/v1/stats');
+}
+
 export function getStatus(): Promise<AxiosResponse<StatusApiResponse>> {
   return Axios.get(`/api/v1/status`);
 }

@@ -1,4 +1,3 @@
-import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import { ReactNode } from 'react';
 
 export interface User {
