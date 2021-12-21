@@ -10,14 +10,11 @@ import { PageLayout } from '../components/Layout';
 import { Button, Input, Alert, Card } from 'antd';
 
 const Team = (): ReactElement => {
-  const { data: user, mutate } = useSWR('/api/v1/user', getUser);
+  const { data: user, mutate: mutateUser } = useSWR('/api/v1/user', getUser);
 
   const userInfo = user?.data;
   const currentTeamName = userInfo?.teamName;
-  const { data: team, mutate: mutateTeam } = useSWR(
-    ['/api/v1/team', userInfo?.teamName],
-    (_url, teamName) => getTeamInfo(teamName ?? null)
-  );
+  const { data: team, mutate: mutateTeam } = useSWR(['/api/v1/team', userInfo?.teamName], getTeamInfo)
 
   const [teamName, setTeamName] = useState<string>('');
   const [isTeamInputOpen, setIsTeamInputOpen] = useState(false);
@@ -59,6 +56,7 @@ const Team = (): ReactElement => {
                         placeholder="Team Name"
                         value={teamName}
                         onChange={(e) => setTeamName(e.target.value)}
+                        disabled={isUpdating}
                       />
                       <Button
                         type="primary"
@@ -66,8 +64,8 @@ const Team = (): ReactElement => {
                         disabled={teamName === ''}
                         onClick={async () => {
                           setIsUpdating(true);
-                          await updateTeamInfo(teamName, userInfo.email);
-                          await mutate();
+                          await updateTeamInfo(teamName);
+                          await mutateUser();
                           setTeamName('');
                           setIsUpdating(false);
                         }}
@@ -114,9 +112,8 @@ const Team = (): ReactElement => {
                     onClick={async () => {
                       setIsUpdating(true);
                       setIsTeamInputOpen(false);
-                      await deleteTeamInfo(currentTeamName, userInfo.email);
-                      await mutate();
-                      await mutateTeam();
+                      await deleteTeamInfo();
+                      await Promise.all([mutateUser(), mutateTeam()]);
                       setIsUpdating(false);
                     }}
                   >

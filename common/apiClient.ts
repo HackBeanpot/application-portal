@@ -103,31 +103,16 @@ export function updateRegistrationOpen(
   return Axios.post(`/api/v1/dates/registration-open`, { date });
 }
 
-export function getTeamInfo(
-  teamName: string | null
-): Promise<AxiosResponse<TeamApiResponse>> {
-  return Axios.get(`/api/v1/team`, {
-    params: {
-      teamName,
-    },
-  });
+export function getTeamInfo(): Promise<AxiosResponse<TeamApiResponse | null>> {
+  return Axios.get(`/api/v1/team`);
 }
 
 export function updateTeamInfo(
-  teamName: string,
-  email: string
+  teamName: string
 ): Promise<AxiosResponse<undefined>> {
-  return Axios.post(`/api/v1/team`, { teamName, email });
+  return Axios.post(`/api/v1/team`, { teamName });
 }
 
-export function deleteTeamInfo(
-  teamName: string,
-  email: string
-): Promise<AxiosResponse<undefined>> {
-  return Axios.delete(`/api/v1/team`, {
-    data: {
-      teamName,
-      email,
-    },
-  });
+export function deleteTeamInfo(): Promise<AxiosResponse<undefined>> {
+  return Axios.delete(`/api/v1/team`);
 }
