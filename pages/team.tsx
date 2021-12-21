@@ -16,7 +16,7 @@ const Team = (): ReactElement => {
   const currentTeamName = userInfo?.teamName;
   const { data: team, mutate: mutateTeam } = useSWR(
     ['/api/v1/team', userInfo?.teamName],
-    (_url, teamName) => getTeamInfo(teamName)
+    (_url, teamName) => getTeamInfo(teamName ?? null)
   );
 
   const [teamName, setTeamName] = useState<string>('');
