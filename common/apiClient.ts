@@ -7,6 +7,8 @@ import {
   RegistrationApiResponse,
 } from './types';
 import Axios, { AxiosResponse } from 'axios';
+import { TablePaginationConfig } from 'antd';
+import { TableFilters, TableSorter } from '../components/admin-tabs/Applicants';
 
 export function getAdminById(id: number) {
   return Axios.get<User>(`/api/v1/admin/${id}`);
@@ -36,8 +38,31 @@ export const updateApplicantResponses = (
 ): Promise<AxiosResponse<string | null>> =>
   Axios.post(`/api/v1/registration`, responses, { validateStatus: () => true });
 
-export function getAllApplicants() {
-  return Axios.get<Array<User>>(`/api/v1/applicants`);
+type ApplicantsApiResponse = {
+  data: Array<User>;
+  totalCount: number;
+  page: number;
+  pageSize: number;
+};
+
+export function getAllApplicants(
+  url: string,
+  pagination: TablePaginationConfig,
+  filters: TableFilters,
+  sorter: TableSorter
+) {
+  return Axios.get<ApplicantsApiResponse>(`/api/v1/applicants`, {
+    params: {
+      page: pagination.current,
+      pageSize: pagination.pageSize,
+      filters,
+      sorter,
+    },
+  });
+}
+
+export function getStats() {
+  return Axios.get('/api/v1/stats');
 }
 
 export function getStatus(): Promise<AxiosResponse<StatusApiResponse>> {
@@ -78,31 +103,16 @@ export function updateRegistrationOpen(
   return Axios.post(`/api/v1/dates/registration-open`, { date });
 }
 
-export function getTeamInfo(
-  teamName: string | null
-): Promise<AxiosResponse<TeamApiResponse>> {
-  return Axios.get(`/api/v1/team`, {
-    params: {
-      teamName,
-    },
-  });
+export function getTeamInfo(): Promise<AxiosResponse<TeamApiResponse | null>> {
+  return Axios.get(`/api/v1/team`);
 }
 
 export function updateTeamInfo(
-  teamName: string,
-  email: string
+  teamName: string
 ): Promise<AxiosResponse<undefined>> {
-  return Axios.post(`/api/v1/team`, { teamName, email });
+  return Axios.post(`/api/v1/team`, { teamName });
 }
 
-export function deleteTeamInfo(
-  teamName: string,
-  email: string
-): Promise<AxiosResponse<undefined>> {
-  return Axios.delete(`/api/v1/team`, {
-    data: {
-      teamName,
-      email,
-    },
-  });
+export function deleteTeamInfo(): Promise<AxiosResponse<undefined>> {
+  return Axios.delete(`/api/v1/team`);
 }
