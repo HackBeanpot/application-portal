@@ -101,8 +101,7 @@ const convertData = (
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     collections[ind].forEach((category: { _id: string; count: number }) => {
-      const id = category._id ? category._id : `Unknown ${c}`;
-      resData[id] = category.count;
+      resData[category._id] = category.count;
     });
   });
 
