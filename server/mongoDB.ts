@@ -1,20 +1,25 @@
 import { MongoClient, Db, Collection } from 'mongodb';
 import { SingletonDefinition, Team, User } from '../common/types';
 
-const MONGODB_URI = process.env.DATABASE_URL || '';
-const MONGODB_DB = process.env.MONGODB_DB || '';
+const retrieveEnvVarChecked = (s: string) => {
+  const envVar = process.env[s] || '';
+  if (envVar === '') {
+    throw new Error(`Add this variable inside .env: ${s}`);
+  }
+  return envVar;
+};
 
-if (MONGODB_URI === '') {
-  throw new Error(
-    'Please define the MONGODB_URI environment variable inside .env.local'
-  );
-}
-
-if (MONGODB_DB === '') {
-  throw new Error(
-    'Please define the MONGODB_DB environment variable inside .env.local'
-  );
-}
+const dbName = retrieveEnvVarChecked('MONGO_SERVER_DBNAME');
+const connectionString = (() => {
+  const connStr = process.env.MONGO_PROD_CONNECTION_STRING;
+  if (connStr) {
+    return connStr;
+  }
+  const port = retrieveEnvVarChecked('MONGO_DEV_PORT');
+  const username = retrieveEnvVarChecked('MONGO_DEV_USERNAME');
+  const password = retrieveEnvVarChecked('MONGO_DEV_PASSWORD');
+  return `mongodb://${username}:${password}@localhost:${port}`;
+})();
 
 /**
  * Global is used here to maintain a cached connection across hot reloads
@@ -51,21 +56,23 @@ export async function connectToDatabase(): Promise<MongoCtx> {
 
   // instantiate to a promise resolved with the context
   if (!cached.promise) {
-    cached.promise = new MongoClient(MONGODB_URI).connect().then((client) => {
-      const db = client.db(MONGODB_DB);
-      const userDataCollection = db.collection<User>('applicant_data');
+    cached.promise = new MongoClient(connectionString)
+      .connect()
+      .then((client) => {
+        const db = client.db(dbName);
+        const userDataCollection = db.collection<User>('applicant_data');
 
-      const singletonDataCollection =
-        db.collection<SingletonDefinition>('singleton_data');
-      const teamDataCollection = db.collection<Team>('teams');
-      return {
-        client,
-        db,
-        userDataCollection,
-        singletonDataCollection,
-        teamDataCollection,
-      };
-    });
+        const singletonDataCollection =
+          db.collection<SingletonDefinition>('singleton_data');
+        const teamDataCollection = db.collection<Team>('teams');
+        return {
+          client,
+          db,
+          userDataCollection,
+          singletonDataCollection,
+          teamDataCollection,
+        };
+      });
   }
 
   // after connection is resolved, set the connection & return

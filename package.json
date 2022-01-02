@@ -4,6 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:db:up": "docker-compose -p application-portal -f infrastructure/dev/docker-compose.yaml --env-file .env up -d",
+    "dev:db:down": "docker-compose -p application-portal -f infrastructure/dev/docker-compose.yaml down",
+    "dev:db:reset": "echo delete the ./infrastructure/dev/mongo-data directory manually",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
