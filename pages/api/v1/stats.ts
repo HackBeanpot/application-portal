@@ -41,6 +41,15 @@ const getStats: NextApiHandler = async (
     ])
     .toArray();
 
+  const ABBV_SHIRT_SIZE = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'Unknown'];
+  const orderedShirtData = ABBV_SHIRT_SIZE.map((size: string) => {
+    return {
+      _id: `T-shirt ${size}`,
+      count: shirtData.find((e) => e._id === (size === 'Unknown' ? null : size))
+        ?.count,
+    };
+  });
+
   const yearData = await userDataCollection
     .aggregate([
       {
@@ -54,9 +63,26 @@ const getStats: NextApiHandler = async (
     ])
     .toArray();
 
+  const ABBV_YEAR = [
+    '1st year',
+    '2nd year',
+    '3rd year',
+    '4th year',
+    '5th year+',
+    'Unknown year',
+  ];
+  const orderedYearData = ABBV_YEAR.map((year: string) => {
+    return {
+      _id: `${year}`,
+      count: yearData.find(
+        (e) => e._id === (year === 'Unknown year' ? null : year)
+      )?.count,
+    };
+  });
+
   const resData = convertData(
     ['status', 'shirt', 'year'],
-    [statusData, shirtData, yearData],
+    [statusData, orderedShirtData, orderedYearData],
     {}
   );
 
@@ -75,8 +101,7 @@ const convertData = (
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     collections[ind].forEach((category: { _id: string; count: number }) => {
-      const id = category._id ? category._id : `Unknown ${c}`;
-      resData[id] = category.count;
+      resData[category._id] = category.count;
     });
   });
 
