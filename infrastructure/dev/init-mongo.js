@@ -1,16 +1,11 @@
 // API reference:
 // https://docs.mongodb.com/mongodb-shell/
 // had trouble finding good docs, so a lot of writing this was trial and error.
-// for development, don't run docker in detached mode (remove the -d from dev:db:up).
-// if you see the process restart (or a js error), something broke.
+// for development, don't run docker in detached mode (remove the -d from dev:db:up in package.json).
 
 // https://stackoverflow.com/questions/39444467/how-to-pass-environment-variable-to-mongo-script
 // backwards compatibility note: _getEnv is not part of official API,
 // so double-check this still works when upgrading:
-const SERVER_NEXTAUTH_VERIFICATION_TOKEN = _getEnv(
-  'SERVER_NEXTAUTH_VERIFICATION_TOKEN'
-);
-const TESTING_USER_EMAIL = _getEnv('TESTING_USER_EMAIL');
 const MONGO_SERVER_DBNAME = _getEnv('MONGO_SERVER_DBNAME');
 
 // maybe later, change the name to something not camel cased
@@ -29,18 +24,3 @@ applicationPortal.singleton_data.insertMany([
   { type: 'registration-closed', value: '2022-01-15T04:59:59.000Z' },
   { type: 'confirm-by', value: '2022-01-22T23:59:59.000Z' },
 ]);
-
-// create a sample applicant
-applicationPortal.applicant_data.insertOne({
-  email: TESTING_USER_EMAIL,
-  applicationStatus: 'Incomplete',
-  isAdmin: true,
-  rsvpStatus: 'Unconfirmed',
-});
-
-// initialize auth stuff
-authDb.verification_tokens.insertOne({
-  identifier: TESTING_USER_EMAIL,
-  token: SERVER_NEXTAUTH_VERIFICATION_TOKEN,
-  expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-});

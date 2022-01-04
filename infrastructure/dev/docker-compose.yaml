@@ -13,9 +13,6 @@ services:
       # admin user created in the "admin" database
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_DEV_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_DEV_PASSWORD}
-      # credentials to create user for testing, used in init-mongo.js script
-      - SERVER_NEXTAUTH_VERIFICATION_TOKEN=${SERVER_NEXTAUTH_VERIFICATION_TOKEN}
-      - TESTING_USER_EMAIL=${TESTING_USER_EMAIL}
       - MONGO_SERVER_DBNAME=${MONGO_SERVER_DBNAME}
     healthcheck:
       # check with admin user against admin db
