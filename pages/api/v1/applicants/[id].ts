@@ -1,6 +1,6 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse, NextApiHandler } from 'next';
 import { EXAMPLE_USER } from '../../../../common/constants';
-import { protect } from '../../../../server/protect';
+import { isAdmin, protect } from '../../../../server/protect';
 
 export default protect(function handler(
   req: NextApiRequest,
@@ -12,8 +12,17 @@ export default protect(function handler(
       return res.status(200).json(EXAMPLE_USER);
     // update a single applicant
     case 'POST':
-      return res.status(201).send(undefined);
+      await postApplicant(req, res);
+      break;
     default:
       return res.status(405).setHeader('Allow', 'GET, POST').send(undefined);
   }
 });
+
+const postApplicant: NextApiHandler = async (req, res) => {
+  const admin = await isAdmin(req);
+  if (!admin) {
+    return res.status(401).send({ message: 'User is not an admin' });
+  }
+
+}

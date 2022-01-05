@@ -17,7 +17,7 @@ const Admin = (): ReactElement => {
           <Tabs.TabPane tab={ADMIN_TABS.CONFIGURE_PORTAL_SETTINGS} key="2">
             <PortalSettings />
           </Tabs.TabPane>
-          <Tabs.TabPane tab={ADMIN_TABS.VIEW_STATS} key="3">
+          <Tabs.TabPane tab={ADMIN_TABS.VIEW_AND_MODIFY_APPLICANTS} key="3">
             <Applicants />
           </Tabs.TabPane>
         </Tabs>
