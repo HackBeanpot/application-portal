@@ -27,7 +27,11 @@ jobs:
           wait-on: "http://localhost:3000"
           browser: chrome
           # command-prefix: "yarn run percy exec"
-        # env:
+        env:
+          EMAIL_SERVER_USER: ${{ secrets.EMAIL_SERVER_USER }}
+          EMAIL_SERVER_PASSWORD: ${{ secrets.EMAIL_SERVER_PASSWORD }}
+          EMAIL_SERVER_HOST: ${{ secrets.EMAIL_SERVER_HOST }}
+          EMAIL_SERVER_PORT: ${{ secrets.EMAIL_SERVER_PORT }}
           # CYPRESS_USE_LIVE_API: true
           # CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           # PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
