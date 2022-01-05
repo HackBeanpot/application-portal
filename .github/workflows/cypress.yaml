@@ -23,7 +23,6 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          record: ${{ github.event_name == 'pull_request' }}
           start: yarn start
           wait-on: "http://localhost:3000"
           browser: chrome
