@@ -1,0 +1,54 @@
+name: Cypress
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main, production ]
+
+jobs:
+  cypress-tests:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Install
+        uses: bahmutov/npm-install@v1
+      - run: cp .env.example .env
+      - name: Start Containers
+        run: yarn dev:db:up
+      - name: Build
+        run: yarn build
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          # record: ${{ github.event_name == 'pull_request' }}
+          start: yarn start
+          wait-on: "http://localhost:3000"
+          browser: chrome
+          # command-prefix: "yarn run percy exec"
+#        env:
+#          MONGO_SERVER_DBNAME: application-portal
+#          MONGO_DEV_PORT: 27017
+#          MONGO_DEV_USERNAME: admin
+#          MONGO_DEV_PASSWORD: password
+          # CYPRESS_USE_LIVE_API: true
+          # CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          # PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
+          # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # after the test run completes
+      # store videos and any screenshots
+      # NOTE: screenshots will be generated only if E2E test failed
+      # thus we store screenshots only on failures
+#      - uses: actions/upload-artifact@v1
+#        if: failure()
+#        with:
+#          name: cypress-screenshots
+#          path: cypress/screenshots
+#      # Test run video was always captured, so this action uses "always()" condition
+#      - uses: actions/upload-artifact@v1
+#        if: always()
+#        with:
+#          name: cypress-videos
+#          path: cypress/videos
