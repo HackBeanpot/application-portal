@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: Install
         uses: bahmutov/npm-install@v1
       - run: cp .env.example .env
@@ -44,7 +44,7 @@ jobs:
         with:
           name: cypress-screenshots
           path: cypress/screenshots
-      # Test run video was always captured, so this action uses "always()" condition
+      # Test run video was always captured, so always upload
       - name: Upload Videos
         uses: actions/upload-artifact@v2
         with:
