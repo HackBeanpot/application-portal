@@ -1,6 +1,7 @@
 Welcome!
 
-Thanks for helping to contribute to Hackbeanpot's application portal! Here's a quick guide to start developing locally.
+Thanks for helping to contribute to HackBeanpot's application portal! Here's a
+quick guide to start developing locally.
 
 # Prerequisites:
 
