@@ -2,10 +2,9 @@ import React, { useContext, useState, useEffect, useRef } from 'react';
 import { ADMIN_TABS } from '../../common/constants';
 import { getAllApplicants } from '../../common/apiClient';
 import useSWR from 'swr';
-import { Table, TablePaginationConfig, TableProps } from 'antd';
-import { ApplicationStatus, Dropdown, User, RSVPStatus } from '../../common/types';
+import { Table, TablePaginationConfig, TableProps, Menu, Form, Dropdown } from 'antd';
+import { ApplicationStatus, Dropdown as DropDown, User, RSVPStatus } from '../../common/types';
 import { Questions } from '../../common/questions';
-import { Input, Button, Popconfirm, Form } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 
 const EditableContext = React.createContext<FormInstance<any> | null>(null);
@@ -48,12 +47,12 @@ const EditableCell: React.FC<EditableCellProps> = ({
   ...restProps
 }) => {
   const [editing, setEditing] = useState(false);
-  const inputRef = useRef<Input>(null);
+  const dropdownRef = useRef<typeof Dropdown>(null);
   const form = useContext(EditableContext)!;
 
   useEffect(() => {
     if (editing) {
-      inputRef.current!.focus();
+      dropdownRef.current!.focus();
     }
   }, [editing]);
 
@@ -65,7 +64,6 @@ const EditableCell: React.FC<EditableCellProps> = ({
   const save = async () => {
     try {
       const values = await form.validateFields();
-
       toggleEdit();
       handleSave({ ...record, ...values });
     } catch (errInfo) {
@@ -87,7 +85,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
           },
         ]}
       >
-        <Input ref={inputRef} onPressEnter={save} onBlur={save} />
+        <Dropdown overlay={menu} />
       </Form.Item>
     ) : (
       <div className="editable-cell-value-wrap" style={{ paddingRight: 24 }} onClick={toggleEdit}>
@@ -113,9 +111,25 @@ interface EditableTableState {
   count: number;
 }
 
-type ColumnTypes = Exclude<EditableTableProps['columns'], undefined>;
-
-
+const menu = (
+  <Menu>
+    <Menu.Item>
+      <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+        1st menu item
+      </a>
+    </Menu.Item>
+    <Menu.Item>
+    <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+        2nd menu item
+      </a>
+    </Menu.Item>
+    <Menu.Item>
+    <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+        34d menu item
+      </a>
+    </Menu.Item>
+  </Menu>
+);
 
 // table columns: name, email, school, application status
 let columns = [
@@ -134,7 +148,7 @@ let columns = [
   {
     title: 'School',
     dataIndex: ['responses', '4'],
-    filters: (Questions[4] as Dropdown).options.map(({ name }) => ({
+    filters: (Questions[4] as DropDown).options.map(({ name }) => ({
       text: name,
       value: name,
     })),
@@ -159,7 +173,7 @@ let columns = [
   {
     title: 'Year',
     dataIndex: ['responses', '7'],
-    filters: (Questions[7] as Dropdown).options.map(({ name }) => ({
+    filters: (Questions[7] as DropDown).options.map(({ name }) => ({
       text: name,
       value: name,
     })),
