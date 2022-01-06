@@ -1,22 +1,135 @@
-import React, { useState } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { ADMIN_TABS } from '../../common/constants';
 import { getAllApplicants } from '../../common/apiClient';
 import useSWR from 'swr';
 import { Table, TablePaginationConfig, TableProps } from 'antd';
 import { ApplicationStatus, Dropdown, User, RSVPStatus } from '../../common/types';
 import { Questions } from '../../common/questions';
+import { Input, Button, Popconfirm, Form } from 'antd';
+import { FormInstance } from 'antd/lib/form';
+
+const EditableContext = React.createContext<FormInstance<any> | null>(null);
+
+interface Item {
+  status: String
+}
+
+interface EditableRowProps {
+  index: number;
+}
+
+const EditableRow: React.FC<EditableRowProps> = ({ index, ...props }) => {
+  const [form] = Form.useForm();
+  return (
+    <Form form={form} component={false}>
+      <EditableContext.Provider value={form}>
+        <tr {...props} />
+      </EditableContext.Provider>
+    </Form>
+  );
+};
+
+interface EditableCellProps {
+  title: React.ReactNode;
+  editable: boolean;
+  children: React.ReactNode;
+  dataIndex: string;
+  record: Item;
+  handleSave: (record: Item) => void;
+}
+
+const EditableCell: React.FC<EditableCellProps> = ({
+  title,
+  editable,
+  children,
+  dataIndex,
+  record,
+  handleSave,
+  ...restProps
+}) => {
+  const [editing, setEditing] = useState(false);
+  const inputRef = useRef<Input>(null);
+  const form = useContext(EditableContext)!;
+
+  useEffect(() => {
+    if (editing) {
+      inputRef.current!.focus();
+    }
+  }, [editing]);
+
+  const toggleEdit = () => {
+    setEditing(!editing);
+    form.setFieldsValue({ [dataIndex]: record[dataIndex] });
+  };
+
+  const save = async () => {
+    try {
+      const values = await form.validateFields();
+
+      toggleEdit();
+      handleSave({ ...record, ...values });
+    } catch (errInfo) {
+      console.log('Save failed:', errInfo);
+    }
+  };
+
+  let childNode = children;
+
+  if (editable) {
+    childNode = editing ? (
+      <Form.Item
+        style={{ margin: 0 }}
+        name={dataIndex}
+        rules={[
+          {
+            required: true,
+            message: `${title} is required.`,
+          },
+        ]}
+      >
+        <Input ref={inputRef} onPressEnter={save} onBlur={save} />
+      </Form.Item>
+    ) : (
+      <div className="editable-cell-value-wrap" style={{ paddingRight: 24 }} onClick={toggleEdit}>
+        {children}
+      </div>
+    );
+  }
+
+  return <td {...restProps}>{childNode}</td>;
+};
+
+type EditableTableProps = Parameters<typeof Table>[0];
+
+interface DataType {
+  key: React.Key;
+  name: string;
+  age: string;
+  address: string;
+}
+
+interface EditableTableState {
+  dataSource: DataType[];
+  count: number;
+}
+
+type ColumnTypes = Exclude<EditableTableProps['columns'], undefined>;
+
+
 
 // table columns: name, email, school, application status
-const columns = [
+let columns = [
   {
     title: 'Name',
     dataIndex: ['responses', '0'],
     sorter: true,
+    editable: false
   },
   {
     title: 'Email',
     dataIndex: 'email',
-    sorter: true
+    sorter: true,
+    editable: false
   },
   {
     title: 'School',
@@ -30,7 +143,8 @@ const columns = [
       (record.responses[4] === 'Other'
         ? record.responses[5]
         : record.responses[4]),
-    sorter: true
+    sorter: true,
+    editable: false
   },
   {
     title: 'Application Status',
@@ -39,7 +153,8 @@ const columns = [
       text: value,
       value,
     })),
-    sorter: true
+    sorter: true,
+    editable: true
   },
   {
     title: 'Year',
@@ -48,7 +163,8 @@ const columns = [
       text: name,
       value: name,
     })),
-    sorter: true
+    sorter: true,
+    editable: false
   },
   {
     title: 'Rsvp Status',
@@ -57,7 +173,8 @@ const columns = [
       text: value,
       value,
     })),
-    sorter: true
+    sorter: true,
+    editable: true
   },
 ];
 
@@ -87,12 +204,36 @@ const Applicants: React.FC = () => {
     setFilters(filters);
   };
 
+  const components = {
+    body: {
+      row: EditableRow,
+      cell: EditableCell,
+    },
+  };
+
+  columns = columns.map(col => {
+    if (!col.editable) {
+      return col;
+    }
+    return {
+      ...col,
+      onCell: (record: DataType) => ({
+        record,
+        editable: col.editable,
+        dataIndex: col.dataIndex,
+        title: col.title,
+       // handleSave: this.handleSave,
+      }),
+    };
+  });
+
   return (
     <div className={"applicants"}>
       <h3>{ADMIN_TABS.VIEW_AND_MODIFY_APPLICANTS}</h3>
       <Table
         size={"small"}
         className={"applicants"}
+        components={components}
         columns={columns}
         rowKey={(record) => record.email}
         dataSource={data?.data.data ?? []}
