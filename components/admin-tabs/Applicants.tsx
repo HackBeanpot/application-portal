@@ -3,7 +3,7 @@ import { ADMIN_TABS } from '../../common/constants';
 import { getAllApplicants } from '../../common/apiClient';
 import useSWR from 'swr';
 import { Table, TablePaginationConfig, TableProps } from 'antd';
-import { ApplicationStatus, Dropdown, User } from '../../common/types';
+import { ApplicationStatus, Dropdown, User, RSVPStatus } from '../../common/types';
 import { Questions } from '../../common/questions';
 
 // table columns: name, email, school, application status
@@ -47,6 +47,15 @@ const columns = [
     filters: (Questions[7] as Dropdown).options.map(({ name }) => ({
       text: name,
       value: name,
+    })),
+    sorter: true
+  },
+  {
+    title: 'Rsvp Status',
+    dataIndex: 'rsvpStatus',
+    filters: Object.values(RSVPStatus).map((value) => ({
+      text: value,
+      value,
     })),
     sorter: true
   },
