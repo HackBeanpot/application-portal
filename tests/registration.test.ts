@@ -1,21 +1,13 @@
+import { describe, expect, test } from '@jest/globals';
 import {
   convertCheckboxesToJoiSchema,
   convertDropdownToJoiSchema,
   convertLongTextToJoiSchema,
   makeQuestionResponseSchemas,
 } from '../server/validators';
-import {
-  Checkboxes,
-  Dropdown,
-  LongText,
-  QuestionType,
-  ShortText,
-} from '../common/types';
+import { Checkboxes, Dropdown, LongText, QuestionType, ShortText } from '../common/types';
 import Joi from 'joi';
-import {
-  isAfterRegistrationClosed,
-  isBeforeRegistrationOpens,
-} from '../common/dateUtils';
+import { isAfterRegistrationClosed, isBeforeRegistrationOpens } from '../common/dateUtils';
 
 // if you're running into the following error when running tests:
 // SyntaxError: Unexpected token '<'
@@ -28,8 +20,7 @@ const cb = (d?: Partial<Checkboxes>): Checkboxes => {
   const dfault: Checkboxes = {
     type: QuestionType.Checkboxes,
     id: '1',
-    content:
-      'Your top two most proficient languages. Select at least 1, but no more than 2.',
+    content: 'Your top two most proficient languages. Select at least 1, but no more than 2.',
     minNumber: 1,
     maxNumber: 2,
     options: ['English', 'Java', 'Typescript', 'Japanese'].map(n),
@@ -136,9 +127,7 @@ describe('registration endpoint schema tests', () => {
     it("doesn't throw when text length is ok", () => {
       expect(() => Joi.assert(ten, lts1)).not.toThrow();
       expect(() => Joi.assert(fifty, lts1)).not.toThrow();
-      expect(() =>
-        Joi.assert("some normal length that's in the middle", lts1)
-      ).not.toThrow();
+      expect(() => Joi.assert("some normal length that's in the middle", lts1)).not.toThrow();
     });
   });
 
