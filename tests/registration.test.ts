@@ -1,35 +1,22 @@
+import { describe, expect, test } from '@jest/globals';
 import {
   convertCheckboxesToJoiSchema,
   convertDropdownToJoiSchema,
   convertLongTextToJoiSchema,
   makeQuestionResponseSchemas,
 } from '../server/validators';
-import {
-  Checkboxes,
-  Dropdown,
-  LongText,
-  QuestionType,
-  ShortText,
-} from '../common/types';
+import { Checkboxes, Dropdown, LongText, QuestionType, ShortText } from '../common/types';
 import Joi from 'joi';
-import {
-  isAfterRegistrationClosed,
-  isBeforeRegistrationOpens,
-} from '../common/dateUtils';
-
-// if you're running into the following error when running tests:
-// SyntaxError: Unexpected token '<'
-// make sure "jsx" is set to "react" in tsconfig.json
-// nextjs automatically sets it to "preserve"
+import { isAfterRegistrationClosed, isBeforeRegistrationOpens } from '../common/dateUtils';
 
 // convenience constructors
 const n = (name: string) => ({ name });
 const cb = (d?: Partial<Checkboxes>): Checkboxes => {
   const dfault: Checkboxes = {
+    field: 'proficientLanguages',
     type: QuestionType.Checkboxes,
     id: '1',
-    content:
-      'Your top two most proficient languages. Select at least 1, but no more than 2.',
+    content: 'Your top two most proficient languages. Select at least 1, but no more than 2.',
     minNumber: 1,
     maxNumber: 2,
     options: ['English', 'Java', 'Typescript', 'Japanese'].map(n),
@@ -39,6 +26,7 @@ const cb = (d?: Partial<Checkboxes>): Checkboxes => {
 };
 const dd = (d?: Partial<Dropdown>): Dropdown => {
   const dfault: Dropdown = {
+    field: 'age',
     type: QuestionType.Dropdown,
     id: '1',
     content: 'How old are you?',
@@ -49,6 +37,7 @@ const dd = (d?: Partial<Dropdown>): Dropdown => {
 };
 const lt = (d?: Partial<LongText>): LongText => {
   const dfault: LongText = {
+    field: 'funFact',
     type: QuestionType.LongText,
     id: '1',
     content: 'Tell me something about yourself, in 10-50 characters.',
@@ -60,6 +49,7 @@ const lt = (d?: Partial<LongText>): LongText => {
 };
 const st = (d?: Partial<ShortText>): ShortText => {
   const dfault: ShortText = {
+    field: 'briefFunFact',
     type: QuestionType.ShortText,
     id: '1',
     content: 'Tell me your name, in 1-5 characters.',
@@ -136,9 +126,7 @@ describe('registration endpoint schema tests', () => {
     it("doesn't throw when text length is ok", () => {
       expect(() => Joi.assert(ten, lts1)).not.toThrow();
       expect(() => Joi.assert(fifty, lts1)).not.toThrow();
-      expect(() =>
-        Joi.assert("some normal length that's in the middle", lts1)
-      ).not.toThrow();
+      expect(() => Joi.assert("some normal length that's in the middle", lts1)).not.toThrow();
     });
   });
 

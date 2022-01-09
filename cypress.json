@@ -1,0 +1,11 @@
+{
+  "baseUrl": "http://localhost:3000",
+  "env": {
+    "test-server-nextauth-token": "43e33e7bbc44b212fd0d98fdb29b4d69781e2b7c3a1eb34485876c0e23a911c2",
+    "test-client-nextauth-token": "6bf453c88a2809be6159ab540145be4102a16288d08f18350ee7fcb9c8337adb",
+    "MONGO_SERVER_DBNAME": "application-portal",
+    "MONGO_DEV_PORT": "27017",
+    "MONGO_DEV_USERNAME": "admin",
+    "MONGO_DEV_PASSWORD": "password"
+  }
+}

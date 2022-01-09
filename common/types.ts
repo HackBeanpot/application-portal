@@ -33,10 +33,7 @@ export enum SingletonType {
 
 export interface DateSingleton {
   value: string;
-  type:
-    | SingletonType.RegistrationClosed
-    | SingletonType.RegistrationOpen
-    | SingletonType.ConfirmBy;
+  type: SingletonType.RegistrationClosed | SingletonType.RegistrationOpen | SingletonType.ConfirmBy;
 }
 
 export interface Team {
@@ -109,6 +106,7 @@ export type QuestionSection = {
 export type QuestionId = string;
 
 interface IQuestion {
+  field: string;
   content: ReactNode;
   id: QuestionId;
   required: boolean;
