@@ -80,6 +80,15 @@ const Applicants: React.FC = () => {
     setFilters(filters);
   };
 
+  const [exporting, setExporting] = useState(false);
+  const onExportClick = () => {
+    if (!data) {
+      return;
+    }
+    setExporting(true);
+    downloadFile(data.data.totalCount, filters, sorter).then(() => setExporting(false));
+  };
+
   return (
     <div className={'applicants'}>
       <div className="title-container">
@@ -88,8 +97,8 @@ const Applicants: React.FC = () => {
           <Button
             className="export-button"
             type="primary"
-            loading={!data}
-            onClick={() => data && downloadFile(data.data.totalCount, filters, sorter)}
+            loading={!data || exporting}
+            onClick={onExportClick}
           >
             Export All Data
           </Button>
@@ -116,15 +125,15 @@ const Applicants: React.FC = () => {
   );
 };
 
-const escaper = (s: string) => s && `"${s}"`;
+const escaper = (s: string) => `"${s.replaceAll('"', '""')}"`;
+const separator = ',';
+const fileName = 'applicants.csv';
 const downloadFile = async (totalCount: number, filters: TableFilters, sorter: TableSorter) => {
   const pagination: TablePaginationConfig = {
     current: 1,
     pageSize: totalCount,
   };
   const data = await getAllApplicants(pagination, filters, sorter);
-  const separator = ',';
-  const fileName = 'deezApplicants.csv';
   const rowHeadersText = [
     'email',
     'isAdmin',
@@ -161,6 +170,7 @@ const downloadFile = async (totalCount: number, filters: TableFilters, sorter: T
   const fileText = `${rowHeadersText}\n${rowCellsText}`;
   const blob = new Blob([fileText], { type: 'data:text/csv;charset=utf-8' });
   saveAs(blob, fileName);
+  return null;
 };
 
 export default Applicants;

@@ -15,8 +15,9 @@ describe('export applicants to tsv', () => {
     cy.contains('View / Modify Applicants').click({ force: true });
     // downloads the csv
     cy.contains('Export All Data').click({ force: true });
+    cy.contains('Export All Data').click({ force: true });
 
-    const filename = join(downloadsFolder, 'deezApplicants.csv');
+    const filename = join(downloadsFolder, 'applicants.csv');
     cy.readFile(filename, { timeout: 15000 }).should('have.length.gt', 50);
   });
 });
