@@ -9,11 +9,6 @@ import { Checkboxes, Dropdown, LongText, QuestionType, ShortText } from '../comm
 import Joi from 'joi';
 import { isAfterRegistrationClosed, isBeforeRegistrationOpens } from '../common/dateUtils';
 
-// if you're running into the following error when running tests:
-// SyntaxError: Unexpected token '<'
-// make sure "jsx" is set to "react" in tsconfig.json
-// nextjs automatically sets it to "preserve"
-
 // convenience constructors
 const n = (name: string) => ({ name });
 const cb = (d?: Partial<Checkboxes>): Checkboxes => {
