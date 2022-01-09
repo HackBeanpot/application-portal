@@ -12,13 +12,15 @@
     "lint": "next lint",
     "prepare": "husky install",
     "test:unit": "jest tests",
-    "test:integration": "cypress run"
+    "test:integration": "cypress run --browser chrome",
+    "test:dev": "cypress open"
   },
   "dependencies": {
     "@next-auth/mongodb-adapter": "0.0.2-next.281",
     "@rollbar/react": "^0.8.0",
     "antd": "^4.16.7",
     "axios": "^0.21.1",
+    "file-saver": "^2.0.5",
     "joi": "^17.4.2",
     "mongodb": "^4.1.2",
     "next": "^11.0.1",
@@ -31,6 +33,7 @@
     "swr": "^1.1.2-beta.0"
   },
   "devDependencies": {
+    "@types/file-saver": "^2.0.4",
     "@types/jest": "^27.0.1",
     "@types/nodemailer": "^6.4.4",
     "@types/react": "^17.0.13",
@@ -44,13 +47,11 @@
     "lint-staged": ">=10",
     "prettier": "^2.3.2",
     "ts-jest": "^27.0.7",
-    "tsc-files": "^1.1.2",
     "typescript": "^4.3.5"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --cache --fix",
-    "*.{js,jsx,ts,tsx,css,md}": "prettier --write",
-    "*.{ts,tsx}": "tsc-files --noEmit"
+    "*.{js,jsx,ts,tsx,css,md}": "prettier --write"
   },
   "jest": {
     "testEnvironment": "node",

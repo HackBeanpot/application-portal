@@ -9,11 +9,10 @@ import {
   updateRegistrationClosed,
   updateRegistrationOpen,
 } from '../../common/apiClient';
-import { Button, Col, DatePicker, Row } from 'antd';
-import { format } from '../dashboard/StatusDialogue';
+import { Col, Row } from 'antd';
 import PortalSettingsRow from './PortalSettingsRow';
 
-const PortalSettings = () => {
+const PortalSettings: React.FC = () => {
   const { data: confirmBy, mutate: mutateConfirmBy } = useSWR(
     '/api/v1/dates/confirm-by',
     getConfirmBy
@@ -26,12 +25,8 @@ const PortalSettings = () => {
     '/api/v1/dates/registration-open',
     getRegistrationOpen
   );
-  const [myRegistrationOpen, setMyRegistrationOpen] = useState<
-    string | undefined
-  >(undefined);
-  const [myRegistrationClosed, setMyRegistrationClosed] = useState<
-    string | undefined
-  >(undefined);
+  const [myRegistrationOpen, setMyRegistrationOpen] = useState<string | undefined>(undefined);
+  const [myRegistrationClosed, setMyRegistrationClosed] = useState<string | undefined>(undefined);
   const [myConfirmBy, setMyConfirmBy] = useState<string | undefined>(undefined);
 
   return (

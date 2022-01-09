@@ -22,16 +22,14 @@ export function getAllAdmins() {
   return Axios.get<Array<User>>(`/api/v1/admin`);
 }
 
-export const getUser = (): Promise<AxiosResponse<User>> =>
-  Axios.get(`/api/v1/user`);
+export const getUser = (): Promise<AxiosResponse<User>> => Axios.get(`/api/v1/user`);
 
 export function updateApplicantById(id: number, user: User) {
   Axios.post(`/api/v1/applicants/${id}`, user);
 }
 
-export const getApplicantResponses = (): Promise<
-  AxiosResponse<RegistrationApiResponse>
-> => Axios.get('/api/v1/registration');
+export const getApplicantResponses = (): Promise<AxiosResponse<RegistrationApiResponse>> =>
+  Axios.get('/api/v1/registration');
 
 export const updateApplicantResponses = (
   responses: RegistrationApiRequest
@@ -46,11 +44,10 @@ type ApplicantsApiResponse = {
 };
 
 export function getAllApplicants(
-  url: string,
   pagination: TablePaginationConfig,
   filters: TableFilters,
   sorter: TableSorter
-) {
+): Promise<AxiosResponse<ApplicantsApiResponse>> {
   return Axios.get<ApplicantsApiResponse>(`/api/v1/applicants`, {
     params: {
       page: pagination.current,
@@ -73,33 +70,23 @@ export function getConfirmBy(): Promise<AxiosResponse<DatesApiResponse>> {
   return Axios.get(`/api/v1/dates/confirm-by`);
 }
 
-export function updateConfirmBy(
-  date: string
-): Promise<AxiosResponse<DatesApiResponse>> {
+export function updateConfirmBy(date: string): Promise<AxiosResponse<DatesApiResponse>> {
   return Axios.post(`/api/v1/dates/confirm-by`, { date });
 }
 
-export function getRegistrationClosed(): Promise<
-  AxiosResponse<DatesApiResponse>
-> {
+export function getRegistrationClosed(): Promise<AxiosResponse<DatesApiResponse>> {
   return Axios.get(`/api/v1/dates/registration-closed`);
 }
 
-export function updateRegistrationClosed(
-  date: string
-): Promise<AxiosResponse<DatesApiResponse>> {
+export function updateRegistrationClosed(date: string): Promise<AxiosResponse<DatesApiResponse>> {
   return Axios.post(`/api/v1/dates/registration-closed`, { date });
 }
 
-export function getRegistrationOpen(): Promise<
-  AxiosResponse<DatesApiResponse>
-> {
+export function getRegistrationOpen(): Promise<AxiosResponse<DatesApiResponse>> {
   return Axios.get(`/api/v1/dates/registration-open`);
 }
 
-export function updateRegistrationOpen(
-  date: string
-): Promise<AxiosResponse<DatesApiResponse>> {
+export function updateRegistrationOpen(date: string): Promise<AxiosResponse<DatesApiResponse>> {
   return Axios.post(`/api/v1/dates/registration-open`, { date });
 }
 
@@ -107,9 +94,7 @@ export function getTeamInfo(): Promise<AxiosResponse<TeamApiResponse | null>> {
   return Axios.get(`/api/v1/team`);
 }
 
-export function updateTeamInfo(
-  teamName: string
-): Promise<AxiosResponse<undefined>> {
+export function updateTeamInfo(teamName: string): Promise<AxiosResponse<undefined>> {
   return Axios.post(`/api/v1/team`, { teamName });
 }
 
