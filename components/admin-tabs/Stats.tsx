@@ -2,7 +2,7 @@ import React from 'react';
 import { ADMIN_TABS } from '../../common/constants';
 import { Table } from 'antd';
 import useSWR from 'swr';
-import { getAllApplicants, getStats } from '../../common/apiClient';
+import { getStats } from '../../common/apiClient';
 
 const columns = [
   {
@@ -36,7 +36,7 @@ const manipulateData = (stats: any) => {
   return data;
 };
 
-const Stats = () => {
+const Stats: React.FC = () => {
   const { data: stats } = useSWR('/api/v1/stats', getStats);
   return (
     <div>
