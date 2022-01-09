@@ -5,7 +5,8 @@
   }
 
   .tabs {
-    overflow: visible !important;
+    z-index: 1000000;
+    //overflow: visible !important;
   }
 
   .applicants {
