@@ -18,7 +18,7 @@ export const createApplicantAndLogin = async (email: string): Promise<void> => {
   await createUserAndLogin({ email, isAdmin: false });
 };
 
-export const checkLoggedIn = () => {
+export const checkLoggedIn = (): void => {
   cy.get('header').should('contain', 'Application');
   cy.get('header').should('contain', 'Team');
 };
