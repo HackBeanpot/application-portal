@@ -1,3 +1,4 @@
+import { WithId } from 'mongodb';
 import { ReactNode } from 'react';
 
 export interface User {
@@ -7,7 +8,7 @@ export interface User {
   applicationStatus: ApplicationStatus;
   firstName?: string;
   lastName?: string;
-  id?: string;
+  _id?: string;
   gender?: Gender;
   school?: string;
   education?: Education;
@@ -156,3 +157,10 @@ export type StatusApiResponse = {
 export type TeamApiResponse = Team;
 
 export type DatesApiResponse = string;
+
+export type ApplicantsApiResponse = {
+  data: Array<User>;
+  totalCount: number;
+  page: number;
+  pageSize: number;
+};

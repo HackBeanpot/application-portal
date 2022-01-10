@@ -5,10 +5,12 @@ import {
   DatesApiResponse,
   TeamApiResponse,
   RegistrationApiResponse,
+  ApplicantsApiResponse
 } from './types';
 import Axios, { AxiosResponse } from 'axios';
 import { TablePaginationConfig } from 'antd';
 import { TableFilters, TableSorter } from '../components/admin-tabs/Applicants';
+import { WithId } from 'mongodb';
 
 export function getAdminById(id: number) {
   return Axios.get<User>(`/api/v1/admin/${id}`);
@@ -25,7 +27,7 @@ export function getAllAdmins() {
 export const getUser = (): Promise<AxiosResponse<User>> =>
   Axios.get(`/api/v1/user`);
 
-export function updateApplicantById(id: number, user: User) {
+export function updateApplicantById(id: string, user: User) {
   Axios.post(`/api/v1/applicants/${id}`, user);
 }
 
@@ -37,13 +39,6 @@ export const updateApplicantResponses = (
   responses: RegistrationApiRequest
 ): Promise<AxiosResponse<string | null>> =>
   Axios.post(`/api/v1/registration`, responses, { validateStatus: () => true });
-
-type ApplicantsApiResponse = {
-  data: Array<User>;
-  totalCount: number;
-  page: number;
-  pageSize: number;
-};
 
 export function getAllApplicants(
   url: string,
