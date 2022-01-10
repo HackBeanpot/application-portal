@@ -56,11 +56,13 @@ const EditableCell: React.FC<EditableCellProps> = ({
   const [editingApplicationStatus, setEditingApplicationStatus] = useState(false);
   const [editingRSVPStatus, setEditingRSVPStatus] = useState(false);
   const selectRef = useRef<typeof Select>(null);
-  const form = useContext(EditableContext)!;
 
   const toggleEditApplicationStatus = () => {
     setEditingApplicationStatus(!editingApplicationStatus);
-    form.setFieldsValue({ [dataIndex]: record[dataIndex] });
+  };
+
+  const toggleEditRsvpStatus = () => {
+    setEditingRSVPStatus(!editingRSVPStatus);
   };
 
   const changeApplicationStatus = async (status: SelectValue, record: User) => {
@@ -75,8 +77,8 @@ const EditableCell: React.FC<EditableCellProps> = ({
 
   let childNode = children;
 
-  if (dataIndex === 'applicationStatus' || 'rsvpStatus') {
-    childNode = editingApplicationStatus ? (
+  if (editable) {
+    childNode = editingApplicationStatus || editingRSVPStatus ? (
       <Form.Item
         style={{ margin: 0 }}
         name={dataIndex}
@@ -106,7 +108,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
       <div
         className="editable-cell-value-wrap"
         style={{ paddingRight: 24 }}
-        onClick={toggleEditApplicationStatus}
+        onClick={dataIndex === 'applicationStatus' ? toggleEditApplicationStatus : toggleEditRsvpStatus}
       >
         {children}
       </div>
