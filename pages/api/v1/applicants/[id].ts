@@ -20,7 +20,6 @@ const statusHandler: NextApiHandler = async (req, res) => {
 };
 
 const getApplicant: NextApiHandler = async (req, res) => {
-  //const userId = req.params.id;
   const { userDataCollection } = await connectToDatabase();
 }
 
@@ -31,14 +30,13 @@ const postApplicant: NextApiHandler = async (req, res) => {
   }
   const {_id, ...updatedUser} = req.body;
   const { userDataCollection } = await connectToDatabase();
-  console.log(updatedUser)
 
   await userDataCollection.replaceOne(
     { _id: new ObjectId(_id) },
       updatedUser
   );
 
-  return res.status(201).send('Successfully updated RSVP');
+  return res.status(201).send('Successfully updated application or rsvp status.');
 };
 
 export default protect(statusHandler);

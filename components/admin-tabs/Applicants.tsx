@@ -64,20 +64,42 @@ const EditableCell: React.FC<EditableCellProps> = ({
       placement: 'bottomRight',
       bottom: 50,
       duration: 3,
-      message: msg
+      message: msg,
     });
-  }
+  };
+
+  const errorNotify = (msg: String) => {
+    notification.error({
+      placement: 'bottomRight',
+      bottom: 50,
+      duration: 3,
+      message: msg,
+    });
+  };
 
   const changeApplicationStatus = async (status: SelectValue, record: User) => {
     const updatedUser = { ...record, applicationStatus: status as ApplicationStatus };
-    updateApplicantById(record._id ?? '', updatedUser);
-    notify('Successfully changed application status for ' + (record.responses ? record.responses[0] : 'user'))
+    try {
+      await updateApplicantById(record._id ?? '', updatedUser);
+      notify(
+        'Successfully changed application status for ' +
+          (record.responses ? record.responses[0] : 'user')
+      );
+    } catch (error) {
+      errorNotify('Request to change application status failed.');
+    }
   };
 
   const changeRsvpStatus = async (status: SelectValue, record: User) => {
     const updatedUser = { ...record, rsvpStatus: status as RSVPStatus };
-    updateApplicantById(record._id ?? '', updatedUser);
-    notify('Successfully changed RSVP status for ' + (record.responses ? record.responses[0] : 'user'))
+    try {
+      updateApplicantById(record._id ?? '', updatedUser);
+      notify(
+        'Successfully changed RSVP status for ' + (record.responses ? record.responses[0] : 'user')
+      );
+    } catch (error) {
+      errorNotify('Request to change application status failed.');
+    }
   };
 
   let childNode = children;
