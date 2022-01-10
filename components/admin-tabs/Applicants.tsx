@@ -1,18 +1,9 @@
-import React, {
-  useContext,
-  useState,
-  useRef
-} from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import { ADMIN_TABS } from '../../common/constants';
 import { getAllApplicants, updateApplicantById } from '../../common/apiClient';
 import useSWR from 'swr';
-import { Table, TablePaginationConfig, TableProps, Form, Select } from 'antd';
-import {
-  ApplicationStatus,
-  Dropdown as DropDown,
-  User,
-  RSVPStatus
-} from '../../common/types';
+import { Table, TablePaginationConfig, TableProps, Form, Select, notification } from 'antd';
+import { ApplicationStatus, Dropdown as DropDown, User, RSVPStatus } from '../../common/types';
 import { Questions } from '../../common/questions';
 import { FormInstance } from 'antd/lib/form';
 import { SelectValue } from 'antd/lib/select';
@@ -56,63 +47,80 @@ const EditableCell: React.FC<EditableCellProps> = ({
   const [editingApplicationStatus, setEditingApplicationStatus] = useState(false);
   const [editingRSVPStatus, setEditingRSVPStatus] = useState(false);
   const selectRef = useRef<typeof Select>(null);
+  const form = useContext(EditableContext)!;
 
   const toggleEditApplicationStatus = () => {
     setEditingApplicationStatus(!editingApplicationStatus);
+    form.setFieldsValue({ [dataIndex]: record[dataIndex] });
   };
 
   const toggleEditRsvpStatus = () => {
     setEditingRSVPStatus(!editingRSVPStatus);
+    form.setFieldsValue({ [dataIndex]: record[dataIndex] });
   };
+
+  const notify = (msg: String) => {
+    notification.success({
+      placement: 'bottomRight',
+      bottom: 50,
+      duration: 3,
+      message: msg
+    });
+  }
 
   const changeApplicationStatus = async (status: SelectValue, record: User) => {
     const updatedUser = { ...record, applicationStatus: status as ApplicationStatus };
     updateApplicantById(record._id ?? '', updatedUser);
+    notify('Successfully changed application status for ' + (record.responses ? record.responses[0] : 'user'))
   };
 
   const changeRsvpStatus = async (status: SelectValue, record: User) => {
     const updatedUser = { ...record, rsvpStatus: status as RSVPStatus };
     updateApplicantById(record._id ?? '', updatedUser);
+    notify('Successfully changed RSVP status for ' + (record.responses ? record.responses[0] : 'user'))
   };
 
   let childNode = children;
 
   if (editable) {
-    childNode = editingApplicationStatus || editingRSVPStatus ? (
-      <Form.Item
-        style={{ margin: 0 }}
-        name={dataIndex}
-        rules={[
-          {
-            required: true,
-            message: `${title} is required.`,
-          },
-        ]}
-      >
-        <Select
-          ref={selectRef}
-          onChange={(e) =>
-            dataIndex === 'applicationStatus'
-              ? changeApplicationStatus(e, record)
-              : changeRsvpStatus(e, record)
+    childNode =
+      editingApplicationStatus || editingRSVPStatus ? (
+        <Form.Item
+          style={{ margin: 0 }}
+          name={dataIndex}
+          rules={[
+            {
+              required: true,
+              message: `${title} is required.`,
+            },
+          ]}
+        >
+          <Select
+            ref={selectRef}
+            onChange={(e) =>
+              dataIndex === 'applicationStatus'
+                ? changeApplicationStatus(e, record)
+                : changeRsvpStatus(e, record)
+            }
+          >
+            {Object.values(dataIndex === 'applicationStatus' ? ApplicationStatus : RSVPStatus).map(
+              (status) => (
+                <Option value={status}>{status}</Option>
+              )
+            )}
+          </Select>
+        </Form.Item>
+      ) : (
+        <div
+          className="editable-cell-value-wrap"
+          style={{ paddingRight: 24 }}
+          onClick={
+            dataIndex === 'applicationStatus' ? toggleEditApplicationStatus : toggleEditRsvpStatus
           }
         >
-          {Object.values(dataIndex === 'applicationStatus' ? ApplicationStatus : RSVPStatus).map(
-            (status) => (
-              <Option value={status}>{status}</Option>
-            )
-          )}
-        </Select>
-      </Form.Item>
-    ) : (
-      <div
-        className="editable-cell-value-wrap"
-        style={{ paddingRight: 24 }}
-        onClick={dataIndex === 'applicationStatus' ? toggleEditApplicationStatus : toggleEditRsvpStatus}
-      >
-        {children}
-      </div>
-    );
+          {children}
+        </div>
+      );
   }
 
   return <td {...restProps}>{childNode}</td>;
