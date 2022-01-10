@@ -2,15 +2,16 @@ import React, { useContext, useState, useEffect, useRef } from 'react';
 import { ADMIN_TABS } from '../../common/constants';
 import { getAllApplicants } from '../../common/apiClient';
 import useSWR from 'swr';
-import { Table, TablePaginationConfig, TableProps, Menu, Form, Dropdown } from 'antd';
+import { Table, TablePaginationConfig, TableProps, Form, Select, } from 'antd';
 import { ApplicationStatus, Dropdown as DropDown, User, RSVPStatus } from '../../common/types';
 import { Questions } from '../../common/questions';
 import { FormInstance } from 'antd/lib/form';
 
+const { Option } = Select;
 const EditableContext = React.createContext<FormInstance<any> | null>(null);
 
 interface Item {
-  status: String
+  status: String;
 }
 
 interface EditableRowProps {
@@ -47,14 +48,14 @@ const EditableCell: React.FC<EditableCellProps> = ({
   ...restProps
 }) => {
   const [editing, setEditing] = useState(false);
-  const dropdownRef = useRef<typeof Dropdown>(null);
+  const dropdownRef = useRef<typeof Select>(null);
   const form = useContext(EditableContext)!;
 
-  useEffect(() => {
-    if (editing) {
-      dropdownRef.current!.focus();
-    }
-  }, [editing]);
+  // useEffect(() => {
+  //   if (editing) {
+  //     dropdownRef.current!.focus();
+  //   }
+  // }, [editing]);
 
   const toggleEdit = () => {
     setEditing(!editing);
@@ -85,7 +86,11 @@ const EditableCell: React.FC<EditableCellProps> = ({
           },
         ]}
       >
-        <Dropdown overlay={menu} />
+        <Select ref={dropdownRef}>
+          {Object.values(ApplicationStatus).map((status) => (
+            <Option value={status}>{status}</Option>
+          ))}
+        </Select>
       </Form.Item>
     ) : (
       <div className="editable-cell-value-wrap" style={{ paddingRight: 24 }} onClick={toggleEdit}>
@@ -111,39 +116,19 @@ interface EditableTableState {
   count: number;
 }
 
-const menu = (
-  <Menu>
-    <Menu.Item>
-      <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-        1st menu item
-      </a>
-    </Menu.Item>
-    <Menu.Item>
-    <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-        2nd menu item
-      </a>
-    </Menu.Item>
-    <Menu.Item>
-    <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-        34d menu item
-      </a>
-    </Menu.Item>
-  </Menu>
-);
-
 // table columns: name, email, school, application status
 let columns = [
   {
     title: 'Name',
     dataIndex: ['responses', '0'],
     sorter: true,
-    editable: false
+    editable: false,
   },
   {
     title: 'Email',
     dataIndex: 'email',
     sorter: true,
-    editable: false
+    editable: false,
   },
   {
     title: 'School',
@@ -154,11 +139,9 @@ let columns = [
     })),
     render: (text: any, record: User) =>
       record.responses &&
-      (record.responses[4] === 'Other'
-        ? record.responses[5]
-        : record.responses[4]),
+      (record.responses[4] === 'Other' ? record.responses[5] : record.responses[4]),
     sorter: true,
-    editable: false
+    editable: false,
   },
   {
     title: 'Application Status',
@@ -168,7 +151,7 @@ let columns = [
       value,
     })),
     sorter: true,
-    editable: true
+    editable: true,
   },
   {
     title: 'Year',
@@ -178,7 +161,7 @@ let columns = [
       value: name,
     })),
     sorter: true,
-    editable: false
+    editable: false,
   },
   {
     title: 'Rsvp Status',
@@ -188,7 +171,7 @@ let columns = [
       value,
     })),
     sorter: true,
-    editable: true
+    editable: true,
   },
 ];
 
@@ -203,16 +186,9 @@ const Applicants: React.FC = () => {
   });
   const [filters, setFilters] = useState<TableFilters>({});
   const [sorter, setSorter] = useState<TableSorter>({});
-  const { data } = useSWR(
-    [`/api/v1/applicants`, pagination, filters, sorter],
-    getAllApplicants
-  );
+  const { data } = useSWR([`/api/v1/applicants`, pagination, filters, sorter], getAllApplicants);
 
-  const onChange: TableProps<User>['onChange'] = (
-    pagination,
-    filters,
-    sorter
-  ) => {
+  const onChange: TableProps<User>['onChange'] = (pagination, filters, sorter) => {
     setSorter(sorter);
     setPagination(pagination);
     setFilters(filters);
@@ -225,7 +201,7 @@ const Applicants: React.FC = () => {
     },
   };
 
-  columns = columns.map(col => {
+  columns = columns.map((col) => {
     if (!col.editable) {
       return col;
     }
@@ -236,17 +212,17 @@ const Applicants: React.FC = () => {
         editable: col.editable,
         dataIndex: col.dataIndex,
         title: col.title,
-       // handleSave: this.handleSave,
+        // handleSave: this.handleSave,
       }),
     };
   });
 
   return (
-    <div className={"applicants"}>
+    <div className={'applicants'}>
       <h3>{ADMIN_TABS.VIEW_AND_MODIFY_APPLICANTS}</h3>
       <Table
-        size={"small"}
-        className={"applicants"}
+        size={'small'}
+        className={'applicants'}
         components={components}
         columns={columns}
         rowKey={(record) => record.email}
@@ -260,7 +236,7 @@ const Applicants: React.FC = () => {
         loading={!data}
         onChange={onChange}
       />
-      <div className={"filler"}/>
+      <div className={'filler'} />
     </div>
   );
 };
