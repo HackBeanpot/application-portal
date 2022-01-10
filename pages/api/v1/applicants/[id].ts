@@ -1,10 +1,10 @@
 import { ObjectId } from 'mongodb';
 import { NextApiHandler } from 'next';
-import { EXAMPLE_USER } from '../../../../common/constants';
+import { ApplicantApiResponse } from '../../../../common/types';
 import { connectToDatabase } from '../../../../server/mongoDB';
 import { isAdmin, protect } from '../../../../server/protect';
 
-const statusHandler: NextApiHandler = async (req, res) => {
+const applicantHandler: NextApiHandler = async (req, res) => {
   switch (req.method) {
     // get a single applicant
     case 'GET':
@@ -20,7 +20,17 @@ const statusHandler: NextApiHandler = async (req, res) => {
 };
 
 const getApplicant: NextApiHandler = async (req, res) => {
+  const admin = await isAdmin(req);
+  if (!admin) {
+    return res.status(401).send({ message: 'User is not an admin' });
+  }
   const { userDataCollection } = await connectToDatabase();
+  const id = req.query.id;
+  const user = (await userDataCollection.findOne({ _id: new ObjectId(id) }))!;
+  const body: ApplicantApiResponse = {
+    user
+  };
+  res.status(200).send(body);
 }
 
 const postApplicant: NextApiHandler = async (req, res) => {
@@ -39,4 +49,4 @@ const postApplicant: NextApiHandler = async (req, res) => {
   return res.status(201).send('Successfully updated application or rsvp status.');
 };
 
-export default protect(statusHandler);
+export default protect(applicantHandler);

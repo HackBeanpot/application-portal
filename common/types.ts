@@ -1,3 +1,4 @@
+import { WithId } from 'mongodb';
 import { ReactNode } from 'react';
 
 export interface User {
@@ -163,3 +164,7 @@ export type ApplicantsApiResponse = {
   page: number;
   pageSize: number;
 };
+
+export type ApplicantApiResponse = {
+  user: WithId<User>
+}
