@@ -1,19 +1,24 @@
-import React, { useContext, useState, useEffect, useRef, ChangeEvent, ChangeEventHandler } from 'react';
+import React, {
+  useContext,
+  useState,
+  useRef
+} from 'react';
 import { ADMIN_TABS } from '../../common/constants';
 import { getAllApplicants, updateApplicantById } from '../../common/apiClient';
 import useSWR from 'swr';
-import { Table, TablePaginationConfig, TableProps, Form, Select, } from 'antd';
-import { ApplicationStatus, Dropdown as DropDown, User, RSVPStatus, ApplicantsApiResponse } from '../../common/types';
+import { Table, TablePaginationConfig, TableProps, Form, Select } from 'antd';
+import {
+  ApplicationStatus,
+  Dropdown as DropDown,
+  User,
+  RSVPStatus
+} from '../../common/types';
 import { Questions } from '../../common/questions';
 import { FormInstance } from 'antd/lib/form';
 import { SelectValue } from 'antd/lib/select';
 
 const { Option } = Select;
 const EditableContext = React.createContext<FormInstance<any> | null>(null);
-
-interface Item {
-  status: String;
-}
 
 interface EditableRowProps {
   index: number;
@@ -49,38 +54,28 @@ const EditableCell: React.FC<EditableCellProps> = ({
   ...restProps
 }) => {
   const [editingApplicationStatus, setEditingApplicationStatus] = useState(false);
+  const [editingRSVPStatus, setEditingRSVPStatus] = useState(false);
   const selectRef = useRef<typeof Select>(null);
   const form = useContext(EditableContext)!;
-
-  // useEffect(() => {
-  //   if (editing) {
-  //     dropdownRef.current!.focus();
-  //   }
-  // }, [editing]);
 
   const toggleEditApplicationStatus = () => {
     setEditingApplicationStatus(!editingApplicationStatus);
     form.setFieldsValue({ [dataIndex]: record[dataIndex] });
   };
 
-  const save = async () => {
-    try {
-      const values = await form.validateFields();
-      toggleEditApplicationStatus();
-      handleSave({ ...record, ...values });
-    } catch (errInfo) {
-      console.log('Save failed:', errInfo);
-    }
+  const changeApplicationStatus = async (status: SelectValue, record: User) => {
+    const updatedUser = { ...record, applicationStatus: status as ApplicationStatus };
+    updateApplicantById(record._id ?? '', updatedUser);
   };
 
-  const changeApplicationStatus = async (status : SelectValue, record: User) => {
-    const updatedUser = {...record, applicationStatus: status as ApplicationStatus};
-    updateApplicantById(record._id?? "", updatedUser);
-  }
+  const changeRsvpStatus = async (status: SelectValue, record: User) => {
+    const updatedUser = { ...record, rsvpStatus: status as RSVPStatus };
+    updateApplicantById(record._id ?? '', updatedUser);
+  };
 
   let childNode = children;
 
-  if (dataIndex === 'applicationStatus') {
+  if (dataIndex === 'applicationStatus' || 'rsvpStatus') {
     childNode = editingApplicationStatus ? (
       <Form.Item
         style={{ margin: 0 }}
@@ -92,14 +87,27 @@ const EditableCell: React.FC<EditableCellProps> = ({
           },
         ]}
       >
-        <Select ref={selectRef} onChange={e => changeApplicationStatus(e, record)}>
-          {Object.values(ApplicationStatus).map((status) => (
-            <Option value={status}>{status}</Option>
-          ))}
+        <Select
+          ref={selectRef}
+          onChange={(e) =>
+            dataIndex === 'applicationStatus'
+              ? changeApplicationStatus(e, record)
+              : changeRsvpStatus(e, record)
+          }
+        >
+          {Object.values(dataIndex === 'applicationStatus' ? ApplicationStatus : RSVPStatus).map(
+            (status) => (
+              <Option value={status}>{status}</Option>
+            )
+          )}
         </Select>
       </Form.Item>
     ) : (
-      <div className="editable-cell-value-wrap" style={{ paddingRight: 24 }} onClick={toggleEditApplicationStatus}>
+      <div
+        className="editable-cell-value-wrap"
+        style={{ paddingRight: 24 }}
+        onClick={toggleEditApplicationStatus}
+      >
         {children}
       </div>
     );
@@ -108,21 +116,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
   return <td {...restProps}>{childNode}</td>;
 };
 
-type EditableTableProps = Parameters<typeof Table>[0];
-
-interface DataType {
-  key: React.Key;
-  name: string;
-  age: string;
-  address: string;
-}
-
-interface EditableTableState {
-  dataSource: DataType[];
-  count: number;
-}
-
-// table columns: name, email, school, application status
+// table columns: name, email, school, application status, rsvp status
 let columns = [
   {
     title: 'Name',
@@ -218,7 +212,6 @@ const Applicants: React.FC = () => {
         editable: col.editable,
         dataIndex: col.dataIndex,
         title: col.title,
-        // handleSave: this.handleSave,
       }),
     };
   });

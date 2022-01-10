@@ -10,7 +10,6 @@ import {
 import Axios, { AxiosResponse } from 'axios';
 import { TablePaginationConfig } from 'antd';
 import { TableFilters, TableSorter } from '../components/admin-tabs/Applicants';
-import { WithId } from 'mongodb';
 
 export function getAdminById(id: number) {
   return Axios.get<User>(`/api/v1/admin/${id}`);

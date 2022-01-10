@@ -1,4 +1,3 @@
-import { WithId } from 'mongodb';
 import { ReactNode } from 'react';
 
 export interface User {
@@ -89,7 +88,7 @@ export enum ApplicationStatus {
   Declined = 'Declined',
 }
 export enum RSVPStatus {
-  Confirmed = 'Virtual',
+  Confirmed = 'Confirmed',
   NotAttending = 'Not Attending',
   Unconfirmed = 'Unconfirmed',
 }
