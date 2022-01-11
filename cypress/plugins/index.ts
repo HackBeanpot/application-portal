@@ -71,17 +71,24 @@ module.exports = (
   on('task', {
     createUserInBackend: async (arg: CreateUserInBackendArg) => {
       const ctx = await cypressConnectToDatabase(config.env);
-      await ctx.serverDb.userDataCollection.insertOne({
+      // make sure there are no duplicate tokens/users
+      const deleteUserTask = ctx.serverDb.userDataCollection.deleteMany({ email: arg.email });
+      const deleteTokenTask = ctx.nextAuthDb.verificationTokens.deleteMany({
+        identifier: arg.email,
+      });
+      await Promise.all([deleteUserTask, deleteTokenTask]);
+      const insertUserTask = ctx.serverDb.userDataCollection.insertOne({
         email: arg.email,
         isAdmin: arg.isAdmin,
         applicationStatus: ApplicationStatus.Incomplete,
         rsvpStatus: RSVPStatus.Unconfirmed,
       });
-      await ctx.nextAuthDb.verificationTokens.insertOne({
+      const insertTokenTask = ctx.nextAuthDb.verificationTokens.insertOne({
         identifier: arg.email,
         token: arg.token,
         expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
       });
+      await Promise.all([insertUserTask, insertTokenTask]);
       return null;
     },
   });

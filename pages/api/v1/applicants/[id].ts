@@ -43,9 +43,6 @@ const postApplicant: NextApiHandler = async (req, res) => {
 
   await userDataCollection.replaceOne({ _id: new ObjectId(_id) }, updatedUser);
 
-  const test = await userDataCollection.findOne({ _id: new ObjectId(_id) });
-  console.log(test);
-
   return res.status(201).send('Successfully updated application or rsvp status.');
 };
 

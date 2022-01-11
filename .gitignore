@@ -38,3 +38,9 @@ yarn-error.log*
 
 # mongo data
 /infrastructure/dev/mongo-data
+
+# cypress
+/cypress/screenshots/
+/cypress/videos/
+/cypress/downloads/
+

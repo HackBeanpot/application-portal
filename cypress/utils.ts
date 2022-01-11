@@ -10,15 +10,15 @@ const createUserAndLogin = async ({ email, isAdmin }: { email: string; isAdmin: 
   cy.visit('/api/auth/callback/email', { qs: { token: CLIENT_TOKEN, email } });
 };
 
-export const createAdminAndLogin = async (email: string): Promise<void> => {
+export const createAdminAndLogin = async (email = 'admin@domain.com'): Promise<void> => {
   await createUserAndLogin({ email, isAdmin: true });
 };
 
-export const createApplicantAndLogin = async (email: string): Promise<void> => {
+export const createApplicantAndLogin = async (email = 'applicant@domain.com'): Promise<void> => {
   await createUserAndLogin({ email, isAdmin: false });
 };
 
-export const checkLoggedIn = () => {
+export const checkLoggedIn = (): void => {
   cy.get('header').should('contain', 'Application');
   cy.get('header').should('contain', 'Team');
 };

@@ -37,11 +37,10 @@ export const updateApplicantResponses = (
   Axios.post(`/api/v1/registration`, responses, { validateStatus: () => true });
 
 export function getAllApplicants(
-  url: string,
   pagination: TablePaginationConfig,
   filters: TableFilters,
   sorter: TableSorter
-) {
+): Promise<AxiosResponse<ApplicantsApiResponse>> {
   return Axios.get<ApplicantsApiResponse>(`/api/v1/applicants`, {
     params: {
       page: pagination.current,
