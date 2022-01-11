@@ -1,6 +1,7 @@
+import { string } from 'joi';
 import { ObjectId } from 'mongodb';
 import { NextApiHandler } from 'next';
-import { ApplicantApiResponse } from '../../../../common/types';
+import { SingleApplicantApiResponse } from '../../../../common/types';
 import { connectToDatabase } from '../../../../server/mongoDB';
 import { isAdmin, protect } from '../../../../server/protect';
 
@@ -26,9 +27,9 @@ const getApplicant: NextApiHandler = async (req, res) => {
   }
   const { userDataCollection } = await connectToDatabase();
   const id = req.query.id;
-  const user = (await userDataCollection.findOne({ _id: new ObjectId(id as string) }))!;
-  const body: ApplicantApiResponse = {
-    user,
+  const { _id, ...user } = (await userDataCollection.findOne({ _id: id }))!;
+  const body: SingleApplicantApiResponse = {
+    user: { _id: _id.toString(), ...user },
   };
   res.status(200).send(body);
 };
