@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from 'react';
+import React, { useContext, useState } from 'react';
 import { ADMIN_TABS } from '../../common/constants';
 import { getAllApplicants, updateApplicantById } from '../../common/apiClient';
 import useSWR from 'swr';
@@ -32,7 +32,7 @@ interface EditableCellProps {
   children: React.ReactNode;
   dataIndex: string;
   record: User;
-  handleSave: (record: User) => void;
+  mutate: any;
 }
 
 const EditableCell: React.FC<EditableCellProps> = ({
@@ -41,25 +41,26 @@ const EditableCell: React.FC<EditableCellProps> = ({
   children,
   dataIndex,
   record,
-  handleSave,
+  mutate,
   ...restProps
 }) => {
   const [editingApplicationStatus, setEditingApplicationStatus] = useState(false);
   const [editingRSVPStatus, setEditingRSVPStatus] = useState(false);
-  const selectRef = useRef<typeof Select>(null);
   const form = useContext(EditableContext)!;
 
-  const toggleEditApplicationStatus = () => {
+  const toggleEditApplicationStatus = (dataIndex: string) => {
     setEditingApplicationStatus(!editingApplicationStatus);
-    form.setFieldsValue({ [dataIndex]: record[dataIndex] });
+    form.setFieldsValue({ [dataIndex]: record.applicationStatus });
+    return undefined;
   };
 
-  const toggleEditRsvpStatus = () => {
+  const toggleEditRsvpStatus = (dataIndex: string) => {
     setEditingRSVPStatus(!editingRSVPStatus);
-    form.setFieldsValue({ [dataIndex]: record[dataIndex] });
+    form.setFieldsValue({ [dataIndex]: record.rsvpStatus });
+    return undefined;
   };
 
-  const notify = (msg: String) => {
+  const notify = (msg: string) => {
     notification.success({
       placement: 'bottomRight',
       bottom: 50,
@@ -68,7 +69,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
     });
   };
 
-  const errorNotify = (msg: String) => {
+  const errorNotify = (msg: string) => {
     notification.error({
       placement: 'bottomRight',
       bottom: 50,
@@ -85,6 +86,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
         'Successfully changed application status for ' +
           (record.responses ? record.responses[0] : 'user')
       );
+      mutate();
     } catch (error) {
       errorNotify('Request to change application status failed.');
     }
@@ -93,12 +95,13 @@ const EditableCell: React.FC<EditableCellProps> = ({
   const changeRsvpStatus = async (status: SelectValue, record: User) => {
     const updatedUser = { ...record, rsvpStatus: status as RSVPStatus };
     try {
-      updateApplicantById(record._id ?? '', updatedUser);
+      await updateApplicantById(record._id ?? '', updatedUser);
       notify(
         'Successfully changed RSVP status for ' + (record.responses ? record.responses[0] : 'user')
       );
+      mutate();
     } catch (error) {
-      errorNotify('Request to change application status failed.');
+      errorNotify('Request to change RSVP status failed.');
     }
   };
 
@@ -118,7 +121,6 @@ const EditableCell: React.FC<EditableCellProps> = ({
           ]}
         >
           <Select
-            ref={selectRef}
             onChange={(e) =>
               dataIndex === 'applicationStatus'
                 ? changeApplicationStatus(e, record)
@@ -126,8 +128,10 @@ const EditableCell: React.FC<EditableCellProps> = ({
             }
           >
             {Object.values(dataIndex === 'applicationStatus' ? ApplicationStatus : RSVPStatus).map(
-              (status) => (
-                <Option value={status}>{status}</Option>
+              (status, index) => (
+                <Option value={status} key={index}>
+                  {status}
+                </Option>
               )
             )}
           </Select>
@@ -137,7 +141,9 @@ const EditableCell: React.FC<EditableCellProps> = ({
           className="editable-cell-value-wrap"
           style={{ paddingRight: 24 }}
           onClick={
-            dataIndex === 'applicationStatus' ? toggleEditApplicationStatus : toggleEditRsvpStatus
+            dataIndex === 'applicationStatus'
+              ? toggleEditApplicationStatus(dataIndex)
+              : toggleEditRsvpStatus(dataIndex)
           }
         >
           {children}
@@ -218,7 +224,10 @@ const Applicants: React.FC = () => {
   });
   const [filters, setFilters] = useState<TableFilters>({});
   const [sorter, setSorter] = useState<TableSorter>({});
-  const { data } = useSWR([`/api/v1/applicants`, pagination, filters, sorter], getAllApplicants);
+  const { data, mutate } = useSWR(
+    [`/api/v1/applicants`, pagination, filters, sorter],
+    getAllApplicants
+  );
 
   const onChange: TableProps<User>['onChange'] = (pagination, filters, sorter) => {
     setSorter(sorter);
@@ -244,6 +253,7 @@ const Applicants: React.FC = () => {
         editable: col.editable,
         dataIndex: col.dataIndex,
         title: col.title,
+        mutate,
       }),
     };
   });

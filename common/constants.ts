@@ -36,7 +36,7 @@ export const EXAMPLE_USER: User = {
   email: 'judysu@gmail.com',
   firstName: 'Judy',
   lastName: 'Su',
-  id: EXAMPLE_USER_ID,
+  _id: EXAMPLE_USER_ID,
   gender: EXAMPLE_GENDER,
   school: 'Northeastern',
   education: EXAMPLE_EDUCATION,
@@ -61,12 +61,7 @@ export const EXAMPLE_CHECKBOX_1: Checkboxes = {
   content: 'Who is the sassiest?',
   required: true,
   type: QuestionType.Checkboxes,
-  options: [
-    { name: 'Alex' },
-    { name: 'Jess' },
-    { name: 'Jamie' },
-    { name: 'Karen' },
-  ],
+  options: [{ name: 'Alex' }, { name: 'Jess' }, { name: 'Jamie' }, { name: 'Karen' }],
   maxNumber: 1,
   minNumber: 1,
 };

@@ -26,25 +26,25 @@ const getApplicant: NextApiHandler = async (req, res) => {
   }
   const { userDataCollection } = await connectToDatabase();
   const id = req.query.id;
-  const user = (await userDataCollection.findOne({ _id: new ObjectId(id) }))!;
+  const user = (await userDataCollection.findOne({ _id: new ObjectId(id as string) }))!;
   const body: ApplicantApiResponse = {
-    user
+    user,
   };
   res.status(200).send(body);
-}
+};
 
 const postApplicant: NextApiHandler = async (req, res) => {
   const admin = await isAdmin(req);
   if (!admin) {
     return res.status(401).send({ message: 'User is not an admin' });
   }
-  const {_id, ...updatedUser} = req.body;
+  const { _id, ...updatedUser } = req.body;
   const { userDataCollection } = await connectToDatabase();
 
-  await userDataCollection.replaceOne(
-    { _id: new ObjectId(_id) },
-      updatedUser
-  );
+  await userDataCollection.replaceOne({ _id: new ObjectId(_id) }, updatedUser);
+
+  const test = await userDataCollection.findOne({ _id: new ObjectId(_id) });
+  console.log(test);
 
   return res.status(201).send('Successfully updated application or rsvp status.');
 };
