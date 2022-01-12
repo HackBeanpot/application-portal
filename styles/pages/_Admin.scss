@@ -19,7 +19,7 @@
 
   .ant-select-dropdown {
     zoom: 1 !important;
-    @supports (-moz-appearance:none) {
+    @supports (-moz-appearance: none) {
       // Only for Firefox
       transform: scale(1) !important;
       transform-origin: 0 0 !important;
@@ -27,4 +27,9 @@
     left: 0 !important;
     top: 27px !important;
   }
+}
+
+.showDecisions {
+  display: flex;
+  justify-content: space-between;
 }

@@ -8,6 +8,7 @@ import {
   updateConfirmBy,
   updateRegistrationClosed,
   updateRegistrationOpen,
+  updateShowDecision,
 } from '../../common/apiClient';
 import { Col, Row, Switch } from 'antd';
 import PortalSettingsRow from './PortalSettingsRow';
@@ -25,10 +26,7 @@ const PortalSettings: React.FC = () => {
     '/api/v1/dates/registration-open',
     getRegistrationOpen
   );
-  // const { showDecision: boolean, mutate: mutateShowDecision } = useSWR(
-  //   '/api/v1/dates/registration-open',
-  //   getRegistrationOpen
-  // );
+
   const [myRegistrationOpen, setMyRegistrationOpen] = useState<string | undefined>(undefined);
   const [myRegistrationClosed, setMyRegistrationClosed] = useState<string | undefined>(undefined);
   const [myConfirmBy, setMyConfirmBy] = useState<string | undefined>(undefined);
@@ -66,8 +64,11 @@ const PortalSettings: React.FC = () => {
         uiStateDate={myConfirmBy}
         refresh={mutateConfirmBy}
       />
-      {/* onChange={updateShowDecision} */}
-      <Switch />
+      <div className="showDecisions">
+        {' '}
+        Show Decisions
+        <Switch onChange={updateShowDecision} />
+      </div>
     </div>
   );
 };

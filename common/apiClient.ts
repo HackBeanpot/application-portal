@@ -102,10 +102,10 @@ export function deleteTeamInfo(): Promise<AxiosResponse<undefined>> {
   return Axios.delete(`/api/v1/team`);
 }
 
-// export function updateShowDecision(show: boolean): Promise<AxiosResponse<undefined>> {
-//   return Axios.post(`/api/v1/showDecision, { show });
-// }
+export function updateShowDecision(show: boolean): Promise<AxiosResponse<undefined>> {
+  return Axios.post(`/api/v1/showDecision`, { show });
+}
 
-// export function getShowDecision(show: boolean): Promise<AxiosResponse<undefined>> {
-//   return Axios.get(`//api/v1/showDecision);
-// }
+export function getShowDecision(show: boolean): Promise<AxiosResponse<undefined>> {
+  return Axios.get(`/api/v1/showDecision`);
+}
