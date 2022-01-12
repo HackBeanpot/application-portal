@@ -20,13 +20,12 @@ import {
 } from '../../common/types';
 import { Questions } from '../../common/questions';
 import { FormInstance } from 'antd/lib/form';
-import { SelectValue } from 'antd/lib/select';
 import { saveAs } from 'file-saver';
-import { AxiosResponse } from 'axios';
+import { ColumnsType } from 'antd/es/table';
 
 const { Option } = Select;
 const EditableContext = React.createContext<FormInstance | null>(null);
-type SingleRecordType = ApplicantsApiResponse['data'][0];
+type SingleRecordType = ApplicantsApiResponse['data'][number];
 
 interface EditableRowProps {
   index: number;
@@ -43,13 +42,21 @@ const EditableRow: React.FC<EditableRowProps> = ({ index, ...props }) => {
   );
 };
 
+const notifyArg = (message: string) => ({
+  placement: 'bottomRight' as const,
+  bottom: 50,
+  duration: 3,
+  message,
+});
+
 interface EditableCellProps {
-  title: React.ReactNode;
+  title: string;
   editable: boolean;
-  children: React.ReactNode;
-  dataIndex: string;
+  dataIndex: keyof SingleRecordType;
   record: SingleRecordType;
-  mutate: KeyedMutator<AxiosResponse<ApplicantsApiResponse>>;
+  mutate: KeyedMutator<ApplicantsApiResponse>;
+  options?: Array<{ key: string; value: string }>;
+  index: number;
 }
 
 const EditableCell: React.FC<EditableCellProps> = ({
@@ -59,111 +66,74 @@ const EditableCell: React.FC<EditableCellProps> = ({
   dataIndex,
   record,
   mutate,
+  options,
+  index,
   ...restProps
 }) => {
-  const [editingApplicationStatus, setEditingApplicationStatus] = useState(false);
-  const [editingRSVPStatus, setEditingRSVPStatus] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const form = useContext(EditableContext)!;
 
-  const toggleEditApplicationStatus = (dataIndex: string) => {
-    setEditingApplicationStatus(!editingApplicationStatus);
-    form.setFieldsValue({ [dataIndex]: record.applicationStatus });
-    return undefined;
+  const toggleIsEditing = () => {
+    setIsEditing(!isEditing);
+    form.setFieldsValue({ [dataIndex]: record[dataIndex] });
   };
 
-  const toggleEditRsvpStatus = (dataIndex: string) => {
-    setEditingRSVPStatus(!editingRSVPStatus);
-    form.setFieldsValue({ [dataIndex]: record.rsvpStatus });
-    return undefined;
-  };
-
-  const notifyArg = (message: string) => ({
-    placement: 'bottomRight' as const,
-    bottom: 50,
-    duration: 3,
-    message,
-  });
-  const successNotify = (msg: string) => notification.success(notifyArg(msg));
-  const errorNotify = (msg: string) => notification.error(notifyArg(msg));
-
-  const changeApplicationStatus = async (status: SelectValue, record: SingleRecordType) => {
-    const updatedUser = { ...record, applicationStatus: status as ApplicationStatus };
+  const save = async () => {
     try {
-      await updateApplicantById(record._id ?? '', updatedUser);
-      successNotify(
-        'Successfully changed application status for ' +
-          (record.responses ? record.responses[0] : 'user')
+      const values = await form.validateFields();
+      toggleIsEditing();
+      const updatedRecord = { ...record, ...values };
+      // update the cache value so the table displays correct data before fetch returns
+      await mutate((response) => {
+        if (!response) return response;
+        response.data[index] = updatedRecord;
+        return { ...response, data: [...response.data] };
+      }, true);
+      await updateApplicantById(record._id, updatedRecord);
+      notification.success(
+        notifyArg(`Successfully updated application status for ${record.email}`)
       );
-      await mutate();
-    } catch (error) {
-      errorNotify('Request to change application status failed.');
-    }
-  };
-
-  const changeRsvpStatus = async (status: SelectValue, record: SingleRecordType) => {
-    const updatedUser = { ...record, rsvpStatus: status as RSVPStatus };
-    try {
-      await updateApplicantById(record._id ?? '', updatedUser);
-      successNotify(
-        'Successfully changed RSVP status for ' + (record.responses ? record.responses[0] : 'user')
-      );
-      mutate();
-    } catch (error) {
-      errorNotify('Request to change RSVP status failed.');
+    } catch (e) {
+      notification.error(notifyArg('Request to change application status failed.'));
     }
   };
 
   let childNode = children;
-
   if (editable) {
-    childNode =
-      editingApplicationStatus || editingRSVPStatus ? (
+    if (isEditing) {
+      childNode = (
         <Form.Item
           style={{ margin: 0 }}
           name={dataIndex}
-          rules={[
-            {
-              required: true,
-              message: `${title} is required.`,
-            },
-          ]}
+          rules={[{ required: true, message: `${title} is required.` }]}
         >
-          <Select
-            onChange={(e) =>
-              dataIndex === 'applicationStatus'
-                ? changeApplicationStatus(e, record)
-                : changeRsvpStatus(e, record)
-            }
-          >
-            {Object.values(dataIndex === 'applicationStatus' ? ApplicationStatus : RSVPStatus).map(
-              (status, index) => (
-                <Option value={status} key={index}>
-                  {status}
-                </Option>
-              )
-            )}
+          <Select onChange={save}>
+            {options?.map(({ key, value }) => (
+              <Option key={key} value={value}>
+                {value}
+              </Option>
+            ))}
           </Select>
         </Form.Item>
-      ) : (
+      );
+    } else {
+      childNode = (
         <div
           className="editable-cell-value-wrap"
           style={{ paddingRight: 24 }}
-          onClick={
-            dataIndex === 'applicationStatus'
-              ? toggleEditApplicationStatus(dataIndex)
-              : toggleEditRsvpStatus(dataIndex)
-          }
+          onClick={toggleIsEditing}
         >
           {children}
         </div>
       );
+    }
   }
 
   return <td {...restProps}>{childNode}</td>;
 };
 
 // table columns: name, email, school, application status, rsvp status
-let columns = [
+const columns = [
   {
     title: 'Name',
     dataIndex: ['responses', '0'],
@@ -183,9 +153,8 @@ let columns = [
       text: name,
       value: name,
     })),
-    render: (text: any, record: SingleRecordType) =>
-      record.responses &&
-      (record.responses[4] === 'Other' ? record.responses[5] : record.responses[4]),
+    render: (_: string, record: SingleRecordType) =>
+      record.responses?.[record.responses[4] === 'Other' ? 5 : 4] ?? '',
     sorter: true,
     editable: false,
   },
@@ -208,6 +177,7 @@ let columns = [
     })),
     sorter: true,
     editable: true,
+    options: Object.values(ApplicationStatus).map((value: string) => ({ key: value, value })),
   },
   {
     title: 'Rsvp Status',
@@ -218,6 +188,7 @@ let columns = [
     })),
     sorter: true,
     editable: true,
+    options: Object.values(RSVPStatus).map((value: string) => ({ key: value, value })),
   },
 ];
 
@@ -230,7 +201,7 @@ const getAllApplicantsForSwr = (
   pagination: TablePaginationConfig,
   filters: TableFilters,
   sorter: TableSorter
-) => getAllApplicants(pagination, filters, sorter);
+) => getAllApplicants(pagination, filters, sorter).then((axiosReq) => axiosReq.data);
 
 const Applicants: React.FC = () => {
   const [pagination, setPagination] = useState<TablePaginationConfig>({
@@ -249,7 +220,7 @@ const Applicants: React.FC = () => {
       return;
     }
     setExporting(true);
-    downloadFile(data.data.totalCount, filters, sorter).then(() => setExporting(false));
+    downloadFile(data.totalCount, filters, sorter).then(() => setExporting(false));
   };
 
   const onChange: TableProps<SingleRecordType>['onChange'] = (pagination, filters, sorter) => {
@@ -265,18 +236,19 @@ const Applicants: React.FC = () => {
     },
   };
 
-  columns = columns.map((col) => {
-    if (!col.editable) {
-      return col;
-    }
+  const columns2 = columns.map((col) => {
+    if (!col.editable) return col;
     return {
       ...col,
-      onCell: (record: SingleRecordType) => ({
+      onCell: (record: SingleRecordType, index?: number): EditableCellProps => ({
         record,
         editable: col.editable,
-        dataIndex: col.dataIndex,
+        dataIndex: col.dataIndex as keyof SingleRecordType,
         title: col.title,
         mutate,
+        options: col.options,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        index: index!,
       }),
     };
   });
@@ -296,17 +268,16 @@ const Applicants: React.FC = () => {
           </Button>
         </Tooltip>
       </div>
-
       <Table
         size={'small'}
         className={'applicants'}
-        columns={columns}
+        columns={columns2}
         components={components}
         rowKey={(record) => record.email}
-        dataSource={data?.data.data ?? []}
+        dataSource={data?.data ?? []}
         pagination={{
           ...pagination,
-          total: data?.data.totalCount,
+          total: data?.totalCount,
           position: ['topLeft', 'bottomRight'],
           showTotal: (t) => `${t} results`,
         }}
