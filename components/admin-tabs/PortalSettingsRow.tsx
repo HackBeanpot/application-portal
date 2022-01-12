@@ -22,11 +22,9 @@ const PortalSettingsRow: FC<PortalSettingsRowProps> = ({
   return (
     <Row>
       <Col span={4}>{title}</Col>
-      <Col span={8}>{portalDate && new Date(portalDate).toString()}</Col>
+      <Col span={8}>{portalDate ? new Date(portalDate).toString() : 'Not yet configured'}</Col>
       <Col span={8}>
-        {portalDate && (
-          <DatePicker onChange={(_, date) => setDate(date)} showTime />
-        )}
+        <DatePicker onChange={(_, date) => setDate(date)} showTime />
       </Col>
       <Col span={4}>
         <Button

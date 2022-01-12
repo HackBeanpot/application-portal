@@ -1,11 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { connectToDatabase } from './mongoDB';
-import { DateSingleton } from '../common/types';
+import { DateSingleton, SingletonType } from '../common/types';
 import { isAdmin } from './protect';
 
-export const queryDate = async (
-  dateName: DateSingleton['type']
-): Promise<string | undefined> => {
+export const queryDate = async (dateName: SingletonType): Promise<string | undefined> => {
   const { singletonDataCollection } = await connectToDatabase();
   const data = await singletonDataCollection.findOne({
     type: dateName,
@@ -16,8 +14,8 @@ export const queryDate = async (
 export const getDate = async (
   req: NextApiRequest,
   res: NextApiResponse,
-  dateName: DateSingleton['type']
-) => {
+  dateName: SingletonType
+): Promise<void> => {
   const date = await queryDate(dateName);
   return res.status(200).json(date);
 };
@@ -25,8 +23,8 @@ export const getDate = async (
 export const postDate = async (
   req: NextApiRequest,
   res: NextApiResponse,
-  dateName: DateSingleton['type']
-) => {
+  dateName: SingletonType
+): Promise<void> => {
   const adminCheck = await isAdmin(req);
   if (!adminCheck) {
     return res.status(401).send({ message: 'User is not an admin' });
