@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { ADMIN_TABS } from '../../common/constants';
 import { getAllApplicants, updateApplicantById } from '../../common/apiClient';
-import useSWR from 'swr';
+import useSWR, { KeyedMutator } from 'swr';
 import {
   Table,
   TablePaginationConfig,
@@ -12,14 +12,21 @@ import {
   Tooltip,
   Button,
 } from 'antd';
-import { ApplicationStatus, Dropdown as DropDown, User, RSVPStatus } from '../../common/types';
+import {
+  ApplicationStatus,
+  Dropdown as DropdownQuestionType,
+  RSVPStatus,
+  ApplicantsApiResponse,
+} from '../../common/types';
 import { Questions } from '../../common/questions';
 import { FormInstance } from 'antd/lib/form';
 import { SelectValue } from 'antd/lib/select';
 import { saveAs } from 'file-saver';
+import { AxiosResponse } from 'axios';
 
 const { Option } = Select;
-const EditableContext = React.createContext<FormInstance<any> | null>(null);
+const EditableContext = React.createContext<FormInstance | null>(null);
+type SingleRecordType = ApplicantsApiResponse['data'][0];
 
 interface EditableRowProps {
   index: number;
@@ -41,8 +48,8 @@ interface EditableCellProps {
   editable: boolean;
   children: React.ReactNode;
   dataIndex: string;
-  record: User;
-  mutate: any;
+  record: SingleRecordType;
+  mutate: KeyedMutator<AxiosResponse<ApplicantsApiResponse>>;
 }
 
 const EditableCell: React.FC<EditableCellProps> = ({
@@ -70,43 +77,34 @@ const EditableCell: React.FC<EditableCellProps> = ({
     return undefined;
   };
 
-  const notify = (msg: string) => {
-    notification.success({
-      placement: 'bottomRight',
-      bottom: 50,
-      duration: 3,
-      message: msg,
-    });
-  };
+  const notifyArg = (message: string) => ({
+    placement: 'bottomRight' as const,
+    bottom: 50,
+    duration: 3,
+    message,
+  });
+  const successNotify = (msg: string) => notification.success(notifyArg(msg));
+  const errorNotify = (msg: string) => notification.error(notifyArg(msg));
 
-  const errorNotify = (msg: string) => {
-    notification.error({
-      placement: 'bottomRight',
-      bottom: 50,
-      duration: 3,
-      message: msg,
-    });
-  };
-
-  const changeApplicationStatus = async (status: SelectValue, record: User) => {
+  const changeApplicationStatus = async (status: SelectValue, record: SingleRecordType) => {
     const updatedUser = { ...record, applicationStatus: status as ApplicationStatus };
     try {
       await updateApplicantById(record._id ?? '', updatedUser);
-      notify(
+      successNotify(
         'Successfully changed application status for ' +
           (record.responses ? record.responses[0] : 'user')
       );
-      mutate();
+      await mutate();
     } catch (error) {
       errorNotify('Request to change application status failed.');
     }
   };
 
-  const changeRsvpStatus = async (status: SelectValue, record: User) => {
+  const changeRsvpStatus = async (status: SelectValue, record: SingleRecordType) => {
     const updatedUser = { ...record, rsvpStatus: status as RSVPStatus };
     try {
       await updateApplicantById(record._id ?? '', updatedUser);
-      notify(
+      successNotify(
         'Successfully changed RSVP status for ' + (record.responses ? record.responses[0] : 'user')
       );
       mutate();
@@ -181,11 +179,11 @@ let columns = [
   {
     title: 'School',
     dataIndex: ['responses', '4'],
-    filters: (Questions[4] as DropDown).options.map(({ name }) => ({
+    filters: (Questions[4] as DropdownQuestionType).options.map(({ name }) => ({
       text: name,
       value: name,
     })),
-    render: (text: any, record: User) =>
+    render: (text: any, record: SingleRecordType) =>
       record.responses &&
       (record.responses[4] === 'Other' ? record.responses[5] : record.responses[4]),
     sorter: true,
@@ -194,7 +192,7 @@ let columns = [
   {
     title: 'Year',
     dataIndex: ['responses', '7'],
-    filters: (Questions[7] as DropDown).options.map(({ name }) => ({
+    filters: (Questions[7] as DropdownQuestionType).options.map(({ name }) => ({
       text: name,
       value: name,
     })),
@@ -223,7 +221,7 @@ let columns = [
   },
 ];
 
-type TableOnChange = NonNullable<TableProps<User>['onChange']>;
+type TableOnChange = NonNullable<TableProps<SingleRecordType>['onChange']>;
 export type TableFilters = Parameters<TableOnChange>['1'];
 export type TableSorter = Parameters<TableOnChange>['2'];
 
@@ -254,7 +252,7 @@ const Applicants: React.FC = () => {
     downloadFile(data.data.totalCount, filters, sorter).then(() => setExporting(false));
   };
 
-  const onChange: TableProps<User>['onChange'] = (pagination, filters, sorter) => {
+  const onChange: TableProps<SingleRecordType>['onChange'] = (pagination, filters, sorter) => {
     setSorter(sorter);
     setPagination(pagination);
     setFilters(filters);
@@ -273,7 +271,7 @@ const Applicants: React.FC = () => {
     }
     return {
       ...col,
-      onCell: (record: User) => ({
+      onCell: (record: SingleRecordType) => ({
         record,
         editable: col.editable,
         dataIndex: col.dataIndex,

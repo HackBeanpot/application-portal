@@ -36,7 +36,6 @@ export const EXAMPLE_USER: User = {
   email: 'judysu@gmail.com',
   firstName: 'Judy',
   lastName: 'Su',
-  _id: EXAMPLE_USER_ID,
   gender: EXAMPLE_GENDER,
   school: 'Northeastern',
   education: EXAMPLE_EDUCATION,

@@ -7,7 +7,6 @@ export interface User {
   applicationStatus: ApplicationStatus;
   firstName?: string;
   lastName?: string;
-  _id?: string;
   gender?: Gender;
   school?: string;
   education?: Education;
@@ -156,12 +155,12 @@ export type TeamApiResponse = Team;
 export type DatesApiResponse = string;
 
 export type ApplicantsApiResponse = {
-  data: Array<User>;
+  data: Array<User & { _id: string }>;
   totalCount: number;
   page: number;
   pageSize: number;
 };
 
 export type SingleApplicantApiResponse = {
-  user: User;
+  user: User & { _id: string };
 };
