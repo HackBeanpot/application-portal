@@ -12,52 +12,9 @@
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
 
-import { Collection, Db, MongoClient } from 'mongodb';
-import { SingletonDefinition, Team, User, ApplicationStatus, RSVPStatus } from '../../common/types';
-import { CreateUserInBackendArg } from '../types';
-
-type NextAuthVerificationToken = {
-  identifier: string;
-  token: string;
-  expires: Date;
-};
-type CypressMongoCtx = {
-  client: MongoClient;
-  serverDb: {
-    db: Db;
-    userDataCollection: Collection<User>;
-    singletonDataCollection: Collection<SingletonDefinition>;
-    teamDataCollection: Collection<Team>;
-  };
-  nextAuthDb: {
-    db: Db;
-    verificationTokens: Collection<NextAuthVerificationToken>;
-  };
-};
-
-// can't use normal connectToDatabase because we don't have access to env vars
-const cypressConnectToDatabase = async (env: Record<string, string>): Promise<CypressMongoCtx> => {
-  const port = env['MONGO_DEV_PORT'];
-  const username = env['MONGO_DEV_USERNAME'];
-  const password = env['MONGO_DEV_PASSWORD'];
-  const connectionString = `mongodb://${username}:${password}@localhost:${port}`;
-  const client = await new MongoClient(connectionString).connect();
-  const serverDb = client.db(env['MONGO_SERVER_DBNAME']);
-  const nextAuthDb = client.db('next-auth');
-  return {
-    client,
-    serverDb: {
-      db: serverDb,
-      userDataCollection: serverDb.collection('applicant_data'),
-      singletonDataCollection: serverDb.collection('singleton_data'),
-      teamDataCollection: serverDb.collection('teams'),
-    },
-    nextAuthDb: {
-      db: nextAuthDb,
-      verificationTokens: nextAuthDb.collection('verification_tokens'),
-    },
-  };
-};
+import { ConfigurePortalDateArg, CreateUserInBackendArg } from '../types';
+import { createUserInBackend } from './createUserInBackend';
+import { configurePortalDate } from './configurePortalDate';
 
 /**
  * @type {Cypress.PluginConfig}
@@ -69,27 +26,7 @@ module.exports = (
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
   on('task', {
-    createUserInBackend: async (arg: CreateUserInBackendArg) => {
-      const ctx = await cypressConnectToDatabase(config.env);
-      // make sure there are no duplicate tokens/users
-      const deleteUserTask = ctx.serverDb.userDataCollection.deleteMany({ email: arg.email });
-      const deleteTokenTask = ctx.nextAuthDb.verificationTokens.deleteMany({
-        identifier: arg.email,
-      });
-      await Promise.all([deleteUserTask, deleteTokenTask]);
-      const insertUserTask = ctx.serverDb.userDataCollection.insertOne({
-        email: arg.email,
-        isAdmin: arg.isAdmin,
-        applicationStatus: ApplicationStatus.Incomplete,
-        rsvpStatus: RSVPStatus.Unconfirmed,
-      });
-      const insertTokenTask = ctx.nextAuthDb.verificationTokens.insertOne({
-        identifier: arg.email,
-        token: arg.token,
-        expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-      });
-      await Promise.all([insertUserTask, insertTokenTask]);
-      return null;
-    },
+    createUserInBackend: async (arg: CreateUserInBackendArg) => createUserInBackend(arg, config),
+    configurePortalDate: async (arg: ConfigurePortalDateArg) => configurePortalDate(arg, config),
   });
 };
