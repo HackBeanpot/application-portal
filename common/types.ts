@@ -29,11 +29,16 @@ export enum SingletonType {
   RegistrationOpen = 'registration-open',
   RegistrationClosed = 'registration-closed',
   ConfirmBy = 'confirm-by',
+  ShowDecision = 'show-decision',
 }
 
 export interface DateSingleton {
   value: string;
-  type: SingletonType.RegistrationClosed | SingletonType.RegistrationOpen | SingletonType.ConfirmBy;
+  type:
+    | SingletonType.RegistrationClosed
+    | SingletonType.RegistrationOpen
+    | SingletonType.ConfirmBy
+    | SingletonType.ShowDecision;
 }
 
 export interface Team {
