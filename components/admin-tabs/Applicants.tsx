@@ -1,35 +1,172 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { ADMIN_TABS } from '../../common/constants';
-import { getAllApplicants } from '../../common/apiClient';
-import useSWR from 'swr';
-import { Button, Table, TablePaginationConfig, TableProps, Tooltip } from 'antd';
-import { ApplicationStatus, Dropdown, User } from '../../common/types';
+import { getAllApplicants, updateApplicantById } from '../../common/apiClient';
+import useSWR, { KeyedMutator } from 'swr';
+import {
+  Table,
+  TablePaginationConfig,
+  TableProps,
+  Form,
+  Select,
+  notification,
+  Tooltip,
+  Button,
+} from 'antd';
+import {
+  ApplicationStatus,
+  Dropdown as DropdownQuestionType,
+  RSVPStatus,
+  ApplicantsApiResponse,
+} from '../../common/types';
 import { Questions } from '../../common/questions';
+import { FormInstance } from 'antd/lib/form';
 import { saveAs } from 'file-saver';
+import { ColumnsType } from 'antd/es/table';
 
-// table columns: name, email, school, application status
+const { Option } = Select;
+const EditableContext = React.createContext<FormInstance | null>(null);
+type SingleRecordType = ApplicantsApiResponse['data'][number];
+
+interface EditableRowProps {
+  index: number;
+}
+
+const EditableRow: React.FC<EditableRowProps> = ({ index, ...props }) => {
+  const [form] = Form.useForm();
+  return (
+    <Form form={form} component={false}>
+      <EditableContext.Provider value={form}>
+        <tr {...props} />
+      </EditableContext.Provider>
+    </Form>
+  );
+};
+
+const notifyArg = (message: string) => ({
+  placement: 'bottomRight' as const,
+  bottom: 50,
+  duration: 3,
+  message,
+});
+
+interface EditableCellProps {
+  title: string;
+  editable: boolean;
+  dataIndex: keyof SingleRecordType;
+  record: SingleRecordType;
+  mutate: KeyedMutator<ApplicantsApiResponse>;
+  options?: Array<{ key: string; value: string }>;
+  index: number;
+}
+
+const EditableCell: React.FC<EditableCellProps> = ({
+  title,
+  editable,
+  children,
+  dataIndex,
+  record,
+  mutate,
+  options,
+  index,
+  ...restProps
+}) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const form = useContext(EditableContext)!;
+
+  const toggleIsEditing = () => {
+    setIsEditing(!isEditing);
+    form.setFieldsValue({ [dataIndex]: record[dataIndex] });
+  };
+
+  const save = async () => {
+    try {
+      const values = await form.validateFields();
+      toggleIsEditing();
+      const updatedRecord = { ...record, ...values };
+      // update the cache value so the table displays correct data before fetch returns
+      await mutate((response) => {
+        if (!response) return response;
+        response.data[index] = updatedRecord;
+        return { ...response, data: [...response.data] };
+      }, true);
+      await updateApplicantById(record._id, updatedRecord);
+      notification.success(
+        notifyArg(`Successfully updated application status for ${record.email}`)
+      );
+    } catch (e) {
+      notification.error(notifyArg('Request to change application status failed.'));
+    }
+  };
+
+  let childNode = children;
+  if (editable) {
+    if (isEditing) {
+      childNode = (
+        <Form.Item
+          style={{ margin: 0 }}
+          name={dataIndex}
+          rules={[{ required: true, message: `${title} is required.` }]}
+        >
+          <Select onChange={save}>
+            {options?.map(({ key, value }) => (
+              <Option key={key} value={value}>
+                {value}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
+      );
+    } else {
+      childNode = (
+        <div
+          className="editable-cell-value-wrap"
+          style={{ paddingRight: 24 }}
+          onClick={toggleIsEditing}
+        >
+          {children}
+        </div>
+      );
+    }
+  }
+
+  return <td {...restProps}>{childNode}</td>;
+};
+
+// table columns: name, email, school, application status, rsvp status
 const columns = [
   {
     title: 'Name',
     dataIndex: ['responses', '0'],
     sorter: true,
+    editable: false,
   },
   {
     title: 'Email',
     dataIndex: 'email',
     sorter: true,
+    editable: false,
   },
   {
     title: 'School',
     dataIndex: ['responses', '4'],
-    filters: (Questions[4] as Dropdown).options.map(({ name }) => ({
+    filters: (Questions[4] as DropdownQuestionType).options.map(({ name }) => ({
       text: name,
       value: name,
     })),
-    render: (text: any, record: User) =>
-      record.responses &&
-      (record.responses[4] === 'Other' ? record.responses[5] : record.responses[4]),
+    render: (_: string, record: SingleRecordType) =>
+      record.responses?.[record.responses[4] === 'Other' ? 5 : 4] ?? '',
     sorter: true,
+    editable: false,
+  },
+  {
+    title: 'Year',
+    dataIndex: ['responses', '7'],
+    filters: (Questions[7] as DropdownQuestionType).options.map(({ name }) => ({
+      text: name,
+      value: name,
+    })),
+    sorter: true,
+    editable: false,
   },
   {
     title: 'Application Status',
@@ -39,19 +176,23 @@ const columns = [
       value,
     })),
     sorter: true,
+    editable: true,
+    options: Object.values(ApplicationStatus).map((value: string) => ({ key: value, value })),
   },
   {
-    title: 'Year',
-    dataIndex: ['responses', '7'],
-    filters: (Questions[7] as Dropdown).options.map(({ name }) => ({
-      text: name,
-      value: name,
+    title: 'Rsvp Status',
+    dataIndex: 'rsvpStatus',
+    filters: Object.values(RSVPStatus).map((value) => ({
+      text: value,
+      value,
     })),
     sorter: true,
+    editable: true,
+    options: Object.values(RSVPStatus).map((value: string) => ({ key: value, value })),
   },
 ];
 
-type TableOnChange = NonNullable<TableProps<User>['onChange']>;
+type TableOnChange = NonNullable<TableProps<SingleRecordType>['onChange']>;
 export type TableFilters = Parameters<TableOnChange>['1'];
 export type TableSorter = Parameters<TableOnChange>['2'];
 
@@ -60,7 +201,7 @@ const getAllApplicantsForSwr = (
   pagination: TablePaginationConfig,
   filters: TableFilters,
   sorter: TableSorter
-) => getAllApplicants(pagination, filters, sorter);
+) => getAllApplicants(pagination, filters, sorter).then((axiosReq) => axiosReq.data);
 
 const Applicants: React.FC = () => {
   const [pagination, setPagination] = useState<TablePaginationConfig>({
@@ -69,25 +210,48 @@ const Applicants: React.FC = () => {
   });
   const [filters, setFilters] = useState<TableFilters>({});
   const [sorter, setSorter] = useState<TableSorter>({});
-  const { data } = useSWR(
+  const { data, mutate } = useSWR(
     [`/api/v1/applicants`, pagination, filters, sorter],
     getAllApplicantsForSwr
   );
-
-  const onChange: TableProps<User>['onChange'] = (pagination, filters, sorter) => {
-    setSorter(sorter);
-    setPagination(pagination);
-    setFilters(filters);
-  };
-
   const [exporting, setExporting] = useState(false);
   const onExportClick = () => {
     if (!data) {
       return;
     }
     setExporting(true);
-    downloadFile(data.data.totalCount, filters, sorter).then(() => setExporting(false));
+    downloadFile(data.totalCount, filters, sorter).then(() => setExporting(false));
   };
+
+  const onChange: TableProps<SingleRecordType>['onChange'] = (pagination, filters, sorter) => {
+    setSorter(sorter);
+    setPagination(pagination);
+    setFilters(filters);
+  };
+
+  const components = {
+    body: {
+      row: EditableRow,
+      cell: EditableCell,
+    },
+  };
+
+  const columns2 = columns.map((col) => {
+    if (!col.editable) return col;
+    return {
+      ...col,
+      onCell: (record: SingleRecordType, index?: number): EditableCellProps => ({
+        record,
+        editable: col.editable,
+        dataIndex: col.dataIndex as keyof SingleRecordType,
+        title: col.title,
+        mutate,
+        options: col.options,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        index: index!,
+      }),
+    };
+  });
 
   return (
     <div className={'applicants'}>
@@ -104,16 +268,16 @@ const Applicants: React.FC = () => {
           </Button>
         </Tooltip>
       </div>
-
       <Table
         size={'small'}
         className={'applicants'}
-        columns={columns}
+        columns={columns2}
+        components={components}
         rowKey={(record) => record.email}
-        dataSource={data?.data.data ?? []}
+        dataSource={data?.data ?? []}
         pagination={{
           ...pagination,
-          total: data?.data.totalCount,
+          total: data?.totalCount,
           position: ['topLeft', 'bottomRight'],
           showTotal: (t) => `${t} results`,
         }}

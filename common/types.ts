@@ -85,8 +85,7 @@ export enum ApplicationStatus {
   Declined = 'Declined',
 }
 export enum RSVPStatus {
-  InPerson = 'In Person',
-  Virtual = 'Virtual',
+  Attending="Attending",
   NotAttending = 'Not Attending',
   Unconfirmed = 'Unconfirmed',
 }
