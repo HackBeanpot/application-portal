@@ -29,11 +29,9 @@ import {
 } from '../components/dashboard/StatusDialogue';
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect';
 import Router from 'next/router';
-import {
-  isAfterRegistrationClosed,
-  isBeforeRegistrationOpens,
-} from '../common/dateUtils';
+import { isAfterRegistrationClosed, isBeforeRegistrationOpens } from '../common/dateUtils';
 import { useWarnIfUnsavedChanges } from '../components/hooks/useWarnIfUnsavedChanges';
+import { PostAcceptanceForm } from '../common/postAcceptanceForm';
 
 const getQuestionComponentFromType = (type: QuestionType) => {
   switch (type) {
@@ -53,10 +51,7 @@ const getQuestionComponentFromType = (type: QuestionType) => {
 
 const Application = (): ReactElement => {
   // data
-  const { data: registrationOpen } = useSWR(
-    '/api/v1/dates/registration-open',
-    getRegistrationOpen
-  );
+  const { data: registrationOpen } = useSWR('/api/v1/dates/registration-open', getRegistrationOpen);
   const { data: status } = useSWR('/api/v1/status', getStatus);
   const { data: registrationClosed } = useSWR(
     '/api/v1/dates/registration-closed',
@@ -81,10 +76,8 @@ const Application = (): ReactElement => {
     submittedFormData[String(index + 1)] = response;
   });
   const isEditing = alreadySubmitted && !disabled;
-  const registrationOpenDate =
-    registrationOpen?.data && new Date(registrationOpen?.data);
-  const registrationCloseDate =
-    registrationClosed?.data && new Date(registrationClosed?.data);
+  const registrationOpenDate = registrationOpen?.data && new Date(registrationOpen?.data);
+  const registrationCloseDate = registrationClosed?.data && new Date(registrationClosed?.data);
   const isBeforeRegistration = Boolean(
     registrationOpenDate && isBeforeRegistrationOpens(registrationOpenDate)
   );
@@ -166,7 +159,7 @@ const Application = (): ReactElement => {
           scrollToFirstError={{ behavior: 'smooth' }}
           layout="vertical"
         >
-          {Sections.map((sectionOrQuestion) => {
+          {PostAcceptanceForm.map((sectionOrQuestion) => {
             if (sectionOrQuestion.type === 'SECTION') {
               return (
                 <Form.Item key={sectionOrQuestion.id} noStyle>
@@ -174,9 +167,7 @@ const Application = (): ReactElement => {
                 </Form.Item>
               );
             }
-            return (
-              <FormQuestion key={sectionOrQuestion.id} q={sectionOrQuestion} />
-            );
+            return <FormQuestion key={sectionOrQuestion.id} q={sectionOrQuestion} />;
           })}
           <Form.Item noStyle>
             <div className="submit-container">
@@ -188,9 +179,7 @@ const Application = (): ReactElement => {
                 loading={isSubmitting}
                 size="large"
               >
-                {alreadySubmitted
-                  ? 'Resubmit Application'
-                  : 'Submit Application'}
+                {alreadySubmitted ? 'Resubmit Application' : 'Submit Application'}
               </Button>
             </div>
           </Form.Item>
@@ -224,9 +213,7 @@ const StatusDialogue: React.FC<StatusDialogueProps> = ({
     return <ApplyLater registrationOpen={format(registrationOpenDate)} />;
   } else if (isAfterRegistration) {
     if (!alreadySubmitted) {
-      return (
-        <DeadlinePassed registrationClosed={format(registrationCloseDate)} />
-      );
+      return <DeadlinePassed registrationClosed={format(registrationCloseDate)} />;
     }
     return <Submitted />;
   } else if (alreadySubmitted) {
@@ -236,9 +223,8 @@ const StatusDialogue: React.FC<StatusDialogueProps> = ({
         type="info"
         description={
           <>
-            You have already submitted your application, but you may edit and
-            resubmit your responses as many times as you{"'"}d like before
-            registration closes on{' '}
+            You have already submitted your application, but you may edit and resubmit your
+            responses as many times as you{"'"}d like before registration closes on{' '}
             <b>{registrationCloseDate && format(registrationCloseDate)}</b>.
             <div className="edit-button-container">
               <Button

@@ -24,7 +24,7 @@ const longTextMinLength = 0;
 const longTextMaxLength = 3000;
 
 // convenience constructors for questions (constructors in java)
-function makeCheckbox(
+export function makeCheckbox(
   field: string,
   content: ReactNode,
   options: Array<string>,
@@ -44,7 +44,7 @@ function makeCheckbox(
   };
 }
 
-function makeShortText(
+export function makeShortText(
   field: string,
   content: ReactNode,
   required: boolean,
@@ -63,7 +63,7 @@ function makeShortText(
   };
 }
 
-function makeDropdown(
+export function makeDropdown(
   field: string,
   content: ReactNode,
   options: Array<string>,
@@ -82,7 +82,7 @@ function makeDropdown(
   };
 }
 
-function makeLongText(field: string, content: ReactNode, required: boolean): LongText {
+export function makeLongText(field: string, content: ReactNode, required: boolean): LongText {
   questionCount++;
   return {
     field,
@@ -98,7 +98,7 @@ function makeLongText(field: string, content: ReactNode, required: boolean): Lon
 
 let sectionCount = 0;
 
-function makeSection(text: ReactNode): QuestionSection {
+export function makeSection(text: ReactNode): QuestionSection {
   sectionCount++;
   return {
     id: `section-${sectionCount}`,
