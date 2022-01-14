@@ -1,136 +1,20 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { ADMIN_TABS } from '../../common/constants';
-import { getAllApplicants, updateApplicantById } from '../../common/apiClient';
-import useSWR, { KeyedMutator } from 'swr';
+import { getAllApplicants } from '../../common/apiClient';
+import useSWR from 'swr';
+import { Button, Table, TablePaginationConfig, TableProps, Tooltip } from 'antd';
 import {
-  Table,
-  TablePaginationConfig,
-  TableProps,
-  Form,
-  Select,
-  notification,
-  Tooltip,
-  Button,
-} from 'antd';
-import {
+  ApplicantsApiResponse,
   ApplicationStatus,
   Dropdown as DropdownQuestionType,
   RSVPStatus,
-  ApplicantsApiResponse,
 } from '../../common/types';
 import { Questions } from '../../common/questions';
-import { FormInstance } from 'antd/lib/form';
 import { saveAs } from 'file-saver';
-import { ColumnsType } from 'antd/es/table';
+import { EditableRow } from './table/EditableRow';
+import { EditableCell, EditableCellProps } from './table/EditableCell';
 
-const { Option } = Select;
-const EditableContext = React.createContext<FormInstance | null>(null);
-type SingleRecordType = ApplicantsApiResponse['data'][number];
-
-interface EditableRowProps {
-  index: number;
-}
-
-const EditableRow: React.FC<EditableRowProps> = ({ index, ...props }) => {
-  const [form] = Form.useForm();
-  return (
-    <Form form={form} component={false}>
-      <EditableContext.Provider value={form}>
-        <tr {...props} />
-      </EditableContext.Provider>
-    </Form>
-  );
-};
-
-const notifyArg = (message: string) => ({
-  placement: 'bottomRight' as const,
-  bottom: 50,
-  duration: 3,
-  message,
-});
-
-interface EditableCellProps {
-  title: string;
-  editable: boolean;
-  dataIndex: keyof SingleRecordType;
-  record: SingleRecordType;
-  mutate: KeyedMutator<ApplicantsApiResponse>;
-  options?: Array<{ key: string; value: string }>;
-  index: number;
-}
-
-const EditableCell: React.FC<EditableCellProps> = ({
-  title,
-  editable,
-  children,
-  dataIndex,
-  record,
-  mutate,
-  options,
-  index,
-  ...restProps
-}) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const form = useContext(EditableContext)!;
-
-  const toggleIsEditing = () => {
-    setIsEditing(!isEditing);
-    form.setFieldsValue({ [dataIndex]: record[dataIndex] });
-  };
-
-  const save = async () => {
-    try {
-      const values = await form.validateFields();
-      toggleIsEditing();
-      const updatedRecord = { ...record, ...values };
-      // update the cache value so the table displays correct data before fetch returns
-      await mutate((response) => {
-        if (!response) return response;
-        response.data[index] = updatedRecord;
-        return { ...response, data: [...response.data] };
-      }, true);
-      await updateApplicantById(record._id, updatedRecord);
-      notification.success(
-        notifyArg(`Successfully updated application status for ${record.email}`)
-      );
-    } catch (e) {
-      notification.error(notifyArg('Request to change application status failed.'));
-    }
-  };
-
-  let childNode = children;
-  if (editable) {
-    if (isEditing) {
-      childNode = (
-        <Form.Item
-          style={{ margin: 0 }}
-          name={dataIndex}
-          rules={[{ required: true, message: `${title} is required.` }]}
-        >
-          <Select onChange={save}>
-            {options?.map(({ key, value }) => (
-              <Option key={key} value={value}>
-                {value}
-              </Option>
-            ))}
-          </Select>
-        </Form.Item>
-      );
-    } else {
-      childNode = (
-        <div
-          className="editable-cell-value-wrap"
-          style={{ paddingRight: 24 }}
-          onClick={toggleIsEditing}
-        >
-          {children}
-        </div>
-      );
-    }
-  }
-
-  return <td {...restProps}>{childNode}</td>;
-};
+export type SingleRecordType = ApplicantsApiResponse['data'][number];
 
 // table columns: name, email, school, application status, rsvp status
 const columns = [
@@ -138,13 +22,11 @@ const columns = [
     title: 'Name',
     dataIndex: ['responses', '0'],
     sorter: true,
-    editable: false,
   },
   {
     title: 'Email',
     dataIndex: 'email',
     sorter: true,
-    editable: false,
   },
   {
     title: 'School',
@@ -156,7 +38,6 @@ const columns = [
     render: (_: string, record: SingleRecordType) =>
       record.responses?.[record.responses[4] === 'Other' ? 5 : 4] ?? '',
     sorter: true,
-    editable: false,
   },
   {
     title: 'Year',
@@ -166,7 +47,6 @@ const columns = [
       value: name,
     })),
     sorter: true,
-    editable: false,
   },
   {
     title: 'Application Status',
