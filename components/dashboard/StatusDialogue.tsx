@@ -3,20 +3,14 @@ import { Alert, AlertProps, Button } from 'antd';
 import { isBefore } from 'date-fns';
 import Link from 'next/link';
 import React from 'react';
-import {
-  isAfterRegistrationClosed,
-  isBeforeRegistrationOpens,
-} from '../../common/dateUtils';
-
-// whether or not decisions should be show in the portal
-// toggle this to true after the decision process is over
-const SHOW_DECISIONS = false;
+import { isAfterRegistrationClosed, isBeforeRegistrationOpens } from '../../common/dateUtils';
 
 type StatusDialogueProps = {
   status: StatusApiResponse;
   confirmBy: Date;
   registrationClosed: Date;
   registrationOpen: Date;
+  showDecision: boolean;
 };
 
 export const StatusDialogue: React.FC<StatusDialogueProps> = ({
@@ -24,6 +18,7 @@ export const StatusDialogue: React.FC<StatusDialogueProps> = ({
   registrationOpen,
   confirmBy,
   status: { applicationStatus },
+  showDecision,
 }) => {
   if (isBeforeRegistrationOpens(registrationOpen)) {
     // before registration opens case
@@ -45,7 +40,7 @@ export const StatusDialogue: React.FC<StatusDialogueProps> = ({
   // after registration has already closed
   if (applicationStatus === ApplicationStatus.Incomplete) {
     return <DeadlinePassed registrationClosed={format(registrationClosed)} />;
-  } else if (!SHOW_DECISIONS) {
+  } else if (!showDecision) {
     return <Submitted />;
   } else {
     // after registration closed, and we are showing decisions
@@ -72,9 +67,7 @@ export const StatusDialogue: React.FC<StatusDialogueProps> = ({
       return <Waitlisted />;
     }
     const _: never = applicationStatus;
-    throw new Error(
-      'please add a new case for this application status: ' + applicationStatus
-    );
+    throw new Error('please add a new case for this application status: ' + applicationStatus);
   }
 };
 
@@ -82,26 +75,14 @@ const ShortAlert = (
   type: AlertProps['type'],
   message: AlertProps['message'],
   description: AlertProps['description']
-) => (
-  <Alert
-    className="alert"
-    showIcon
-    type={type}
-    message={message}
-    description={description}
-  />
-);
+) => <Alert className="alert" showIcon type={type} message={message} description={description} />;
 export const LoadingMessage: React.FC = () =>
   ShortAlert(
     'info',
     'Loading, please wait...',
     'Loading deadlines and application status, please wait...'
   );
-export const ApplyLater = ({
-  registrationOpen,
-}: {
-  registrationOpen: string;
-}) =>
+export const ApplyLater = ({ registrationOpen }: { registrationOpen: string }) =>
   ShortAlert(
     'info',
     <>
@@ -114,9 +95,8 @@ const Incomplete = ({ registrationClosed }: { registrationClosed: string }) =>
     'warning',
     'Incomplete',
     <>
-      You still need to complete your application! If you do not complete your
-      application before <b>{registrationClosed}</b>, you will not be considered
-      for admission.
+      You still need to complete your application! If you do not complete your application before{' '}
+      <b>{registrationClosed}</b>, you will not be considered for admission.
     </>
   );
 export const Submitted = () =>
@@ -124,8 +104,8 @@ export const Submitted = () =>
     'info',
     'Application Submitted',
     <>
-      Thank you for submitting your application! We will notify you by email
-      when there is a change in your application status.
+      Thank you for submitting your application! We will notify you by email when there is a change
+      in your application status.
     </>
   );
 const PleaseEmailUs = () =>
@@ -133,25 +113,19 @@ const PleaseEmailUs = () =>
     'info',
     'Application Submitted',
     <>
-      Your application is still marked as {"'submitted'"}, but the decisions
-      period is over. Please email us at team@hackbeanpot.com so we can update
-      your application status!
+      Your application is still marked as {"'submitted'"}, but the decisions period is over. Please
+      email us at team@hackbeanpot.com so we can update your application status!
     </>
   );
-export const DeadlinePassed = ({
-  registrationClosed,
-}: {
-  registrationClosed: string;
-}) =>
+export const DeadlinePassed = ({ registrationClosed }: { registrationClosed: string }) =>
   ShortAlert(
     'error',
     'Apply-By Deadline Passed',
 
     <>
-      Unfortunately, the deadline to apply to this year{"'"}s event was{' '}
-      <b>{registrationClosed}</b>. In the meantime, please sign up for our
-      mailing list to stay up to get notified when applications open for next
-      year{"'"}s event!
+      Unfortunately, the deadline to apply to this year{"'"}s event was <b>{registrationClosed}</b>.
+      In the meantime, please sign up for our mailing list to stay up to get notified when
+      applications open for next year{"'"}s event!
     </>
   );
 const Admitted = ({ confirmBy }: { confirmBy: Date }) =>
@@ -159,9 +133,8 @@ const Admitted = ({ confirmBy }: { confirmBy: Date }) =>
     'success',
     'Admitted',
     <>
-      Congratulations, we would love to have you attend this year{"'"}s event!
-      Please confirm your RSVP status below. The deadline to confirm your
-      attendance is {format(confirmBy)}.
+      Congratulations, we would love to have you attend this year{"'"}s event! Please confirm your
+      RSVP status below. The deadline to confirm your attendance is {format(confirmBy)}.
     </>
   );
 const Waitlisted = () =>
@@ -175,10 +148,9 @@ const Declined = () =>
     'error',
     'Declined',
     <>
-      Unfortunately, we had more applicants than we could accept. However, we
-      would still love for you to apply next year. In the meantime, please sign
-      up for our mailing list to stay up to get notified when applications open
-      for next year{"'"}s event!
+      Unfortunately, we had more applicants than we could accept. However, we would still love for
+      you to apply next year. In the meantime, please sign up for our mailing list to stay up to get
+      notified when applications open for next year{"'"}s event!
     </>
   );
 
