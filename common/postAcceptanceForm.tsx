@@ -17,17 +17,17 @@ export const PostAcceptanceForm: Array<QuestionSection | QuestionDefinition> = [
     'Yes'
   ),
   makeCheckbox('adult', 'Are you 18 years of age or older?', ['Yes', 'No'], true, 1),
-  makeSection(<>Above 18 Signature</>, 'PARTICIPANT WAIVER: bit.ly/hbp2022-waiver'),
+  makeSection(<>Above 18 Signature</>),
   makeShortText(
     'adultSignature',
-    'By typing my full legal name below, I acknowledge that this represents my legal signature and that I have read and agreed to the terms and conditions stated in the Participant Waiver.',
+    'By typing my full legal name below, I acknowledge that this represents my legal signature and that I have read and agreed to the terms and conditions stated in the Participant Waiver. PARTICIPANT WAIVER: bit.ly/hbp2022-waiver',
     true,
     'First Last'
   ),
   makeSection(<>Under 18 Signature</>, 'PARTICIPANT WAIVER: bit.ly/hbp2022-waiver'),
   makeShortText(
     'minorSignature',
-    'Attendee: I acknowledge that I am above 13 and that I have read and agreed to the terms and conditions stated in the Participant Waiver.',
+    'Attendee: I acknowledge that I am above 13 and that I have read and agreed to the terms and conditions stated in the Participant Waiver. PARTICIPANT WAIVER: bit.ly/hbp2022-waiver',
     true,
     'First Last'
   ),

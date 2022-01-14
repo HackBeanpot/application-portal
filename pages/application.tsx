@@ -165,6 +165,7 @@ const Application = (): ReactElement => {
                 <Form.Item key={sectionOrQuestion.id} noStyle>
                   <div className="section">{sectionOrQuestion.text}</div>
                   <div className="section-description">{sectionOrQuestion.description}</div>
+                  {(sectionOrQuestion.description != "") && <br/>}
                 </Form.Item>
               );
             }
