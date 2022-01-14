@@ -51,13 +51,13 @@ export const EditableCell: React.FC<EditableCellProps> = ({
       const values = await form.validateFields();
       toggleIsEditing();
       const updatedRecord = { ...record, ...values };
+      await updateApplicantById(record._id, updatedRecord);
       // update the cache value so the table displays correct data before fetch returns
       await mutate((response) => {
         if (!response) return response;
         response.data[index] = updatedRecord;
         return { ...response, data: [...response.data] };
       }, true);
-      await updateApplicantById(record._id, updatedRecord);
       notification.success(
         notifyArg(`Successfully updated application status for ${record.email}`)
       );
