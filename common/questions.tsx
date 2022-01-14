@@ -98,12 +98,13 @@ export function makeLongText(field: string, content: ReactNode, required: boolea
 
 let sectionCount = 0;
 
-export function makeSection(text: ReactNode): QuestionSection {
+export function makeSection(text: ReactNode, description? : ReactNode): QuestionSection {
   sectionCount++;
   return {
     id: `section-${sectionCount}`,
     text: <h2>{text}</h2>,
     type: 'SECTION',
+    description: description ? description : ""
   };
 }
 

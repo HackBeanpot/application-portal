@@ -164,6 +164,7 @@ const Application = (): ReactElement => {
               return (
                 <Form.Item key={sectionOrQuestion.id} noStyle>
                   <div className="section">{sectionOrQuestion.text}</div>
+                  <div className="section-description">{sectionOrQuestion.description}</div>
                 </Form.Item>
               );
             }
