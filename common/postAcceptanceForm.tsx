@@ -79,9 +79,12 @@ export const PostAcceptanceForm: Array<QuestionSection | QuestionDefinition> = [
   ),
   makeCheckbox(
     'swag',
-    'Which of the following swag items would you like to receive?' +
-      <br /> +
-      'In the spirit of sustainability, we want to make sure that all of our swag items are useful and appreciated by everyone! Please help us by only opting in to the items that you would actually like.',
+    <div>
+      <p>
+      Which of the following swag items would you like to receive?
+      </p>
+      In the spirit of sustainability, we want to make sure that all of our swag items are useful and appreciated by everyone! Please help us by only opting in to the items that you would actually like.
+    </div>,
     [
       'T-shirt: our annual event shirt',
       'Sticker sheet: classic HBP logo sticker with special space themed stickers',
