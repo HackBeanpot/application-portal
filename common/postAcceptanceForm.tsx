@@ -15,17 +15,8 @@ export const PostAcceptanceForm: Array<QuestionSection | QuestionDefinition> = [
       and qualify for domestic shipping. Thanks for your understanding.
     </div>
   ),
-  makeShortText(
-    'email',
-    <div>
-      <p>Email address</p>
-      Please use the email address you applied to HackBeanpot with - this should be the one where
-      you received your acceptance email!
-    </div>,
-    true,
-    'Email address'
-  ),
-  makeShortText('name', 'Full name', true, 'First Last'),
+  makeShortText('firstName', 'First name', true, 'First name'),
+  makeShortText('lastName', 'Last name', true, 'Last name'),
   makeDropdown(
     'attending',
     'Please select if you will be attending HackBeanpot on the weekend of February 11 - 13th, 2022. If you cannot make it, please select No and leave the rest of the form blank so that we can admit others on the waitlist instead.',
@@ -33,8 +24,8 @@ export const PostAcceptanceForm: Array<QuestionSection | QuestionDefinition> = [
     true,
     'Yes'
   ),
-  makeCheckbox('adult', 'Are you 18 years of age or older?', ['Yes', 'No'], true, 1),
-  makeSection(<>Above 18 Signature</>),
+  makeDropdown('adult', 'Are you 18 years of age or older?', ['Yes', 'No'], true, 'Yes'),
+  makeSection(<>Above 18 Signature</>, "Complete this section only if you are above 18 years of age. If you are not, please complete the following section, accompanied by a parent or guardian."),
   makeShortText(
     'adultSignature',
     <div>
@@ -51,7 +42,7 @@ export const PostAcceptanceForm: Array<QuestionSection | QuestionDefinition> = [
     true,
     'First Last'
   ),
-  makeSection(<>Under 18 Signature</>),
+  makeSection(<>Under 18 Signature</>, "Complete this section only if you are under 18 years of age. If you are not, please complete the above section."),
   makeShortText(
     'minorSignature',
     <div>
@@ -108,7 +99,7 @@ export const PostAcceptanceForm: Array<QuestionSection | QuestionDefinition> = [
     'pickUpSwag',
     <div>
       <p>
-        If you are in the Boston area, would you be interested in picking up your swag box at a
+        If you are in the Boston area, would you be able to pick up your swag box at a
         location on the Northeastern University campus in January?
       </p>
       It would really help us out :') Shipping is expensive these days but we want to get you the
