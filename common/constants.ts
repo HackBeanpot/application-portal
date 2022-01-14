@@ -51,7 +51,7 @@ export const EXAMPLE_USER: User = {
   learningGoals: 'cs',
   responses: [],
   isAdmin: true,
-  rsvpStatus: RSVPStatus.InPerson,
+  rsvpStatus: RSVPStatus.Attending,
 };
 export const EXAMPLE_RESPONSE: RegistrationApiRequest = {
   responses: ['Judy Su', EXAMPLE_ETHNICITIES],

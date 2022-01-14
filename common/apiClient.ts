@@ -5,6 +5,7 @@ import {
   DatesApiResponse,
   TeamApiResponse,
   RegistrationApiResponse,
+  ApplicantsApiResponse
 } from './types';
 import Axios, { AxiosResponse } from 'axios';
 import { TablePaginationConfig } from 'antd';
@@ -35,13 +36,6 @@ export const updateApplicantResponses = (
   responses: RegistrationApiRequest
 ): Promise<AxiosResponse<string | null>> =>
   Axios.post(`/api/v1/registration`, responses, { validateStatus: () => true });
-
-type ApplicantsApiResponse = {
-  data: Array<User>;
-  totalCount: number;
-  page: number;
-  pageSize: number;
-};
 
 export function getAllApplicants(
   pagination: TablePaginationConfig,

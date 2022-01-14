@@ -5,7 +5,7 @@ import { isBefore } from 'date-fns';
 import { attemptToValidateRegistrationApiRequest } from '../../../server/validators';
 import Joi from 'joi';
 import { connectToDatabase } from '../../../server/mongoDB';
-import { assumeLoggedInGetEmail } from '../../../server/protect';
+import { assumeLoggedInGetEmail, protect } from '../../../server/protect';
 
 const postAcceptanceHandler: NextApiHandler = async (req, res) => {
   switch (req.method) {
@@ -26,7 +26,9 @@ const postHandler: NextApiHandler = async (req, res) => {
   ]);
   const NOW = new Date();
   if (isBefore(NOW, new Date(registrationClosed!))) {
-    return res.status(400).json('Registration is still open; cannot submit post acceptance form yet.');
+    return res
+      .status(400)
+      .json('Registration is still open; cannot submit post acceptance form yet.');
   }
   if (isBefore(new Date(confirmBy!), NOW)) {
     return res.status(400).json('Confirm by date has passed; post acceptance form is now closed.');
@@ -38,21 +40,19 @@ const postHandler: NextApiHandler = async (req, res) => {
     if (Joi.isError(e)) {
       return res.status(400).json(e.message);
     }
-    return res
-      .status(500)
-      .json('something broke. please email us immediately.');
+    return res.status(500).json('something broke. please email us immediately.');
   }
   const email = await assumeLoggedInGetEmail(req);
   const { userDataCollection } = await connectToDatabase();
   // upsert = update, or if object doesn't exist, insert
-  const isAttending = true; 
+  const isAttending = true;
   await userDataCollection.updateOne(
     { email },
     {
       $set: {
         responses: result.responses,
         email,
-        rsvpStatus: isAttending ? RSVPStatus.Attending : RSVPStatus.NotAttending
+        rsvpStatus: isAttending ? RSVPStatus.Attending : RSVPStatus.NotAttending,
       },
     },
     { upsert: true }
@@ -60,3 +60,4 @@ const postHandler: NextApiHandler = async (req, res) => {
   return res.status(200).send(undefined);
 };
 
+export default protect(postAcceptanceHandler);

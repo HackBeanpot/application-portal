@@ -154,3 +154,10 @@ export type StatusApiResponse = {
 export type TeamApiResponse = Team;
 
 export type DatesApiResponse = string;
+
+export type ApplicantsApiResponse = {
+  data: Array<User>;
+  totalCount: number;
+  page: number;
+  pageSize: number;
+};
