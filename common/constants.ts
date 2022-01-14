@@ -36,7 +36,6 @@ export const EXAMPLE_USER: User = {
   email: 'judysu@gmail.com',
   firstName: 'Judy',
   lastName: 'Su',
-  id: EXAMPLE_USER_ID,
   gender: EXAMPLE_GENDER,
   school: 'Northeastern',
   education: EXAMPLE_EDUCATION,
@@ -51,7 +50,7 @@ export const EXAMPLE_USER: User = {
   learningGoals: 'cs',
   responses: [],
   isAdmin: true,
-  rsvpStatus: RSVPStatus.InPerson,
+  rsvpStatus: RSVPStatus.Unconfirmed,
 };
 export const EXAMPLE_RESPONSE: RegistrationApiRequest = {
   responses: ['Judy Su', EXAMPLE_ETHNICITIES],
