@@ -19,7 +19,6 @@ import {
 import { PageLayout } from '../components/Layout';
 import { Questions, Sections } from '../common/questions';
 import { Alert, Button, Form, notification } from 'antd';
-import { GetServerSideProps } from 'next';
 import useSWR from 'swr';
 import {
   ApplyLater,
@@ -27,11 +26,9 @@ import {
   format,
   Submitted,
 } from '../components/dashboard/StatusDialogue';
-import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect';
 import Router from 'next/router';
 import { isAfterRegistrationClosed, isBeforeRegistrationOpens } from '../common/dateUtils';
 import { useWarnIfUnsavedChanges } from '../components/hooks/useWarnIfUnsavedChanges';
-import { PostAcceptanceForm } from '../common/postAcceptanceForm';
 
 const getQuestionComponentFromType = (type: QuestionType) => {
   switch (type) {
@@ -159,13 +156,13 @@ const Application = (): ReactElement => {
           scrollToFirstError={{ behavior: 'smooth' }}
           layout="vertical"
         >
-          {PostAcceptanceForm.map((sectionOrQuestion) => {
+          {Sections.map((sectionOrQuestion) => {
             if (sectionOrQuestion.type === 'SECTION') {
               return (
                 <Form.Item key={sectionOrQuestion.id} noStyle>
                   <div className="section">{sectionOrQuestion.text}</div>
                   <div className="section-description">{sectionOrQuestion.description}</div>
-                  {(sectionOrQuestion.description != "") && <br/>}
+                  {sectionOrQuestion.description != '' && <br />}
                 </Form.Item>
               );
             }
