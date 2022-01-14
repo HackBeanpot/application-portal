@@ -155,7 +155,7 @@ export const PostAcceptanceForm: Array<QuestionSection | QuestionDefinition> = [
       'Mingling with everyone',
       'Jamming out on the dancefloor',
       'Chilling in the corner',
-      'What are u Hosting the party about',
+      'Hosting the party',
     ],
     true,
     'Eating/bringing all the food'
