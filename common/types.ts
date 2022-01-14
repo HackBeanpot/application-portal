@@ -99,6 +99,7 @@ export type QuestionSection = {
   id: string;
   type: 'SECTION';
   text: ReactNode;
+  description?: ReactNode;
 };
 
 export type QuestionId = string;
