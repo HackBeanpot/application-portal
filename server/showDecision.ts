@@ -1,16 +1,17 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { connectToDatabase } from './mongoDB';
-import { DateSingleton, SingletonType } from '../common/types';
+import { DateSingleton, ShowDecisionSingleton, SingletonType } from '../common/types';
 import { isAdmin } from './protect';
+import { WithId } from 'mongodb';
 
 export const queryShowDecision = async (
   showDecision: SingletonType.ShowDecision
 ): Promise<boolean | undefined> => {
   const { singletonDataCollection } = await connectToDatabase();
-  const data = await singletonDataCollection.findOne({
+  const data = (await singletonDataCollection.findOne({
     type: showDecision,
-  });
-  return data?.value === 'true';
+  })) as ShowDecisionSingleton;
+  return data?.value;
 };
 
 export const getShowDecision = async (
@@ -32,7 +33,9 @@ export const postShowDecision = async (
   //   return res.status(401).send({ message: 'User is not an admin' });
   // }
 
+  // console.log(req.body)
   const newDecision: string = req.body.showDecision;
+  console.log(newDecision);
   const { singletonDataCollection } = await connectToDatabase();
   await singletonDataCollection.updateOne(
     { type: showDecision },

@@ -103,7 +103,7 @@ export function deleteTeamInfo(): Promise<AxiosResponse<undefined>> {
 }
 
 export function updateShowDecision(showDecision: boolean): Promise<AxiosResponse<boolean>> {
-  return Axios.post(`/api/v1/show-decision`, { showDecision });
+  return Axios.post(`/api/v1/show-decision`, { showDecision: showDecision });
 }
 
 export function getShowDecision(): Promise<AxiosResponse<boolean>> {

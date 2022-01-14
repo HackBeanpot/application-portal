@@ -23,7 +23,7 @@ export interface User {
   responses?: Array<QuestionResponse>;
 }
 
-export type SingletonDefinition = DateSingleton;
+export type SingletonDefinition = DateSingleton | ShowDecisionSingleton;
 
 export enum SingletonType {
   RegistrationOpen = 'registration-open',
@@ -32,13 +32,14 @@ export enum SingletonType {
   ShowDecision = 'show-decision',
 }
 
+export interface ShowDecisionSingleton {
+  value: boolean;
+  type: SingletonType.ShowDecision;
+}
+
 export interface DateSingleton {
   value: string;
-  type:
-    | SingletonType.RegistrationClosed
-    | SingletonType.RegistrationOpen
-    | SingletonType.ConfirmBy
-    | SingletonType.ShowDecision;
+  type: SingletonType.RegistrationClosed | SingletonType.RegistrationOpen | SingletonType.ConfirmBy;
 }
 
 export interface Team {

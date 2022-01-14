@@ -65,7 +65,6 @@ const PortalSettings: React.FC = () => {
         refresh={mutateConfirmBy}
       />
       <div className="showDecisions">
-        {' '}
         Show Decisions
         <Switch onChange={updateShowDecision} />
       </div>
