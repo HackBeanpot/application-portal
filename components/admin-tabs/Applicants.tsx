@@ -3,11 +3,20 @@ import { ADMIN_TABS } from '../../common/constants';
 import { getAllApplicants } from '../../common/apiClient';
 import useSWR from 'swr';
 import { Button, Table, TablePaginationConfig, TableProps, Tooltip } from 'antd';
-import { ApplicationStatus, Dropdown, User } from '../../common/types';
+import {
+  ApplicantsApiResponse,
+  ApplicationStatus,
+  Dropdown as DropdownQuestionType,
+  RSVPStatus,
+} from '../../common/types';
 import { Questions } from '../../common/questions';
 import { saveAs } from 'file-saver';
+import { EditableRow } from './table/EditableRow';
+import { EditableCell, EditableCellProps } from './table/EditableCell';
 
-// table columns: name, email, school, application status
+export type SingleRecordType = ApplicantsApiResponse['data'][number];
+
+// table columns: name, email, school, application status, rsvp status
 const columns = [
   {
     title: 'Name',
@@ -22,13 +31,21 @@ const columns = [
   {
     title: 'School',
     dataIndex: ['responses', '4'],
-    filters: (Questions[4] as Dropdown).options.map(({ name }) => ({
+    filters: (Questions[4] as DropdownQuestionType).options.map(({ name }) => ({
       text: name,
       value: name,
     })),
-    render: (text: any, record: User) =>
-      record.responses &&
-      (record.responses[4] === 'Other' ? record.responses[5] : record.responses[4]),
+    render: (_: string, record: SingleRecordType) =>
+      record.responses?.[record.responses[4] === 'Other' ? 5 : 4] ?? '',
+    sorter: true,
+  },
+  {
+    title: 'Year',
+    dataIndex: ['responses', '7'],
+    filters: (Questions[7] as DropdownQuestionType).options.map(({ name }) => ({
+      text: name,
+      value: name,
+    })),
     sorter: true,
   },
   {
@@ -39,19 +56,23 @@ const columns = [
       value,
     })),
     sorter: true,
+    editable: true,
+    options: Object.values(ApplicationStatus).map((value: string) => ({ key: value, value })),
   },
   {
-    title: 'Year',
-    dataIndex: ['responses', '7'],
-    filters: (Questions[7] as Dropdown).options.map(({ name }) => ({
-      text: name,
-      value: name,
+    title: 'Rsvp Status',
+    dataIndex: 'rsvpStatus',
+    filters: Object.values(RSVPStatus).map((value) => ({
+      text: value,
+      value,
     })),
     sorter: true,
+    editable: true,
+    options: Object.values(RSVPStatus).map((value: string) => ({ key: value, value })),
   },
 ];
 
-type TableOnChange = NonNullable<TableProps<User>['onChange']>;
+type TableOnChange = NonNullable<TableProps<SingleRecordType>['onChange']>;
 export type TableFilters = Parameters<TableOnChange>['1'];
 export type TableSorter = Parameters<TableOnChange>['2'];
 
@@ -60,7 +81,7 @@ const getAllApplicantsForSwr = (
   pagination: TablePaginationConfig,
   filters: TableFilters,
   sorter: TableSorter
-) => getAllApplicants(pagination, filters, sorter);
+) => getAllApplicants(pagination, filters, sorter).then((axiosReq) => axiosReq.data);
 
 const Applicants: React.FC = () => {
   const [pagination, setPagination] = useState<TablePaginationConfig>({
@@ -69,25 +90,48 @@ const Applicants: React.FC = () => {
   });
   const [filters, setFilters] = useState<TableFilters>({});
   const [sorter, setSorter] = useState<TableSorter>({});
-  const { data } = useSWR(
+  const { data, mutate } = useSWR(
     [`/api/v1/applicants`, pagination, filters, sorter],
     getAllApplicantsForSwr
   );
-
-  const onChange: TableProps<User>['onChange'] = (pagination, filters, sorter) => {
-    setSorter(sorter);
-    setPagination(pagination);
-    setFilters(filters);
-  };
-
   const [exporting, setExporting] = useState(false);
   const onExportClick = () => {
     if (!data) {
       return;
     }
     setExporting(true);
-    downloadFile(data.data.totalCount, filters, sorter).then(() => setExporting(false));
+    downloadFile(data.totalCount, filters, sorter).then(() => setExporting(false));
   };
+
+  const onChange: TableProps<SingleRecordType>['onChange'] = (pagination, filters, sorter) => {
+    setSorter(sorter);
+    setPagination(pagination);
+    setFilters(filters);
+  };
+
+  const components = {
+    body: {
+      row: EditableRow,
+      cell: EditableCell,
+    },
+  };
+
+  const columns2 = columns.map((col) => {
+    if (!col.editable) return col;
+    return {
+      ...col,
+      onCell: (record: SingleRecordType, index?: number): EditableCellProps => ({
+        record,
+        editable: col.editable,
+        dataIndex: col.dataIndex as keyof SingleRecordType,
+        title: col.title,
+        mutate,
+        options: col.options,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        index: index!,
+      }),
+    };
+  });
 
   return (
     <div className={'applicants'}>
@@ -104,16 +148,16 @@ const Applicants: React.FC = () => {
           </Button>
         </Tooltip>
       </div>
-
       <Table
         size={'small'}
         className={'applicants'}
-        columns={columns}
+        columns={columns2}
+        components={components}
         rowKey={(record) => record.email}
-        dataSource={data?.data.data ?? []}
+        dataSource={data?.data ?? []}
         pagination={{
           ...pagination,
-          total: data?.data.totalCount,
+          total: data?.totalCount,
           position: ['topLeft', 'bottomRight'],
           showTotal: (t) => `${t} results`,
         }}

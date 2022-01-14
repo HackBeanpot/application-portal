@@ -7,7 +7,6 @@ export interface User {
   applicationStatus: ApplicationStatus;
   firstName?: string;
   lastName?: string;
-  id?: string;
   gender?: Gender;
   school?: string;
   education?: Education;
@@ -85,8 +84,7 @@ export enum ApplicationStatus {
   Declined = 'Declined',
 }
 export enum RSVPStatus {
-  InPerson = 'In Person',
-  Virtual = 'Virtual',
+  Confirmed = 'Confirmed',
   NotAttending = 'Not Attending',
   Unconfirmed = 'Unconfirmed',
 }
@@ -156,3 +154,14 @@ export type StatusApiResponse = {
 export type TeamApiResponse = Team;
 
 export type DatesApiResponse = string;
+
+export type ApplicantsApiResponse = {
+  data: Array<User & { _id: string }>;
+  totalCount: number;
+  page: number;
+  pageSize: number;
+};
+
+export type SingleApplicantApiResponse = {
+  user: User & { _id: string };
+};

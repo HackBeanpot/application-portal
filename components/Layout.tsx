@@ -17,10 +17,7 @@ type PageLayoutProps = {
   currentPage: typeof Pages[number];
 };
 
-export const PageLayout: React.FC<PageLayoutProps> = ({
-  currentPage,
-  children,
-}) => {
+export const PageLayout: React.FC<PageLayoutProps> = ({ currentPage, children }) => {
   const [navOpen, setNavOpen] = useState(false);
   const { data: user } = useSWR('/api/v1/user', getUser);
   const { data: session } = useSession();
@@ -28,21 +25,18 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
     f();
     setNavOpen(false);
   };
+  const signOutAndRouter = () => {
+    signOut();
+    router.push('/auth/signin');
+  };
+
   return (
     <Layout className="layout">
       <div className={navOpen ? 'hamburger hamburger-open' : 'hamburger'}>
-        <MenuOutlined
-          className="icon"
-          onClick={() => setNavOpen((prev) => !prev)}
-          height={1}
-        />
+        <MenuOutlined className="icon" onClick={() => setNavOpen((prev) => !prev)} height={1} />
         {navOpen && (
           <Menu theme="dark" className="menu">
-            <Menu.Item
-              className="menu-item"
-              key="home"
-              onClick={andClose(() => router.push('/'))}
-            >
+            <Menu.Item className="menu-item" key="home" onClick={andClose(() => router.push('/'))}>
               Dashboard
             </Menu.Item>
             <Menu.Item
@@ -68,11 +62,7 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
                 Admin
               </Menu.Item>
             )}
-            <Menu.Item
-              className="menu-item"
-              key="signout"
-              onClick={andClose(() => signOut())}
-            >
+            <Menu.Item className="menu-item" key="signout" onClick={signOutAndRouter}>
               Sign out
             </Menu.Item>
           </Menu>
@@ -80,20 +70,9 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
       </div>
       <Header className="header">
         <div className="logo-container">
-          <Image
-            className="logo"
-            src={Logo}
-            alt="HackBeanpot logo"
-            width={32}
-            height={32}
-          />
+          <Image className="logo" src={Logo} alt="HackBeanpot logo" width={32} height={32} />
         </div>
-        <Menu
-          className="menu"
-          theme="dark"
-          mode="horizontal"
-          selectedKeys={[currentPage]}
-        >
+        <Menu className="menu" theme="dark" mode="horizontal" selectedKeys={[currentPage]}>
           <Menu.Item key="home">
             <Link href="/">Dashboard</Link>
           </Menu.Item>
@@ -114,7 +93,7 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
             className="user"
             overlay={
               <Menu theme={'light'}>
-                <Menu.Item key="signout" onClick={() => signOut()}>
+                <Menu.Item key="signout" onClick={signOutAndRouter}>
                   Sign out
                 </Menu.Item>
               </Menu>
