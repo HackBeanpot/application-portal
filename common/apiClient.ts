@@ -25,9 +25,8 @@ export function getAllAdmins() {
 
 export const getUser = (): Promise<AxiosResponse<User>> => Axios.get(`/api/v1/user`);
 
-export function updateApplicantById(id: number, user: User) {
+export const updateApplicantById = (id: string, user: User): Promise<AxiosResponse> =>
   Axios.post(`/api/v1/applicants/${id}`, user);
-}
 
 export const getApplicantResponses = (): Promise<AxiosResponse<RegistrationApiResponse>> =>
   Axios.get('/api/v1/registration');
