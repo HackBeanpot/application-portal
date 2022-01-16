@@ -407,7 +407,7 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
   ),
   makeSection(
     <>Now the fun stuff!</>,
-    "Even though our event will be mostly virtual, we still plan on getting our awesome swag to our attendees! We will be having Swag Outpost stations on certain days at Northeastern University's campus in Boston. For those unable to pick up in Boston, we will try our best to ship swag to you if you're within the continental US."
+    "Even though our event will be mostly virtual, we still plan on getting our awesome swag to our attendees! We will be having Swag Outpost stations on certain days at Northeastern University's campus in Boston. For those unable to pick up in Boston, we will try our best to ship swag to you if you're within the continental US. If you would like to cover your international shipping costs for swag shipping costs, please email team@hackbeanpot.com with your mailing address."
   ),
   makeCheckbox(
     'swag',
@@ -420,7 +420,7 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
     [
       'T-shirt: our annual event shirt',
       'Sticker sheet: classic HBP logo sticker with special space themed stickers',
-      'Cafe glasses: clear glass coffee cups with HBP logo printed on them',
+      'Cafe glasses: clear glass coffee cups with HBP logo printed on them (Cafe glasses will be an in-person only option due to them being unable to being shipped',
       'All of the above',
       'None or N/A',
     ],
@@ -430,8 +430,9 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
   makeShortText(
     'accomodations',
     <div>
-      <p>Are there any accommodations (e.g. dietary restrictions) you would need from us?</p>
-      For snacks!
+      <p>
+        Are there any accommodations (e.g. dietary restrictions) you would need from us for snacks?
+      </p>
     </div>,
     false,
     'accomodations'
@@ -441,7 +442,9 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
     <div>
       <p>
         If you are in the Boston area, would you be able to pick up your swag box at a location on
-        the Northeastern University campus in January?
+        the Northeastern University campus from January 29 - February 5? A separate Google form for
+        swag outpost pickup will be sent to your email at a later time to coordinate Swag Pickup
+        timeslots.
       </p>
       It would really help us out :{"'"}) Shipping is expensive these days but we want to get you
       the BEST swag out there!
