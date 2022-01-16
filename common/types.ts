@@ -130,6 +130,12 @@ export interface LongText extends IQuestion {
   minLength: number;
 }
 
+export enum AttendingState {
+  Unspecified = 'Unspecified',
+  No = 'No',
+  Yes = 'Yes',
+}
+
 /**
  * is a single string for text responses, and an array of the choices for multi-select responses
  */
