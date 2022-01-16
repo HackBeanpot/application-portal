@@ -52,7 +52,7 @@ const postHandler: NextApiHandler = async (req, res) => {
       $set: {
         responses: result.responses,
         email,
-        rsvpStatus: isAttending ? RSVPStatus.Attending : RSVPStatus.NotAttending,
+        rsvpStatus: isAttending ? RSVPStatus.Confirmed : RSVPStatus.NotAttending,
       },
     },
     { upsert: true }

@@ -5,7 +5,7 @@ import {
   DatesApiResponse,
   TeamApiResponse,
   RegistrationApiResponse,
-  ApplicantsApiResponse
+  ApplicantsApiResponse,
 } from './types';
 import Axios, { AxiosResponse } from 'axios';
 import { TablePaginationConfig } from 'antd';
