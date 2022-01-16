@@ -14,6 +14,7 @@ import { format } from '../dashboard/StatusDialogue';
 import { isAfterRegistrationClosed, isBeforeRegistrationOpens } from '../../common/utils';
 import { useWarnIfUnsavedChanges } from '../hooks/useWarnIfUnsavedChanges';
 import { FormQuestion } from './FormQuestion';
+import { FormSectionsAndQuestions } from './FormSectionsAndQuestions';
 
 export const ApplicationForm = (): ReactElement => {
   // data
@@ -88,7 +89,7 @@ export const ApplicationForm = (): ReactElement => {
   };
 
   return (
-    <div className="application">
+    <>
       <h1 className="app-header">Application Page</h1>
       {registrationCloseDate && registrationOpenDate && alreadySubmitted && (
         <Alert
@@ -133,25 +134,7 @@ export const ApplicationForm = (): ReactElement => {
         scrollToFirstError={{ behavior: 'smooth' }}
         layout="vertical"
       >
-        {Sections.map((sectionOrQuestion) => {
-          if (sectionOrQuestion.type === 'SECTION') {
-            return (
-              <Form.Item key={sectionOrQuestion.id} noStyle>
-                <div className="section">{sectionOrQuestion.text}</div>
-                <div className="section-description">{sectionOrQuestion.description}</div>
-                {sectionOrQuestion.description != '' && <br />}
-              </Form.Item>
-            );
-          }
-          return (
-            <FormQuestion
-              key={sectionOrQuestion.id}
-              q={sectionOrQuestion}
-              form={form}
-              disabled={disabled}
-            />
-          );
-        })}
+        <FormSectionsAndQuestions sectionsAndQuestions={Sections} form={form} disabled={disabled} />
         <Form.Item noStyle>
           <div className="submit-container">
             <Button
@@ -167,6 +150,6 @@ export const ApplicationForm = (): ReactElement => {
           </div>
         </Form.Item>
       </Form>
-    </div>
+    </>
   );
 };
