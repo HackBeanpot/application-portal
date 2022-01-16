@@ -1,41 +1,42 @@
 import { DecisionStatus } from '../../common/types';
-import { RegistrationState } from '../hooks/useRegistrationState';
 import React from 'react';
 import { assertUnreachable } from '../../common/utils';
 import { Alert, Button } from 'antd';
 import { format } from './StatusDialogue';
+import Link from 'next/link';
+import { ConfirmByState } from '../hooks/useConfirmByState';
 
 type DecisionStatusDialogueProps = {
   decisionStatus: Exclude<DecisionStatus, DecisionStatus.Undecided>;
   confirmBy: Date;
-  registrationState: Exclude<RegistrationState, RegistrationState.BeforeOpen>;
+  confirmByState: ConfirmByState;
 };
 
 export const DecisionStatusDialogue: React.FC<DecisionStatusDialogueProps> = ({
   decisionStatus,
-  registrationState,
   confirmBy,
+  confirmByState,
 }) => {
   if (decisionStatus === DecisionStatus.Admitted) {
-    switch (registrationState) {
-      case RegistrationState.Closed:
+    switch (confirmByState) {
+      case ConfirmByState.After:
         // maybe we could show a "failed to confirm" in the future
         return <Declined />;
-      case RegistrationState.Open:
+      case ConfirmByState.Before:
         return <Admitted confirmBy={confirmBy} />;
       default:
-        assertUnreachable(registrationState);
+        assertUnreachable(confirmByState);
     }
   }
 
   if (decisionStatus === DecisionStatus.Waitlisted) {
-    switch (registrationState) {
-      case RegistrationState.Closed:
+    switch (confirmByState) {
+      case ConfirmByState.After:
         return <Declined />;
-      case RegistrationState.Open:
+      case ConfirmByState.Before:
         return <Waitlisted />;
       default:
-        assertUnreachable(registrationState);
+        assertUnreachable(confirmByState);
     }
   }
 
@@ -57,19 +58,17 @@ const Admitted: React.FC<AdmittedProps> = ({ confirmBy }) => {
         message="Admitted"
         description={
           <>
-            Congratulations, we would love to have you attend this year{"'"}s event! Please confirm
-            your RSVP status below. The deadline to confirm your attendance is {format(confirmBy)}.
+            Congratulations, we would love to have you attend this year{"'"}s event! Please navigate
+            to the <b>Application</b> tab to mark your RSVP status. The deadline to confirm your
+            attendance is {format(confirmBy)}.
           </>
         }
       />
-      <div className="button-container">
-        <Button type="primary" className="button">
-          Confirm Attendance
+      <Link href="/application" passHref>
+        <Button type={'primary'} style={{ marginTop: '10px' }}>
+          Go to RSVP form
         </Button>
-        <Button type="primary" danger className="button`">
-          Reject Attendance
-        </Button>
-      </div>
+      </Link>
     </>
   );
 };
@@ -92,11 +91,14 @@ const Declined: React.FC = () => {
       type={'error'}
       message={'Declined'}
       description={
-        <>
+        <div>
           Unfortunately, we had more applicants than we could accept. However, we would still love
-          for you to apply next year. In the meantime, please sign up for our mailing list to stay
-          up to get notified when applications open for next year{"'"}s event!
-        </>
+          for you to apply next year! In the meantime, please sign up for our mailing list to stay
+          up to get notified when applications open for next year{"'"}s event on our website:{' '}
+          <a target="_blank" href="https://hackbeanpot.com/" rel="noopener noreferrer">
+            https://hackbeanpot.com
+          </a>
+        </div>
       }
     />
   );

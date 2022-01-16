@@ -44,7 +44,7 @@ const Incomplete: React.FC<IncompleteProps> = ({ registrationClosed }) => {
     <>
       <Alert
         type="warning"
-        message="incomplete"
+        message="Incomplete"
         description={
           <>
             You still need to complete your application! If you do not complete your application
@@ -53,7 +53,9 @@ const Incomplete: React.FC<IncompleteProps> = ({ registrationClosed }) => {
         }
       />
       <Link href="/application" passHref>
-        <Button type={'primary'}>Go to application</Button>
+        <Button type={'primary'} style={{ marginTop: '10px' }}>
+          Go to application
+        </Button>
       </Link>
     </>
   );

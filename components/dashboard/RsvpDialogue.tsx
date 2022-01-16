@@ -1,4 +1,3 @@
-import { RegistrationState } from '../hooks/useRegistrationState';
 import { assertUnreachable } from '../../common/utils';
 import { RSVPStatus } from '../../common/types';
 import { Alert } from 'antd';
@@ -6,7 +5,6 @@ import React from 'react';
 
 type RsvpDialogueProps = {
   rsvpStatus: Exclude<RSVPStatus, RSVPStatus.Unconfirmed>;
-  registrationState: Exclude<RegistrationState, RegistrationState.BeforeOpen>;
 };
 
 export const RsvpDialogue: React.FC<RsvpDialogueProps> = ({ rsvpStatus }) => {

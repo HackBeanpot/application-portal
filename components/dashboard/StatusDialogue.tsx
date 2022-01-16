@@ -5,6 +5,7 @@ import { RegistrationState, useRegistrationState } from '../hooks/useRegistratio
 import { ApplicationStatusDialogue } from './ApplicationStatusDialogue';
 import { DecisionStatusDialogue } from './DecisionStatusDialogue';
 import { RsvpDialogue } from './RsvpDialogue';
+import { useConfirmByState } from '../hooks/useConfirmByState';
 
 type StatusDialogueProps = {
   applicationStatus: ApplicationStatus;
@@ -25,6 +26,7 @@ export const StatusDialogue: React.FC<StatusDialogueProps> = ({
   rsvpStatus,
 }) => {
   const registrationState = useRegistrationState({ registrationClosed, registrationOpen });
+  const confirmByState = useConfirmByState({ confirmBy });
 
   if (registrationState === RegistrationState.BeforeOpen) {
     return <ApplyLater registrationOpen={format(registrationOpen)} />;
@@ -47,13 +49,13 @@ export const StatusDialogue: React.FC<StatusDialogueProps> = ({
       <DecisionStatusDialogue
         decisionStatus={decisionStatus}
         confirmBy={confirmBy}
-        registrationState={registrationState}
+        confirmByState={confirmByState}
       />
     );
   }
 
   // they must have an rsvp, so render that
-  return <RsvpDialogue rsvpStatus={rsvpStatus} registrationState={registrationState} />;
+  return <RsvpDialogue rsvpStatus={rsvpStatus} />;
 };
 
 const ApplyLater = ({ registrationOpen }: { registrationOpen: string }) => {
