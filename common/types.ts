@@ -12,6 +12,7 @@ export interface User {
   rsvpStatus: RSVPStatus;
   teamName?: string;
   responses?: Array<QuestionResponse>;
+  postAcceptanceResponses?: Array<QuestionResponse>;
 }
 
 export type SingletonDefinition = DateSingleton;
@@ -130,6 +131,11 @@ export interface LongText extends IQuestion {
   minLength: number;
 }
 
+export enum ConfirmByState {
+  Before = 'Before',
+  After = 'After',
+}
+
 export enum AttendingState {
   Unspecified = 'Unspecified',
   No = 'No',
@@ -167,4 +173,9 @@ export type ApplicantsApiResponse = {
 
 export type SingleApplicantApiResponse = {
   user: User & { _id: string };
+};
+
+export type PostAcceptanceApiRequest = {
+  rsvpStatus: Exclude<RSVPStatus, RSVPStatus.Unconfirmed>;
+  responses?: Array<QuestionResponse>;
 };

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Form, notification, Popconfirm } from 'antd';
 import { useWarnIfUnsavedChanges } from '../hooks/useWarnIfUnsavedChanges';
-import { AttendingState, QuestionResponse } from '../../common/types';
+import { AttendingState, QuestionResponse, RSVPStatus } from '../../common/types';
 import { PostAcceptanceFormQuestions, PostAcceptanceFormSections } from '../../common/questions';
 import { updatePostAcceptanceFormResponses } from '../../common/apiClient';
 import { FormSectionsAndQuestions } from './FormSectionsAndQuestions';
@@ -30,12 +30,13 @@ const AttendingForm: React.FC<AttendingFormProps> = ({ setAttendingState }) => {
   const submitAttending = () => setAttendingState(AttendingState.Yes);
   const submitNotAttending = async () => {
     setIsSubmitting(true);
-    // todo: replace with real thing
-    const response = await updatePostAcceptanceFormResponses();
-    if (200 <= response?.status && response?.status < 300) {
+    const response = await updatePostAcceptanceFormResponses({
+      rsvpStatus: RSVPStatus.NotAttending,
+    });
+    if (200 <= response.status && response.status < 300) {
       success();
     } else {
-      error(response?.data);
+      error(response.data);
     }
     await mutate('/api/v1/user');
     setAttendingState(AttendingState.No);
@@ -80,14 +81,16 @@ const FullForm: React.FC = () => {
   const onSubmit = async (values: Record<string, QuestionResponse>) => {
     const responses = PostAcceptanceFormQuestions.map((q) => values[q.id] ?? null);
     setIsSubmitting(true);
-    // todo: add responses here
-    const response = await updatePostAcceptanceFormResponses();
-    setIsSubmitting(false);
+    const response = await updatePostAcceptanceFormResponses({
+      rsvpStatus: RSVPStatus.Confirmed,
+      responses,
+    });
     if (200 <= response.status && response.status < 300) {
       success();
     } else {
       error(response.data);
     }
+    await mutate('/api/v1/user');
   };
 
   return (

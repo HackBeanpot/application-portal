@@ -23,11 +23,13 @@ const columns = [
     title: 'Name',
     dataIndex: ['responses', '0'],
     sorter: true,
+    editable: false,
   },
   {
     title: 'Email',
     dataIndex: 'email',
     sorter: true,
+    editable: false,
   },
   {
     title: 'School',
@@ -39,6 +41,7 @@ const columns = [
     render: (_: string, record: SingleRecordType) =>
       record.responses?.[record.responses[4] === 'Other' ? 5 : 4] ?? '',
     sorter: true,
+    editable: false,
   },
   {
     title: 'Year',
@@ -48,6 +51,7 @@ const columns = [
       value: name,
     })),
     sorter: true,
+    editable: false,
   },
   {
     title: 'Application Status',
