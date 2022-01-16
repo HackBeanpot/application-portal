@@ -377,7 +377,7 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
         bit.ly/hbp2022-waiver
       </a>
     </div>,
-    true,
+    false,
     'First Last'
   ),
   makeSection(
@@ -396,17 +396,17 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
         bit.ly/hbp2022-waiver
       </a>
     </div>,
-    true,
+    false,
     'First Last'
   ),
   makeShortText(
     'guardianSignature',
     'Guardian: I acknowledge that I am above 18 years of age. I have read and agreed to the terms and conditions stated in the Participant Waiver and will make sure the attendee follows the platform usage defined in the Media & Platform Release.',
-    true,
+    false,
     'First Last'
   ),
   makeSection(
-    <>Now the fun (free) stuff!</>,
+    <>Now the fun stuff!</>,
     "Even though our event will be mostly virtual, we still plan on getting our awesome swag to our attendees! We will be having Swag Outpost stations on certain days at Northeastern University's campus in Boston. For those unable to pick up in Boston, we will try our best to ship swag to you if you're within the continental US."
   ),
   makeCheckbox(
@@ -433,7 +433,7 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
       <p>Are there any accommodations (e.g. dietary restrictions) you would need from us?</p>
       For snacks!
     </div>,
-    true,
+    false,
     'accomodations'
   ),
   makeDropdown(
@@ -462,7 +462,7 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
       will only be used for shipping. Please note that the package will take two weeks to ship and
       will arrive mid-February.
     </div>,
-    true
+    false
   ),
   makeSection(
     <>Planet Mission Crew Sorting!</>,

@@ -1,10 +1,9 @@
-import { DecisionStatus } from '../../common/types';
+import { ConfirmByState, DecisionStatus } from '../../common/types';
 import React from 'react';
 import { assertUnreachable } from '../../common/utils';
 import { Alert, Button } from 'antd';
 import { format } from './StatusDialogue';
 import Link from 'next/link';
-import { ConfirmByState } from '../hooks/useConfirmByState';
 
 type DecisionStatusDialogueProps = {
   decisionStatus: Exclude<DecisionStatus, DecisionStatus.Undecided>;

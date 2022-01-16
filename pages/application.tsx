@@ -8,11 +8,11 @@ import {
   getUser,
 } from '../common/apiClient';
 import { Alert, Spin } from 'antd';
-import { DecisionStatus, User } from '../common/types';
+import { ConfirmByState, DecisionStatus, RSVPStatus, User } from '../common/types';
 import { RegistrationState, useRegistrationState } from '../components/hooks/useRegistrationState';
 import { ApplicationForm } from '../components/application/ApplicationForm';
 import { PostAcceptanceForm } from '../components/application/PostAcceptanceForm';
-import { ConfirmByState, useConfirmByState } from '../components/hooks/useConfirmByState';
+import { useConfirmByState } from '../components/hooks/useConfirmByState';
 
 const Application = (): ReactElement => {
   const { data: user } = useSWR('/api/v1/user', getUser);
@@ -56,17 +56,26 @@ const FormDecider: React.FC<FormDeciderProps> = ({
 }) => {
   const registrationState = useRegistrationState({ registrationOpen, registrationClosed });
   const confirmByState = useConfirmByState({ confirmBy });
-  const { decisionStatus } = user;
+  const { decisionStatus, rsvpStatus } = user;
   const noDecision = !decisionStatus || decisionStatus === DecisionStatus.Undecided;
   if (noDecision && registrationState === RegistrationState.Open) {
     return <ApplicationForm />;
   }
 
-  if (confirmByState === ConfirmByState.Before && decisionStatus === DecisionStatus.Admitted) {
+  if (
+    confirmByState === ConfirmByState.Before &&
+    decisionStatus === DecisionStatus.Admitted &&
+    rsvpStatus === RSVPStatus.Unconfirmed
+  ) {
     return <PostAcceptanceForm />;
   }
 
-  return <Alert type="info" message={'No form to fill out at this time'} />;
+  return (
+    <>
+      <h1>Application Page</h1>
+      <Alert type="info" message={'No form to fill out at this time'} />
+    </>
+  );
 };
 
 export default Application;

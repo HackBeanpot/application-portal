@@ -6,6 +6,7 @@ import {
   TeamApiResponse,
   RegistrationApiResponse,
   ApplicantsApiResponse,
+  PostAcceptanceApiRequest,
 } from './types';
 import Axios, { AxiosResponse } from 'axios';
 import { TablePaginationConfig } from 'antd';
@@ -95,6 +96,8 @@ export function deleteTeamInfo(): Promise<AxiosResponse<undefined>> {
   return Axios.delete(`/api/v1/team`);
 }
 
-export function updatePostAcceptanceFormResponses(): Promise<any> {
-  return new Promise((res) => setTimeout(res, 1000));
+export function updatePostAcceptanceFormResponses(
+  body: PostAcceptanceApiRequest
+): Promise<AxiosResponse> {
+  return Axios.post(`/api/v1/post-acceptance`, body, { validateStatus: () => true });
 }
