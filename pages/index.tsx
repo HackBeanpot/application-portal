@@ -3,32 +3,26 @@ import {
   getConfirmBy,
   getRegistrationClosed,
   getRegistrationOpen,
-  getStatus,
+  getUser,
 } from '../common/apiClient';
 import useSWR from 'swr';
 import { PageLayout } from '../components/Layout';
-import { Card } from 'antd';
-import { StatusApiResponse } from '../common/types';
-import {
-  LoadingMessage,
-  StatusDialogue,
-} from '../components/dashboard/StatusDialogue';
+import { Alert, Card, Spin } from 'antd';
+import { User } from '../common/types';
+import { StatusDialogue } from '../components/dashboard/StatusDialogue';
 import { GetServerSideProps } from 'next';
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect';
 
 const Home = (): ReactElement => {
-  const { data: status } = useSWR('/api/v1/status', getStatus);
+  const { data: user } = useSWR('/api/v1/user', getUser);
   const { data: confirmBy } = useSWR('/api/v1/dates/confirm-by', getConfirmBy);
   const { data: registrationClosed } = useSWR(
     '/api/v1/dates/registration-closed',
     getRegistrationClosed
   );
-  const { data: registrationOpen } = useSWR(
-    '/api/v1/dates/registration-open',
-    getRegistrationOpen
-  );
+  const { data: registrationOpen } = useSWR('/api/v1/dates/registration-open', getRegistrationOpen);
   const statusPropsOrNull = getStatusDialogueProps(
-    status?.data,
+    user?.data,
     confirmBy?.data,
     registrationClosed?.data,
     registrationOpen?.data
@@ -43,7 +37,13 @@ const Home = (): ReactElement => {
             {statusPropsOrNull ? (
               <StatusDialogue {...statusPropsOrNull} />
             ) : (
-              <LoadingMessage />
+              <Spin size="large">
+                <Alert
+                  type="info"
+                  message="Loading, please wait..."
+                  description="Loading deadlines and application status, please wait..."
+                />
+              </Spin>
             )}
           </div>
         </Card>
@@ -53,14 +53,16 @@ const Home = (): ReactElement => {
 };
 
 function getStatusDialogueProps(
-  status?: StatusApiResponse,
+  user?: User,
   confirmBy?: string,
   registrationClosed?: string,
   registrationOpen?: string
 ) {
-  if (status && confirmBy && registrationClosed && registrationOpen) {
+  if (user && confirmBy && registrationClosed && registrationOpen) {
     return {
-      status,
+      applicationStatus: user.applicationStatus,
+      decisionStatus: user.decisionStatus,
+      rsvpStatus: user.rsvpStatus,
       confirmBy: new Date(confirmBy),
       registrationClosed: new Date(registrationClosed),
       registrationOpen: new Date(registrationOpen),
@@ -69,7 +71,6 @@ function getStatusDialogueProps(
   return null;
 }
 
-export const getServerSideProps: GetServerSideProps =
-  getServerSideSessionOrRedirect;
+export const getServerSideProps: GetServerSideProps = getServerSideSessionOrRedirect;
 
 export default Home;
