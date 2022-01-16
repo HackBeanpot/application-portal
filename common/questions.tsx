@@ -362,7 +362,7 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
   makeDropdown('adult', 'Are you 18 years of age or older?', ['Yes', 'No'], true, 'Yes'),
   makeSection(
     <>Above 18 Signature</>,
-    'Complete this section only if you are above 18 years of age. If you are not, please complete the following section, accompanied by a parent or guardian.'
+    'Complete this section only if you are above 18 years of age. If you are not, type in "N/A" and complete the following section accompanied by a parent or guardian.'
   ),
   makeShortText(
     'adultSignature',
@@ -377,12 +377,12 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
         bit.ly/hbp2022-waiver
       </a>
     </div>,
-    false,
+    true,
     'First Last'
   ),
   makeSection(
     <>Under 18 Signature</>,
-    'Complete this section only if you are under 18 years of age. If you are not, please complete the above section.'
+    'Complete this section only if you are under 18 years of age. If you are 18 years of age or over, mark "N/A" for both fields.'
   ),
   makeShortText(
     'minorSignature',
@@ -396,13 +396,13 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
         bit.ly/hbp2022-waiver
       </a>
     </div>,
-    false,
+    true,
     'First Last'
   ),
   makeShortText(
     'guardianSignature',
     'Guardian: I acknowledge that I am above 18 years of age. I have read and agreed to the terms and conditions stated in the Participant Waiver and will make sure the attendee follows the platform usage defined in the Media & Platform Release.',
-    false,
+    true,
     'First Last'
   ),
   makeSection(
