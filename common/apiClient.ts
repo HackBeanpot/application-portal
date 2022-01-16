@@ -5,6 +5,8 @@ import {
   DatesApiResponse,
   TeamApiResponse,
   RegistrationApiResponse,
+  ApplicantsApiResponse,
+  PostAcceptanceApiRequest,
 } from './types';
 import Axios, { AxiosResponse } from 'axios';
 import { TablePaginationConfig } from 'antd';
@@ -24,9 +26,8 @@ export function getAllAdmins() {
 
 export const getUser = (): Promise<AxiosResponse<User>> => Axios.get(`/api/v1/user`);
 
-export function updateApplicantById(id: number, user: User) {
+export const updateApplicantById = (id: string, user: User): Promise<AxiosResponse> =>
   Axios.post(`/api/v1/applicants/${id}`, user);
-}
 
 export const getApplicantResponses = (): Promise<AxiosResponse<RegistrationApiResponse>> =>
   Axios.get('/api/v1/registration');
@@ -35,13 +36,6 @@ export const updateApplicantResponses = (
   responses: RegistrationApiRequest
 ): Promise<AxiosResponse<string | null>> =>
   Axios.post(`/api/v1/registration`, responses, { validateStatus: () => true });
-
-type ApplicantsApiResponse = {
-  data: Array<User>;
-  totalCount: number;
-  page: number;
-  pageSize: number;
-};
 
 export function getAllApplicants(
   pagination: TablePaginationConfig,
@@ -100,4 +94,10 @@ export function updateTeamInfo(teamName: string): Promise<AxiosResponse<undefine
 
 export function deleteTeamInfo(): Promise<AxiosResponse<undefined>> {
   return Axios.delete(`/api/v1/team`);
+}
+
+export function updatePostAcceptanceFormResponses(
+  body: PostAcceptanceApiRequest
+): Promise<AxiosResponse> {
+  return Axios.post(`/api/v1/post-acceptance`, body, { validateStatus: () => true });
 }

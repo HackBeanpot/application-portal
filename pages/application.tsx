@@ -1,275 +1,81 @@
-import React, { ReactElement, useEffect, useState } from 'react';
-import {
-  ApplicationStatus,
-  QuestionDefinition,
-  QuestionResponse,
-  QuestionType,
-} from '../common/types';
-import ShortTextQuestion from '../components/questions/ShortTextQuestion';
-import LongTextQuestion from '../components/questions/LongTextQuestion';
-import CheckboxesQuestion from '../components/questions/CheckboxesQuestion';
-import DropdownQuestion from '../components/questions/DropdownQuestion';
-import {
-  getApplicantResponses,
-  getRegistrationClosed,
-  getRegistrationOpen,
-  getStatus,
-  updateApplicantResponses,
-} from '../common/apiClient';
+import React, { ReactElement } from 'react';
 import { PageLayout } from '../components/Layout';
-import { Questions, Sections } from '../common/questions';
-import { Alert, Button, Form, notification } from 'antd';
-import { GetServerSideProps } from 'next';
 import useSWR from 'swr';
 import {
-  ApplyLater,
-  DeadlinePassed,
-  format,
-  Submitted,
-} from '../components/dashboard/StatusDialogue';
-import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect';
-import Router from 'next/router';
-import {
-  isAfterRegistrationClosed,
-  isBeforeRegistrationOpens,
-} from '../common/dateUtils';
-import { useWarnIfUnsavedChanges } from '../components/hooks/useWarnIfUnsavedChanges';
-
-const getQuestionComponentFromType = (type: QuestionType) => {
-  switch (type) {
-    case QuestionType.ShortText:
-      return ShortTextQuestion;
-    case QuestionType.LongText:
-      return LongTextQuestion;
-    case QuestionType.Dropdown:
-      return DropdownQuestion;
-    case QuestionType.Checkboxes:
-      return CheckboxesQuestion;
-    default:
-      const _q: never = type;
-      throw new Error('unexpected question type: ' + type);
-  }
-};
+  getConfirmBy,
+  getRegistrationClosed,
+  getRegistrationOpen,
+  getUser,
+} from '../common/apiClient';
+import { Alert, Spin } from 'antd';
+import { ConfirmByState, DecisionStatus, RSVPStatus, User } from '../common/types';
+import { RegistrationState, useRegistrationState } from '../components/hooks/useRegistrationState';
+import { ApplicationForm } from '../components/application/ApplicationForm';
+import { PostAcceptanceForm } from '../components/application/PostAcceptanceForm';
+import { useConfirmByState } from '../components/hooks/useConfirmByState';
 
 const Application = (): ReactElement => {
-  // data
-  const { data: registrationOpen } = useSWR(
-    '/api/v1/dates/registration-open',
-    getRegistrationOpen
-  );
-  const { data: status } = useSWR('/api/v1/status', getStatus);
-  const { data: registrationClosed } = useSWR(
-    '/api/v1/dates/registration-closed',
-    getRegistrationClosed
-  );
-  const { data: userResponses, mutate: fetchUserResponses } = useSWR(
-    '/api/v1/applicants',
-    getApplicantResponses
-  );
+  const { data: user } = useSWR('/api/v1/user', getUser);
+  const { data: rOpen } = useSWR('/api/v1/dates/registration-open', getRegistrationOpen);
+  const { data: rClosed } = useSWR('/api/v1/dates/registration-closed', getRegistrationClosed);
+  const { data: confirmByData } = useSWR('/api/v1/dates/confirm-by', getConfirmBy);
 
-  // state
-  const [disabled, setDisabled] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [form] = Form.useForm<Record<string, QuestionResponse>>();
+  if (!user || !rOpen || !rClosed || !confirmByData) {
+    return (
+      <PageLayout currentPage={'application'}>
+        <div className="application">
+          <Spin size={'large'} />
+        </div>
+      </PageLayout>
+    );
+  }
 
-  // observations
-  const alreadySubmitted =
-    status?.data.applicationStatus === ApplicationStatus.Submitted &&
-    (userResponses?.data?.responses?.length ?? 0) > 0;
-  const submittedFormData: Record<string, QuestionResponse> = {};
-  userResponses?.data?.responses?.forEach((response, index) => {
-    submittedFormData[String(index + 1)] = response;
-  });
-  const isEditing = alreadySubmitted && !disabled;
-  const registrationOpenDate =
-    registrationOpen?.data && new Date(registrationOpen?.data);
-  const registrationCloseDate =
-    registrationClosed?.data && new Date(registrationClosed?.data);
-  const isBeforeRegistration = Boolean(
-    registrationOpenDate && isBeforeRegistrationOpens(registrationOpenDate)
-  );
-  const isAfterRegistration = Boolean(
-    registrationCloseDate && isAfterRegistrationClosed(registrationCloseDate)
-  );
-
-  // effects
-  useEffect(() => {
-    if (alreadySubmitted || isBeforeRegistration || isAfterRegistration) {
-      setDisabled(true);
-      form.resetFields();
-    }
-  }, [alreadySubmitted, isAfterRegistration, isBeforeRegistration]);
-  useWarnIfUnsavedChanges(
-    isEditing || status?.data.applicationStatus === ApplicationStatus.Incomplete
-  );
-
-  const onSubmit = async (values: Record<string, QuestionResponse>) => {
-    const responses = Questions.map((q) => values[q.id] ?? null);
-    setIsSubmitting(true);
-    const response = await updateApplicantResponses({ responses });
-    setIsSubmitting(false);
-    if (200 <= response.status && response.status < 300) {
-      notification.success({
-        message: 'Application Successfully Submitted',
-        placement: 'bottomRight',
-        duration: 5,
-      });
-      await fetchUserResponses();
-      if (!alreadySubmitted) {
-        // todo: figure out how to not avoid redirect when submitting first time
-        setTimeout(() => {
-          Router.push('/');
-        }, 1000);
-      } else {
-        window?.scrollTo({ top: 0, behavior: 'smooth' });
-        setDisabled(true);
-      }
-    } else {
-      notification.error({
-        message: 'Error Submitting Application',
-        description: response.data,
-        placement: 'bottomRight',
-        duration: 30,
-      });
-    }
-  };
-
-  const FormQuestion = ({ q }: { q: QuestionDefinition }) => {
-    const QuestionComponent = getQuestionComponentFromType(q.type);
-    return React.createElement(QuestionComponent as any, {
-      question: q,
-      form: form,
-      disabled,
-    });
-  };
-
+  const registrationOpen = new Date(rOpen.data);
+  const registrationClosed = new Date(rClosed.data);
+  const confirmBy = new Date(confirmByData.data);
   return (
     <PageLayout currentPage={'application'}>
       <div className="application">
-        <h1 className="app-header">Application Page</h1>
-        {registrationCloseDate && registrationOpenDate && (
-          <StatusDialogue
-            disabled={disabled}
-            setDisabled={setDisabled}
-            alreadySubmitted={alreadySubmitted}
-            isBeforeRegistration={isBeforeRegistration}
-            isAfterRegistration={isAfterRegistration}
-            registrationCloseDate={registrationCloseDate}
-            registrationOpenDate={registrationOpenDate}
-            resetFields={() => form.resetFields()}
-          />
-        )}
-        <Form
-          initialValues={submittedFormData}
-          form={form}
-          onFinish={onSubmit}
-          scrollToFirstError={{ behavior: 'smooth' }}
-          layout="vertical"
-        >
-          {Sections.map((sectionOrQuestion) => {
-            if (sectionOrQuestion.type === 'SECTION') {
-              return (
-                <Form.Item key={sectionOrQuestion.id} noStyle>
-                  <div className="section">{sectionOrQuestion.text}</div>
-                </Form.Item>
-              );
-            }
-            return (
-              <FormQuestion key={sectionOrQuestion.id} q={sectionOrQuestion} />
-            );
-          })}
-          <Form.Item noStyle>
-            <div className="submit-container">
-              <Button
-                disabled={disabled}
-                className="button"
-                type="primary"
-                htmlType="submit"
-                loading={isSubmitting}
-                size="large"
-              >
-                {alreadySubmitted
-                  ? 'Resubmit Application'
-                  : 'Submit Application'}
-              </Button>
-            </div>
-          </Form.Item>
-        </Form>
+        <FormDecider {...{ registrationOpen, registrationClosed, user: user.data, confirmBy }} />
       </div>
     </PageLayout>
   );
 };
 
-type StatusDialogueProps = {
-  disabled: boolean;
-  setDisabled: (d: boolean) => void;
-  alreadySubmitted: boolean;
-  registrationOpenDate: Date;
-  registrationCloseDate: Date;
-  isBeforeRegistration: boolean;
-  isAfterRegistration: boolean;
-  resetFields: () => void;
+type FormDeciderProps = {
+  registrationOpen: Date;
+  registrationClosed: Date;
+  user: User;
+  confirmBy: Date;
 };
-const StatusDialogue: React.FC<StatusDialogueProps> = ({
-  alreadySubmitted,
-  registrationCloseDate,
-  registrationOpenDate,
-  disabled,
-  setDisabled,
-  isBeforeRegistration,
-  isAfterRegistration,
-  resetFields,
+const FormDecider: React.FC<FormDeciderProps> = ({
+  registrationOpen,
+  registrationClosed,
+  user,
+  confirmBy,
 }) => {
-  if (isBeforeRegistration) {
-    return <ApplyLater registrationOpen={format(registrationOpenDate)} />;
-  } else if (isAfterRegistration) {
-    if (!alreadySubmitted) {
-      return (
-        <DeadlinePassed registrationClosed={format(registrationCloseDate)} />
-      );
-    }
-    return <Submitted />;
-  } else if (alreadySubmitted) {
-    return (
-      <Alert
-        className="alert"
-        type="info"
-        description={
-          <>
-            You have already submitted your application, but you may edit and
-            resubmit your responses as many times as you{"'"}d like before
-            registration closes on{' '}
-            <b>{registrationCloseDate && format(registrationCloseDate)}</b>.
-            <div className="edit-button-container">
-              <Button
-                className="edit-button"
-                disabled={!disabled}
-                onClick={() => setDisabled(false)}
-              >
-                Edit my responses
-              </Button>
-              {!disabled && (
-                <Button
-                  danger
-                  className="cancel-edit-button"
-                  onClick={() => {
-                    setDisabled(true);
-                    resetFields();
-                  }}
-                >
-                  Cancel editing
-                </Button>
-              )}
-            </div>
-          </>
-        }
-        message={<>Application already submitted</>}
-        showIcon
-      />
-    );
-  } else {
-    return null;
+  const registrationState = useRegistrationState({ registrationOpen, registrationClosed });
+  const confirmByState = useConfirmByState({ confirmBy });
+  const { decisionStatus, rsvpStatus } = user;
+  const noDecision = !decisionStatus || decisionStatus === DecisionStatus.Undecided;
+  if (noDecision && registrationState === RegistrationState.Open) {
+    return <ApplicationForm />;
   }
+
+  if (
+    confirmByState === ConfirmByState.Before &&
+    decisionStatus === DecisionStatus.Admitted &&
+    rsvpStatus === RSVPStatus.Unconfirmed
+  ) {
+    return <PostAcceptanceForm />;
+  }
+
+  return (
+    <>
+      <h1>Application Page</h1>
+      <Alert type="info" message={'No form to fill out at this time'} />
+    </>
+  );
 };
 
 export default Application;

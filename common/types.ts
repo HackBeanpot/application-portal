@@ -1,26 +1,18 @@
 import { ReactNode } from 'react';
 
+/**
+ * @param applicationStatus deez nuts
+ */
 export interface User {
   email: string;
-  rsvpStatus: RSVPStatus;
   isAdmin: boolean;
   applicationStatus: ApplicationStatus;
-  firstName?: string;
-  lastName?: string;
-  id?: string;
-  gender?: Gender;
-  school?: string;
-  education?: Education;
-  yearOfEducation?: YearOfEducation;
-  ethnicities?: Array<Ethnicity>;
-  shirtSize?: ShirtSize;
-  major?: string;
-  minor?: string;
-  resumeLink?: string;
-  timeZone?: string;
-  learningGoals?: string;
+  // Decision status might not exist because of backwards compatibility
+  decisionStatus?: DecisionStatus;
+  rsvpStatus: RSVPStatus;
   teamName?: string;
   responses?: Array<QuestionResponse>;
+  postAcceptanceResponses?: Array<QuestionResponse>;
 }
 
 export type SingletonDefinition = DateSingleton;
@@ -48,6 +40,7 @@ export interface PortalState {
   numAttendees: number;
   totalConfirmed: number;
 }
+
 export enum Gender {
   Nonbinary = 'Nonbinary',
   Female = 'Female',
@@ -80,16 +73,19 @@ export enum ShirtSize {
 export enum ApplicationStatus {
   Incomplete = 'Incomplete',
   Submitted = 'Submitted',
-  Admitted = 'Admitted',
-  Waitlisted = 'Waitlisted',
-  Declined = 'Declined',
 }
 export enum RSVPStatus {
-  InPerson = 'In Person',
-  Virtual = 'Virtual',
+  Confirmed = 'Confirmed',
   NotAttending = 'Not Attending',
   Unconfirmed = 'Unconfirmed',
 }
+export enum DecisionStatus {
+  Admitted = 'Admitted',
+  Waitlisted = 'Waitlisted',
+  Declined = 'Declined',
+  Undecided = 'Undecided',
+}
+
 export enum QuestionType {
   Checkboxes = 'Checkboxes',
   ShortText = 'Short Text',
@@ -101,6 +97,7 @@ export type QuestionSection = {
   id: string;
   type: 'SECTION';
   text: ReactNode;
+  description?: ReactNode;
 };
 
 export type QuestionId = string;
@@ -134,6 +131,17 @@ export interface LongText extends IQuestion {
   minLength: number;
 }
 
+export enum ConfirmByState {
+  Before = 'Before',
+  After = 'After',
+}
+
+export enum AttendingState {
+  Unspecified = 'Unspecified',
+  No = 'No',
+  Yes = 'Yes',
+}
+
 /**
  * is a single string for text responses, and an array of the choices for multi-select responses
  */
@@ -155,3 +163,19 @@ export type StatusApiResponse = {
 export type TeamApiResponse = Team;
 
 export type DatesApiResponse = string;
+
+export type ApplicantsApiResponse = {
+  data: Array<User & { _id: string }>;
+  totalCount: number;
+  page: number;
+  pageSize: number;
+};
+
+export type SingleApplicantApiResponse = {
+  user: User & { _id: string };
+};
+
+export type PostAcceptanceApiRequest = {
+  rsvpStatus: Exclude<RSVPStatus, RSVPStatus.Unconfirmed>;
+  responses?: Array<QuestionResponse>;
+};
