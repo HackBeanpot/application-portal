@@ -6,6 +6,7 @@ import { Button, Table, TablePaginationConfig, TableProps, Tooltip } from 'antd'
 import {
   ApplicantsApiResponse,
   ApplicationStatus,
+  DecisionStatus,
   Dropdown as DropdownQuestionType,
   RSVPStatus,
 } from '../../common/types';
@@ -60,8 +61,19 @@ const columns = [
       value,
     })),
     sorter: true,
+  },
+  {
+    title: 'Decision Status',
+    dataIndex: 'decisionStatus',
+    filters: Object.values(DecisionStatus).map((value) => ({
+      text: value,
+      value,
+    })),
+    render: (_: string, record: SingleRecordType) =>
+      record.decisionStatus ?? DecisionStatus.Undecided,
+    sorter: true,
     editable: true,
-    options: Object.values(ApplicationStatus).map((value: string) => ({ key: value, value })),
+    options: Object.values(DecisionStatus).map((value: string) => ({ key: value, value })),
   },
   {
     title: 'Rsvp Status',

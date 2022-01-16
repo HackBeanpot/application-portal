@@ -94,3 +94,7 @@ export function updateTeamInfo(teamName: string): Promise<AxiosResponse<undefine
 export function deleteTeamInfo(): Promise<AxiosResponse<undefined>> {
   return Axios.delete(`/api/v1/team`);
 }
+
+export function updatePostAcceptanceFormResponses(): Promise<any> {
+  return new Promise((res) => setTimeout(res, 1000));
+}

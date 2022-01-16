@@ -7,7 +7,7 @@ import {
 } from '../server/validators';
 import { Checkboxes, Dropdown, LongText, QuestionType, ShortText } from '../common/types';
 import Joi from 'joi';
-import { isAfterRegistrationClosed, isBeforeRegistrationOpens } from '../common/dateUtils';
+import { isAfterRegistrationClosed, isBeforeRegistrationOpens } from '../common/utils';
 
 // convenience constructors
 const n = (name: string) => ({ name });

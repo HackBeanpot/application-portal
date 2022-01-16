@@ -1,23 +1,15 @@
 import { ReactNode } from 'react';
 
+/**
+ * @param applicationStatus deez nuts
+ */
 export interface User {
   email: string;
-  rsvpStatus: RSVPStatus;
   isAdmin: boolean;
   applicationStatus: ApplicationStatus;
-  firstName?: string;
-  lastName?: string;
-  gender?: Gender;
-  school?: string;
-  education?: Education;
-  yearOfEducation?: YearOfEducation;
-  ethnicities?: Array<Ethnicity>;
-  shirtSize?: ShirtSize;
-  major?: string;
-  minor?: string;
-  resumeLink?: string;
-  timeZone?: string;
-  learningGoals?: string;
+  // Decision status might not exist because of backwards compatibility
+  decisionStatus?: DecisionStatus;
+  rsvpStatus: RSVPStatus;
   teamName?: string;
   responses?: Array<QuestionResponse>;
 }
@@ -47,6 +39,7 @@ export interface PortalState {
   numAttendees: number;
   totalConfirmed: number;
 }
+
 export enum Gender {
   Nonbinary = 'Nonbinary',
   Female = 'Female',
@@ -79,15 +72,19 @@ export enum ShirtSize {
 export enum ApplicationStatus {
   Incomplete = 'Incomplete',
   Submitted = 'Submitted',
-  Admitted = 'Admitted',
-  Waitlisted = 'Waitlisted',
-  Declined = 'Declined',
 }
 export enum RSVPStatus {
   Confirmed = 'Confirmed',
   NotAttending = 'Not Attending',
   Unconfirmed = 'Unconfirmed',
 }
+export enum DecisionStatus {
+  Admitted = 'Admitted',
+  Waitlisted = 'Waitlisted',
+  Declined = 'Declined',
+  Undecided = 'Undecided',
+}
+
 export enum QuestionType {
   Checkboxes = 'Checkboxes',
   ShortText = 'Short Text',
@@ -131,6 +128,12 @@ export interface LongText extends IQuestion {
   type: QuestionType.LongText;
   maxLength: number;
   minLength: number;
+}
+
+export enum AttendingState {
+  Unspecified = 'Unspecified',
+  No = 'No',
+  Yes = 'Yes',
 }
 
 /**
