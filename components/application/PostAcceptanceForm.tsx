@@ -43,7 +43,8 @@ const AttendingForm: React.FC<AttendingFormProps> = ({ setAttendingState }) => {
   };
   return (
     <>
-      <p>
+      <p>This RSVP form is DUE for Round 1 Acceptances: Jan 21 11:59 PM EST.</p>
+      <p style={{ textAlign: 'center' }}>
         Please select if you will be attending HackBeanpot on the weekend of February 11 - 13th,
         2022. If you cannot make it, please select {'"No"'} so that we can admit others on the wait
         list instead.
