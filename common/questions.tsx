@@ -420,7 +420,7 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
     [
       'T-shirt: our annual event shirt',
       'Sticker sheet: classic HBP logo sticker with special space themed stickers',
-      'Cafe glasses: clear glass coffee cups with HBP logo printed on them (Cafe glasses will be an in-person only option due to them being unable to being shipped',
+      'Cafe glasses: clear glass coffee cups with HBP logo printed on them',
       'All of the above',
       'None or N/A',
     ],
