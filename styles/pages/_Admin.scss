@@ -13,7 +13,14 @@
     .title-container {
       display: flex;
       flex-direction: row;
-      justify-content: space-between;
+
+      .title {
+        margin-right: auto;
+      }
+
+      .export-button {
+        margin-left: 10px;
+      }
     }
   }
 
