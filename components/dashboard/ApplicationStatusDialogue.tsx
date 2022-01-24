@@ -44,6 +44,7 @@ const Incomplete: React.FC<IncompleteProps> = ({ registrationClosed }) => {
     <>
       <Alert
         type="warning"
+        showIcon
         message="Incomplete"
         description={
           <>
@@ -82,6 +83,7 @@ const Submitted: React.FC = () => {
   return (
     <Alert
       type="info"
+      showIcon
       message="Application Submitted"
       description={
         <>

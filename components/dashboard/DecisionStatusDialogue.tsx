@@ -29,14 +29,7 @@ export const DecisionStatusDialogue: React.FC<DecisionStatusDialogueProps> = ({
   }
 
   if (decisionStatus === DecisionStatus.Waitlisted) {
-    switch (confirmByState) {
-      case ConfirmByState.After:
-        return <Declined />;
-      case ConfirmByState.Before:
-        return <Waitlisted />;
-      default:
-        assertUnreachable(confirmByState);
-    }
+    return <Waitlisted />;
   }
 
   if (decisionStatus === DecisionStatus.Declined) {
@@ -54,6 +47,7 @@ const Admitted: React.FC<AdmittedProps> = ({ confirmBy }) => {
     <>
       <Alert
         type="success"
+        showIcon
         message="Admitted"
         description={
           <>
@@ -80,6 +74,7 @@ const Waitlisted: React.FC = () => {
   return (
     <Alert
       type="warning"
+      showIcon
       message={'Waitlisted'}
       description={
         'You are currently on the waitlist. However if spots open up, we will notify you by email!'
@@ -111,6 +106,7 @@ const FailedToConfirm: React.FC<AdmittedProps> = ({ confirmBy }) => {
   return (
     <Alert
       type={'success'}
+      showIcon
       message={'Accepted'}
       description={
         <div>
