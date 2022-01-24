@@ -347,7 +347,6 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
   makeSection(
     <>Post-Acceptance Form</>,
     <div>
-      <p>This RSVP form is DUE for Round 1 Acceptances: Jan 21 11:59 PM EST.</p>
       <p>
         Congrats on being accepted to HackBeanpot! We{"'"}re so excited to see you soon. Please
         answer the following questions to help us finalize logistics of making the event as great as
