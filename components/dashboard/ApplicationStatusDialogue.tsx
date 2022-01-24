@@ -48,7 +48,7 @@ const Incomplete: React.FC<IncompleteProps> = ({ registrationClosed }) => {
         description={
           <>
             You still need to complete your application! If you do not complete your application
-            before <b>{date}</b>, you will not be considered for admission.
+            before <strong>{date}</strong>, you will not be considered for admission.
           </>
         }
       />
@@ -69,9 +69,9 @@ const DeadlinePassed: React.FC<IncompleteProps> = ({ registrationClosed }) => {
       message="Registration Deadline Passed"
       description={
         <>
-          Unfortunately, the deadline to apply to this year{"'"}s event was <b>{date}</b>. In the
-          meantime, please sign up for our mailing list to stay up to get notified when applications
-          open for next year{"'"}s event!
+          Unfortunately, the deadline to apply to this year{"'"}s event was <strong>{date}</strong>.
+          In the meantime, please sign up for our mailing list to stay up to get notified when
+          applications open for next year{"'"}s event!
         </>
       }
     />

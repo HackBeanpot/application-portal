@@ -20,7 +20,7 @@ export const DecisionStatusDialogue: React.FC<DecisionStatusDialogueProps> = ({
     switch (confirmByState) {
       case ConfirmByState.After:
         // maybe we could show a "failed to confirm" in the future
-        return <Declined />;
+        return <FailedToConfirm confirmBy={confirmBy} />;
       case ConfirmByState.Before:
         return <Admitted confirmBy={confirmBy} />;
       default:
@@ -57,9 +57,13 @@ const Admitted: React.FC<AdmittedProps> = ({ confirmBy }) => {
         message="Admitted"
         description={
           <>
-            Congratulations, we would love to have you attend this year{"'"}s event! Please navigate
-            to the <b>Application</b> tab to mark your RSVP status. The deadline to confirm your
-            attendance is {format(confirmBy)}.
+            <p>
+              Congratulations, we would love to have you attend this year{"'"}s event! Please
+              navigate to the <strong>Application</strong> tab to mark your RSVP status. The
+              deadline to confirm your attendance is {format(confirmBy)}.
+            </p>
+            Please note: if you don{"'"}t complete the RSVP form by{' '}
+            <strong>{format(confirmBy)}</strong>, you will be ineligible for swag.
           </>
         }
       />
@@ -97,6 +101,27 @@ const Declined: React.FC = () => {
           <a target="_blank" href="https://hackbeanpot.com/" rel="noopener noreferrer">
             https://hackbeanpot.com
           </a>
+        </div>
+      }
+    />
+  );
+};
+
+const FailedToConfirm: React.FC<AdmittedProps> = ({ confirmBy }) => {
+  return (
+    <Alert
+      type={'success'}
+      message={'Accepted'}
+      description={
+        <div>
+          <p>
+            Congratulations, you have been accepted to attend HackBeanpot. However, because you did
+            not finish your RSVP form by <strong>{format(confirmBy)}</strong>, you are ineligible
+            for swag.
+          </p>
+          However, if you would still like to attend the event, please email{' '}
+          <a href="mailto:team@hackbeanpot.com">team@hackbeanpot.com</a> letting us know of your
+          status so we can send you the appropriate details to join the event.
         </div>
       }
     />
