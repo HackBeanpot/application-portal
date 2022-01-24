@@ -61,11 +61,10 @@ export const StatusDialogue: React.FC<StatusDialogueProps> = ({
 const ApplyLater = ({ registrationOpen }: { registrationOpen: string }) => {
   return (
     <Alert
-      showIcon
       type="info"
       message={
         <>
-          Registration Opens <strong>{registrationOpen}</strong>
+          Registration Opens <b>{registrationOpen}</b>
         </>
       }
       description="Please come back after registration opens to complete your application!"

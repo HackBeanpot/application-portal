@@ -115,7 +115,7 @@ const FullForm: React.FC = () => {
             loading={isSubmitting}
             size="large"
           >
-            Submit RSVP
+            Continue
           </Button>
         </div>
       </Form.Item>

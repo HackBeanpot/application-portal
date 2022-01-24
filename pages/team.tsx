@@ -1,6 +1,11 @@
 import React, { ReactElement, useState } from 'react';
 import useSWR from 'swr';
-import { deleteTeamInfo, getTeamInfo, getUser, updateTeamInfo } from '../common/apiClient';
+import {
+  deleteTeamInfo,
+  getTeamInfo,
+  getUser,
+  updateTeamInfo,
+} from '../common/apiClient';
 import { PageLayout } from '../components/Layout';
 import { Button, Input, Alert, Card } from 'antd';
 
@@ -9,10 +14,7 @@ const Team = (): ReactElement => {
 
   const userInfo = user?.data;
   const currentTeamName = userInfo?.teamName;
-  const { data: team, mutate: mutateTeam } = useSWR(
-    ['/api/v1/team', userInfo?.teamName],
-    getTeamInfo
-  );
+  const { data: team, mutate: mutateTeam } = useSWR(['/api/v1/team', userInfo?.teamName], getTeamInfo)
 
   const [teamName, setTeamName] = useState<string>('');
   const [isTeamInputOpen, setIsTeamInputOpen] = useState(false);
@@ -32,9 +34,10 @@ const Team = (): ReactElement => {
                   message="Applying Individually"
                   description={
                     <>
-                      Applying with or without a team does has no effect on how your application is
-                      read! However, if you are already part of a team before applying, we will
-                      accept / reject your team together.
+                      Applying with or without a team does has no effect on how
+                      your application is read! However, if you are already part
+                      of a team before applying, we will accept / reject your
+                      team together.
                     </>
                   }
                 />
@@ -42,10 +45,11 @@ const Team = (): ReactElement => {
                   {isTeamInputOpen ? (
                     <>
                       <p>
-                        To apply as a team, first decide upon a unique team name with your
-                        teammates. After deciding, have everyone enter the same team name in the
-                        application portal and click {'"Join team"'}. After joining, you will be
-                        able to see the current members of the team.
+                        To apply as a team, first decide upon a unique team name
+                        with your teammates. After deciding, have everyone enter
+                        the same team name in the application portal and click{' '}
+                        {'"Join team"'}. After joining, you will be able to see
+                        the current members of the team.
                       </p>
                       <Input
                         className="input"
@@ -70,7 +74,9 @@ const Team = (): ReactElement => {
                       </Button>
                     </>
                   ) : (
-                    <Button onClick={() => setIsTeamInputOpen(true)}>Apply with teammates</Button>
+                    <Button onClick={() => setIsTeamInputOpen(true)}>
+                      Apply with teammates
+                    </Button>
                   )}
                 </div>
               </>
@@ -81,7 +87,7 @@ const Team = (): ReactElement => {
                   showIcon
                   message={
                     <>
-                      Applying with team <strong>{currentTeamName}</strong>
+                      Applying with team <b>{currentTeamName}</b>
                     </>
                   }
                   description={

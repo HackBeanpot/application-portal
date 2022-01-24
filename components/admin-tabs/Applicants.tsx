@@ -8,12 +8,9 @@ import {
   ApplicationStatus,
   DecisionStatus,
   Dropdown as DropdownQuestionType,
-  QuestionDefinition,
-  QuestionResponse,
   RSVPStatus,
-  User,
 } from '../../common/types';
-import { PostAcceptanceFormQuestions, Questions } from '../../common/questions';
+import { Questions } from '../../common/questions';
 import { saveAs } from 'file-saver';
 import { EditableRow } from './table/EditableRow';
 import { EditableCell, EditableCellProps } from './table/EditableCell';
@@ -114,10 +111,12 @@ const Applicants: React.FC = () => {
     getAllApplicantsForSwr
   );
   const [exporting, setExporting] = useState(false);
-  const onExportClick = (cb: typeof downloadApplicationCsv) => () => {
-    if (!data) return;
+  const onExportClick = () => {
+    if (!data) {
+      return;
+    }
     setExporting(true);
-    cb({ totalCount: data.totalCount, filters, sorter }).then(() => setExporting(false));
+    downloadFile(data.totalCount, filters, sorter).then(() => setExporting(false));
   };
 
   const onChange: TableProps<SingleRecordType>['onChange'] = (pagination, filters, sorter) => {
@@ -150,30 +149,20 @@ const Applicants: React.FC = () => {
     };
   });
 
-  const ExportButton: React.FC<{ cb: typeof downloadApplicationCsv; text: string }> = ({
-    cb,
-    text,
-  }) => {
-    return (
-      <Tooltip overlay={'Data exports respect currently applied filter and sort.'}>
-        <Button
-          className="export-button"
-          type="primary"
-          loading={!data || exporting}
-          onClick={onExportClick(cb)}
-        >
-          {text}
-        </Button>
-      </Tooltip>
-    );
-  };
-
   return (
     <div className={'applicants'}>
       <div className="title-container">
-        <h3 className="title">{ADMIN_TABS.VIEW_AND_MODIFY_APPLICANTS}</h3>
-        <ExportButton cb={downloadApplicationCsv} text="Export Application Responses" />
-        <ExportButton cb={downloadPostAcceptanceCsv} text="Export Post-Acceptance Responses" />
+        <h3>{ADMIN_TABS.VIEW_AND_MODIFY_APPLICANTS}</h3>
+        <Tooltip overlay={'Data exports respect currently applied filter and sort.'}>
+          <Button
+            className="export-button"
+            type="primary"
+            loading={!data || exporting}
+            onClick={onExportClick}
+          >
+            Export All Data
+          </Button>
+        </Tooltip>
       </div>
       <Table
         size={'small'}
@@ -198,51 +187,44 @@ const Applicants: React.FC = () => {
 
 const escaper = (s: string) => `"${s.replaceAll('"', '""')}"`;
 const separator = ',';
-const fields: Array<keyof User> = ['email', 'isAdmin', 'applicationStatus', 'rsvpStatus'];
-type DownloadProps = {
-  totalCount: number;
-  filters: TableFilters;
-  sorter: TableSorter;
-};
-const downloadApplicationCsv = async (props: DownloadProps) =>
-  downloadFileAbstract(props, fields, Questions, (u) => u.responses, 'applications.csv');
-const downloadPostAcceptanceCsv = async (props: DownloadProps) =>
-  downloadFileAbstract(
-    props,
-    fields,
-    PostAcceptanceFormQuestions,
-    (u) => u.postAcceptanceResponses,
-    'post-acceptance.csv'
-  );
-
-const serializeResponse = (response: QuestionResponse) => {
-  if (Array.isArray(response)) {
-    return response.join('\n');
-  }
-  return response ?? '';
-};
-const downloadFileAbstract = async (
-  { totalCount, filters, sorter }: DownloadProps,
-  fields: Array<keyof User>,
-  questions: QuestionDefinition[],
-  responseGetter: (u: User) => Array<QuestionResponse> | undefined,
-  fileName: string
-): Promise<null> => {
+const fileName = 'applicants.csv';
+const downloadFile = async (totalCount: number, filters: TableFilters, sorter: TableSorter) => {
   const pagination: TablePaginationConfig = {
     current: 1,
     pageSize: totalCount,
   };
   const data = await getAllApplicants(pagination, filters, sorter);
-  const rowHeadersText = [...fields, ...questions.map((q) => q.field)].map(escaper).join(separator);
+  const rowHeadersText = [
+    'email',
+    'isAdmin',
+    'applicationStatus',
+    'rsvpStatus',
+    ...Questions.map((q) => q.field),
+  ]
+    .map(escaper)
+    .join(separator);
   const rowCellsText = data.data.data
     .map((user) => {
-      const userFieldCols = fields.map((f) => user[f]).map(String);
-      const responses = responseGetter(user);
+      let segments = [
+        user.email,
+        String(user.isAdmin),
+        String(user.applicationStatus),
+        String(user.rsvpStatus),
+      ];
+      const responses = user.responses;
       if (responses) {
-        const responseCols = questions.map((q, idx) => serializeResponse(responses[idx]));
-        return [...userFieldCols, ...responseCols].map(escaper).join(separator);
+        segments = [
+          ...segments,
+          ...Questions.map((q, idx) => {
+            const response = responses[idx];
+            if (Array.isArray(response)) {
+              return response.join('\n');
+            }
+            return response ?? '';
+          }),
+        ];
       }
-      return userFieldCols.map(escaper).join(separator);
+      return segments.map(escaper).join(separator);
     })
     .join('\n');
   const fileText = `${rowHeadersText}\n${rowCellsText}`;

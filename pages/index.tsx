@@ -39,7 +39,6 @@ const Home = (): ReactElement => {
             ) : (
               <Spin size="large">
                 <Alert
-                  showIcon
                   type="info"
                   message="Loading, please wait..."
                   description="Loading deadlines and application status, please wait..."

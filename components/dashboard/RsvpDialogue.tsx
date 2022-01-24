@@ -22,7 +22,6 @@ export const RsvpDialogue: React.FC<RsvpDialogueProps> = ({ rsvpStatus }) => {
 const Confirmed: React.FC = () => {
   return (
     <Alert
-      showIcon
       type={'success'}
       message={'Attendance Confirmed'}
       description={
@@ -39,8 +38,7 @@ const Confirmed: React.FC = () => {
 const NotAttending: React.FC = () => {
   return (
     <Alert
-      type={'info'}
-      showIcon
+      type={'error'}
       message={'Not Attending'}
       description={
         <>
