@@ -3,17 +3,21 @@ import { Button, Form, notification, Popconfirm } from 'antd';
 import { useWarnIfUnsavedChanges } from '../hooks/useWarnIfUnsavedChanges';
 import { AttendingState, QuestionResponse, RSVPStatus } from '../../common/types';
 import { PostAcceptanceFormQuestions, PostAcceptanceFormSections } from '../../common/questions';
-import { updatePostAcceptanceFormResponses } from '../../common/apiClient';
+import { getConfirmBy, updatePostAcceptanceFormResponses } from '../../common/apiClient';
 import { FormSectionsAndQuestions } from './FormSectionsAndQuestions';
-import { mutate } from 'swr';
+import useSWR, { mutate } from 'swr';
 
 // assume this is the first time they're filling out the form
 export const PostAcceptanceForm: React.FC = () => {
   const [attendingState, setAttendingState] = useState<AttendingState>(AttendingState.Unspecified);
+  const { data: confirmByData } = useSWR('/api/v1/dates/confirm-by', getConfirmBy);
 
   return (
     <>
       <h1 className="app-header">Application Page</h1>
+      <Form.Item noStyle>
+        {confirmByData && <p>This RSVP form is DUE {new Date(confirmByData.data).toString()}.</p>}
+      </Form.Item>
       {attendingState === AttendingState.Unspecified ? (
         <AttendingForm setAttendingState={setAttendingState} />
       ) : null}
