@@ -99,7 +99,7 @@ export const ApplicationForm = (): ReactElement => {
             <>
               You have already submitted your application, but you may edit and resubmit your
               responses as many times as you{"'"}d like before registration closes on{' '}
-              <b>{registrationCloseDate && format(registrationCloseDate)}</b>.
+              <strong>{registrationCloseDate && format(registrationCloseDate)}</strong>.
               <div className="edit-button-container">
                 <Button
                   className="edit-button"
