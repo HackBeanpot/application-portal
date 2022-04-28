@@ -30,14 +30,16 @@ const PortalSettings: React.FC = () => {
     getRegistrationOpen
   );
   const { data: showDecision, mutate: mutateShowDecision } = useSWR(
-    '/api/v1/dates/registration-open',
+    '/api/v1/show-decision',
     getShowDecisionData
   );
 
   const [myRegistrationOpen, setMyRegistrationOpen] = useState<string | undefined>(undefined);
   const [myRegistrationClosed, setMyRegistrationClosed] = useState<string | undefined>(undefined);
   const [myConfirmBy, setMyConfirmBy] = useState<string | undefined>(undefined);
-  const loading = !confirmBy || !registrationClosed || !registrationOpen || !showDecision;
+  const [myShowDecision, setMyShowDecision] = useState<boolean | undefined>(undefined);
+  const loading = !confirmBy || !registrationClosed || !registrationOpen;
+
   return (
     <div>
       <h3>{ADMIN_TABS.CONFIGURE_PORTAL_SETTINGS}</h3>
@@ -78,10 +80,12 @@ const PortalSettings: React.FC = () => {
           <div className="showDecisions">
             Show Decisions
             <Switch
-              checked={showDecision}
+              checked={myShowDecision}
               onClick={(value) => {
+                setMyShowDecision(value);
                 updateShowDecision(value);
-                mutateShowDecision(value, true);
+                mutateShowDecision(value);
+                console.log(value);
               }}
             />
           </div>

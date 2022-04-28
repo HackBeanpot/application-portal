@@ -17,10 +17,11 @@ export const queryShowDecision = async (
 export const getShowDecision = async (
   req: NextApiRequest,
   res: NextApiResponse,
-  dateName: SingletonType.ShowDecision
+  showDecision: SingletonType.ShowDecision
 ) => {
-  const date = await queryShowDecision(dateName);
-  return res.status(200).json(date);
+  const decision = await queryShowDecision(showDecision);
+  console.log(decision);
+  return res.status(200).json(decision);
 };
 
 export const postShowDecision = async (
@@ -28,14 +29,11 @@ export const postShowDecision = async (
   res: NextApiResponse,
   showDecision: SingletonType.ShowDecision
 ) => {
-  // const adminCheck = await isAdmin(req);
-  // if (!adminCheck) {
-  //   return res.status(401).send({ message: 'User is not an admin' });
-  // }
-
-  // console.log(req.body)
+  const adminCheck = await isAdmin(req);
+  if (!adminCheck) {
+    return res.status(401).send({ message: 'User is not an admin' });
+  }
   const newDecision: string = req.body.showDecision;
-  console.log(newDecision);
   const { singletonDataCollection } = await connectToDatabase();
   await singletonDataCollection.updateOne(
     { type: showDecision },
