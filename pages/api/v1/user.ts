@@ -1,7 +1,6 @@
 import { NextApiHandler } from 'next';
 import { assumeLoggedInGetEmail, protect } from '../../../server/protect';
 import { connectToDatabase } from '../../../server/mongoDB';
-import { getShowDecision } from '../../../common/apiClient';
 import { ApplicationStatus, ShowDecisionSingleton, SingletonType } from '../../../common/types';
 
 const handler: NextApiHandler = async (req, res) => {

@@ -52,7 +52,7 @@ function getStatusDialogueProps(
   registrationOpen?: string,
   showDecision?: boolean
 ) {
-  if (status && confirmBy && registrationClosed && registrationOpen && showDecision) {
+  if (status && confirmBy && registrationClosed && registrationOpen && showDecision !== undefined) {
     return {
       status,
       confirmBy: new Date(confirmBy),

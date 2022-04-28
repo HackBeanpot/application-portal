@@ -1,6 +1,5 @@
 import { ApplicationStatus, StatusApiResponse } from '../../common/types';
 import { Alert, AlertProps, Button } from 'antd';
-import { isBefore } from 'date-fns';
 import Link from 'next/link';
 import React from 'react';
 import { isAfterRegistrationClosed, isBeforeRegistrationOpens } from '../../common/dateUtils';
@@ -20,6 +19,7 @@ export const StatusDialogue: React.FC<StatusDialogueProps> = ({
   status: { applicationStatus },
   showDecision,
 }) => {
+  console.log(`show decision is ${showDecision}`);
   if (isBeforeRegistrationOpens(registrationOpen)) {
     // before registration opens case
     return <ApplyLater registrationOpen={format(registrationOpen)} />;
@@ -41,7 +41,7 @@ export const StatusDialogue: React.FC<StatusDialogueProps> = ({
   if (applicationStatus === ApplicationStatus.Incomplete) {
     return <DeadlinePassed registrationClosed={format(registrationClosed)} />;
   } else if (!showDecision) {
-    return <Submitted />;
+    return <Pending />;
   } else {
     // after registration closed, and we are showing decisions
     if (applicationStatus === ApplicationStatus.Submitted) {
@@ -152,6 +152,12 @@ const Declined = () =>
       you to apply next year. In the meantime, please sign up for our mailing list to stay up to get
       notified when applications open for next year{"'"}s event!
     </>
+  );
+const Pending = () =>
+  ShortAlert(
+    'info',
+    'Decision Pending',
+    'Thank you for submitting your application, we are currently reviewing it!'
   );
 
 const OPTIONS = {
