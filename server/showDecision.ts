@@ -1,8 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { connectToDatabase } from './mongoDB';
-import { DateSingleton, ShowDecisionSingleton, SingletonType } from '../common/types';
+import { ShowDecisionSingleton, SingletonType } from '../common/types';
 import { isAdmin } from './protect';
-import { WithId } from 'mongodb';
 
 export const queryShowDecision = async (
   showDecision: SingletonType.ShowDecision
