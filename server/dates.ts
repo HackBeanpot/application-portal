@@ -3,13 +3,11 @@ import { connectToDatabase } from './mongoDB';
 import { DateSingleton } from '../common/types';
 import { isAdmin } from './protect';
 
-export const queryDate = async (
-  dateName: DateSingleton['type']
-): Promise<string | undefined> => {
+export const queryDate = async (dateName: DateSingleton['type']): Promise<string | undefined> => {
   const { singletonDataCollection } = await connectToDatabase();
-  const data = await singletonDataCollection.findOne({
+  const data = (await singletonDataCollection.findOne({
     type: dateName,
-  });
+  })) as DateSingleton;
   return data?.value;
 };
 
