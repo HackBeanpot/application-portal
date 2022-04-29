@@ -9,13 +9,18 @@ type DecisionStatusDialogueProps = {
   decisionStatus: Exclude<DecisionStatus, DecisionStatus.Undecided>;
   confirmBy: Date;
   confirmByState: ConfirmByState;
+  showDecision: boolean;
 };
 
 export const DecisionStatusDialogue: React.FC<DecisionStatusDialogueProps> = ({
   decisionStatus,
   confirmBy,
   confirmByState,
+  showDecision,
 }) => {
+  if (!showDecision) {
+    return <Pending />;
+  }
   if (decisionStatus === DecisionStatus.Admitted) {
     switch (confirmByState) {
       case ConfirmByState.After:
@@ -119,6 +124,19 @@ const FailedToConfirm: React.FC<AdmittedProps> = ({ confirmBy }) => {
           <a href="mailto:team@hackbeanpot.com">team@hackbeanpot.com</a> letting us know of your
           status so we can send you the appropriate details to join the event.
         </div>
+      }
+    />
+  );
+};
+
+const Pending: React.FC = () => {
+  return (
+    <Alert
+      type="warning"
+      message={'Pending'}
+      showIcon
+      description={
+        <div>Thank you for submitting your application, we are currently reviewing it!</div>
       }
     />
   );
