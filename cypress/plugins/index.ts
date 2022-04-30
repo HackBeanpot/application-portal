@@ -77,11 +77,13 @@ module.exports = (
         identifier: arg.email,
       });
       await Promise.all([deleteUserTask, deleteTokenTask]);
+      const userFields = arg.user ?? {};
       const insertUserTask = ctx.serverDb.userDataCollection.insertOne({
         email: arg.email,
         isAdmin: arg.isAdmin,
         applicationStatus: ApplicationStatus.Incomplete,
         rsvpStatus: RSVPStatus.Unconfirmed,
+        ...userFields,
       });
       const insertTokenTask = ctx.nextAuthDb.verificationTokens.insertOne({
         identifier: arg.email,
