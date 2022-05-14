@@ -1,4 +1,3 @@
-import { ApplicationStatus } from '../../common/types';
 import { createAdminAndLogin, createApplicantAndLogin } from '../utils';
 
 describe('show decision tests', () => {
@@ -11,6 +10,6 @@ describe('show decision tests', () => {
     cy.visit('/admin');
     cy.contains('Configure Portal Settings').click({ force: true });
     cy.contains('Configure Portal Settings').click({ force: true });
-    cy.get('.showDecisions').find('button').click({ force: true });
+    cy.get('.show-decisions').find('button').click({ force: true });
   });
 });
