@@ -15,6 +15,7 @@ type StatusDialogueProps = {
   confirmBy: Date;
   registrationClosed: Date;
   registrationOpen: Date;
+  showDecision: boolean;
 };
 
 export const StatusDialogue: React.FC<StatusDialogueProps> = ({
@@ -24,6 +25,7 @@ export const StatusDialogue: React.FC<StatusDialogueProps> = ({
   applicationStatus,
   decisionStatus,
   rsvpStatus,
+  showDecision,
 }) => {
   const registrationState = useRegistrationState({ registrationClosed, registrationOpen });
   const confirmByState = useConfirmByState({ confirmBy });
@@ -50,6 +52,7 @@ export const StatusDialogue: React.FC<StatusDialogueProps> = ({
         decisionStatus={decisionStatus}
         confirmBy={confirmBy}
         confirmByState={confirmByState}
+        showDecision={showDecision}
       />
     );
   }

@@ -1,6 +1,5 @@
 import { Button, Col, DatePicker, Row } from 'antd';
 import React, { FC } from 'react';
-import { format } from '../dashboard/StatusDialogue';
 
 type PortalSettingsRowProps = {
   title: string;
@@ -24,9 +23,7 @@ const PortalSettingsRow: FC<PortalSettingsRowProps> = ({
       <Col span={4}>{title}</Col>
       <Col span={8}>{portalDate && new Date(portalDate).toString()}</Col>
       <Col span={8}>
-        {portalDate && (
-          <DatePicker onChange={(_, date) => setDate(date)} showTime />
-        )}
+        {portalDate && <DatePicker onChange={(_, date) => setDate(date)} showTime />}
       </Col>
       <Col span={4}>
         <Button

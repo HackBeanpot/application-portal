@@ -15,12 +15,18 @@ export interface User {
   postAcceptanceResponses?: Array<QuestionResponse>;
 }
 
-export type SingletonDefinition = DateSingleton;
+export type SingletonDefinition = DateSingleton | ShowDecisionSingleton;
 
 export enum SingletonType {
   RegistrationOpen = 'registration-open',
   RegistrationClosed = 'registration-closed',
   ConfirmBy = 'confirm-by',
+  ShowDecision = 'show-decision',
+}
+
+export interface ShowDecisionSingleton {
+  value: boolean;
+  type: SingletonType.ShowDecision;
 }
 
 export interface DateSingleton {

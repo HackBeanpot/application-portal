@@ -13,7 +13,6 @@ import useSWR from 'swr';
 import { format } from '../dashboard/StatusDialogue';
 import { isAfterRegistrationClosed, isBeforeRegistrationOpens } from '../../common/utils';
 import { useWarnIfUnsavedChanges } from '../hooks/useWarnIfUnsavedChanges';
-import { FormQuestion } from './FormQuestion';
 import { FormSectionsAndQuestions } from './FormSectionsAndQuestions';
 
 export const ApplicationForm = (): ReactElement => {

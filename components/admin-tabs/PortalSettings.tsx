@@ -5,12 +5,16 @@ import {
   getConfirmBy,
   getRegistrationClosed,
   getRegistrationOpen,
+  getShowDecision,
   updateConfirmBy,
   updateRegistrationClosed,
   updateRegistrationOpen,
+  updateShowDecision,
 } from '../../common/apiClient';
-import { Col, Row } from 'antd';
+import { Col, Row, Spin, Switch } from 'antd';
 import PortalSettingsRow from './PortalSettingsRow';
+
+const getShowDecisionData = () => getShowDecision().then((d) => d.data);
 
 const PortalSettings: React.FC = () => {
   const { data: confirmBy, mutate: mutateConfirmBy } = useSWR(
@@ -25,43 +29,65 @@ const PortalSettings: React.FC = () => {
     '/api/v1/dates/registration-open',
     getRegistrationOpen
   );
+  const { mutate: mutateShowDecision } = useSWR('/api/v1/show-decision', getShowDecisionData);
+
   const [myRegistrationOpen, setMyRegistrationOpen] = useState<string | undefined>(undefined);
   const [myRegistrationClosed, setMyRegistrationClosed] = useState<string | undefined>(undefined);
   const [myConfirmBy, setMyConfirmBy] = useState<string | undefined>(undefined);
+  const [myShowDecision, setMyShowDecision] = useState<boolean | undefined>(undefined);
+  const loading = !confirmBy || !registrationClosed || !registrationOpen;
 
   return (
     <div>
       <h3>{ADMIN_TABS.CONFIGURE_PORTAL_SETTINGS}</h3>
-      <Row>
-        <Col span={4}>Name</Col>
-        <Col span={8}>Current Date</Col>
-        <Col span={8}>Picker</Col>
-        <Col span={4}>Update</Col>
-      </Row>
-      <PortalSettingsRow
-        title="Registration Open"
-        portalDate={registrationOpen?.data}
-        setDate={setMyRegistrationOpen}
-        postDate={updateRegistrationOpen}
-        uiStateDate={myRegistrationOpen}
-        refresh={mutateRegistrationOpen}
-      />
-      <PortalSettingsRow
-        title="Registration Close"
-        portalDate={registrationClosed?.data}
-        setDate={setMyRegistrationClosed}
-        postDate={updateRegistrationClosed}
-        uiStateDate={myRegistrationClosed}
-        refresh={mutateRegistrationClosed}
-      />
-      <PortalSettingsRow
-        title="Confirm-by"
-        portalDate={confirmBy?.data}
-        setDate={setMyConfirmBy}
-        postDate={updateConfirmBy}
-        uiStateDate={myConfirmBy}
-        refresh={mutateConfirmBy}
-      />
+      {loading ? (
+        <Spin size="large" />
+      ) : (
+        <>
+          <Row>
+            <Col span={4}>Name</Col>
+            <Col span={8}>Current Date</Col>
+            <Col span={8}>Picker</Col>
+            <Col span={4}>Update</Col>
+          </Row>
+          <PortalSettingsRow
+            title="Registration Open"
+            portalDate={registrationOpen.data}
+            setDate={setMyRegistrationOpen}
+            postDate={updateRegistrationOpen}
+            uiStateDate={myRegistrationOpen}
+            refresh={mutateRegistrationOpen}
+          />
+          <PortalSettingsRow
+            title="Registration Close"
+            portalDate={registrationClosed.data}
+            setDate={setMyRegistrationClosed}
+            postDate={updateRegistrationClosed}
+            uiStateDate={myRegistrationClosed}
+            refresh={mutateRegistrationClosed}
+          />
+          <PortalSettingsRow
+            title="Confirm-by"
+            portalDate={confirmBy.data}
+            setDate={setMyConfirmBy}
+            postDate={updateConfirmBy}
+            uiStateDate={myConfirmBy}
+            refresh={mutateConfirmBy}
+          />
+          <br />
+          <div className="show-decisions">
+            <h3>Show Decisions</h3>
+            <Switch
+              checked={myShowDecision}
+              onClick={(value) => {
+                setMyShowDecision(value);
+                updateShowDecision(value);
+                mutateShowDecision(value);
+              }}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };
