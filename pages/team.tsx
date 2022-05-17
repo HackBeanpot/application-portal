@@ -41,6 +41,18 @@ const Team = (): ReactElement => {
                 <div className="button-container">
                   {isTeamInputOpen ? (
                     <>
+                      <Alert
+                        className="alert"
+                        showIcon
+                        message="Team prize Disclaimer"
+                        description={
+                          <>
+                            Applying with or without a team does has no effect on how your
+                            application is read! However, if you are already part of a team before
+                            applying, we will accept / reject your team together.
+                          </>
+                        }
+                      />
                       <p>
                         To apply as a team, first decide upon a unique team name with your
                         teammates. After deciding, have everyone enter the same team name in the
