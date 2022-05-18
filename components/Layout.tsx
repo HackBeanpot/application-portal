@@ -108,7 +108,11 @@ export const PageLayout: React.FC<PageLayoutProps> = ({ currentPage, children })
       <Content className="content-container">
         <div className="content">{children}</div>
       </Content>
-      <Footer className="footer">click on this Google Form</Footer>
+      <Footer className="footer">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfhz6MjZpdCmJdik0p5F7IrqZPTZQ7OLVydiCK_I0Lbzr3m4Q/viewform?usp=sf_link">
+          click on this Google Form
+        </a>
+      </Footer>
     </Layout>
   );
 };
