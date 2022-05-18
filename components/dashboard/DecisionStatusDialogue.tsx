@@ -110,9 +110,9 @@ const Declined: React.FC = () => {
 const FailedToConfirm: React.FC<AdmittedProps> = ({ confirmBy }) => {
   return (
     <Alert
-      type={'success'}
+      type={'warning'}
       showIcon
-      message={'Accepted'}
+      message={'Failed to Confirm'}
       description={
         <div>
           <p>
