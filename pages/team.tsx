@@ -44,12 +44,12 @@ const Team = (): ReactElement => {
                       <Alert
                         className="alert"
                         showIcon
-                        message="Team prize Disclaimer"
+                        message="Applying as a Team: Prize Division"
                         description={
                           <>
-                            Applying with or without a team does has no effect on how your
-                            application is read! However, if you are already part of a team before
-                            applying, we will accept / reject your team together.
+                            Note that our prizes are planned for teams of 5 members maximum, so
+                            although there is no team size limit, keep in mind that you will have to
+                            divide a prize among yourselves for teams of more 5 members.
                           </>
                         }
                       />
