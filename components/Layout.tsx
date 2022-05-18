@@ -10,7 +10,7 @@ import { DownOutlined, MenuOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 import router from 'next/router';
 
-const { Header, Content } = Layout;
+const { Header, Content, Footer } = Layout;
 
 const Pages = ['home', 'application', 'team', 'admin', 'logout'] as const;
 type PageLayoutProps = {
@@ -108,6 +108,7 @@ export const PageLayout: React.FC<PageLayoutProps> = ({ currentPage, children })
       <Content className="content-container">
         <div className="content">{children}</div>
       </Content>
+      <Footer className="footer">click on this Google Form</Footer>
     </Layout>
   );
 };
