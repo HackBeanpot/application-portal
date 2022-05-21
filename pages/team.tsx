@@ -41,6 +41,18 @@ const Team = (): ReactElement => {
                 <div className="button-container">
                   {isTeamInputOpen ? (
                     <>
+                      <Alert
+                        className="alert"
+                        showIcon
+                        message="Applying as a Team: Prize Division"
+                        description={
+                          <>
+                            Note that our prizes are planned for teams of 5 members maximum, so
+                            although there is no team size limit, keep in mind that you will have to
+                            divide a prize among yourselves for teams of more 5 members.
+                          </>
+                        }
+                      />
                       <p>
                         To apply as a team, first decide upon a unique team name with your
                         teammates. After deciding, have everyone enter the same team name in the
