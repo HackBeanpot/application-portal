@@ -304,37 +304,6 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     true,
     10
   ),
-  makeSection(<>Team Formation</>),
-  makeDropdown(
-    'applyingWithTeam',
-    <div>
-      <p>
-        Do you plan on attending HackBeanpot with a pre-made team? If yes, please create / join a
-        team with your teammates in the Team tab after filling out your application.
-      </p>
-      <i>
-        Note: This question does not get factored into how your application is read! If you are
-        already part of a team before applying, we will accept / reject your team together.
-      </i>
-    </div>,
-    ['Yes', 'No'],
-    true
-  ),
-  makeDropdown(
-    'interestedInTeamFormation',
-    <div>
-      <p>
-        If you don’t have a team or would like to add more members to your team, we will have a
-        project ideation session and team formation activity we would love for you to attend. In the
-        question below, if you express interest in finding a team at the event we will reach out
-        closer to the event with more details.
-      </p>
-      Would you be interested in creating a team or finding more members for your current team at
-      our team formation event?
-    </div>,
-    ['Yes', 'No'],
-    true
-  ),
 ];
 
 const filterQuestion = (q: QuestionSection | QuestionDefinition): q is QuestionDefinition => {
