@@ -43,7 +43,7 @@ export const EXAMPLE_RESPONSE: RegistrationApiRequest = {
   responses: ['Judy Su', EXAMPLE_ETHNICITIES],
 };
 export const EXAMPLE_CHECKBOX_1: Checkboxes = {
-  field: 'sassiest',
+  field: 'celebrity',
   id: '1',
   content: 'Who is the sassiest?',
   required: true,
@@ -53,7 +53,7 @@ export const EXAMPLE_CHECKBOX_1: Checkboxes = {
   minNumber: 1,
 };
 export const EXAMPLE_SHORT_TEXT_1: ShortText = {
-  field: 'food',
+  field: 'tedTalkTopic',
   id: '2',
   content: "What's your favorite food?",
   required: false,
@@ -66,7 +66,7 @@ export const EXAMPLE_SHORT_TEXT_1: ShortText = {
 // at least one of the options is equal to the response
 // make function that validates a function
 export const EXAMPLE_DROPDOWN_1: Dropdown = {
-  field: 'color',
+  field: 'swag',
   id: '3',
   content: "What's your favorite color?",
   required: true,
@@ -80,7 +80,7 @@ export const EXAMPLE_DROPDOWN_1: Dropdown = {
   ],
 };
 export const EXAMPLE_LONG_TEXT_1: LongText = {
-  field: 'whyHackBeanpot',
+  field: 'hackBeanGoals',
   id: '4',
   content: 'Why do you want to participate in Hackbeanpot?',
   required: true,

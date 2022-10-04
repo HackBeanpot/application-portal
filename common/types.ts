@@ -145,7 +145,7 @@ export type QuestionSection = {
 export type QuestionId = string;
 
 interface IQuestion {
-  field: keyof User | string;
+  field: keyof User;
   content: ReactNode;
   id: QuestionId;
   required: boolean;
