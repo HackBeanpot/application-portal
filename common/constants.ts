@@ -33,15 +33,6 @@ export const REJECTION_MESSAGE =
  */
 export const EXAMPLE_USER_ID = 'user12231';
 export const EXAMPLE_USER: User = {
-  name: 'Judy Su',
-  gender: Gender.Female,
-  unlistedGender: '',
-  school: 'Northeastern',
-  unlistedSchool: '',
-  ethnicities: EXAMPLE_ETHNICITIES,
-  education: Education.Undergraduate,
-  yearOfEducation: '3',
-  shirtSize: ShirtSize.Medium,
   email: 'judysu@gmail.com',
   applicationStatus: EXAMPLE_APPLICATION_STATUS,
   isAdmin: true,
