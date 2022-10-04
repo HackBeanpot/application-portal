@@ -26,7 +26,7 @@ const longTextMaxLength = 3000;
 
 // convenience constructors for questions (constructors in java)
 export function makeCheckbox(
-  field: keyof User | string,
+  field: keyof User,
   content: ReactNode,
   options: Array<string>,
   required: boolean,
@@ -46,7 +46,7 @@ export function makeCheckbox(
 }
 
 export function makeShortText(
-  field: keyof User | string,
+  field: keyof User,
   content: ReactNode,
   required: boolean,
   placeholder?: string
@@ -65,7 +65,7 @@ export function makeShortText(
 }
 
 export function makeDropdown(
-  field: keyof User | string,
+  field: keyof User,
   content: ReactNode,
   options: Array<string>,
   required: boolean,
@@ -83,11 +83,7 @@ export function makeDropdown(
   };
 }
 
-export function makeLongText(
-  field: keyof User | string,
-  content: ReactNode,
-  required: boolean
-): LongText {
+export function makeLongText(field: keyof User, content: ReactNode, required: boolean): LongText {
   questionCount++;
   return {
     field,
@@ -114,6 +110,7 @@ export function makeSection(text: ReactNode, description?: ReactNode): QuestionS
 }
 
 // write questions for portal here
+// when adding a new question add the question field to the User type in common/types.ts
 export const Sections: Array<QuestionSection | QuestionDefinition> = [
   makeSection(<>Let{"'"}s Get to Know You!</>),
   makeShortText('name', 'What is your name?', true, 'First Last'),
@@ -215,7 +212,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     'https://link-to-your-resume'
   ),
   makeDropdown(
-    'tshirtSize',
+    'shirtSize',
     <div>
       We will be handing out t-shirts and other fun swag at the event. What is your t-shirt size?{' '}
       <i>All sizes are unisex.</i>
@@ -348,6 +345,7 @@ const filterQuestion = (q: QuestionSection | QuestionDefinition): q is QuestionD
 
 export const Questions: Array<QuestionDefinition> = Sections.filter(filterQuestion);
 
+// when adding a new question add the question field to the User type in common/types.ts
 export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinition> = [
   makeSection(
     <>Post-Acceptance Form</>,
