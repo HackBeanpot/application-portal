@@ -27,10 +27,7 @@ export const convertQuestionDefinitionToJoiSchema = (
 };
 
 // joi documentation is pretty good: checkout joi.dev/api
-export const makeRequiredIfNeeded = (
-  q: QuestionDefinition,
-  schema: Joi.Schema
-): Joi.Schema => {
+export const makeRequiredIfNeeded = (q: QuestionDefinition, schema: Joi.Schema): Joi.Schema => {
   // by default, joi allows undefined, but not null.
   if (q.required) {
     // required means don't allow undefined
@@ -42,11 +39,7 @@ export const makeRequiredIfNeeded = (
 export const convertCheckboxesToJoiSchema = (q: Checkboxes): Joi.Schema => {
   // checkboxes expects an array of strings back
   const itemSchema = Joi.valid(...q.options.map((s) => s.name));
-  const arraySchema = Joi.array()
-    .items(itemSchema)
-    .unique()
-    .min(q.minNumber)
-    .max(q.maxNumber);
+  const arraySchema = Joi.array().items(itemSchema).unique().min(q.minNumber).max(q.maxNumber);
   return makeRequiredIfNeeded(q, arraySchema);
 };
 export const convertDropdownToJoiSchema = (q: Dropdown): Joi.Schema => {
@@ -65,35 +58,29 @@ export const convertShortTextToJoiSchema = (q: ShortText): Joi.Schema => {
   return makeRequiredIfNeeded(q, answerSchema);
 };
 
-export const makeQuestionResponseSchemas = (
-  qs: QuestionDefinition[]
-): Joi.Schema[] => qs.map(convertQuestionDefinitionToJoiSchema);
-export const makeRegistrationApiRequestSchema = (
-  qs: QuestionDefinition[]
-): Joi.Schema =>
+export const makeQuestionResponseSchemas = (qs: QuestionDefinition[]): Joi.Schema[] =>
+  qs.map(convertQuestionDefinitionToJoiSchema);
+export const makeRegistrationApiRequestSchema = (qs: QuestionDefinition[]): Joi.Schema =>
   Joi.object<RegistrationApiRequest>({
+    fields: Joi.array().sparse().length(qs.length).required(),
     responses: Joi.array().sparse().length(qs.length).required(),
   });
 
 // an array of the schema for each question in order
 const QuestionResponseSchemas = makeQuestionResponseSchemas(Questions);
-const RegistrationApiRequestSchema =
-  makeRegistrationApiRequestSchema(Questions);
+const RegistrationApiRequestSchema = makeRegistrationApiRequestSchema(Questions);
 
 /**
  * attempts to validate a registration api request body. will throw if the request is invalid.
  * @param body the request body
  */
-export const attemptToValidateRegistrationApiRequest = (
-  body: unknown
-): RegistrationApiRequest => {
-  const { responses }: RegistrationApiRequest = Joi.attempt(
+export const attemptToValidateRegistrationApiRequest = (body: unknown): RegistrationApiRequest => {
+  const { fields, responses }: RegistrationApiRequest = Joi.attempt(
     body,
     RegistrationApiRequestSchema
   );
   return {
-    responses: responses.map((response, i) =>
-      Joi.attempt(response, QuestionResponseSchemas[i])
-    ),
+    fields,
+    responses: responses.map((response, i) => Joi.attempt(response, QuestionResponseSchemas[i])),
   };
 };

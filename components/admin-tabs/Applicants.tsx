@@ -18,13 +18,14 @@ import { saveAs } from 'file-saver';
 import { EditableRow } from './table/EditableRow';
 import { EditableCell, EditableCellProps } from './table/EditableCell';
 
+// add other Question fields not defined in User type in intersection here
 export type SingleRecordType = ApplicantsApiResponse['data'][number];
 
 // table columns: name, email, school, application status, rsvp status
 const columns = [
   {
     title: 'Name',
-    dataIndex: ['responses', '0'],
+    dataIndex: 'name',
     sorter: true,
     editable: false,
   },
@@ -36,19 +37,19 @@ const columns = [
   },
   {
     title: 'School',
-    dataIndex: ['responses', '4'],
+    dataIndex: 'school',
     filters: (Questions[4] as DropdownQuestionType).options.map(({ name }) => ({
       text: name,
       value: name,
     })),
     render: (_: string, record: SingleRecordType) =>
-      record.responses?.[record.responses[4] === 'Other' ? 5 : 4] ?? '',
+      record.school === 'Other' ? record.unlistedSchool : record.school,
     sorter: true,
     editable: false,
   },
   {
     title: 'Year',
-    dataIndex: ['responses', '7'],
+    dataIndex: 'yearOfEducation',
     filters: (Questions[7] as DropdownQuestionType).options.map(({ name }) => ({
       text: name,
       value: name,
@@ -167,6 +168,8 @@ const Applicants: React.FC = () => {
       </Tooltip>
     );
   };
+
+  console.log(data);
 
   return (
     <div className={'applicants'}>

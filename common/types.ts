@@ -1,10 +1,19 @@
 import { ReactNode } from 'react';
 
 /**
- * @param applicationStatus deez nuts
+ * @param applicationStatus deez nuts :0
  */
 export interface User {
+  name?: string;
+  gender?: Gender;
+  unlistedGender?: string;
+  school?: string;
+  unlistedSchool?: string;
   email: string;
+  ethnicities?: Ethnicity[];
+  education?: Education;
+  yearOfEducation?: YearOfEducation;
+  shirtSize?: ShirtSize;
   isAdmin: boolean;
   applicationStatus: ApplicationStatus;
   // Decision status might not exist because of backwards compatibility
@@ -59,7 +68,7 @@ export enum Education {
   Graduate = 'Graduate',
   Doctorate = 'Doctorate',
 }
-type YearOfEducation = 1 | 2 | 3 | 4 | 5 | '5+';
+type YearOfEducation = '1' | '2' | '3' | '4' | '5' | '5+';
 export enum Ethnicity {
   IndigenousAlaskaNative = 'Indigenous / Alaska Native',
   Asian = 'Asian',
@@ -109,7 +118,7 @@ export type QuestionSection = {
 export type QuestionId = string;
 
 interface IQuestion {
-  field: string;
+  field: keyof User | string;
   content: ReactNode;
   id: QuestionId;
   required: boolean;
@@ -157,6 +166,7 @@ export type QuestionResponse = string | Array<string> | null;
  * @param responses mapping from question id to response value
  */
 export type RegistrationApiRequest = {
+  fields: Array<keyof User | string>;
   responses: Array<QuestionResponse>;
 };
 export type RegistrationApiResponse = RegistrationApiRequest;

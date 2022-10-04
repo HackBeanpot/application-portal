@@ -13,6 +13,7 @@ import {
   QuestionSection,
   QuestionType,
   ShortText,
+  User,
 } from './types';
 
 let questionCount = 0;
@@ -25,7 +26,7 @@ const longTextMaxLength = 3000;
 
 // convenience constructors for questions (constructors in java)
 export function makeCheckbox(
-  field: string,
+  field: keyof User | string,
   content: ReactNode,
   options: Array<string>,
   required: boolean,
@@ -45,7 +46,7 @@ export function makeCheckbox(
 }
 
 export function makeShortText(
-  field: string,
+  field: keyof User | string,
   content: ReactNode,
   required: boolean,
   placeholder?: string
@@ -64,7 +65,7 @@ export function makeShortText(
 }
 
 export function makeDropdown(
-  field: string,
+  field: keyof User | string,
   content: ReactNode,
   options: Array<string>,
   required: boolean,
@@ -82,7 +83,11 @@ export function makeDropdown(
   };
 }
 
-export function makeLongText(field: string, content: ReactNode, required: boolean): LongText {
+export function makeLongText(
+  field: keyof User | string,
+  content: ReactNode,
+  required: boolean
+): LongText {
   questionCount++;
   return {
     field,
@@ -179,7 +184,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     'Level'
   ),
   makeDropdown(
-    'educationYear',
+    'yearOfEducation',
     'What year in your current education are you?',
     ['1st year', '2nd year', '3rd year', '4th year', '5th year+'],
     true,
