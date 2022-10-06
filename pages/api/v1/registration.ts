@@ -30,7 +30,8 @@ const getHandler: NextApiHandler = async (req, res) => {
   const { userDataCollection } = await connectToDatabase();
   const data = await userDataCollection.findOne({ email });
   return res.status(200).json({
-    responses: data?.responses,
+    fields: data ? Object.keys(data) : [],
+    responses: data ? Object.values(data) : []
   });
 };
 
