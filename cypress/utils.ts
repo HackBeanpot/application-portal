@@ -20,5 +20,4 @@ export const createApplicantAndLogin = async (email = 'applicant@domain.com'): P
 
 export const checkLoggedIn = (): void => {
   cy.get('header').should('contain', 'Application');
-  cy.get('header').should('contain', 'Team');
 };
