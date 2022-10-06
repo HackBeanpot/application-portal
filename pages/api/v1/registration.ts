@@ -1,6 +1,7 @@
 import { NextApiHandler } from 'next';
 import {
   ApplicationStatus,
+  QuestionResponse,
   RegistrationApiRequest,
   SingletonType,
 } from '../../../common/types';
@@ -29,7 +30,8 @@ const getHandler: NextApiHandler = async (req, res) => {
   const { userDataCollection } = await connectToDatabase();
   const data = await userDataCollection.findOne({ email });
   return res.status(200).json({
-    responses: data?.responses,
+    fields: data ? Object.keys(data) : [],
+    responses: data ? Object.values(data) : [],
   });
 };
 
@@ -53,10 +55,15 @@ const postHandler: NextApiHandler = async (req, res) => {
     if (Joi.isError(e)) {
       return res.status(400).json(e.message);
     }
-    return res
-      .status(500)
-      .json('something broke. please email us immediately.');
+    return res.status(500).json('something broke. please email us immediately.');
   }
+
+  const userResponses: Record<string, QuestionResponse> = {};
+
+  result.fields.forEach((field, index) => {
+    const response = result.responses[index];
+    userResponses[field] = response;
+  });
 
   const email = await assumeLoggedInGetEmail(req);
   const { userDataCollection } = await connectToDatabase();
@@ -65,7 +72,7 @@ const postHandler: NextApiHandler = async (req, res) => {
     { email },
     {
       $set: {
-        responses: result.responses,
+        ...userResponses,
         email,
         applicationStatus: ApplicationStatus.Submitted,
       },

@@ -15,7 +15,7 @@ export const getDate = async (
   req: NextApiRequest,
   res: NextApiResponse,
   dateName: DateSingleton['type']
-) => {
+): Promise<void> => {
   const date = await queryDate(dateName);
   return res.status(200).json(date);
 };
@@ -24,7 +24,7 @@ export const postDate = async (
   req: NextApiRequest,
   res: NextApiResponse,
   dateName: DateSingleton['type']
-) => {
+): Promise<void> => {
   const adminCheck = await isAdmin(req);
   if (!adminCheck) {
     return res.status(401).send({ message: 'User is not an admin' });

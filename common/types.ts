@@ -1,10 +1,46 @@
 import { ReactNode } from 'react';
 
 /**
- * @param applicationStatus deez nuts
+ * @param applicationStatus deez nuts :0
  */
 export interface User {
+  name?: string;
+  gender?: Gender;
+  unlistedGender?: string;
+  school?: string;
+  unlistedSchool?: string;
   email: string;
+  ethnicities?: Array<Ethnicity>;
+  education?: Education;
+  yearOfEducation?: YearOfEducation;
+  majors?: string;
+  minors?: string;
+  resumeLink?: string;
+  shirtSize?: ShirtSize;
+  hackathonsAttended?: string;
+  prevHackathonFeedback?: string;
+  hackBeanGoals?: string;
+  tedTalkTopic?: string;
+  meetAlienSpeech?: string;
+  referrers?: Array<string>;
+  interestedWorkshops?: Array<string>;
+  applyingWithTeam?: string;
+  interestedInTeamFormation?: string;
+  firstName?: string;
+  lastName?: string;
+  adult?: string;
+  adultSignature?: string;
+  minorSignature?: string;
+  guardianSignature?: string;
+  swag?: string[];
+  accomodations?: string;
+  pickUpSwag?: string;
+  address?: string;
+  careerInTech?: string;
+  personAtParty?: string;
+  wonLottery?: string;
+  themePark?: string;
+  celebrity?: string;
   isAdmin: boolean;
   applicationStatus: ApplicationStatus;
   // Decision status might not exist because of backwards compatibility
@@ -59,7 +95,7 @@ export enum Education {
   Graduate = 'Graduate',
   Doctorate = 'Doctorate',
 }
-type YearOfEducation = 1 | 2 | 3 | 4 | 5 | '5+';
+type YearOfEducation = '1' | '2' | '3' | '4' | '5' | '5+';
 export enum Ethnicity {
   IndigenousAlaskaNative = 'Indigenous / Alaska Native',
   Asian = 'Asian',
@@ -109,7 +145,7 @@ export type QuestionSection = {
 export type QuestionId = string;
 
 interface IQuestion {
-  field: string;
+  field: keyof User;
   content: ReactNode;
   id: QuestionId;
   required: boolean;
@@ -157,6 +193,7 @@ export type QuestionResponse = string | Array<string> | null;
  * @param responses mapping from question id to response value
  */
 export type RegistrationApiRequest = {
+  fields: Array<keyof User | string>;
   responses: Array<QuestionResponse>;
 };
 export type RegistrationApiResponse = RegistrationApiRequest;
