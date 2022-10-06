@@ -40,10 +40,10 @@ export const ApplicationForm = (): ReactElement => {
   const submittedFormData: Record<string, QuestionResponse> = {};
   userResponses?.data?.responses?.forEach((response, index) => {
     // get index of question with corresponding field, in case we added a question in the middle of the application
-    let questionIndex = Questions.findIndex((q) => q.field === userResponses?.data?.fields[index])
+    let questionIndex = Questions.findIndex((q) => q.field === userResponses?.data?.fields[index]);
     if (questionIndex === -1) {
-      questionIndex = index
-    } 
+      questionIndex = index;
+    }
     // use question index in submittedFormData
     submittedFormData[String(questionIndex + 1)] = response;
   });
