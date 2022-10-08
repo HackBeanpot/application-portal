@@ -28,6 +28,27 @@ spin up mongo express after the db is already up, so mongo express doesn't crash
 mongo express is setup to run on port 8081. you can visit the db, after it's running, in your browser at
 localhost:8081. this is purely for development purposes.
 
+## Testing
+
+### Unit Testing
+
+#### Creating test files
+
+Test files should be localized to the same directory as the components that they test. Syntax for naming your files:
+
+`filename.test.tsx`
+
+Note that you _must_ use the `tsx` extension in order to render components, just as in your component file.
+
+#### Data test IDs
+
+Unit test components by adding a `data-testid` to the top-most div. You can use this to inspect the DOM
+and assess that certain properties of the elements being tested (such as their text) have been rendered appropriately.
+
+Follow the `ApplicationStatusDialogue.tsx` file as an example for this. You can see how the component has been tested in `ApplicationStatusDialogue.test.tsx` as you set up tests for additional components.
+
+#### What do I need to test about my component?
+
 ### References
 
 - Docker Hub Mongo Image Reference: https://hub.docker.com/_/mongo/
