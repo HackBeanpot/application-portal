@@ -3,7 +3,6 @@ import {
   RegistrationApiRequest,
   User,
   DatesApiResponse,
-  TeamApiResponse,
   RegistrationApiResponse,
   ApplicantsApiResponse,
   PostAcceptanceApiRequest,
@@ -82,18 +81,6 @@ export function getRegistrationOpen(): Promise<AxiosResponse<DatesApiResponse>> 
 
 export function updateRegistrationOpen(date: string): Promise<AxiosResponse<DatesApiResponse>> {
   return Axios.post(`/api/v1/dates/registration-open`, { date });
-}
-
-export function getTeamInfo(): Promise<AxiosResponse<TeamApiResponse | null>> {
-  return Axios.get(`/api/v1/team`);
-}
-
-export function updateTeamInfo(teamName: string): Promise<AxiosResponse<undefined>> {
-  return Axios.post(`/api/v1/team`, { teamName });
-}
-
-export function deleteTeamInfo(): Promise<AxiosResponse<undefined>> {
-  return Axios.delete(`/api/v1/team`);
 }
 
 export function updateShowDecision(showDecision: boolean): Promise<AxiosResponse<boolean>> {

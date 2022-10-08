@@ -14,7 +14,6 @@ const authDb = new Mongo().getDB('next-auth');
 
 applicationPortal.createCollection('singleton_data');
 applicationPortal.createCollection('applicant_data');
-applicationPortal.createCollection('teams');
 
 authDb.createCollection('verification_tokens');
 

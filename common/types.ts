@@ -46,7 +46,6 @@ export interface User {
   // Decision status might not exist because of backwards compatibility
   decisionStatus?: DecisionStatus;
   rsvpStatus: RSVPStatus;
-  teamName?: string;
   responses?: Array<QuestionResponse>;
   postAcceptanceResponses?: Array<QuestionResponse>;
 }
@@ -68,11 +67,6 @@ export interface ShowDecisionSingleton {
 export interface DateSingleton {
   value: string;
   type: SingletonType.RegistrationClosed | SingletonType.RegistrationOpen | SingletonType.ConfirmBy;
-}
-
-export interface Team {
-  name: string;
-  userEmails: string[];
 }
 
 export interface PortalState {
@@ -202,8 +196,6 @@ export type StatusApiResponse = {
   applicationStatus: ApplicationStatus;
   rsvpStatus: RSVPStatus;
 };
-
-export type TeamApiResponse = Team;
 
 export type DatesApiResponse = string;
 

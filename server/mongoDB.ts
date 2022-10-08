@@ -1,5 +1,5 @@
 import { MongoClient, Db, Collection } from 'mongodb';
-import { SingletonDefinition, Team, User } from '../common/types';
+import { SingletonDefinition, User } from '../common/types';
 
 const retrieveEnvVarChecked = (s: string) => {
   const envVar = process.env[s] || '';
@@ -31,7 +31,6 @@ type MongoCtx = {
   db: Db;
   userDataCollection: Collection<User>;
   singletonDataCollection: Collection<SingletonDefinition>;
-  teamDataCollection: Collection<Team>;
 };
 
 type GlobalWithMongo = {
@@ -56,23 +55,18 @@ export async function connectToDatabase(): Promise<MongoCtx> {
 
   // instantiate to a promise resolved with the context
   if (!cached.promise) {
-    cached.promise = new MongoClient(connectionString)
-      .connect()
-      .then((client) => {
-        const db = client.db(dbName);
-        const userDataCollection = db.collection<User>('applicant_data');
+    cached.promise = new MongoClient(connectionString).connect().then((client) => {
+      const db = client.db(dbName);
+      const userDataCollection = db.collection<User>('applicant_data');
 
-        const singletonDataCollection =
-          db.collection<SingletonDefinition>('singleton_data');
-        const teamDataCollection = db.collection<Team>('teams');
-        return {
-          client,
-          db,
-          userDataCollection,
-          singletonDataCollection,
-          teamDataCollection,
-        };
-      });
+      const singletonDataCollection = db.collection<SingletonDefinition>('singleton_data');
+      return {
+        client,
+        db,
+        userDataCollection,
+        singletonDataCollection,
+      };
+    });
   }
 
   // after connection is resolved, set the connection & return
