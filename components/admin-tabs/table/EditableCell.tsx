@@ -25,6 +25,7 @@ export interface EditableCellProps {
   mutate: KeyedMutator<ApplicantsApiResponse>;
   options?: Array<{ key: string; value: string }>;
   index: number;
+  children?: React.ReactNode;
 }
 
 export const EditableCell: React.FC<EditableCellProps> = ({

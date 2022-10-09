@@ -15,6 +15,7 @@ const { Header, Content, Footer } = Layout;
 const Pages = ['home', 'application', 'admin', 'logout'] as const;
 type PageLayoutProps = {
   currentPage: typeof Pages[number];
+  children: React.ReactNode;
 };
 
 export const PageLayout: React.FC<PageLayoutProps> = ({ currentPage, children }) => {
