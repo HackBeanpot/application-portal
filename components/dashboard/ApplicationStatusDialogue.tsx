@@ -85,6 +85,7 @@ const Submitted: React.FC = () => {
       type="info"
       showIcon
       message="Application Submitted"
+      data-testid="submitted-dialog-text"
       description={
         <>
           Thank you for submitting your application! We will notify you by email when there is a

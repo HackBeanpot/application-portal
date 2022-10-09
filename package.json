@@ -18,9 +18,14 @@
   "dependencies": {
     "@next-auth/mongodb-adapter": "0.0.2-next.281",
     "@rollbar/react": "^0.8.0",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "12.1.2",
     "antd": "^4.18.2",
     "axios": "^0.21.1",
+    "babel-jest": "^29.1.2",
     "file-saver": "^2.0.5",
+    "identity-obj-proxy": "^3.0.0",
+    "jest-environment-jsdom": "^27.0.1",
     "joi": "^17.4.2",
     "mongodb": "^4.1.2",
     "next": "^11.0.1",
@@ -30,7 +35,8 @@
     "react-dom": "^17.0.2",
     "rollbar": "^2.24.0",
     "sass": "^1.42.1",
-    "swr": "^1.1.2-beta.0"
+    "swr": "^1.1.2-beta.0",
+    "ts-node": "^10.9.1"
   },
   "devDependencies": {
     "@types/file-saver": "^2.0.4",
@@ -52,24 +58,5 @@
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --cache --fix",
     "*.{js,jsx,ts,tsx,css,md}": "prettier --write"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "preset": "ts-jest",
-    "globals": {
-      "ts-jest": {
-        "tsconfig": {
-          "skipLibCheck": true,
-          "strict": true,
-          "noEmit": true,
-          "esModuleInterop": true,
-          "module": "esnext",
-          "moduleResolution": "node",
-          "resolveJsonModule": true,
-          "isolatedModules": true,
-          "jsx": "react-jsx"
-        }
-      }
-    }
   }
 }
