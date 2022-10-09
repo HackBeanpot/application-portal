@@ -24,7 +24,7 @@ export const convertQuestionDefinitionToJoiSchema = (
   } else if (q.type === QuestionType.ShortText) {
     return convertShortTextToJoiSchema(q);
   } else if (q.type === QuestionType.FileUpload) {
-    return convertFileUploadToJoiSchema(q)
+    return convertFileUploadToJoiSchema(q);
   }
   throw new Error(`unexpected question type on question: ${q}`);
 };
@@ -63,9 +63,9 @@ export const convertShortTextToJoiSchema = (q: ShortText): Joi.Schema => {
 
 export const convertFileUploadToJoiSchema = (q: FileUpload): Joi.Schema => {
   // TODO figure out flow of data etc
-  const answerSchema = Joi.any()
-  return makeRequiredIfNeeded(q, answerSchema)
-}
+  const answerSchema = Joi.any();
+  return makeRequiredIfNeeded(q, answerSchema);
+};
 
 export const makeQuestionResponseSchemas = (qs: QuestionDefinition[]): Joi.Schema[] =>
   qs.map(convertQuestionDefinitionToJoiSchema);

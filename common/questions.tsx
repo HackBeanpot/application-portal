@@ -103,7 +103,14 @@ export function makeLongText(field: keyof User, content: ReactNode, required: bo
  * @param multiple whether or not we can upload multiple files at once
  * @param limit maximum # of files
  */
-export function makeFileUpload(field: keyof User, content: ReactNode, required: boolean, accept: string, multiple: boolean, limit: number): FileUpload {
+export function makeFileUpload(
+  field: keyof User,
+  content: ReactNode,
+  required: boolean,
+  accept: string,
+  multiple: boolean,
+  limit: number
+): FileUpload {
   questionCount++;
   return {
     field,
@@ -113,8 +120,8 @@ export function makeFileUpload(field: keyof User, content: ReactNode, required: 
     required: required,
     accept: accept,
     multiple: multiple,
-    limit: limit
-  }
+    limit: limit,
+  };
 }
 
 let sectionCount = 0;
@@ -218,7 +225,8 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     'resumeLink',
     <div>
       <p>
-        If you would like to hear about internships / job opportunities from our our sponsors, upload your resume! (PDF only)
+        If you would like to hear about internships / job opportunities from our our sponsors,
+        upload your resume! (PDF only)
       </p>
       <i>
         Note: We do not read resumes as a part of the HBP application process. Your resume will only

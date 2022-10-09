@@ -6,45 +6,41 @@ import type { UploadFile } from 'antd/es/upload/interface';
 import { UploadOutlined } from '@ant-design/icons';
 
 interface FileUploadProps {
-  disabled: boolean
-  question: FileUpload
+  disabled: boolean;
+  question: FileUpload;
   form: FormInstance<Record<string, QuestionResponse>>;
-};
+}
 
-const FileUploadQuestion: FC<FileUploadProps> = ({
-  disabled,
-  question,
-  form
-}) => {
-  const [fileList, setFileList] = useState<UploadFile[]>([])
+const FileUploadQuestion: FC<FileUploadProps> = ({ disabled, question, form }) => {
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   const handleUpload: UploadProps['onChange'] = (info) => {
-    let newFileList = [...info.fileList]
-    newFileList = newFileList.slice(-question.limit)
-    form.setFieldsValue({ [question.id]: newFileList.toString()})
-    setFileList(newFileList)
-  } 
+    let newFileList = [...info.fileList];
+    newFileList = newFileList.slice(-question.limit);
+    form.setFieldsValue({ [question.id]: newFileList.toString() });
+    setFileList(newFileList);
+  };
 
   return (
     <Form.Item
       className="question"
       name={question.id}
       label={<div>{question.content}</div>}
-      rules={[
-        { required: question.required, message: 'This question is required' },
-      ]}
+      rules={[{ required: question.required, message: 'This question is required' }]}
     >
       <Upload
         accept={question.accept}
-        listType='picture'
+        listType="picture"
         multiple={question.multiple}
         onChange={handleUpload}
         fileList={fileList}
       >
-        <Button disabled={disabled} icon={<UploadOutlined />}>Upload</Button>
+        <Button disabled={disabled} icon={<UploadOutlined />}>
+          Upload
+        </Button>
       </Upload>
     </Form.Item>
-  )
-}
+  );
+};
 
-export default FileUploadQuestion
+export default FileUploadQuestion;
