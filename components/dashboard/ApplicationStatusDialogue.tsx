@@ -86,10 +86,10 @@ const Submitted: React.FC = () => {
       showIcon
       message="Application Submitted"
       description={
-        <>
+        <div data-testid="submitted-dialog-text">
           Thank you for submitting your application! We will notify you by email when there is a
           change in your application status.
-        </>
+        </div>
       }
     />
   );

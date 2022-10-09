@@ -17,7 +17,7 @@ describe('Application Status Dialogue', () => {
 
       const submittedDialogText = screen.getByTestId('submitted-dialog-text');
       expect(submittedDialogText.textContent).toBe(
-        'Application SubmittedThank you for submitting your application! We will notify you by email when there is a change in your application status.'
+        'Thank you for submitting your application! We will notify you by email when there is a change in your application status.'
       );
     });
   });
