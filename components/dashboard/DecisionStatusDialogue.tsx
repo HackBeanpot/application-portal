@@ -2,7 +2,7 @@ import { ConfirmByState, DecisionStatus } from '../../common/types';
 import React from 'react';
 import { assertUnreachable } from '../../common/utils';
 import { Alert, Button } from 'antd';
-import { format } from './StatusDialogue';
+import { format } from './status-dialogue/StatusDialogue';
 import Link from 'next/link';
 
 type DecisionStatusDialogueProps = {

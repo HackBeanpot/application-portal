@@ -1,11 +1,11 @@
-import { ApplicationStatus, DecisionStatus, RSVPStatus } from '../../common/types';
+import { ApplicationStatus, DecisionStatus, RSVPStatus } from '../../../common/types';
 import { Alert } from 'antd';
 import React from 'react';
-import { RegistrationState, useRegistrationState } from '../hooks/useRegistrationState';
-import { ApplicationStatusDialogue } from './ApplicationStatusDialogue';
-import { DecisionStatusDialogue } from './DecisionStatusDialogue';
-import { RsvpDialogue } from './RsvpDialogue';
-import { useConfirmByState } from '../hooks/useConfirmByState';
+import { RegistrationState, useRegistrationState } from '../../hooks/useRegistrationState';
+import { ApplicationStatusDialogue } from '../application-status-dialogue/ApplicationStatusDialogue';
+import { DecisionStatusDialogue } from '../DecisionStatusDialogue';
+import { RsvpDialogue } from '../rsvp-dialogue/RsvpDialogue';
+import { useConfirmByState } from '../../hooks/useConfirmByState';
 
 type StatusDialogueProps = {
   applicationStatus: ApplicationStatus;

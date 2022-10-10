@@ -1,10 +1,10 @@
-import { ApplicationStatus } from '../../common/types';
+import { ApplicationStatus } from '../../../common/types';
 import { Alert, Button } from 'antd';
 import Link from 'next/link';
-import { format } from './StatusDialogue';
+import { format } from '../status-dialogue/StatusDialogue';
 import React from 'react';
-import { RegistrationState } from '../hooks/useRegistrationState';
-import { assertUnreachable } from '../../common/utils';
+import { RegistrationState } from '../../hooks/useRegistrationState';
+import { assertUnreachable } from '../../../common/utils';
 
 type ApplicationStatusDialogueProps = {
   applicationStatus: ApplicationStatus;

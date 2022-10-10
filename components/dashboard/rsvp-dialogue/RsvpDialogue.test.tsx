@@ -1,7 +1,7 @@
 import { describe, expect, it } from '@jest/globals';
 import { render, screen } from '@testing-library/react';
-import { RSVPStatus } from '../common/types';
-import { RsvpDialogue } from '../components/dashboard/RsvpDialogue';
+import { RSVPStatus } from '../../../common/types';
+import { RsvpDialogue } from './RsvpDialogue';
 
 describe('Rsvp Dialogue', () => {
   it('renders the Confirmed component when RSVPStatus is Confirmed', () => {

@@ -1,5 +1,5 @@
-import { assertUnreachable } from '../../common/utils';
-import { RSVPStatus } from '../../common/types';
+import { assertUnreachable } from '../../../common/utils';
+import { RSVPStatus } from '../../../common/types';
 import { Alert } from 'antd';
 import React from 'react';
 
