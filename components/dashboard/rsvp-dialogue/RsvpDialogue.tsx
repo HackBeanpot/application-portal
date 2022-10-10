@@ -1,4 +1,4 @@
-import { assertUnreachable } from '../../../common/utils';
+import { assertUnreachable } from '../../../common/utils/utils';
 import { RSVPStatus } from '../../../common/types';
 import { Alert } from 'antd';
 import React from 'react';

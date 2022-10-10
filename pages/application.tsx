@@ -12,7 +12,7 @@ import { ConfirmByState, DecisionStatus, RSVPStatus, User } from '../common/type
 import { RegistrationState, useRegistrationState } from '../components/hooks/useRegistrationState';
 import { ApplicationForm } from '../components/application/ApplicationForm';
 import { PostAcceptanceForm } from '../components/application/PostAcceptanceForm';
-import { useConfirmByState } from '../components/hooks/useConfirmByState';
+import { useConfirmByState } from '../components/hooks/use-confirm-by-state/useConfirmByState';
 
 const Application = (): ReactElement => {
   const { data: user } = useSWR('/api/v1/user', getUser);

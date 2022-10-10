@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { format } from '../status-dialogue/StatusDialogue';
 import React from 'react';
 import { RegistrationState } from '../../hooks/useRegistrationState';
-import { assertUnreachable } from '../../../common/utils';
+import { assertUnreachable } from '../../../common/utils/utils';
 
 type ApplicationStatusDialogueProps = {
   applicationStatus: ApplicationStatus;

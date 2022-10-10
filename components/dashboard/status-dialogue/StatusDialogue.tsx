@@ -5,7 +5,7 @@ import { RegistrationState, useRegistrationState } from '../../hooks/useRegistra
 import { ApplicationStatusDialogue } from '../application-status-dialogue/ApplicationStatusDialogue';
 import { DecisionStatusDialogue } from '../DecisionStatusDialogue';
 import { RsvpDialogue } from '../rsvp-dialogue/RsvpDialogue';
-import { useConfirmByState } from '../../hooks/useConfirmByState';
+import { useConfirmByState } from '../../hooks/use-confirm-by-state/useConfirmByState';
 
 type StatusDialogueProps = {
   applicationStatus: ApplicationStatus;
