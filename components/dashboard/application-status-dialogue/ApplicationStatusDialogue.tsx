@@ -47,10 +47,10 @@ const Incomplete: React.FC<IncompleteProps> = ({ registrationClosed }) => {
         showIcon
         message="Incomplete"
         description={
-          <>
+          <div data-testid="incomplete-dialog-text">
             You still need to complete your application! If you do not complete your application
             before <strong>{date}</strong>, you will not be considered for admission.
-          </>
+          </div>
         }
       />
       <Link href="/application" passHref>
@@ -69,11 +69,11 @@ const DeadlinePassed: React.FC<IncompleteProps> = ({ registrationClosed }) => {
       type="error"
       message="Registration Deadline Passed"
       description={
-        <>
+        <div data-testid="deadline-passed-dialog-text">
           Unfortunately, the deadline to apply to this year{"'"}s event was <strong>{date}</strong>.
           In the meantime, please sign up for our mailing list to stay up to get notified when
           applications open for next year{"'"}s event!
-        </>
+        </div>
       }
     />
   );

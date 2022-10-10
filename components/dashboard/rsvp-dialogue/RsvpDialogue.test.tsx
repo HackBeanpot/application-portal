@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { RSVPStatus } from '../../../common/types';
 import { Confirmed, NotAttending, RsvpDialogue } from './RsvpDialogue';
 
-describe('RsvpDialogue', () => {
+describe('RsvpDialogue component', () => {
   it('renders the Confirmed component when RSVPStatus is Confirmed', () => {
     render(<RsvpDialogue rsvpStatus={RSVPStatus.Confirmed} />);
     const confirmedDialogText = screen.getByTestId('confirmed-dialog-text');
@@ -18,8 +18,8 @@ describe('RsvpDialogue', () => {
   });
 });
 
-describe('Confirmed', () => {
-  it('renders the correct text when the Confirmed component is rendered', () => {
+describe('Confirmed component', () => {
+  it('renders', () => {
     render(<Confirmed />);
     const confirmedDialogText = screen.getByTestId('confirmed-dialog-text');
 
@@ -29,8 +29,8 @@ describe('Confirmed', () => {
   });
 });
 
-describe('NotAttending', () => {
-  it('renders the correct text when the NotAttending component is rendered', () => {
+describe('NotAttending component', () => {
+  it('renders', () => {
     render(<NotAttending />);
     const notAttendingDialogText = screen.getByTestId('not-attending-dialog-text');
 
