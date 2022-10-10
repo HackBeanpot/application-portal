@@ -111,7 +111,7 @@ describe('StatusDialogue component', () => {
       expect(incompleteDialogText?.textContent).toBe(undefined);
       expect(deadlinePassedDialogText?.textContent).toBe(undefined);
     });
-    it('when the DecisionStatus is Declined', () => {
+    it(', when the DecisionStatus is Declined', () => {
       render(
         <StatusDialogue
           registrationClosed={new Date('2022-10-01T22:40:02.000Z')}
@@ -130,6 +130,122 @@ describe('StatusDialogue component', () => {
       expect(submittedDialogText?.textContent).toBe(undefined);
       expect(incompleteDialogText?.textContent).toBe(undefined);
       expect(deadlinePassedDialogText?.textContent).toBe(undefined);
+    });
+  });
+  describe(', an Unconfirmed RSVPStatus, registrationState is not BeforeOpen, and DecisionStatus is not Undecided', () => {
+    it('renders the Pending component when showDecision is false', () => {
+      render(
+        <StatusDialogue
+          registrationClosed={new Date('2022-10-01T22:40:02.000Z')}
+          registrationOpen={new Date('2020-11-01T22:40:02.000Z')}
+          confirmBy={new Date('2021-11-20T22:40:02.000Z')}
+          applicationStatus={ApplicationStatus.Incomplete}
+          decisionStatus={DecisionStatus.Declined}
+          rsvpStatus={RSVPStatus.Unconfirmed}
+          showDecision={false}
+        />
+      );
+
+      const pendingDialogText = screen.getByTestId('pending-dialog-text');
+      expect(pendingDialogText.textContent).toBeTruthy();
+    });
+    it('renders the FailedToConfirm component when showDecision is true, DecisionStatus is Admitted, and ConfirmByState is After', () => {
+      render(
+        <StatusDialogue
+          registrationClosed={new Date('2022-10-01T22:40:02.000Z')}
+          registrationOpen={new Date('2020-11-01T22:40:02.000Z')}
+          confirmBy={new Date('2021-11-20T22:40:02.000Z')}
+          applicationStatus={ApplicationStatus.Incomplete}
+          decisionStatus={DecisionStatus.Admitted}
+          rsvpStatus={RSVPStatus.Unconfirmed}
+          showDecision={true}
+        />
+      );
+
+      const failedToConfirmDialogText = screen.getByTestId('failed-to-confirm-dialog-text');
+      expect(failedToConfirmDialogText.textContent).toBeTruthy();
+    });
+    it('renders the Admitted component when showDecision is true, DecisionStatus is Admitted, and ConfirmByState is Before', () => {
+      render(
+        <StatusDialogue
+          registrationClosed={new Date('2050-10-01T22:40:02.000Z')}
+          registrationOpen={new Date('2020-11-01T22:40:02.000Z')}
+          confirmBy={new Date('2040-11-20T22:40:02.000Z')}
+          applicationStatus={ApplicationStatus.Incomplete}
+          decisionStatus={DecisionStatus.Admitted}
+          rsvpStatus={RSVPStatus.Unconfirmed}
+          showDecision={true}
+        />
+      );
+
+      const admittedDialogText = screen.getByTestId('admitted-dialog-text');
+      expect(admittedDialogText.textContent).toBeTruthy();
+    });
+    it('renders the Waitlisted component when showDecision is true, DecisionStatus is Waitlisted', () => {
+      render(
+        <StatusDialogue
+          registrationClosed={new Date('2050-10-01T22:40:02.000Z')}
+          registrationOpen={new Date('2020-11-01T22:40:02.000Z')}
+          confirmBy={new Date('2040-11-20T22:40:02.000Z')}
+          applicationStatus={ApplicationStatus.Incomplete}
+          decisionStatus={DecisionStatus.Waitlisted}
+          rsvpStatus={RSVPStatus.Unconfirmed}
+          showDecision={true}
+        />
+      );
+
+      const waitlistedDialogText = screen.getByTestId('waitlisted-dialog-text');
+      expect(waitlistedDialogText.textContent).toBeTruthy();
+    });
+    it('renders the Declined component when showDecision is true, DecisionStatus is Declined', () => {
+      render(
+        <StatusDialogue
+          registrationClosed={new Date('2050-10-01T22:40:02.000Z')}
+          registrationOpen={new Date('2020-11-01T22:40:02.000Z')}
+          confirmBy={new Date('2040-11-20T22:40:02.000Z')}
+          applicationStatus={ApplicationStatus.Incomplete}
+          decisionStatus={DecisionStatus.Declined}
+          rsvpStatus={RSVPStatus.Unconfirmed}
+          showDecision={true}
+        />
+      );
+
+      const declinedDialogText = screen.getByTestId('declined-dialog-text');
+      expect(declinedDialogText.textContent).toBeTruthy();
+    });
+  });
+  describe('and DecisionStatus is not Undecided', () => {
+    it('renders the Confirmed component if their RSVPStatus is Confirmed', () => {
+      render(
+        <StatusDialogue
+          registrationClosed={new Date('2050-10-01T22:40:02.000Z')}
+          registrationOpen={new Date('2020-11-01T22:40:02.000Z')}
+          confirmBy={new Date('2040-11-20T22:40:02.000Z')}
+          applicationStatus={ApplicationStatus.Incomplete}
+          decisionStatus={DecisionStatus.Declined}
+          rsvpStatus={RSVPStatus.Confirmed}
+          showDecision={false}
+        />
+      );
+
+      const confirmedDialogText = screen.getByTestId('confirmed-dialog-text');
+      expect(confirmedDialogText.textContent).toBeTruthy();
+    });
+    it('renders the NotAttending component if their RSVPStatus is NotAttending', () => {
+      render(
+        <StatusDialogue
+          registrationClosed={new Date('2050-10-01T22:40:02.000Z')}
+          registrationOpen={new Date('2020-11-01T22:40:02.000Z')}
+          confirmBy={new Date('2040-11-20T22:40:02.000Z')}
+          applicationStatus={ApplicationStatus.Incomplete}
+          decisionStatus={DecisionStatus.Declined}
+          rsvpStatus={RSVPStatus.NotAttending}
+          showDecision={false}
+        />
+      );
+
+      const notAttendingDialogText = screen.getByTestId('not-attending-dialog-text');
+      expect(notAttendingDialogText.textContent).toBeTruthy();
     });
   });
 });

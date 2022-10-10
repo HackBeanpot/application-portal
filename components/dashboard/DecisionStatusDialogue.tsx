@@ -55,7 +55,7 @@ const Admitted: React.FC<AdmittedProps> = ({ confirmBy }) => {
         showIcon
         message="Admitted"
         description={
-          <>
+          <div data-testid="admitted-dialog-text">
             <p>
               Congratulations, we would love to have you attend this year{"'"}s event! Please
               navigate to the <strong>Application</strong> tab to mark your RSVP status. The
@@ -63,7 +63,7 @@ const Admitted: React.FC<AdmittedProps> = ({ confirmBy }) => {
             </p>
             Please note: if you don{"'"}t complete the RSVP form by{' '}
             <strong>{format(confirmBy)}</strong>, you will be ineligible for swag.
-          </>
+          </div>
         }
       />
       <Link href="/application" passHref>
@@ -82,7 +82,9 @@ const Waitlisted: React.FC = () => {
       showIcon
       message={'Waitlisted'}
       description={
-        'You are currently on the waitlist. However if spots open up, we will notify you by email!'
+        <div data-testid="waitlisted-dialog-text">
+          You are currently on the waitlist. However if spots open up, we will notify you by email!
+        </div>
       }
     />
   );
@@ -94,7 +96,7 @@ const Declined: React.FC = () => {
       type={'error'}
       message={'Declined'}
       description={
-        <div>
+        <div data-testid="declined-dialog-text">
           Unfortunately, we had more applicants than we could accept. However, we would still love
           for you to apply next year! In the meantime, please sign up for our mailing list to stay
           up to get notified when applications open for next year{"'"}s event on our website:{' '}
@@ -114,7 +116,7 @@ const FailedToConfirm: React.FC<AdmittedProps> = ({ confirmBy }) => {
       showIcon
       message={'Accepted'}
       description={
-        <div>
+        <div data-testid="failed-to-confirm-dialog-text">
           <p>
             Congratulations, you have been accepted to attend HackBeanpot. However, because you did
             not finish your RSVP form by <strong>{format(confirmBy)}</strong>, you are ineligible
@@ -136,7 +138,9 @@ const Pending: React.FC = () => {
       message={'Pending'}
       showIcon
       description={
-        <div>Thank you for submitting your application, we are currently reviewing it!</div>
+        <div data-testid="pending-dialog-text">
+          Thank you for submitting your application, we are currently reviewing it!
+        </div>
       }
     />
   );
