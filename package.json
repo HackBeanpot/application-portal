@@ -11,7 +11,7 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install",
-    "test:unit": "jest tests",
+    "test:unit": "jest --testMatch='**/*.test.ts(x)?'",
     "test:integration": "cypress run --browser chrome",
     "test:dev": "cypress open"
   },
