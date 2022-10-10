@@ -1,13 +1,12 @@
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect } from '@jest/globals';
 import {
   convertCheckboxesToJoiSchema,
   convertDropdownToJoiSchema,
   convertLongTextToJoiSchema,
   makeQuestionResponseSchemas,
-} from '../server/validators';
-import { Checkboxes, Dropdown, LongText, QuestionType, ShortText } from '../common/types';
+} from './validators';
+import { Checkboxes, Dropdown, LongText, QuestionType, ShortText } from '../../common/types';
 import Joi from 'joi';
-import { isAfterRegistrationClosed, isBeforeRegistrationOpens } from '../common/utils/utils';
 
 // convenience constructors
 const n = (name: string) => ({ name });
@@ -141,33 +140,4 @@ describe('registration endpoint schema tests', () => {
   //     ], questionSchemas))
   //   })
   // })
-});
-
-describe('date utils', () => {
-  const longTimeAgo = new Date(1999, 1, 1);
-  const farInTheFuture = new Date(9001, 1, 1);
-
-  test('isBeforeRegistrationOpens', () => {
-    // if the open date was a long time ago...
-    let openDate = longTimeAgo;
-    // registration has already opened
-    expect(isBeforeRegistrationOpens(openDate)).toBe(false);
-
-    // if open date is far in the future...
-    openDate = farInTheFuture;
-    // registration has not yet opened
-    expect(isBeforeRegistrationOpens(openDate)).toBe(true);
-  });
-
-  test('isAfterRegistrationClosed', () => {
-    // if the close date was a long time ago...
-    let closeDate = longTimeAgo;
-    // registration has already closed
-    expect(isAfterRegistrationClosed(closeDate)).toBe(true);
-
-    // if close date is far in the future...
-    closeDate = farInTheFuture;
-    // registration has not yet closed
-    expect(isAfterRegistrationClosed(closeDate)).toBe(false);
-  });
 });

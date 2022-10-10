@@ -1,7 +1,7 @@
 import { NextApiHandler } from 'next';
 import { ConfirmByState, RSVPStatus, SingletonType, User } from '../../../common/types';
 import { queryDate } from '../../../server/dates';
-import { makeQuestionResponseSchemas } from '../../../server/validators';
+import { makeQuestionResponseSchemas } from '../../../server/validators/validators';
 import Joi from 'joi';
 import { connectToDatabase } from '../../../server/mongoDB';
 import { assumeLoggedInGetEmail, protect } from '../../../server/protect';
