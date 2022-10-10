@@ -61,15 +61,15 @@ export const StatusDialogue: React.FC<StatusDialogueProps> = ({
   return <RsvpDialogue rsvpStatus={rsvpStatus} />;
 };
 
-const ApplyLater = ({ registrationOpen }: { registrationOpen: string }) => {
+export const ApplyLater = ({ registrationOpen }: { registrationOpen: string }) => {
   return (
     <Alert
       showIcon
       type="info"
       message={
-        <>
+        <div data-testid="apply-later-dialog-text">
           Registration Opens <strong>{registrationOpen}</strong>
-        </>
+        </div>
       }
       description="Please come back after registration opens to complete your application!"
     />

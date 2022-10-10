@@ -19,7 +19,7 @@ export const RsvpDialogue: React.FC<RsvpDialogueProps> = ({ rsvpStatus }) => {
   assertUnreachable(rsvpStatus);
 };
 
-const Confirmed: React.FC = () => {
+export const Confirmed: React.FC = () => {
   return (
     <Alert
       showIcon
@@ -36,7 +36,7 @@ const Confirmed: React.FC = () => {
   );
 };
 
-const NotAttending: React.FC = () => {
+export const NotAttending: React.FC = () => {
   return (
     <Alert
       type={'info'}
