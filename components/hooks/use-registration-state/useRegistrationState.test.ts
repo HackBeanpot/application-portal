@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals';
-import { RegistrationState, useRegistrationState } from '../components/hooks/useRegistrationState';
+import { RegistrationState, useRegistrationState } from './useRegistrationState';
 
 const mockSystemDate = (d: Date) => {
   jest.useFakeTimers().setSystemTime(d.getTime());

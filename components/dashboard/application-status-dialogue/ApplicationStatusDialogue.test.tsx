@@ -1,7 +1,7 @@
 import { describe, expect, it } from '@jest/globals';
 import { render, screen } from '@testing-library/react';
 import { ApplicationStatus } from '../../../common/types';
-import { RegistrationState } from '../../hooks/useRegistrationState';
+import { RegistrationState } from '../../hooks/use-registration-state/useRegistrationState';
 import { ApplicationStatusDialogue } from './ApplicationStatusDialogue';
 
 describe('Application Status Dialogue', () => {

@@ -3,7 +3,7 @@ import { Alert, Button } from 'antd';
 import Link from 'next/link';
 import { format } from '../status-dialogue/StatusDialogue';
 import React from 'react';
-import { RegistrationState } from '../../hooks/useRegistrationState';
+import { RegistrationState } from '../../hooks/use-registration-state/useRegistrationState';
 import { assertUnreachable } from '../../../common/utils/utils';
 
 type ApplicationStatusDialogueProps = {

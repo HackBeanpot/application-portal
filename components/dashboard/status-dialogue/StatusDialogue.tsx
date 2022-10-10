@@ -1,7 +1,10 @@
 import { ApplicationStatus, DecisionStatus, RSVPStatus } from '../../../common/types';
 import { Alert } from 'antd';
 import React from 'react';
-import { RegistrationState, useRegistrationState } from '../../hooks/useRegistrationState';
+import {
+  RegistrationState,
+  useRegistrationState,
+} from '../../hooks/use-registration-state/useRegistrationState';
 import { ApplicationStatusDialogue } from '../application-status-dialogue/ApplicationStatusDialogue';
 import { DecisionStatusDialogue } from '../DecisionStatusDialogue';
 import { RsvpDialogue } from '../rsvp-dialogue/RsvpDialogue';
