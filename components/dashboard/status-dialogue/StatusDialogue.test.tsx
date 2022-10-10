@@ -1,9 +1,5 @@
-import { describe, expect, it } from '@jest/globals';
-import { render, screen } from '@testing-library/react';
-import { RSVPStatus } from '../../../common/types';
-import { StatusDialogue } from './StatusDialogue';
+import { describe, it } from '@jest/globals';
 
 describe('Rsvp Dialogue', () => {
-  it('renders the ApplyLater component when registrationState is BeforeOpen', () => {
-  });
+  it('renders the ApplyLater component when registrationState is BeforeOpen', () => {});
 });
