@@ -6,7 +6,7 @@ import {
   useRegistrationState,
 } from '../../hooks/use-registration-state/useRegistrationState';
 import { ApplicationStatusDialogue } from '../application-status-dialogue/ApplicationStatusDialogue';
-import { DecisionStatusDialogue } from '../DecisionStatusDialogue';
+import { DecisionStatusDialogue } from '../decision-status-dialogue/DecisionStatusDialogue';
 import { RsvpDialogue } from '../rsvp-dialogue/RsvpDialogue';
 import { useConfirmByState } from '../../hooks/use-confirm-by-state/useConfirmByState';
 

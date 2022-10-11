@@ -1,8 +1,8 @@
-import { ConfirmByState, DecisionStatus } from '../../common/types';
+import { ConfirmByState, DecisionStatus } from '../../../common/types';
 import React from 'react';
-import { assertUnreachable } from '../../common/utils/utils';
+import { assertUnreachable } from '../../../common/utils/utils';
 import { Alert, Button } from 'antd';
-import { format } from './status-dialogue/StatusDialogue';
+import { format } from '../status-dialogue/StatusDialogue';
 import Link from 'next/link';
 
 type DecisionStatusDialogueProps = {
@@ -47,7 +47,7 @@ export const DecisionStatusDialogue: React.FC<DecisionStatusDialogueProps> = ({
 type AdmittedProps = {
   confirmBy: Date;
 };
-const Admitted: React.FC<AdmittedProps> = ({ confirmBy }) => {
+export const Admitted: React.FC<AdmittedProps> = ({ confirmBy }) => {
   return (
     <>
       <Alert
@@ -75,7 +75,7 @@ const Admitted: React.FC<AdmittedProps> = ({ confirmBy }) => {
   );
 };
 
-const Waitlisted: React.FC = () => {
+export const Waitlisted: React.FC = () => {
   return (
     <Alert
       type="warning"
@@ -90,7 +90,7 @@ const Waitlisted: React.FC = () => {
   );
 };
 
-const Declined: React.FC = () => {
+export const Declined: React.FC = () => {
   return (
     <Alert
       type={'error'}
@@ -109,7 +109,7 @@ const Declined: React.FC = () => {
   );
 };
 
-const FailedToConfirm: React.FC<AdmittedProps> = ({ confirmBy }) => {
+export const FailedToConfirm: React.FC<AdmittedProps> = ({ confirmBy }) => {
   return (
     <Alert
       type={'success'}
@@ -131,7 +131,7 @@ const FailedToConfirm: React.FC<AdmittedProps> = ({ confirmBy }) => {
   );
 };
 
-const Pending: React.FC = () => {
+export const Pending: React.FC = () => {
   return (
     <Alert
       type="warning"
