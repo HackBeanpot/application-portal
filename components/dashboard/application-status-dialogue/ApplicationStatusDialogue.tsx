@@ -38,7 +38,7 @@ export const ApplicationStatusDialogue: React.FC<ApplicationStatusDialogueProps>
 type IncompleteProps = {
   registrationClosed: Date;
 };
-const Incomplete: React.FC<IncompleteProps> = ({ registrationClosed }) => {
+export const Incomplete: React.FC<IncompleteProps> = ({ registrationClosed }) => {
   const date = format(registrationClosed);
   return (
     <>
@@ -62,7 +62,7 @@ const Incomplete: React.FC<IncompleteProps> = ({ registrationClosed }) => {
   );
 };
 
-const DeadlinePassed: React.FC<IncompleteProps> = ({ registrationClosed }) => {
+export const DeadlinePassed: React.FC<IncompleteProps> = ({ registrationClosed }) => {
   const date = format(registrationClosed);
   return (
     <Alert
@@ -79,7 +79,7 @@ const DeadlinePassed: React.FC<IncompleteProps> = ({ registrationClosed }) => {
   );
 };
 
-const Submitted: React.FC = () => {
+export const Submitted: React.FC = () => {
   return (
     <Alert
       type="info"
