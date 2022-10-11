@@ -10,6 +10,7 @@ import {
   Dropdown,
   LongText,
   QuestionDefinition,
+  QuestionResponseField,
   QuestionSection,
   QuestionType,
   ShortText,
@@ -26,7 +27,7 @@ const longTextMaxLength = 3000;
 
 // convenience constructors for questions (constructors in java)
 export function makeCheckbox(
-  field: keyof User,
+  field: QuestionResponseField,
   content: ReactNode,
   options: Array<string>,
   required: boolean,
@@ -46,7 +47,7 @@ export function makeCheckbox(
 }
 
 export function makeShortText(
-  field: keyof User,
+  field: QuestionResponseField,
   content: ReactNode,
   required: boolean,
   placeholder?: string
@@ -65,7 +66,7 @@ export function makeShortText(
 }
 
 export function makeDropdown(
-  field: keyof User,
+  field: QuestionResponseField,
   content: ReactNode,
   options: Array<string>,
   required: boolean,
@@ -83,7 +84,11 @@ export function makeDropdown(
   };
 }
 
-export function makeLongText(field: keyof User, content: ReactNode, required: boolean): LongText {
+export function makeLongText(
+  field: QuestionResponseField,
+  content: ReactNode,
+  required: boolean
+): LongText {
   questionCount++;
   return {
     field,

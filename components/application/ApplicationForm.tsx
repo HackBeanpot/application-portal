@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react';
-import { ApplicationStatus, QuestionResponse } from '../../common/types';
+import { ApplicationResponses, ApplicationStatus, QuestionResponse } from '../../common/types';
 import {
   getApplicantResponses,
   getRegistrationClosed,
@@ -70,7 +70,7 @@ export const ApplicationForm = (): ReactElement => {
   );
 
   const onSubmit = async (values: Record<string, QuestionResponse>) => {
-    const fields = Questions.map((q) => q.field);
+    const fields = Questions.map((q) => q.field) as Array<keyof ApplicationResponses>;
     const responses = Questions.map((q) => values[q.id] ?? null);
     setIsSubmitting(true);
     const response = await updateApplicantResponses({ fields, responses });

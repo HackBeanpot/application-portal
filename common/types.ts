@@ -4,12 +4,23 @@ import { ReactNode } from 'react';
  * @param applicationStatus deez nuts :0
  */
 export interface User {
+  email: string;
+  applicationResponses?: ApplicationResponses;
+  postAcceptanceResponses?: PostAcceptanceResponses;
+  isAdmin: boolean;
+  applicationStatus: ApplicationStatus;
+  // Decision status might not exist because of backwards compatibility
+  decisionStatus?: DecisionStatus;
+  rsvpStatus: RSVPStatus;
+  responses?: Array<QuestionResponse>; // legacy
+}
+
+export interface ApplicationResponses {
   name?: string;
   gender?: Gender;
   unlistedGender?: string;
   school?: string;
   unlistedSchool?: string;
-  email: string;
   ethnicities?: Array<Ethnicity>;
   education?: Education;
   yearOfEducation?: YearOfEducation;
@@ -26,13 +37,16 @@ export interface User {
   interestedWorkshops?: Array<string>;
   applyingWithTeam?: string;
   interestedInTeamFormation?: string;
+}
+
+export interface PostAcceptanceResponses {
   firstName?: string;
   lastName?: string;
   adult?: string;
   adultSignature?: string;
   minorSignature?: string;
   guardianSignature?: string;
-  swag?: string[];
+  swag?: Array<string>;
   accomodations?: string;
   pickUpSwag?: string;
   address?: string;
@@ -41,14 +55,9 @@ export interface User {
   wonLottery?: string;
   themePark?: string;
   celebrity?: string;
-  isAdmin: boolean;
-  applicationStatus: ApplicationStatus;
-  // Decision status might not exist because of backwards compatibility
-  decisionStatus?: DecisionStatus;
-  rsvpStatus: RSVPStatus;
-  responses?: Array<QuestionResponse>;
-  postAcceptanceResponses?: Array<QuestionResponse>;
 }
+
+export type QuestionResponseField = keyof ApplicationResponses | keyof PostAcceptanceResponses;
 
 export type SingletonDefinition = DateSingleton | ShowDecisionSingleton;
 
@@ -139,7 +148,7 @@ export type QuestionSection = {
 export type QuestionId = string;
 
 interface IQuestion {
-  field: keyof User;
+  field: QuestionResponseField;
   content: ReactNode;
   id: QuestionId;
   required: boolean;
@@ -187,7 +196,7 @@ export type QuestionResponse = string | Array<string> | null;
  * @param responses mapping from question id to response value
  */
 export type RegistrationApiRequest = {
-  fields: Array<keyof User | string>;
+  fields: Array<keyof ApplicationResponses>;
   responses: Array<QuestionResponse>;
 };
 export type RegistrationApiResponse = RegistrationApiRequest;
@@ -212,5 +221,6 @@ export type SingleApplicantApiResponse = {
 
 export type PostAcceptanceApiRequest = {
   rsvpStatus: Exclude<RSVPStatus, RSVPStatus.Unconfirmed>;
+  fields?: Array<keyof PostAcceptanceResponses>;
   responses?: Array<QuestionResponse>;
 };

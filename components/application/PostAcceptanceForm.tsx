@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { Button, Form, notification, Popconfirm } from 'antd';
 import { useWarnIfUnsavedChanges } from '../hooks/useWarnIfUnsavedChanges';
-import { AttendingState, QuestionResponse, RSVPStatus } from '../../common/types';
+import {
+  AttendingState,
+  PostAcceptanceResponses,
+  QuestionResponse,
+  RSVPStatus,
+} from '../../common/types';
 import { PostAcceptanceFormQuestions, PostAcceptanceFormSections } from '../../common/questions';
 import { getConfirmBy, updatePostAcceptanceFormResponses } from '../../common/apiClient';
 import { FormSectionsAndQuestions } from './FormSectionsAndQuestions';
@@ -83,10 +88,14 @@ const FullForm: React.FC = () => {
   useWarnIfUnsavedChanges(true);
 
   const onSubmit = async (values: Record<string, QuestionResponse>) => {
+    const fields = PostAcceptanceFormQuestions.map((q) => q.field) as Array<
+      keyof PostAcceptanceResponses
+    >;
     const responses = PostAcceptanceFormQuestions.map((q) => values[q.id] ?? null);
     setIsSubmitting(true);
     const response = await updatePostAcceptanceFormResponses({
       rsvpStatus: RSVPStatus.Confirmed,
+      fields,
       responses,
     });
     if (200 <= response.status && response.status < 300) {

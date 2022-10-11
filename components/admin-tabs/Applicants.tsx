@@ -45,7 +45,9 @@ const columns = [
       value: name,
     })),
     render: (_: string, record: SingleRecordType) =>
-      record.school === 'Other' ? record.unlistedSchool : record.school,
+      record.applicationResponses?.school === 'Other'
+        ? record.applicationResponses.unlistedSchool
+        : record.applicationResponses?.school,
     sorter: true,
     editable: false,
   },
@@ -218,7 +220,7 @@ const downloadPostAcceptanceCsv = async (props: DownloadProps) =>
     props,
     fields,
     PostAcceptanceFormQuestions,
-    (u) => u.postAcceptanceResponses,
+    (u) => Object.values(u.postAcceptanceResponses ?? {}),
     'post-acceptance.csv'
   );
 
