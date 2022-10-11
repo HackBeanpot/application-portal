@@ -17,7 +17,7 @@ const FileUploadQuestion: FC<FileUploadProps> = ({ disabled, question, form }) =
   const handleUpload: UploadProps['onChange'] = (info) => {
     let newFileList = [...info.fileList];
     newFileList = newFileList.slice(-question.limit);
-    form.setFieldsValue({ [question.id]: newFileList.toString() });
+    form.setFieldsValue({ [question.id]: newFileList.length === 1 ? newFileList[0].toString() : '' });
     setFileList(newFileList);
   };
 
