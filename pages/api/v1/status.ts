@@ -55,7 +55,6 @@ const postHandler: NextApiHandler = async (req, res) => {
     {
       $set: {
         rsvpStatus: userStatus['rsvpStatus'],
-        rsvpSubmissionTime: new Date(),
       },
     },
     { upsert: true }
