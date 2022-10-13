@@ -89,13 +89,13 @@ const FullForm: React.FC = () => {
   const [disabled, setDisabled] = useState(false);
   const [form] = Form.useForm();
 
-  const submitted = status?.data?.postAcceptanceStatus === ApplicationStatus.Submitted
+  const submitted = status?.data?.postAcceptanceStatus === ApplicationStatus.Submitted;
 
   useEffect(() => {
     if (submitted) {
-      setDisabled(true)
+      setDisabled(true);
     }
-  }, [submitted])
+  }, [submitted]);
 
   useWarnIfUnsavedChanges(status?.data?.postAcceptanceStatus === ApplicationStatus.Incomplete);
 
