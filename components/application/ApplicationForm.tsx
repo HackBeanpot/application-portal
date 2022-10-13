@@ -10,8 +10,8 @@ import {
 import { Questions, Sections } from '../../common/questions';
 import { Alert, Button, Form, notification } from 'antd';
 import useSWR from 'swr';
-import { format } from '../dashboard/StatusDialogue';
-import { isAfterRegistrationClosed, isBeforeRegistrationOpens } from '../../common/utils';
+import { format } from '../dashboard/status-dialogue/StatusDialogue';
+import { isAfterRegistrationClosed, isBeforeRegistrationOpens } from '../../common/utils/utils';
 import { useWarnIfUnsavedChanges } from '../hooks/useWarnIfUnsavedChanges';
 import { FormSectionsAndQuestions } from './FormSectionsAndQuestions';
 

@@ -9,10 +9,13 @@ import {
 } from '../common/apiClient';
 import { Alert, Spin } from 'antd';
 import { ConfirmByState, DecisionStatus, RSVPStatus, User } from '../common/types';
-import { RegistrationState, useRegistrationState } from '../components/hooks/useRegistrationState';
+import {
+  RegistrationState,
+  useRegistrationState,
+} from '../components/hooks/use-registration-state/useRegistrationState';
 import { ApplicationForm } from '../components/application/ApplicationForm';
 import { PostAcceptanceForm } from '../components/application/PostAcceptanceForm';
-import { useConfirmByState } from '../components/hooks/useConfirmByState';
+import { useConfirmByState } from '../components/hooks/use-confirm-by-state/useConfirmByState';
 
 const Application = (): ReactElement => {
   const { data: user } = useSWR('/api/v1/user', getUser);

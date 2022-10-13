@@ -7,7 +7,7 @@ import {
 } from '../../../common/types';
 import { connectToDatabase } from '../../../server/mongoDB';
 import { assumeLoggedInGetEmail, protect } from '../../../server/protect';
-import { attemptToValidateRegistrationApiRequest } from '../../../server/validators';
+import { attemptToValidateRegistrationApiRequest } from '../../../server/validators/validators';
 import Joi from 'joi';
 import { queryDate } from '../../../server/dates';
 import { isBefore } from 'date-fns';
