@@ -21,7 +21,7 @@ quick guide to start developing locally.
 
 # Jest unit testing:
 
-- Name all test files {nameOfFileTested}.test.tsx and place the test file with the actual file in a directory name-of-file-tested
+- Name all test files {nameOfFileTested}.test.ts and place the test file with the actual file in a directory name-of-file-tested
 - Separate a each test into sections with line breaks:
   > 1. All lines pertaining to set-up and expected strings or values
   > 2. All lines doing the action we simulate ie rendering components, etc.
