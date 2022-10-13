@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Form, notification, Popconfirm } from 'antd';
 import { useWarnIfUnsavedChanges } from '../hooks/useWarnIfUnsavedChanges';
 import {
+  ApplicationStatus,
   AttendingState,
   PostAcceptanceResponses,
   QuestionResponse,
   RSVPStatus,
 } from '../../common/types';
 import { PostAcceptanceFormQuestions, PostAcceptanceFormSections } from '../../common/questions';
-import { getConfirmBy, updatePostAcceptanceFormResponses } from '../../common/apiClient';
+import { getConfirmBy, getStatus, updatePostAcceptanceFormResponses } from '../../common/apiClient';
 import { FormSectionsAndQuestions } from './FormSectionsAndQuestions';
 import useSWR, { mutate } from 'swr';
 
@@ -82,10 +83,21 @@ const AttendingForm: React.FC<AttendingFormProps> = ({ setAttendingState }) => {
 };
 
 const FullForm: React.FC = () => {
+  const { data: status } = useSWR('/api/v1/status', getStatus);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   const [form] = Form.useForm();
 
-  useWarnIfUnsavedChanges(true);
+  const submitted = status?.data?.postAcceptanceStatus === ApplicationStatus.Submitted
+
+  useEffect(() => {
+    if (submitted) {
+      setDisabled(true)
+    }
+  }, [submitted])
+
+  useWarnIfUnsavedChanges(status?.data?.postAcceptanceStatus === ApplicationStatus.Incomplete);
 
   const onSubmit = async (values: Record<string, QuestionResponse>) => {
     const fields = PostAcceptanceFormQuestions.map((q) => q.field) as Array<
@@ -98,8 +110,10 @@ const FullForm: React.FC = () => {
       fields,
       responses,
     });
+    setIsSubmitting(false);
     if (200 <= response.status && response.status < 300) {
       success();
+      setDisabled(true);
     } else {
       error(response.data);
     }
@@ -117,7 +131,7 @@ const FullForm: React.FC = () => {
       <FormSectionsAndQuestions
         sectionsAndQuestions={PostAcceptanceFormSections}
         form={form}
-        disabled={false}
+        disabled={disabled}
       />
       <Form.Item noStyle>
         <div className="submit-container">
@@ -126,6 +140,7 @@ const FullForm: React.FC = () => {
             type="primary"
             htmlType="submit"
             loading={isSubmitting}
+            disabled={disabled}
             size="large"
           >
             Submit RSVP

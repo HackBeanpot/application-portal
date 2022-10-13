@@ -9,6 +9,7 @@ export interface User {
   postAcceptanceResponses?: PostAcceptanceResponses;
   isAdmin: boolean;
   applicationStatus: ApplicationStatus;
+  postAcceptanceStatus?: ApplicationStatus;
   // Decision status might not exist because of backwards compatibility
   decisionStatus?: DecisionStatus;
   rsvpStatus: RSVPStatus;
@@ -203,6 +204,7 @@ export type RegistrationApiResponse = RegistrationApiRequest;
 
 export type StatusApiResponse = {
   applicationStatus: ApplicationStatus;
+  postAcceptanceStatus: ApplicationStatus;
   rsvpStatus: RSVPStatus;
 };
 
