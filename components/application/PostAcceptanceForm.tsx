@@ -97,7 +97,9 @@ const FullForm: React.FC = () => {
     }
   }, [submitted]);
 
-  useWarnIfUnsavedChanges(status?.data?.postAcceptanceStatus === ApplicationStatus.Incomplete || disabled);
+  useWarnIfUnsavedChanges(
+    status?.data?.postAcceptanceStatus === ApplicationStatus.Incomplete || disabled
+  );
 
   const onSubmit = async (values: Record<string, QuestionResponse>) => {
     const fields = PostAcceptanceFormQuestions.map((q) => q.field) as Array<
