@@ -17,17 +17,27 @@ import useSWR, { mutate } from 'swr';
 export const PostAcceptanceForm: React.FC = () => {
   const [attendingState, setAttendingState] = useState<AttendingState>(AttendingState.Unspecified);
   const { data: confirmByData } = useSWR('/api/v1/dates/confirm-by', getConfirmBy);
+  const { data: submitted } = useSWR('/api/v1/status', getStatus);
 
   return (
     <>
       <h1 className="app-header">Application Page</h1>
-      <Form.Item noStyle>
-        {confirmByData && <p>This RSVP form is DUE {new Date(confirmByData.data).toString()}.</p>}
-      </Form.Item>
-      {attendingState === AttendingState.Unspecified ? (
-        <AttendingForm setAttendingState={setAttendingState} />
-      ) : null}
-      {attendingState === AttendingState.Yes ? <FullForm /> : null}
+      {submitted?.data.postAcceptanceStatus === ApplicationStatus.Submitted && (
+        <div>you already submitted, nice</div>
+      )}
+      {submitted?.data.postAcceptanceStatus !== ApplicationStatus.Submitted && (
+        <div>
+          <Form.Item noStyle>
+            {confirmByData && (
+              <p>This RSVP form is DUE {new Date(confirmByData.data).toString()}.</p>
+            )}
+          </Form.Item>
+          {attendingState === AttendingState.Unspecified ? (
+            <AttendingForm setAttendingState={setAttendingState} />
+          ) : null}
+          {attendingState === AttendingState.Yes ? <FullForm /> : null}
+        </div>
+      )}
     </>
   );
 };

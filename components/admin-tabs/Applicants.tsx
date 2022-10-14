@@ -25,9 +25,10 @@ export type SingleRecordType = ApplicantsApiResponse['data'][number];
 const columns = [
   {
     title: 'Name',
-    dataIndex: 'name',
+    dataIndex: 'applicationResponses.name',
     sorter: true,
     editable: false,
+    render: (_: string, record: SingleRecordType) => record.applicationResponses?.name ?? '',
   },
   {
     title: 'Email',
@@ -60,6 +61,8 @@ const columns = [
       text: name,
       value: name,
     })),
+    render: (_: string, record: SingleRecordType) =>
+      record.applicationResponses?.yearOfEducation ?? '',
     sorter: true,
     editable: false,
   },
