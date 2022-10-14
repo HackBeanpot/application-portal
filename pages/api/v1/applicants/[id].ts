@@ -27,7 +27,7 @@ const applicantHandler: NextApiHandler = async (req, res) => {
 const getApplicant: NextApiHandler = async (req, res) => {
   const { userDataCollection } = await connectToDatabase();
   const id = req.query.id;
-  const userWithId = await userDataCollection.findOne({ _id: id });
+  const userWithId = await userDataCollection.findOne({ filter: { _id: id } });
   if (!userWithId) {
     return res.status(200).send(null);
   }
