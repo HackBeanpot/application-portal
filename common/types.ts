@@ -43,6 +43,8 @@ export interface User {
   celebrity?: string;
   isAdmin: boolean;
   applicationStatus: ApplicationStatus;
+  appSubmissionTime?: Date;
+  rsvpSubmissionTime?: Date;
   // Decision status might not exist because of backwards compatibility
   decisionStatus?: DecisionStatus;
   rsvpStatus: RSVPStatus;

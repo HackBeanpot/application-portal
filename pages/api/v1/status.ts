@@ -53,7 +53,9 @@ const postHandler: NextApiHandler = async (req, res) => {
   await userDataCollection.updateOne(
     { email },
     {
-      $set: { rsvpStatus: userStatus['rsvpStatus'] },
+      $set: {
+        rsvpStatus: userStatus['rsvpStatus'],
+      },
     },
     { upsert: true }
   );

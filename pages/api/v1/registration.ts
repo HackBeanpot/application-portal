@@ -75,6 +75,7 @@ const postHandler: NextApiHandler = async (req, res) => {
         ...userResponses,
         email,
         applicationStatus: ApplicationStatus.Submitted,
+        appSubmissionTime: new Date(),
       },
     },
     { upsert: true }

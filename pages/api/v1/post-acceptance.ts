@@ -48,7 +48,13 @@ const postHandler: NextApiHandler = async (req, res) => {
   const { userDataCollection } = await connectToDatabase();
   await userDataCollection.updateOne(
     { email },
-    { $set: { email, ...userPartial } },
+    {
+      $set: {
+        email,
+        ...userPartial,
+        rsvpSubmissionTime: new Date(),
+      },
+    },
     { upsert: true }
   );
   return res.status(200).send(undefined);
