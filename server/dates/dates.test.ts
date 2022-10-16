@@ -56,12 +56,10 @@ beforeEach(async () => {
     },
     { upsert: true }
   );
-  return null;
 });
 
 afterEach(async () => {
   await ctx.client.close();
-  return null;
 });
 
 describe('confirmByDate', () => {
@@ -70,12 +68,10 @@ describe('confirmByDate', () => {
       type: SingletonType.ConfirmBy,
     })) as DateSingleton;
     expect(getConfirmByDate.value).toBe(initialDate);
-    return null;
   });
 });
 
 it('mongoDb should correctly get the confirmByDate!!', async () => {
   const date = await queryDate(SingletonType.ConfirmBy);
   expect(date).toBe(initialDate);
-  return null;
 });
