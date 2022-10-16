@@ -61,7 +61,7 @@ beforeEach(async () => {
 });
 
 afterEach(async () => {
-  ctx.client.close();
+  await ctx.client.close();
 });
 
 it('mongoDb should correctly get the confirmByDate', async () => {
