@@ -1,9 +1,9 @@
 import { Collection, Db, MongoClient } from 'mongodb';
 import { describe, expect, it } from '@jest/globals';
 import { SingletonDefinition, User, SingletonType, DateSingleton } from '../../common/types';
-import { getDate, queryDate } from './dates';
-import { NextApiRequest, NextApiResponse } from 'next';
-import { createMocks, RequestMethod } from 'node-mocks-http';
+import { queryDate } from './dates';
+
+jest.setTimeout(10000);
 
 type NextAuthVerificationToken = {
   identifier: string;
@@ -61,7 +61,7 @@ beforeEach(async () => {
 });
 
 afterEach(async () => {
-  ctx.client.close();
+  await ctx.client.close();
 });
 
 describe('confirmByDate', () => {

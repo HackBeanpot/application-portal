@@ -4,6 +4,8 @@ import { queryDate } from '../../../../../server/dates/dates';
 import { jestConnectToDatabase } from '../../../../../jest';
 import { SingletonDefinition, User, SingletonType } from '../../../../../common/types';
 
+jest.setTimeout(10000);
+
 type NextAuthVerificationToken = {
   identifier: string;
   token: string;
@@ -37,7 +39,7 @@ beforeEach(async () => {
 });
 
 afterEach(async () => {
-  ctx.client.close();
+  await ctx.client.close();
 });
 
 it('queryDate fetches the correct date', async () => {
