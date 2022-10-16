@@ -1,12 +1,12 @@
 import { Collection, Db, MongoClient } from 'mongodb';
 import { User, SingletonDefinition } from '../common/types';
 
-type NextAuthVerificationToken = {
+export type NextAuthVerificationToken = {
   identifier: string;
   token: string;
   expires: Date;
 };
-type JestMongoCtx = {
+export type JestMongoCtx = {
   client: MongoClient;
   serverDb: {
     db: Db;
