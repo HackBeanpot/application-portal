@@ -43,4 +43,5 @@ afterEach(async () => {
 it('queryDate fetches the correct date', async () => {
   const date = await queryDate(SingletonType.ConfirmBy);
   expect(date).toBe(initialDate);
+  return null;
 });
