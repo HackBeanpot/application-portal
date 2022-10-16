@@ -34,10 +34,12 @@ beforeEach(async () => {
     },
     { upsert: true }
   );
+  return null;
 });
 
 afterEach(async () => {
   await ctx.client.close();
+  return null;
 });
 
 it('queryDate fetches the correct date', async () => {
