@@ -46,11 +46,23 @@ const jestConnectToDatabase = async (): Promise<JestMongoCtx> => {
   };
 };
 
-let ctx: JestMongoCtx;
-const initialDate = '2022-10-01T22:40:02.000Z';
+// let ctx: JestMongoCtx;
+// const initialDate = '2022-10-01T22:40:02.000Z';
 
-beforeEach(async () => {
-  ctx = await jestConnectToDatabase();
+// beforeEach(async () => {
+//   ctx = await jestConnectToDatabase();
+//   await ctx.serverDb.singletonDataCollection.updateOne(
+//     { type: SingletonType.ConfirmBy },
+//     {
+//       $set: { value: initialDate },
+//     },
+//     { upsert: true }
+//   );
+// });
+
+it('mongoDb should correctly get the confirmByDate', async () => {
+  const initialDate = '2022-10-01T22:40:02.000Z';
+  const ctx = await jestConnectToDatabase();
   await ctx.serverDb.singletonDataCollection.updateOne(
     { type: SingletonType.ConfirmBy },
     {
@@ -58,9 +70,6 @@ beforeEach(async () => {
     },
     { upsert: true }
   );
-});
-
-it('mongoDb should correctly get the confirmByDate', async () => {
   const getConfirmByDate = (await ctx.serverDb.singletonDataCollection.findOne({
     type: SingletonType.ConfirmBy,
   })) as DateSingleton;
@@ -68,6 +77,15 @@ it('mongoDb should correctly get the confirmByDate', async () => {
 });
 
 it('test queryDate', async () => {
+  const initialDate = '2022-10-01T22:40:02.000Z';
+  const ctx = await jestConnectToDatabase();
+  await ctx.serverDb.singletonDataCollection.updateOne(
+    { type: SingletonType.ConfirmBy },
+    {
+      $set: { value: initialDate },
+    },
+    { upsert: true }
+  );
   const { req, res }: { req: NextApiRequest; res: NextApiResponse } = createMocks({
     method: 'GET',
   });
