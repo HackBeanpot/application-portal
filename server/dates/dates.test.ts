@@ -1,10 +1,9 @@
 import { Collection, Db, MongoClient } from 'mongodb';
 import { describe, expect, it } from '@jest/globals';
 import { SingletonDefinition, User, SingletonType, DateSingleton } from '../../common/types';
-import { getDate, queryDate } from '../dates';
+import { getDate, queryDate } from './dates';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { createMocks, RequestMethod } from 'node-mocks-http';
-jest.useFakeTimers();
 
 type NextAuthVerificationToken = {
   identifier: string;
@@ -47,9 +46,11 @@ const jestConnectToDatabase = async (): Promise<JestMongoCtx> => {
   };
 };
 
-it('mongoDb should correctly get the confirmByDate', async () => {
-  const initialDate = '2022-10-01T22:40:02.000Z';
-  const ctx = await jestConnectToDatabase();
+let ctx: JestMongoCtx;
+const initialDate = '2022-10-01T22:40:02.000Z';
+
+beforeEach(async () => {
+  ctx = await jestConnectToDatabase();
   await ctx.serverDb.singletonDataCollection.updateOne(
     { type: SingletonType.ConfirmBy },
     {
@@ -57,17 +58,22 @@ it('mongoDb should correctly get the confirmByDate', async () => {
     },
     { upsert: true }
   );
-  const getConfirmByDate = (await ctx.serverDb.singletonDataCollection.findOne({
-    type: SingletonType.ConfirmBy,
-  })) as DateSingleton;
-  expect(getConfirmByDate.value).toBe(initialDate);
-  await ctx.client.close();
 });
 
-it('test queryDate', async () => {
-  const initialDate = '2022-10-01T22:40:02.000Z';
-  const ctx = await jestConnectToDatabase();
+afterEach(async () => {
+  ctx.client.close();
+});
+
+describe('confirmByDate', () => {
+  it('is correctly fetched from mongodb', async () => {
+    const getConfirmByDate = (await ctx.serverDb.singletonDataCollection.findOne({
+      type: SingletonType.ConfirmBy,
+    })) as DateSingleton;
+    expect(getConfirmByDate.value).toBe(initialDate);
+  });
+});
+
+it('mongoDb should correctly get the confirmByDate!!', async () => {
   const date = await queryDate(SingletonType.ConfirmBy);
   expect(date).toBe(initialDate);
-  await ctx.client.close();
 });

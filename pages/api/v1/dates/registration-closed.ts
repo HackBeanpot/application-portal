@@ -1,6 +1,6 @@
 import { NextApiHandler } from 'next';
 import { protect } from '../../../../server/protect';
-import { getDate, postDate } from '../../../../server/dates';
+import { getDate, postDate } from '../../../../server/dates/dates';
 import { SingletonType } from '../../../../common/types';
 
 const regClosedHandler: NextApiHandler = async (req, res) => {

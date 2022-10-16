@@ -1,5 +1,5 @@
 import { NextApiHandler } from 'next';
-import { getDate, postDate } from '../../../../server/dates';
+import { getDate, postDate } from '../../../../server/dates/dates';
 import { protect } from '../../../../server/protect';
 import { SingletonType } from '../../../../common/types';
 

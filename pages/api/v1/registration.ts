@@ -9,7 +9,7 @@ import { connectToDatabase } from '../../../server/mongoDB';
 import { assumeLoggedInGetEmail, protect } from '../../../server/protect';
 import { attemptToValidateRegistrationApiRequest } from '../../../server/validators/validators';
 import Joi from 'joi';
-import { queryDate } from '../../../server/dates';
+import { queryDate } from '../../../server/dates/dates';
 import { isBefore } from 'date-fns';
 
 const registrationHandler: NextApiHandler = async (req, res) => {
