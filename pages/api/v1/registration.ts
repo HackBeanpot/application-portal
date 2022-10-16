@@ -7,7 +7,7 @@ import {
 } from '../../../common/types';
 import { connectToDatabase } from '../../../server/mongoDB';
 import { assumeLoggedInGetEmail, protect } from '../../../server/protect';
-import { attemptToValidateRegistrationApiRequest } from '../../../server/validators';
+import { attemptToValidateRegistrationApiRequest } from '../../../server/validators/validators';
 import Joi from 'joi';
 import { queryDate } from '../../../server/dates';
 import { isBefore } from 'date-fns';
@@ -30,8 +30,8 @@ const getHandler: NextApiHandler = async (req, res) => {
   const { userDataCollection } = await connectToDatabase();
   const data = await userDataCollection.findOne({ email });
   return res.status(200).json({
-    fields: data ? Object.keys(data) : [],
-    responses: data ? Object.values(data) : [],
+    fields: data?.applicationResponses ? Object.keys(data.applicationResponses) : [],
+    responses: data?.applicationResponses ? Object.values(data.applicationResponses) : [],
   });
 };
 
@@ -72,9 +72,10 @@ const postHandler: NextApiHandler = async (req, res) => {
     { email },
     {
       $set: {
-        ...userResponses,
+        applicationResponses: userResponses,
         email,
         applicationStatus: ApplicationStatus.Submitted,
+        appSubmissionTime: new Date(),
       },
     },
     { upsert: true }

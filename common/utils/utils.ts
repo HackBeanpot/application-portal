@@ -1,5 +1,5 @@
 import { isBefore } from 'date-fns';
-import { ConfirmByState } from './types';
+import { ConfirmByState } from '../types';
 
 export function isBeforeRegistrationOpens(registrationOpenDate: Date): boolean {
   const NOW = new Date();

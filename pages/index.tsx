@@ -10,7 +10,7 @@ import useSWR from 'swr';
 import { PageLayout } from '../components/Layout';
 import { Alert, Card, Spin } from 'antd';
 import { User } from '../common/types';
-import { StatusDialogue } from '../components/dashboard/StatusDialogue';
+import { StatusDialogue } from '../components/dashboard/status-dialogue/StatusDialogue';
 import { GetServerSideProps } from 'next';
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect';
 

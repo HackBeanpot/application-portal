@@ -1,5 +1,5 @@
-import { getConfirmByState } from '../../common/utils';
-import { ConfirmByState } from '../../common/types';
+import { getConfirmByState } from '../../../common/utils/utils';
+import { ConfirmByState } from '../../../common/types';
 
 type UseConfirmByProps = {
   confirmBy: Date;

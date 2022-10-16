@@ -25,9 +25,10 @@ export type SingleRecordType = ApplicantsApiResponse['data'][number];
 const columns = [
   {
     title: 'Name',
-    dataIndex: 'name',
+    dataIndex: 'applicationResponses.name',
     sorter: true,
     editable: false,
+    render: (_: string, record: SingleRecordType) => record.applicationResponses?.name ?? '',
   },
   {
     title: 'Email',
@@ -45,7 +46,9 @@ const columns = [
       value: name,
     })),
     render: (_: string, record: SingleRecordType) =>
-      record.school === 'Other' ? record.unlistedSchool : record.school,
+      record.applicationResponses?.school === 'Other'
+        ? record.applicationResponses.unlistedSchool
+        : record.applicationResponses?.school,
     sorter: true,
     editable: false,
   },
@@ -58,6 +61,8 @@ const columns = [
       text: name,
       value: name,
     })),
+    render: (_: string, record: SingleRecordType) =>
+      record.applicationResponses?.yearOfEducation ?? '',
     sorter: true,
     editable: false,
   },
@@ -218,7 +223,7 @@ const downloadPostAcceptanceCsv = async (props: DownloadProps) =>
     props,
     fields,
     PostAcceptanceFormQuestions,
-    (u) => u.postAcceptanceResponses,
+    (u) => Object.values(u.postAcceptanceResponses ?? {}),
     'post-acceptance.csv'
   );
 

@@ -1,11 +1,17 @@
 import { NextApiHandler } from 'next';
-import { ConfirmByState, RSVPStatus, SingletonType, User } from '../../../common/types';
+import {
+  ConfirmByState,
+  QuestionResponse,
+  RSVPStatus,
+  SingletonType,
+  User,
+} from '../../../common/types';
 import { queryDate } from '../../../server/dates';
-import { makeQuestionResponseSchemas } from '../../../server/validators';
+import { makeQuestionResponseSchemas } from '../../../server/validators/validators';
 import Joi from 'joi';
 import { connectToDatabase } from '../../../server/mongoDB';
 import { assumeLoggedInGetEmail, protect } from '../../../server/protect';
-import { getConfirmByState } from '../../../common/utils';
+import { getConfirmByState } from '../../../common/utils/utils';
 import { PostAcceptanceFormQuestions } from '../../../common/questions';
 
 const postAcceptanceHandler: NextApiHandler = async (req, res) => {
@@ -32,23 +38,33 @@ const postHandler: NextApiHandler = async (req, res) => {
   }
 
   // todo: add validation later
-  const { rsvpStatus, responses } = req.body;
+  const { rsvpStatus, fields, responses } = req.body;
   if (![RSVPStatus.NotAttending, RSVPStatus.Confirmed].includes(rsvpStatus)) {
     return res.status(400).json({ message: 'rsvp status not allowed' });
   }
-  const userPartial: Partial<User> = {
-    rsvpStatus,
-  };
   if (rsvpStatus === RSVPStatus.Confirmed) {
     QuestionResponseSchemas.map((schema, i) => Joi.attempt(responses[i], schema));
-    userPartial.postAcceptanceResponses = responses;
   }
+
+  const userResponses: Record<string, QuestionResponse> = {};
+
+  fields.forEach((field: keyof User, index: number) => {
+    const response = responses[index];
+    userResponses[field] = response;
+  });
 
   const email = await assumeLoggedInGetEmail(req);
   const { userDataCollection } = await connectToDatabase();
   await userDataCollection.updateOne(
     { email },
-    { $set: { email, ...userPartial } },
+    {
+      $set: {
+        email,
+        postAcceptanceResponses: userResponses,
+        rsvpStatus,
+        rsvpSubmissionTime: new Date(),
+      },
+    },
     { upsert: true }
   );
   return res.status(200).send(undefined);

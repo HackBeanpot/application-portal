@@ -1,7 +1,12 @@
 import { NextApiHandler } from 'next';
 import { RESPONSE_BY_DATE } from '../../../common/constants';
 import { assumeLoggedInGetEmail, protect } from '../../../server/protect';
-import { DecisionStatus, RSVPStatus, StatusApiResponse } from '../../../common/types';
+import {
+  ApplicationStatus,
+  DecisionStatus,
+  RSVPStatus,
+  StatusApiResponse,
+} from '../../../common/types';
 import { connectToDatabase } from '../../../server/mongoDB';
 
 const statusHandler: NextApiHandler = async (req, res) => {
@@ -24,6 +29,7 @@ const getHandler: NextApiHandler = async (req, res) => {
   const body: StatusApiResponse = {
     rsvpStatus: user.rsvpStatus,
     applicationStatus: user.applicationStatus,
+    postAcceptanceStatus: user.postAcceptanceStatus ?? ApplicationStatus.Incomplete,
   };
   res.status(200).send(body);
 };
@@ -53,7 +59,9 @@ const postHandler: NextApiHandler = async (req, res) => {
   await userDataCollection.updateOne(
     { email },
     {
-      $set: { rsvpStatus: userStatus['rsvpStatus'] },
+      $set: {
+        rsvpStatus: userStatus['rsvpStatus'],
+      },
     },
     { upsert: true }
   );
