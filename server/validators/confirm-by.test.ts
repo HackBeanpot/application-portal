@@ -4,6 +4,7 @@ import { SingletonDefinition, User, SingletonType, DateSingleton } from '../../c
 import { getDate, queryDate } from '../dates';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { createMocks, RequestMethod } from 'node-mocks-http';
+jest.useFakeTimers();
 
 type NextAuthVerificationToken = {
   identifier: string;
