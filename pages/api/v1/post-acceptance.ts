@@ -7,13 +7,12 @@ import {
   User,
 } from '../../../common/types';
 import { queryDate } from '../../../server/dates';
-import { makeQuestionResponseSchemas } from '../../../server/validators';
+import { makeQuestionResponseSchemas } from '../../../server/validators/validators';
 import Joi from 'joi';
 import { connectToDatabase } from '../../../server/mongoDB';
 import { assumeLoggedInGetEmail, protect } from '../../../server/protect';
-import { getConfirmByState } from '../../../common/utils';
+import { getConfirmByState } from '../../../common/utils/utils';
 import { PostAcceptanceFormQuestions } from '../../../common/questions';
-import { result } from 'cypress/types/lodash';
 
 const postAcceptanceHandler: NextApiHandler = async (req, res) => {
   switch (req.method) {
@@ -58,7 +57,14 @@ const postHandler: NextApiHandler = async (req, res) => {
   const { userDataCollection } = await connectToDatabase();
   await userDataCollection.updateOne(
     { email },
-    { $set: { email, postAcceptanceResponses: userResponses, rsvpStatus } },
+    {
+      $set: {
+        email,
+        postAcceptanceResponses: userResponses,
+        rsvpStatus,
+        rsvpSubmissionTime: new Date(),
+      },
+    },
     { upsert: true }
   );
   return res.status(200).send(undefined);

@@ -14,6 +14,8 @@ export interface User {
   decisionStatus?: DecisionStatus;
   rsvpStatus: RSVPStatus;
   responses?: Array<QuestionResponse>; // legacy
+  appSubmissionTime?: Date;
+  rsvpSubmissionTime?: Date;
 }
 
 export interface ApplicationResponses {

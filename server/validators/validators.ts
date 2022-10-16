@@ -7,9 +7,9 @@ import {
   QuestionType,
   RegistrationApiRequest,
   ShortText,
-} from '../common/types';
+} from '../../common/types';
 import Joi from 'joi';
-import { Questions } from '../common/questions';
+import { Questions } from '../../common/questions';
 
 export const convertQuestionDefinitionToJoiSchema = (
   q: QuestionDefinition
