@@ -3,8 +3,6 @@ import { describe, expect, it } from '@jest/globals';
 import { SingletonDefinition, User, SingletonType, DateSingleton } from '../../common/types';
 import { queryDate } from './dates';
 
-jest.setTimeout(10000);
-
 type NextAuthVerificationToken = {
   identifier: string;
   token: string;
