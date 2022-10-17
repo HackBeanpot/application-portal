@@ -23,29 +23,29 @@ afterEach(async () => {
 
 describe('confirmByDate', () => {
   it('is correctly fetched from mongodb', async () => {
-    const getConfirmByDate = (await ctx.serverDb.singletonDataCollection.findOne({
-      type: SingletonType.ConfirmBy,
+    const getRegistrationteOpenDate = (await ctx.serverDb.singletonDataCollection.findOne({
+      type: SingletonType.RegistrationOpen,
     })) as DateSingleton;
-    expect(getConfirmByDate.value).toBe(initialRegistrationOpenDate);
+    expect(getRegistrationteOpenDate.value).toBe(initialRegistrationOpenDate);
   });
 
   it('is posted correctly to mongodb', async () => {
-    let getConfirmByDate = (await ctx.serverDb.singletonDataCollection.findOne({
-      type: SingletonType.ConfirmBy,
+    let getRegistrationteOpenDate = (await ctx.serverDb.singletonDataCollection.findOne({
+      type: SingletonType.RegistrationOpen,
     })) as DateSingleton;
-    expect(getConfirmByDate.value).toBe(initialRegistrationOpenDate);
+    expect(getRegistrationteOpenDate.value).toBe(initialRegistrationOpenDate);
 
     await ctx.serverDb.singletonDataCollection.updateOne(
-      { type: SingletonType.ConfirmBy },
+      { type: SingletonType.RegistrationOpen },
       {
         $set: { value: updatedRegistrationOpenDate },
       },
       { upsert: true }
     );
 
-    getConfirmByDate = (await ctx.serverDb.singletonDataCollection.findOne({
-      type: SingletonType.ConfirmBy,
+    getRegistrationteOpenDate = (await ctx.serverDb.singletonDataCollection.findOne({
+      type: SingletonType.RegistrationOpen,
     })) as DateSingleton;
-    expect(getConfirmByDate.value).toBe(updatedRegistrationOpenDate);
+    expect(getRegistrationteOpenDate.value).toBe(updatedRegistrationOpenDate);
   });
 });
