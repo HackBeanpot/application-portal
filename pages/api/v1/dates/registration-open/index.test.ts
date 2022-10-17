@@ -3,15 +3,15 @@ import { jestConnectToDatabase, JestMongoCtx } from '../../../../../jest';
 import { DateSingleton, SingletonType } from '../../../../../common/types';
 
 let ctx: JestMongoCtx;
-const initialConfirmByDate = '2022-10-01T22:40:02.000Z';
-const updatedConfirmByDate = '2022-10-04T22:40:02.000Z';
+const initialRegistrationOpenDate = '2022-10-01T22:40:02.000Z';
+const updatedRegistrationOpenDate = '2022-10-04T22:40:02.000Z';
 
 beforeEach(async () => {
   ctx = await jestConnectToDatabase();
   await ctx.serverDb.singletonDataCollection.updateOne(
-    { type: SingletonType.ConfirmBy },
+    { type: SingletonType.RegistrationOpen },
     {
-      $set: { value: initialConfirmByDate },
+      $set: { value: initialRegistrationOpenDate },
     },
     { upsert: true }
   );
@@ -26,19 +26,19 @@ describe('confirmByDate', () => {
     const getConfirmByDate = (await ctx.serverDb.singletonDataCollection.findOne({
       type: SingletonType.ConfirmBy,
     })) as DateSingleton;
-    expect(getConfirmByDate.value).toBe(initialConfirmByDate);
+    expect(getConfirmByDate.value).toBe(initialRegistrationOpenDate);
   });
 
   it('is posted correctly to mongodb', async () => {
     let getConfirmByDate = (await ctx.serverDb.singletonDataCollection.findOne({
       type: SingletonType.ConfirmBy,
     })) as DateSingleton;
-    expect(getConfirmByDate.value).toBe(initialConfirmByDate);
+    expect(getConfirmByDate.value).toBe(initialRegistrationOpenDate);
 
     await ctx.serverDb.singletonDataCollection.updateOne(
       { type: SingletonType.ConfirmBy },
       {
-        $set: { value: updatedConfirmByDate },
+        $set: { value: updatedRegistrationOpenDate },
       },
       { upsert: true }
     );
@@ -46,6 +46,6 @@ describe('confirmByDate', () => {
     getConfirmByDate = (await ctx.serverDb.singletonDataCollection.findOne({
       type: SingletonType.ConfirmBy,
     })) as DateSingleton;
-    expect(getConfirmByDate.value).toBe(updatedConfirmByDate);
+    expect(getConfirmByDate.value).toBe(updatedRegistrationOpenDate);
   });
 });
