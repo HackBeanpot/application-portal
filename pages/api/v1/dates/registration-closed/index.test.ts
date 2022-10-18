@@ -2,11 +2,11 @@ import { expect, it } from '@jest/globals';
 import { jestConnectToDatabase, JestMongoCtx } from '../../../../../jest';
 import { DateSingleton, SingletonType } from '../../../../../common/types';
 
-let ctx: JestMongoCtx;
-const initialRegistrationClosedDate = '2022-10-01T22:40:02.000Z';
-const updatedRegistrationClosedDate = '2022-10-04T22:40:02.000Z';
-
 describe('registrationClosedDate', () => {
+  let ctx: JestMongoCtx;
+  const initialRegistrationClosedDate = '2022-10-01T22:40:02.000Z';
+  const updatedRegistrationClosedDate = '2022-10-04T22:40:02.000Z';
+
   beforeEach(async () => {
     ctx = await jestConnectToDatabase();
     await ctx.serverDb.singletonDataCollection.updateOne(
@@ -17,7 +17,7 @@ describe('registrationClosedDate', () => {
       { upsert: true }
     );
   });
-  
+
   it('is correctly fetched from mongodb', async () => {
     const getConfirmByDate = (await ctx.serverDb.singletonDataCollection.findOne({
       type: SingletonType.RegistrationClosed,

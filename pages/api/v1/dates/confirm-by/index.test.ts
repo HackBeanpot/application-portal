@@ -17,7 +17,7 @@ describe('confirmByDate', () => {
       { upsert: true }
     );
   });
-  
+
   it('is correctly fetched from mongodb', async () => {
     const getConfirmByDate = (await ctx.serverDb.singletonDataCollection.findOne({
       type: SingletonType.ConfirmBy,
