@@ -1,4 +1,4 @@
-import { Storage } from "@google-cloud/storage";
+import { Storage } from '@google-cloud/storage';
 
 /**
  * Uploads some content to a google cloud storage bucket
@@ -6,11 +6,13 @@ import { Storage } from "@google-cloud/storage";
  * @param content content to upload
  * @param destinationFileName id for file in google cloud storage
  */
-export async function uploadFile(bucketName: string, content: string, destinationFileName: string): Promise<void> {
+export async function uploadFile(
+  bucketName: string,
+  content: string,
+  destinationFileName: string
+): Promise<void> {
   const storage = new Storage();
   await storage.bucket(bucketName).file(destinationFileName).save(content);
 
-  console.log(
-    `${destinationFileName} with contents ${content} uploaded to ${bucketName}.`
-  );
+  console.log(`${destinationFileName} with contents ${content} uploaded to ${bucketName}.`);
 }
