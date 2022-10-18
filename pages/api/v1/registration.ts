@@ -11,6 +11,7 @@ import { attemptToValidateRegistrationApiRequest } from '../../../server/validat
 import Joi from 'joi';
 import { queryDate } from '../../../server/dates';
 import { isBefore } from 'date-fns';
+import { uploadApplicantResume } from '../../../server/upload/upload';
 
 const registrationHandler: NextApiHandler = async (req, res) => {
   switch (req.method) {
@@ -66,6 +67,15 @@ const postHandler: NextApiHandler = async (req, res) => {
   });
 
   const email = await assumeLoggedInGetEmail(req);
+
+  // resume upload
+  if (userResponses.resumeLink) {
+    const fileAsBase64 = userResponses.resumeLink as string;
+    const fileBuffer = Buffer.from(fileAsBase64, 'base64');
+    uploadApplicantResume(fileBuffer, `resume-${email}`);
+    userResponses.resumeLink = `resume-${email}`;
+  }
+
   const { userDataCollection } = await connectToDatabase();
   // upsert = update, or if object doesn't exist, insert
   await userDataCollection.updateOne(

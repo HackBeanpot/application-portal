@@ -4,7 +4,6 @@ import { Button, Form, FormInstance, Upload } from 'antd';
 import type { UploadProps } from 'antd';
 import type { UploadFile } from 'antd/es/upload/interface';
 import { UploadOutlined } from '@ant-design/icons';
-
 interface FileUploadProps {
   disabled: boolean;
   question: FileUpload;
@@ -14,11 +13,21 @@ interface FileUploadProps {
 const FileUploadQuestion: FC<FileUploadProps> = ({ disabled, question, form }) => {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
-  const handleUpload: UploadProps['onChange'] = (info) => {
+  const readFile = (file: File) =>
+    new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result?.toString().replace(/^data:(.*,)?/, '') ?? '');
+    });
+
+  const handleUpload: UploadProps['onChange'] = async (info) => {
     let newFileList = [...info.fileList];
     newFileList = newFileList.slice(-question.limit);
+    const fileStr = newFileList[0]?.originFileObj
+      ? ((await readFile(newFileList[0].originFileObj)) as string)
+      : '';
     form.setFieldsValue({
-      [question.id]: newFileList.length === 1 ? newFileList[0].toString() : '',
+      [question.id]: newFileList.length === 1 ? fileStr : '',
     });
     setFileList(newFileList);
   };

@@ -62,8 +62,7 @@ export const convertShortTextToJoiSchema = (q: ShortText): Joi.Schema => {
 };
 
 export const convertFileUploadToJoiSchema = (q: FileUpload): Joi.Schema => {
-  // TODO figure out flow of data etc
-  const answerSchema = Joi.any();
+  const answerSchema = Joi.string();
   return makeRequiredIfNeeded(q, answerSchema);
 };
 
