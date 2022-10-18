@@ -72,8 +72,8 @@ const postHandler: NextApiHandler = async (req, res) => {
   if (userResponses.resumeLink) {
     const fileAsBase64 = userResponses.resumeLink as string;
     const fileBuffer = Buffer.from(fileAsBase64, 'base64');
-    uploadApplicantResume(fileBuffer, `resume-${email}`);
-    userResponses.resumeLink = `resume-${email}`;
+    const resumeLink = uploadApplicantResume(fileBuffer, `resume-${email}`);
+    userResponses.resumeLink = resumeLink ?? '';
   }
 
   const { userDataCollection } = await connectToDatabase();
