@@ -31,10 +31,15 @@ export const updateApplicantById = (id: string, user: User): Promise<AxiosRespon
 export const getApplicantResponses = (): Promise<AxiosResponse<RegistrationApiResponse>> =>
   Axios.get('/api/v1/registration');
 
-export const updateApplicantResponses = (
+export const addApplicantResponses = (
   responses: RegistrationApiRequest
 ): Promise<AxiosResponse<string | null>> =>
   Axios.post(`/api/v1/registration`, responses, { validateStatus: () => true });
+
+export const updateApplicantResponses = (
+  responses: RegistrationApiRequest
+): Promise<AxiosResponse<string | null>> =>
+  Axios.patch(`/api/v1/registration`, responses, { validateStatus: () => true });
 
 export function getAllApplicants(
   pagination: TablePaginationConfig,

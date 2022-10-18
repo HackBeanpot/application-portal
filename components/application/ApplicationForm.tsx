@@ -1,6 +1,7 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import { ApplicationResponses, ApplicationStatus, QuestionResponse } from '../../common/types';
 import {
+  addApplicantResponses,
   getApplicantResponses,
   getRegistrationClosed,
   getRegistrationOpen,
@@ -73,7 +74,9 @@ export const ApplicationForm = (): ReactElement => {
     const fields = Questions.map((q) => q.field) as Array<keyof ApplicationResponses>;
     const responses = Questions.map((q) => values[q.id] ?? null);
     setIsSubmitting(true);
-    const response = await updateApplicantResponses({ fields, responses });
+    const response = alreadySubmitted
+      ? await addApplicantResponses({ fields, responses })
+      : await updateApplicantResponses({ fields, responses });
     setIsSubmitting(false);
     if (200 <= response.status && response.status < 300) {
       notification.success({
