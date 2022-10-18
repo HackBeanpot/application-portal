@@ -40,6 +40,9 @@ export function uploadApplicantResume(
   } else {
     const fileOptions: SaveOptions = {
       contentType: 'application/pdf',
+      metadata: {
+        cacheControl: 'no-store',
+      },
       public: true,
     };
     uploadFile(bucketName, content, fileOptions, destinationFileName);
