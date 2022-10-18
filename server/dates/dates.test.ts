@@ -10,7 +10,14 @@ let ctx: JestMongoCtx;
 const initialRegistrationOpenDate = '2022-09-01T22:40:02.000Z';
 const initialRegistrationClosedDate = '2022-09-15T22:40:02.000Z';
 const initialConfirmByDate = '2022-10-01T22:40:02.000Z';
+const updatedRegistrationOpenDate = '2022-10-02T22:40:02.000Z';
+const updatedRegistrationClosedDate = '2022-10-05T22:40:02.000Z';
 const updatedConfirmByDate = '2022-11-01T22:40:02.000Z';
+
+function mockRequestResponse(method: RequestMethod = 'GET') {
+  const { req, res }: { req: NextApiRequest; res: NextApiResponse } = createMocks({ method });
+  return { req, res };
+}
 
 beforeEach(async () => {
   ctx = await jestConnectToDatabase();
@@ -58,10 +65,6 @@ describe('queryDate', () => {
 });
 
 describe('getDate', () => {
-  function mockRequestResponse(method: RequestMethod = 'GET') {
-    const { req, res }: { req: NextApiRequest; res: NextApiResponse } = createMocks({ method });
-    return { req, res };
-  }
   const { req, res } = mockRequestResponse();
   it('successfully fetches the ConfirmBy date', async () => {
     await getDate(req, res, SingletonType.ConfirmBy);
@@ -111,6 +114,54 @@ describe('postDate', () => {
       expect(res.statusCode).toBe(200);
       expect(res.statusMessage).toEqual('OK');
       expect(getUpdatedConfirmByDate.value).toBe(`"${updatedConfirmByDate}"`);
+    });
+  });
+  describe('RegistrationOpen date', () => {
+    it('fails to post when isAdmin is false', async () => {
+      jest.spyOn(protect, 'isAdmin').mockResolvedValueOnce(false);
+      req.body.date = updatedConfirmByDate;
+      await postDate(req, res, SingletonType.RegistrationOpen);
+      const getRegistrationOpenDate = (await ctx.serverDb.singletonDataCollection.findOne({
+        type: SingletonType.RegistrationOpen,
+      })) as DateSingleton;
+      expect(res.statusCode).toBe(401);
+      expect(res.statusMessage).toEqual('OK');
+      expect(getRegistrationOpenDate.value).toBe(initialRegistrationOpenDate);
+    });
+    it('successfully posts when isAdmin is true', async () => {
+      jest.spyOn(protect, 'isAdmin').mockResolvedValueOnce(true);
+      req.body.date = updatedRegistrationOpenDate;
+      await postDate(req, res, SingletonType.RegistrationOpen);
+      const getRegistrationOpenDate = (await ctx.serverDb.singletonDataCollection.findOne({
+        type: SingletonType.RegistrationOpen,
+      })) as DateSingleton;
+      expect(res.statusCode).toBe(200);
+      expect(res.statusMessage).toEqual('OK');
+      expect(getRegistrationOpenDate.value).toBe(`"${updatedRegistrationOpenDate}"`);
+    });
+  });
+  describe('RegistrationClosed date', () => {
+    it('fails to post when isAdmin is false', async () => {
+      jest.spyOn(protect, 'isAdmin').mockResolvedValueOnce(false);
+      req.body.date = updatedConfirmByDate;
+      await postDate(req, res, SingletonType.RegistrationClosed);
+      const getRegistrationClosedDate = (await ctx.serverDb.singletonDataCollection.findOne({
+        type: SingletonType.RegistrationClosed,
+      })) as DateSingleton;
+      expect(res.statusCode).toBe(401);
+      expect(res.statusMessage).toEqual('OK');
+      expect(getRegistrationClosedDate.value).toBe(initialRegistrationClosedDate);
+    });
+    it('successfully posts when isAdmin is true', async () => {
+      jest.spyOn(protect, 'isAdmin').mockResolvedValueOnce(true);
+      req.body.date = updatedRegistrationClosedDate;
+      await postDate(req, res, SingletonType.RegistrationClosed);
+      const getRegistrationClosedDate = (await ctx.serverDb.singletonDataCollection.findOne({
+        type: SingletonType.RegistrationClosed,
+      })) as DateSingleton;
+      expect(res.statusCode).toBe(200);
+      expect(res.statusMessage).toEqual('OK');
+      expect(getRegistrationClosedDate.value).toBe(`"${updatedRegistrationClosedDate}"`);
     });
   });
 });
