@@ -6,22 +6,18 @@ let ctx: JestMongoCtx;
 const initialRegistrationClosedDate = '2022-10-01T22:40:02.000Z';
 const updatedRegistrationClosedDate = '2022-10-04T22:40:02.000Z';
 
-beforeEach(async () => {
-  ctx = await jestConnectToDatabase();
-  await ctx.serverDb.singletonDataCollection.updateOne(
-    { type: SingletonType.RegistrationClosed },
-    {
-      $set: { value: initialRegistrationClosedDate },
-    },
-    { upsert: true }
-  );
-});
-
-afterEach(async () => {
-  await ctx.client.close();
-});
-
-describe('confirmByDate', () => {
+describe('registrationClosedDate', () => {
+  beforeEach(async () => {
+    ctx = await jestConnectToDatabase();
+    await ctx.serverDb.singletonDataCollection.updateOne(
+      { type: SingletonType.RegistrationClosed },
+      {
+        $set: { value: initialRegistrationClosedDate },
+      },
+      { upsert: true }
+    );
+  });
+  
   it('is correctly fetched from mongodb', async () => {
     const getConfirmByDate = (await ctx.serverDb.singletonDataCollection.findOne({
       type: SingletonType.RegistrationClosed,
@@ -47,5 +43,9 @@ describe('confirmByDate', () => {
       type: SingletonType.RegistrationClosed,
     })) as DateSingleton;
     expect(getRegistrationClosedDate.value).toBe(updatedRegistrationClosedDate);
+  });
+
+  afterEach(async () => {
+    await ctx.client.close();
   });
 });
