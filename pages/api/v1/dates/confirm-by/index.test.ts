@@ -46,6 +46,7 @@ describe('confirmByDate', () => {
   });
 
   afterEach(async () => {
+    await ctx.serverDb.singletonDataCollection.deleteOne({type: SingletonType.ConfirmBy});
     await ctx.client.close();
   });
 });

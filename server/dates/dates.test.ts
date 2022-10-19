@@ -46,6 +46,9 @@ describe('Dates function', () => {
   });
 
   afterEach(async () => {
+    await ctx.serverDb.singletonDataCollection.deleteOne({type: SingletonType.ConfirmBy});
+    await ctx.serverDb.singletonDataCollection.deleteOne({type: SingletonType.RegistrationClosed});
+    await ctx.serverDb.singletonDataCollection.deleteOne({type: SingletonType.RegistrationOpen});
     await ctx.client.close();
     jest.clearAllMocks();
   });

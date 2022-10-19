@@ -46,6 +46,7 @@ describe('registrationClosedDate', () => {
   });
 
   afterEach(async () => {
+    await ctx.serverDb.singletonDataCollection.deleteOne({type: SingletonType.RegistrationClosed});
     await ctx.client.close();
   });
 });
