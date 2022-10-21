@@ -28,7 +28,7 @@ const columns = [
     dataIndex: 'applicationResponses.name',
     sorter: true,
     editable: false,
-    render: (_: string, record: SingleRecordType) => record.applicationResponses?.name ?? '',
+    render: (_: string, record: SingleRecordType) => record.applicationResponses?.firstName ?? '',
   },
   {
     title: 'Email',

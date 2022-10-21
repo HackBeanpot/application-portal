@@ -8,7 +8,10 @@ import React, { ReactNode } from 'react';
 import {
   Checkboxes,
   Dropdown,
+  Education,
+  Familiarity,
   Gender,
+  HackathonsAttended,
   Lgbtqia,
   LongText,
   QuestionDefinition,
@@ -17,8 +20,10 @@ import {
   QuestionType,
   Race,
   School,
+  ShirtSize,
   ShortText,
   User,
+  YearOfEducation,
 } from './types';
 
 let questionCount = 0;
@@ -197,14 +202,20 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
   makeDropdown(
     'education',
     'What level of education are you currently pursuing?',
-    ['High school', 'Undergraduate', 'Graduate'],
+    [Education.HighSchool, Education.Undergraduate, Education.Graduate],
     true,
     'Level'
   ),
   makeDropdown(
     'yearOfEducation',
     'What year in your current education are you?',
-    ['1st year', '2nd year', '3rd year', '4th year', '5th year+'],
+    [
+      YearOfEducation.first,
+      YearOfEducation.second,
+      YearOfEducation.third,
+      YearOfEducation.fourth,
+      YearOfEducation.fifthOrAbove,
+    ],
     true,
     'Year'
   ),
@@ -238,23 +249,145 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       We will be handing out t-shirts and other fun swag at the event. What is your t-shirt size?{' '}
       <i>All sizes are unisex.</i>
     </div>,
-    ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+    [
+      ShirtSize.XSmall,
+      ShirtSize.Small,
+      ShirtSize.Medium,
+      ShirtSize.Large,
+      ShirtSize.XLarge,
+      ShirtSize.XXLarge,
+    ],
     true,
     'Size'
   ),
-  makeSection(<>Interests and Experience</>),
+  makeShortText(
+    'accomodations',
+    <div>
+      <p>
+        Do you require any special accommodations to fully participate in the event? If yes, please
+        list your requested accomodations the best form of contact so that we can reach out to you.
+      </p>
+      <i>
+        Please fill out this question if you don’t have access to a laptop for the event so we can
+        look for arrangements.
+      </i>
+    </div>,
+    false,
+    'Accomodations'
+  ),
+  makeSection(
+    <>Interests and Experience</>,
+    <p>P.S. All responses are read by hand so please put in effort (:</p>
+  ),
   makeDropdown(
     'hackathonsAttended',
     'How many hackathons have you attended?',
-    ['0', '1-2', '3-5', '6+'],
+    [
+      HackathonsAttended.Zero,
+      HackathonsAttended.OneToTwo,
+      HackathonsAttended.ThreeToFive,
+      HackathonsAttended.SixOrAbove,
+    ],
     true,
     'Count'
+  ),
+  makeSection(
+    <></>,
+    <i>
+      For each of the following CS disciplines, please rate your familiarity from (completely
+      unfamiliar, very basic knowledge, proficient, expert)
+    </i>
   ),
   makeLongText(
     'prevHackathonFeedback',
     "If you've previously attended an in-person or virtual hackthon, what did you like or dislike about it?",
     false
   ),
+  makeDropdown(
+    'mobileAppDevelopment',
+    'Mobile App Development',
+    [
+      Familiarity.CompletelyUnfamiliar,
+      Familiarity.VeryBasicKnowledge,
+      Familiarity.Proficient,
+      Familiarity.Expert,
+    ],
+    true,
+    'Familiarity'
+  ),
+  makeDropdown(
+    'webDevelopment',
+    'Web Development',
+    [
+      Familiarity.CompletelyUnfamiliar,
+      Familiarity.VeryBasicKnowledge,
+      Familiarity.Proficient,
+      Familiarity.Expert,
+    ],
+    true,
+    'Familiarity'
+  ),
+  makeDropdown(
+    'uiUx',
+    'UI / UX',
+    [
+      Familiarity.CompletelyUnfamiliar,
+      Familiarity.VeryBasicKnowledge,
+      Familiarity.Proficient,
+      Familiarity.Expert,
+    ],
+    true,
+    'Familiarity'
+  ),
+  makeDropdown(
+    'backend',
+    'Backend',
+    [
+      Familiarity.CompletelyUnfamiliar,
+      Familiarity.VeryBasicKnowledge,
+      Familiarity.Proficient,
+      Familiarity.Expert,
+    ],
+    true,
+    'Familiarity'
+  ),
+  makeDropdown(
+    'frontend',
+    'Frontend',
+    [
+      Familiarity.CompletelyUnfamiliar,
+      Familiarity.VeryBasicKnowledge,
+      Familiarity.Proficient,
+      Familiarity.Expert,
+    ],
+    true,
+    'Familiarity'
+  ),
+  makeDropdown(
+    'dataScience',
+    'Data Science',
+    [
+      Familiarity.CompletelyUnfamiliar,
+      Familiarity.VeryBasicKnowledge,
+      Familiarity.Proficient,
+      Familiarity.Expert,
+    ],
+    true,
+    'Familiarity'
+  ),
+  makeDropdown(
+    'cyberSecurity',
+    'Cybersecurity',
+    [
+      Familiarity.CompletelyUnfamiliar,
+      Familiarity.VeryBasicKnowledge,
+      Familiarity.Proficient,
+      Familiarity.Expert,
+    ],
+    true,
+    'Familiarity'
+  ),
+  makeSection(<></>, <i>Which CS disciplines are you interested in learning more about?</i>),
   makeLongText(
     'hackBeanGoals',
     <div>

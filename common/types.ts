@@ -1,4 +1,3 @@
-import { string } from 'joi';
 import { ReactNode } from 'react';
 
 /**
@@ -35,7 +34,14 @@ export interface ApplicationResponses {
   minors?: string;
   resumeLink?: string;
   shirtSize?: ShirtSize;
-  hackathonsAttended?: string;
+  hackathonsAttended?: HackathonsAttended;
+  mobileAppDevelopment?: Familiarity;
+  webDevelopment?: Familiarity;
+  uiUx?: Familiarity;
+  backend?: Familiarity;
+  frontend?: Familiarity;
+  dataScience?: Familiarity;
+  cyberSecurity?: Familiarity;
   prevHackathonFeedback?: string;
   hackBeanGoals?: string;
   tedTalkTopic?: string;
@@ -44,6 +50,7 @@ export interface ApplicationResponses {
   interestedWorkshops?: Array<string>;
   applyingWithTeam?: string;
   interestedInTeamFormation?: string;
+  accomodations?: string;
 }
 
 export interface PostAcceptanceResponses {
@@ -134,9 +141,16 @@ export enum Education {
   HighSchool = 'High School',
   Undergraduate = 'Undergraduate',
   Graduate = 'Graduate',
-  Doctorate = 'Doctorate',
 }
-type YearOfEducation = '1' | '2' | '3' | '4' | '5' | '5+';
+
+export enum YearOfEducation {
+  first = '1st year',
+  second = '2nd year',
+  third = '3rd year',
+  fourth = '4th year',
+  fifthOrAbove = '5th year +',
+}
+
 export enum Race {
   IndigenousAlaskaNative = 'Indigenous / Alaska Native',
   Asian = 'Asian (East, Southeast, South)',
@@ -148,12 +162,28 @@ export enum Race {
   PreferNotToSay = 'Prefer not to say',
 }
 export enum ShirtSize {
-  XSmall = 'XSmall',
-  Small = 'Small',
-  Medium = 'Medium',
-  Large = 'Large',
-  XLarge = 'XLarge',
+  XSmall = 'XS',
+  Small = 'S',
+  Medium = 'M',
+  Large = 'L',
+  XLarge = 'XL',
+  XXLarge = '2XL',
 }
+
+export enum HackathonsAttended {
+  Zero = '0',
+  OneToTwo = '1-2',
+  ThreeToFive = '3-5',
+  SixOrAbove = '6',
+}
+
+export enum Familiarity {
+  CompletelyUnfamiliar = 'Completely unfamiliar',
+  VeryBasicKnowledge = 'Very basic knowledge',
+  Proficient = 'Proficient',
+  Expert = 'Expert',
+}
+
 export enum ApplicationStatus {
   Incomplete = 'Incomplete',
   Submitted = 'Submitted',
