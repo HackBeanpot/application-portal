@@ -34,23 +34,35 @@ export interface ApplicationResponses {
   minors?: string;
   resumeLink?: string;
   shirtSize?: ShirtSize;
-  hackathonsAttended?: HackathonsAttended;
-  mobileAppDevelopment?: Familiarity;
-  webDevelopment?: Familiarity;
-  uiUx?: Familiarity;
-  backend?: Familiarity;
-  frontend?: Familiarity;
-  dataScience?: Familiarity;
-  cyberSecurity?: Familiarity;
+  hackathonsAttended?: NumberOf;
+  csClassesTaken?: NumberOf;
+  mobileAppDevelopmentFamiliarity?: Familiarity;
+  webDevelopmentFamiliarity?: Familiarity;
+  uiUxFamiliarity?: Familiarity;
+  backendFamiliarity?: Familiarity;
+  frontendFamiliarity?: Familiarity;
+  dataScienceFamiliarity?: Familiarity;
+  cybersecurityFamiliarity?: Familiarity;
+  mobileAppDevelopmentInterestLevel?: InterestLevel;
+  webDevelopmentInterestLevel?: InterestLevel;
+  uiUxInterestLevel?: InterestLevel;
+  backendInterestLevel?: InterestLevel;
+  frontendInterestLevel?: InterestLevel;
+  dataScienceInterestLevel?: InterestLevel;
+  cybersecurityInterestLevel?: InterestLevel;
+  interestedWorkshops?: Array<Workshop>;
   prevHackathonFeedback?: string;
   hackBeanGoals?: string;
   tedTalkTopic?: string;
   meetAlienSpeech?: string;
-  referrers?: Array<string>;
-  interestedWorkshops?: Array<string>;
-  applyingWithTeam?: string;
-  interestedInTeamFormation?: string;
+  referrers?: Array<Referrer>;
+  unListedReferrer?: string;
+  premadeTeam?: string;
+  interestedInTeamFormation?: YesOrNo;
   accomodations?: string;
+  questionsToAdd?: string;
+  commentsQuestionsSuggestions?: string;
+  howCanCoreTeamHelp?: string;
 }
 
 export interface PostAcceptanceResponses {
@@ -170,7 +182,7 @@ export enum ShirtSize {
   XXLarge = '2XL',
 }
 
-export enum HackathonsAttended {
+export enum NumberOf {
   Zero = '0',
   OneToTwo = '1-2',
   ThreeToFive = '3-5',
@@ -182,6 +194,51 @@ export enum Familiarity {
   VeryBasicKnowledge = 'Very basic knowledge',
   Proficient = 'Proficient',
   Expert = 'Expert',
+}
+
+export enum InterestLevel {
+  NotInterested = 'Not Interested',
+  SomewhatInterested = 'Somewhat Interested',
+  VeryInterested = 'Very Interested',
+}
+
+export enum Workshop {
+  MeetingOtherHackers = 'Meeting other hackers',
+  WinningPrizes = 'Winning prizes by attending workshops + activities',
+  ProjectIdeationAndTeamFormation = 'Project ideation/team formation',
+  Git = 'Intro to Git',
+  WebDev = 'Intro to Web Dev (HTML / CSS / JS)',
+  React = 'Intro to React',
+  HBPPanel = 'HackBeanpot Panel',
+  ResumesAndInternships = 'Resumes and Internships',
+  Backend = 'Backend Workshop',
+  MobileAppDev = 'Intro to Mobile App Dev',
+  MachineLearning = 'Intro to Machine Learning',
+  Docker = 'Intro to Docker',
+  Go = 'Intro to Go',
+  DemoAProject = 'How to Demo a Project for Judging',
+  CareersInTech = 'Careers in Tech',
+  DiversityInTech = 'Diversity in Tech',
+  TechForSocialGood = 'Tech for Social Good',
+  NoneOrOther = 'None / Other',
+}
+
+export enum Referrer {
+  Facebook = 'Facebook',
+  Instagram = 'Instagram',
+  LinkedIn = 'LinkedIn',
+  Twitter = 'Twitter',
+  Medium = 'Medium',
+  EmailOrNewsletter = 'HackBeanpot email / newsletter',
+  WordOfMouth = 'Word of mouth / friends',
+  OutreachEvents = 'HackBeanpot outreach events (MiniHacks, FUNdamentals of HTML / CSS / JS, etc.)',
+  SchoolCommunications = 'School communications / newsletter features',
+  Other = 'Other',
+}
+
+export enum YesOrNo {
+  Yes = 'Yes',
+  No = 'No',
 }
 
 export enum ApplicationStatus {
