@@ -1,3 +1,4 @@
+import { string } from 'joi';
 import { ReactNode } from 'react';
 
 /**
@@ -19,12 +20,15 @@ export interface User {
 }
 
 export interface ApplicationResponses {
-  name?: string;
+  firstName?: string;
+  lastName?: string;
   gender?: Gender;
   unlistedGender?: string;
-  school?: string;
+  school?: School;
   unlistedSchool?: string;
-  ethnicities?: Array<Ethnicity>;
+  races?: Array<Race>;
+  unlistedRace?: string;
+  lgbtqia?: Lgbtqia;
   education?: Education;
   yearOfEducation?: YearOfEducation;
   majors?: string;
@@ -93,8 +97,39 @@ export enum Gender {
   Nonbinary = 'Nonbinary',
   Female = 'Female',
   Male = 'Male',
-  Unspecified = 'Unspecified',
+  Genderqueer = 'Genderqueer',
+  Unlisted = 'Unspecified',
+  PreferNotToSay = 'Prefer not to say',
 }
+
+export enum Lgbtqia {
+  Yes = 'Yes',
+  No = 'No',
+  Unsure = 'Unsure',
+  PreferNotToSay = 'Prefer not to say',
+}
+
+export enum School {
+  NortheasternUniversity = 'Northeastern University',
+  BostonUniversity = 'Boston University',
+  MIT = 'MIT',
+  HarvardUniversity = 'Harvard University',
+  TuftsUniversity = 'Tufts University',
+  UniversityOfMassachusettsAmherst = 'University of Massachusetts Amherst',
+  BostonCollege = 'Boston College',
+  EmersonCollege = 'Emerson College',
+  SuffolkUniversity = 'Suffolk University',
+  BrandeisUniversity = 'Brandeis University',
+  WellesleyCollege = 'Wellesley College',
+  WentworthInstituteOfTechnology = 'Wentworth Institute of Technology',
+  OlinCollegeOfEngineering = 'Olin College of Engineering',
+  BenjaminFranklinInstituteOfTechnology = 'Benjamin Franklin Institute of Technology',
+  SimmonsUniversity = 'Simmons University',
+  BristolCommunityCollege = 'Bristol Community College',
+  WorcesterPolytechnicInstitute = 'Worcester Polytechnic Institute',
+  Other = 'Other',
+}
+
 export enum Education {
   HighSchool = 'High School',
   Undergraduate = 'Undergraduate',
@@ -102,14 +137,15 @@ export enum Education {
   Doctorate = 'Doctorate',
 }
 type YearOfEducation = '1' | '2' | '3' | '4' | '5' | '5+';
-export enum Ethnicity {
+export enum Race {
   IndigenousAlaskaNative = 'Indigenous / Alaska Native',
-  Asian = 'Asian',
-  BlackAfricanAmerican = 'Black / African American',
-  HispanicLatino = 'Hispanic / Latino',
-  NativeHawaiianPacificIslander = 'Native Hawaiian / Pacific Islander',
+  Asian = 'Asian (East, Southeast, South)',
+  BlackAfricanAmerican = 'Black or African American',
+  HispanicLatinx = 'Hispanic or Latinx',
+  NativeHawaiianPacificIslander = 'Native Hawaiian or Pacific Islander',
   White = 'White',
-  Other = 'Other',
+  Unlisted = 'Unlisted',
+  PreferNotToSay = 'Prefer not to say',
 }
 export enum ShirtSize {
   XSmall = 'XSmall',
