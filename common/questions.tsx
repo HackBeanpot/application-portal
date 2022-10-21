@@ -24,7 +24,6 @@ import {
   School,
   ShirtSize,
   ShortText,
-  User,
   Workshop,
   YearOfEducation,
   YesOrNo,
@@ -269,7 +268,8 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     <div>
       <p>
         Do you require any special accommodations to fully participate in the event? If yes, please
-        list your requested accomodations the best form of contact so that we can reach out to you.
+        list your requested accomodations and the best form of contact so that we can reach out to
+        you.
       </p>
       <i>
         Please fill out this question if you don’t have access to a laptop for the event so we can
@@ -470,7 +470,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Workshop.NoneOrOther,
     ],
     true,
-    10
+    18
   ),
   makeLongText(
     'prevHackathonFeedback',
@@ -519,7 +519,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Referrer.Other,
     ],
     true,
-    6
+    10
   ),
   makeShortText(
     'unListedReferrer',
