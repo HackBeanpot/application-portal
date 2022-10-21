@@ -13,7 +13,7 @@
 // the project's config changing)
 
 import { Collection, Db, MongoClient } from 'mongodb';
-import { SingletonDefinition, Team, User, ApplicationStatus, RSVPStatus } from '../../common/types';
+import { SingletonDefinition, User, ApplicationStatus, RSVPStatus } from '../../common/types';
 import { CreateUserInBackendArg } from '../types';
 
 type NextAuthVerificationToken = {
@@ -27,7 +27,6 @@ type CypressMongoCtx = {
     db: Db;
     userDataCollection: Collection<User>;
     singletonDataCollection: Collection<SingletonDefinition>;
-    teamDataCollection: Collection<Team>;
   };
   nextAuthDb: {
     db: Db;
@@ -50,7 +49,6 @@ const cypressConnectToDatabase = async (env: Record<string, string>): Promise<Cy
       db: serverDb,
       userDataCollection: serverDb.collection('applicant_data'),
       singletonDataCollection: serverDb.collection('singleton_data'),
-      teamDataCollection: serverDb.collection('teams'),
     },
     nextAuthDb: {
       db: nextAuthDb,
@@ -77,11 +75,13 @@ module.exports = (
         identifier: arg.email,
       });
       await Promise.all([deleteUserTask, deleteTokenTask]);
+      const userFields = arg.user ?? {};
       const insertUserTask = ctx.serverDb.userDataCollection.insertOne({
         email: arg.email,
         isAdmin: arg.isAdmin,
         applicationStatus: ApplicationStatus.Incomplete,
         rsvpStatus: RSVPStatus.Unconfirmed,
+        ...userFields,
       });
       const insertTokenTask = ctx.nextAuthDb.verificationTokens.insertOne({
         identifier: arg.email,

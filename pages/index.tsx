@@ -4,12 +4,13 @@ import {
   getRegistrationClosed,
   getRegistrationOpen,
   getUser,
+  getShowDecision,
 } from '../common/apiClient';
 import useSWR from 'swr';
 import { PageLayout } from '../components/Layout';
 import { Alert, Card, Spin } from 'antd';
 import { User } from '../common/types';
-import { StatusDialogue } from '../components/dashboard/StatusDialogue';
+import { StatusDialogue } from '../components/dashboard/status-dialogue/StatusDialogue';
 import { GetServerSideProps } from 'next';
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect';
 
@@ -21,11 +22,13 @@ const Home = (): ReactElement => {
     getRegistrationClosed
   );
   const { data: registrationOpen } = useSWR('/api/v1/dates/registration-open', getRegistrationOpen);
+  const { data: showDecision } = useSWR('/api/v1/show-decision', getShowDecision);
   const statusPropsOrNull = getStatusDialogueProps(
     user?.data,
     confirmBy?.data,
     registrationClosed?.data,
-    registrationOpen?.data
+    registrationOpen?.data,
+    showDecision?.data
   );
 
   return (
@@ -57,9 +60,10 @@ function getStatusDialogueProps(
   user?: User,
   confirmBy?: string,
   registrationClosed?: string,
-  registrationOpen?: string
+  registrationOpen?: string,
+  showDecision?: boolean
 ) {
-  if (user && confirmBy && registrationClosed && registrationOpen) {
+  if (user && confirmBy && registrationClosed && registrationOpen && showDecision !== undefined) {
     return {
       applicationStatus: user.applicationStatus,
       decisionStatus: user.decisionStatus,
@@ -67,6 +71,7 @@ function getStatusDialogueProps(
       confirmBy: new Date(confirmBy),
       registrationClosed: new Date(registrationClosed),
       registrationOpen: new Date(registrationOpen),
+      showDecision,
     };
   }
   return null;

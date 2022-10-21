@@ -1,11 +1,14 @@
-import { ApplicationStatus, DecisionStatus, RSVPStatus } from '../../common/types';
+import { ApplicationStatus, DecisionStatus, RSVPStatus } from '../../../common/types';
 import { Alert } from 'antd';
 import React from 'react';
-import { RegistrationState, useRegistrationState } from '../hooks/useRegistrationState';
-import { ApplicationStatusDialogue } from './ApplicationStatusDialogue';
-import { DecisionStatusDialogue } from './DecisionStatusDialogue';
-import { RsvpDialogue } from './RsvpDialogue';
-import { useConfirmByState } from '../hooks/useConfirmByState';
+import {
+  RegistrationState,
+  useRegistrationState,
+} from '../../hooks/use-registration-state/useRegistrationState';
+import { ApplicationStatusDialogue } from '../application-status-dialogue/ApplicationStatusDialogue';
+import { DecisionStatusDialogue } from '../decision-status-dialogue/DecisionStatusDialogue';
+import { RsvpDialogue } from '../rsvp-dialogue/RsvpDialogue';
+import { useConfirmByState } from '../../hooks/use-confirm-by-state/useConfirmByState';
 
 type StatusDialogueProps = {
   applicationStatus: ApplicationStatus;
@@ -15,6 +18,7 @@ type StatusDialogueProps = {
   confirmBy: Date;
   registrationClosed: Date;
   registrationOpen: Date;
+  showDecision: boolean;
 };
 
 export const StatusDialogue: React.FC<StatusDialogueProps> = ({
@@ -24,6 +28,7 @@ export const StatusDialogue: React.FC<StatusDialogueProps> = ({
   applicationStatus,
   decisionStatus,
   rsvpStatus,
+  showDecision,
 }) => {
   const registrationState = useRegistrationState({ registrationClosed, registrationOpen });
   const confirmByState = useConfirmByState({ confirmBy });
@@ -50,6 +55,7 @@ export const StatusDialogue: React.FC<StatusDialogueProps> = ({
         decisionStatus={decisionStatus}
         confirmBy={confirmBy}
         confirmByState={confirmByState}
+        showDecision={showDecision}
       />
     );
   }
@@ -58,15 +64,15 @@ export const StatusDialogue: React.FC<StatusDialogueProps> = ({
   return <RsvpDialogue rsvpStatus={rsvpStatus} />;
 };
 
-const ApplyLater = ({ registrationOpen }: { registrationOpen: string }) => {
+export const ApplyLater = ({ registrationOpen }: { registrationOpen: string }) => {
   return (
     <Alert
       showIcon
       type="info"
       message={
-        <>
+        <div data-testid="apply-later-dialog-text">
           Registration Opens <strong>{registrationOpen}</strong>
-        </>
+        </div>
       }
       description="Please come back after registration opens to complete your application!"
     />

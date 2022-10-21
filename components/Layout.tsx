@@ -10,9 +10,9 @@ import { DownOutlined, MenuOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 import router from 'next/router';
 
-const { Header, Content } = Layout;
+const { Header, Content, Footer } = Layout;
 
-const Pages = ['home', 'application', 'team', 'admin', 'logout'] as const;
+const Pages = ['home', 'application', 'admin', 'logout'] as const;
 type PageLayoutProps = {
   currentPage: typeof Pages[number];
 };
@@ -46,13 +46,6 @@ export const PageLayout: React.FC<PageLayoutProps> = ({ currentPage, children })
             >
               Application
             </Menu.Item>
-            <Menu.Item
-              className="menu-item"
-              key="team"
-              onClick={andClose(() => router.push('/team'))}
-            >
-              Team
-            </Menu.Item>
             {user?.data?.isAdmin && (
               <Menu.Item
                 className="menu-item"
@@ -78,9 +71,6 @@ export const PageLayout: React.FC<PageLayoutProps> = ({ currentPage, children })
           </Menu.Item>
           <Menu.Item key="application">
             <Link href="/application">Application</Link>
-          </Menu.Item>
-          <Menu.Item key="team">
-            <Link href="/team">Team</Link>
           </Menu.Item>
           {user?.data?.isAdmin && (
             <Menu.Item key="admin">
@@ -108,6 +98,11 @@ export const PageLayout: React.FC<PageLayoutProps> = ({ currentPage, children })
       <Content className="content-container">
         <div className="content">{children}</div>
       </Content>
+      <Footer className="footer">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfhz6MjZpdCmJdik0p5F7IrqZPTZQ7OLVydiCK_I0Lbzr3m4Q/viewform?usp=sf_link">
+          Feedback Form
+        </a>
+      </Footer>
     </Layout>
   );
 };

@@ -1,19 +1,18 @@
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect } from '@jest/globals';
 import {
   convertCheckboxesToJoiSchema,
   convertDropdownToJoiSchema,
   convertLongTextToJoiSchema,
   makeQuestionResponseSchemas,
-} from '../server/validators';
-import { Checkboxes, Dropdown, LongText, QuestionType, ShortText } from '../common/types';
+} from './validators';
+import { Checkboxes, Dropdown, LongText, QuestionType, ShortText } from '../../common/types';
 import Joi from 'joi';
-import { isAfterRegistrationClosed, isBeforeRegistrationOpens } from '../common/utils';
 
 // convenience constructors
 const n = (name: string) => ({ name });
 const cb = (d?: Partial<Checkboxes>): Checkboxes => {
   const dfault: Checkboxes = {
-    field: 'proficientLanguages',
+    field: 'education',
     type: QuestionType.Checkboxes,
     id: '1',
     content: 'Your top two most proficient languages. Select at least 1, but no more than 2.',
@@ -26,7 +25,7 @@ const cb = (d?: Partial<Checkboxes>): Checkboxes => {
 };
 const dd = (d?: Partial<Dropdown>): Dropdown => {
   const dfault: Dropdown = {
-    field: 'age',
+    field: 'adult',
     type: QuestionType.Dropdown,
     id: '1',
     content: 'How old are you?',
@@ -37,7 +36,7 @@ const dd = (d?: Partial<Dropdown>): Dropdown => {
 };
 const lt = (d?: Partial<LongText>): LongText => {
   const dfault: LongText = {
-    field: 'funFact',
+    field: 'tedTalkTopic',
     type: QuestionType.LongText,
     id: '1',
     content: 'Tell me something about yourself, in 10-50 characters.',
@@ -49,7 +48,7 @@ const lt = (d?: Partial<LongText>): LongText => {
 };
 const st = (d?: Partial<ShortText>): ShortText => {
   const dfault: ShortText = {
-    field: 'briefFunFact',
+    field: 'firstName',
     type: QuestionType.ShortText,
     id: '1',
     content: 'Tell me your name, in 1-5 characters.',
@@ -141,33 +140,4 @@ describe('registration endpoint schema tests', () => {
   //     ], questionSchemas))
   //   })
   // })
-});
-
-describe('date utils', () => {
-  const longTimeAgo = new Date(1999, 1, 1);
-  const farInTheFuture = new Date(9001, 1, 1);
-
-  test('isBeforeRegistrationOpens', () => {
-    // if the open date was a long time ago...
-    let openDate = longTimeAgo;
-    // registration has already opened
-    expect(isBeforeRegistrationOpens(openDate)).toBe(false);
-
-    // if open date is far in the future...
-    openDate = farInTheFuture;
-    // registration has not yet opened
-    expect(isBeforeRegistrationOpens(openDate)).toBe(true);
-  });
-
-  test('isAfterRegistrationClosed', () => {
-    // if the close date was a long time ago...
-    let closeDate = longTimeAgo;
-    // registration has already closed
-    expect(isAfterRegistrationClosed(closeDate)).toBe(true);
-
-    // if close date is far in the future...
-    closeDate = farInTheFuture;
-    // registration has not yet closed
-    expect(isAfterRegistrationClosed(closeDate)).toBe(false);
-  });
 });

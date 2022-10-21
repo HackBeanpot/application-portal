@@ -10,9 +10,11 @@ import {
   Dropdown,
   LongText,
   QuestionDefinition,
+  QuestionResponseField,
   QuestionSection,
   QuestionType,
   ShortText,
+  User,
 } from './types';
 
 let questionCount = 0;
@@ -25,7 +27,7 @@ const longTextMaxLength = 3000;
 
 // convenience constructors for questions (constructors in java)
 export function makeCheckbox(
-  field: string,
+  field: QuestionResponseField,
   content: ReactNode,
   options: Array<string>,
   required: boolean,
@@ -45,7 +47,7 @@ export function makeCheckbox(
 }
 
 export function makeShortText(
-  field: string,
+  field: QuestionResponseField,
   content: ReactNode,
   required: boolean,
   placeholder?: string
@@ -64,7 +66,7 @@ export function makeShortText(
 }
 
 export function makeDropdown(
-  field: string,
+  field: QuestionResponseField,
   content: ReactNode,
   options: Array<string>,
   required: boolean,
@@ -82,7 +84,11 @@ export function makeDropdown(
   };
 }
 
-export function makeLongText(field: string, content: ReactNode, required: boolean): LongText {
+export function makeLongText(
+  field: QuestionResponseField,
+  content: ReactNode,
+  required: boolean
+): LongText {
   questionCount++;
   return {
     field,
@@ -109,6 +115,7 @@ export function makeSection(text: ReactNode, description?: ReactNode): QuestionS
 }
 
 // write questions for portal here
+// when adding a new question add the question field to the User type in common/types.ts
 export const Sections: Array<QuestionSection | QuestionDefinition> = [
   makeSection(<>Let{"'"}s Get to Know You!</>),
   makeShortText('name', 'What is your name?', true, 'First Last'),
@@ -179,7 +186,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     'Level'
   ),
   makeDropdown(
-    'educationYear',
+    'yearOfEducation',
     'What year in your current education are you?',
     ['1st year', '2nd year', '3rd year', '4th year', '5th year+'],
     true,
@@ -210,7 +217,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     'https://link-to-your-resume'
   ),
   makeDropdown(
-    'tshirtSize',
+    'shirtSize',
     <div>
       We will be handing out t-shirts and other fun swag at the event. What is your t-shirt size?{' '}
       <i>All sizes are unisex.</i>
@@ -304,37 +311,6 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     true,
     10
   ),
-  makeSection(<>Team Formation</>),
-  makeDropdown(
-    'applyingWithTeam',
-    <div>
-      <p>
-        Do you plan on attending HackBeanpot with a pre-made team? If yes, please create / join a
-        team with your teammates in the Team tab after filling out your application.
-      </p>
-      <i>
-        Note: This question does not get factored into how your application is read! If you are
-        already part of a team before applying, we will accept / reject your team together.
-      </i>
-    </div>,
-    ['Yes', 'No'],
-    true
-  ),
-  makeDropdown(
-    'interestedInTeamFormation',
-    <div>
-      <p>
-        If you don’t have a team or would like to add more members to your team, we will have a
-        project ideation session and team formation activity we would love for you to attend. In the
-        question below, if you express interest in finding a team at the event we will reach out
-        closer to the event with more details.
-      </p>
-      Would you be interested in creating a team or finding more members for your current team at
-      our team formation event?
-    </div>,
-    ['Yes', 'No'],
-    true
-  ),
 ];
 
 const filterQuestion = (q: QuestionSection | QuestionDefinition): q is QuestionDefinition => {
@@ -343,6 +319,7 @@ const filterQuestion = (q: QuestionSection | QuestionDefinition): q is QuestionD
 
 export const Questions: Array<QuestionDefinition> = Sections.filter(filterQuestion);
 
+// when adding a new question add the question field to the User type in common/types.ts
 export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinition> = [
   makeSection(
     <>Post-Acceptance Form</>,

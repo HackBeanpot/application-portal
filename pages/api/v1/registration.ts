@@ -1,12 +1,13 @@
 import { NextApiHandler } from 'next';
 import {
   ApplicationStatus,
+  QuestionResponse,
   RegistrationApiRequest,
   SingletonType,
 } from '../../../common/types';
 import { connectToDatabase } from '../../../server/mongoDB';
 import { assumeLoggedInGetEmail, protect } from '../../../server/protect';
-import { attemptToValidateRegistrationApiRequest } from '../../../server/validators';
+import { attemptToValidateRegistrationApiRequest } from '../../../server/validators/validators';
 import Joi from 'joi';
 import { queryDate } from '../../../server/dates';
 import { isBefore } from 'date-fns';
@@ -29,7 +30,8 @@ const getHandler: NextApiHandler = async (req, res) => {
   const { userDataCollection } = await connectToDatabase();
   const data = await userDataCollection.findOne({ email });
   return res.status(200).json({
-    responses: data?.responses,
+    fields: data?.applicationResponses ? Object.keys(data.applicationResponses) : [],
+    responses: data?.applicationResponses ? Object.values(data.applicationResponses) : [],
   });
 };
 
@@ -53,10 +55,15 @@ const postHandler: NextApiHandler = async (req, res) => {
     if (Joi.isError(e)) {
       return res.status(400).json(e.message);
     }
-    return res
-      .status(500)
-      .json('something broke. please email us immediately.');
+    return res.status(500).json('something broke. please email us immediately.');
   }
+
+  const userResponses: Record<string, QuestionResponse> = {};
+
+  result.fields.forEach((field, index) => {
+    const response = result.responses[index];
+    userResponses[field] = response;
+  });
 
   const email = await assumeLoggedInGetEmail(req);
   const { userDataCollection } = await connectToDatabase();
@@ -65,9 +72,10 @@ const postHandler: NextApiHandler = async (req, res) => {
     { email },
     {
       $set: {
-        responses: result.responses,
+        applicationResponses: userResponses,
         email,
         applicationStatus: ApplicationStatus.Submitted,
+        appSubmissionTime: new Date(),
       },
     },
     { upsert: true }

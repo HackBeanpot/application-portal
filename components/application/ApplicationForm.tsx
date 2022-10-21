@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react';
-import { ApplicationStatus, QuestionResponse } from '../../common/types';
+import { ApplicationResponses, ApplicationStatus, QuestionResponse } from '../../common/types';
 import {
   getApplicantResponses,
   getRegistrationClosed,
@@ -10,10 +10,9 @@ import {
 import { Questions, Sections } from '../../common/questions';
 import { Alert, Button, Form, notification } from 'antd';
 import useSWR from 'swr';
-import { format } from '../dashboard/StatusDialogue';
-import { isAfterRegistrationClosed, isBeforeRegistrationOpens } from '../../common/utils';
+import { format } from '../dashboard/status-dialogue/StatusDialogue';
+import { isAfterRegistrationClosed, isBeforeRegistrationOpens } from '../../common/utils/utils';
 import { useWarnIfUnsavedChanges } from '../hooks/useWarnIfUnsavedChanges';
-import { FormQuestion } from './FormQuestion';
 import { FormSectionsAndQuestions } from './FormSectionsAndQuestions';
 
 export const ApplicationForm = (): ReactElement => {
@@ -40,7 +39,13 @@ export const ApplicationForm = (): ReactElement => {
     (userResponses?.data?.responses?.length ?? 0) > 0;
   const submittedFormData: Record<string, QuestionResponse> = {};
   userResponses?.data?.responses?.forEach((response, index) => {
-    submittedFormData[String(index + 1)] = response;
+    // get index of question with corresponding field, in case we added a question in the middle of the application
+    let questionIndex = Questions.findIndex((q) => q.field === userResponses?.data?.fields[index]);
+    if (questionIndex === -1) {
+      questionIndex = index;
+    }
+    // use question index in submittedFormData
+    submittedFormData[String(questionIndex + 1)] = response;
   });
   const isEditing = alreadySubmitted && !disabled;
   const registrationOpenDate = registrationOpen?.data && new Date(registrationOpen?.data);
@@ -65,9 +70,10 @@ export const ApplicationForm = (): ReactElement => {
   );
 
   const onSubmit = async (values: Record<string, QuestionResponse>) => {
+    const fields = Questions.map((q) => q.field) as Array<keyof ApplicationResponses>;
     const responses = Questions.map((q) => values[q.id] ?? null);
     setIsSubmitting(true);
-    const response = await updateApplicantResponses({ responses });
+    const response = await updateApplicantResponses({ fields, responses });
     setIsSubmitting(false);
     if (200 <= response.status && response.status < 300) {
       notification.success({

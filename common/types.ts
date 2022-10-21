@@ -1,36 +1,84 @@
 import { ReactNode } from 'react';
 
 /**
- * @param applicationStatus deez nuts
+ * @param applicationStatus deez nuts :0
  */
 export interface User {
   email: string;
+  applicationResponses?: ApplicationResponses;
+  postAcceptanceResponses?: PostAcceptanceResponses;
   isAdmin: boolean;
   applicationStatus: ApplicationStatus;
+  postAcceptanceStatus?: ApplicationStatus;
   // Decision status might not exist because of backwards compatibility
   decisionStatus?: DecisionStatus;
   rsvpStatus: RSVPStatus;
-  teamName?: string;
-  responses?: Array<QuestionResponse>;
-  postAcceptanceResponses?: Array<QuestionResponse>;
+  responses?: Array<QuestionResponse>; // legacy
+  appSubmissionTime?: Date;
+  rsvpSubmissionTime?: Date;
 }
 
-export type SingletonDefinition = DateSingleton;
+export interface ApplicationResponses {
+  name?: string;
+  gender?: Gender;
+  unlistedGender?: string;
+  school?: string;
+  unlistedSchool?: string;
+  ethnicities?: Array<Ethnicity>;
+  education?: Education;
+  yearOfEducation?: YearOfEducation;
+  majors?: string;
+  minors?: string;
+  resumeLink?: string;
+  shirtSize?: ShirtSize;
+  hackathonsAttended?: string;
+  prevHackathonFeedback?: string;
+  hackBeanGoals?: string;
+  tedTalkTopic?: string;
+  meetAlienSpeech?: string;
+  referrers?: Array<string>;
+  interestedWorkshops?: Array<string>;
+  applyingWithTeam?: string;
+  interestedInTeamFormation?: string;
+}
+
+export interface PostAcceptanceResponses {
+  firstName?: string;
+  lastName?: string;
+  adult?: string;
+  adultSignature?: string;
+  minorSignature?: string;
+  guardianSignature?: string;
+  swag?: Array<string>;
+  accomodations?: string;
+  pickUpSwag?: string;
+  address?: string;
+  careerInTech?: string;
+  personAtParty?: string;
+  wonLottery?: string;
+  themePark?: string;
+  celebrity?: string;
+}
+
+export type QuestionResponseField = keyof ApplicationResponses | keyof PostAcceptanceResponses;
+
+export type SingletonDefinition = DateSingleton | ShowDecisionSingleton;
 
 export enum SingletonType {
   RegistrationOpen = 'registration-open',
   RegistrationClosed = 'registration-closed',
   ConfirmBy = 'confirm-by',
+  ShowDecision = 'show-decision',
+}
+
+export interface ShowDecisionSingleton {
+  value: boolean;
+  type: SingletonType.ShowDecision;
 }
 
 export interface DateSingleton {
   value: string;
   type: SingletonType.RegistrationClosed | SingletonType.RegistrationOpen | SingletonType.ConfirmBy;
-}
-
-export interface Team {
-  name: string;
-  userEmails: string[];
 }
 
 export interface PortalState {
@@ -53,7 +101,7 @@ export enum Education {
   Graduate = 'Graduate',
   Doctorate = 'Doctorate',
 }
-type YearOfEducation = 1 | 2 | 3 | 4 | 5 | '5+';
+type YearOfEducation = '1' | '2' | '3' | '4' | '5' | '5+';
 export enum Ethnicity {
   IndigenousAlaskaNative = 'Indigenous / Alaska Native',
   Asian = 'Asian',
@@ -103,7 +151,7 @@ export type QuestionSection = {
 export type QuestionId = string;
 
 interface IQuestion {
-  field: string;
+  field: QuestionResponseField;
   content: ReactNode;
   id: QuestionId;
   required: boolean;
@@ -151,16 +199,16 @@ export type QuestionResponse = string | Array<string> | null;
  * @param responses mapping from question id to response value
  */
 export type RegistrationApiRequest = {
+  fields: Array<keyof ApplicationResponses>;
   responses: Array<QuestionResponse>;
 };
 export type RegistrationApiResponse = RegistrationApiRequest;
 
 export type StatusApiResponse = {
   applicationStatus: ApplicationStatus;
+  postAcceptanceStatus: ApplicationStatus;
   rsvpStatus: RSVPStatus;
 };
-
-export type TeamApiResponse = Team;
 
 export type DatesApiResponse = string;
 
@@ -177,5 +225,6 @@ export type SingleApplicantApiResponse = {
 
 export type PostAcceptanceApiRequest = {
   rsvpStatus: Exclude<RSVPStatus, RSVPStatus.Unconfirmed>;
+  fields?: Array<keyof PostAcceptanceResponses>;
   responses?: Array<QuestionResponse>;
 };

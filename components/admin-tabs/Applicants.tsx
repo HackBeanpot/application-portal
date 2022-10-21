@@ -18,15 +18,17 @@ import { saveAs } from 'file-saver';
 import { EditableRow } from './table/EditableRow';
 import { EditableCell, EditableCellProps } from './table/EditableCell';
 
+// add other Question fields not defined in User type in intersection here
 export type SingleRecordType = ApplicantsApiResponse['data'][number];
 
 // table columns: name, email, school, application status, rsvp status
 const columns = [
   {
     title: 'Name',
-    dataIndex: ['responses', '0'],
+    dataIndex: 'applicationResponses.name',
     sorter: true,
     editable: false,
+    render: (_: string, record: SingleRecordType) => record.applicationResponses?.name ?? '',
   },
   {
     title: 'Email',
@@ -36,23 +38,31 @@ const columns = [
   },
   {
     title: 'School',
-    dataIndex: ['responses', '4'],
-    filters: (Questions[4] as DropdownQuestionType).options.map(({ name }) => ({
+    dataIndex: 'school',
+    filters: (
+      Questions.find((question) => question.field === 'school') as DropdownQuestionType
+    ).options.map(({ name }) => ({
       text: name,
       value: name,
     })),
     render: (_: string, record: SingleRecordType) =>
-      record.responses?.[record.responses[4] === 'Other' ? 5 : 4] ?? '',
+      record.applicationResponses?.school === 'Other'
+        ? record.applicationResponses.unlistedSchool
+        : record.applicationResponses?.school,
     sorter: true,
     editable: false,
   },
   {
     title: 'Year',
-    dataIndex: ['responses', '7'],
-    filters: (Questions[7] as DropdownQuestionType).options.map(({ name }) => ({
+    dataIndex: 'yearOfEducation',
+    filters: (
+      Questions.find((question) => question.field === 'yearOfEducation') as DropdownQuestionType
+    ).options.map(({ name }) => ({
       text: name,
       value: name,
     })),
+    render: (_: string, record: SingleRecordType) =>
+      record.applicationResponses?.yearOfEducation ?? '',
     sorter: true,
     editable: false,
   },
@@ -168,6 +178,8 @@ const Applicants: React.FC = () => {
     );
   };
 
+  console.log(data);
+
   return (
     <div className={'applicants'}>
       <div className="title-container">
@@ -211,7 +223,7 @@ const downloadPostAcceptanceCsv = async (props: DownloadProps) =>
     props,
     fields,
     PostAcceptanceFormQuestions,
-    (u) => u.postAcceptanceResponses,
+    (u) => Object.values(u.postAcceptanceResponses ?? {}),
     'post-acceptance.csv'
   );
 

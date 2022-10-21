@@ -1,4 +1,4 @@
-import { isAfterRegistrationClosed, isBeforeRegistrationOpens } from '../../common/utils';
+import { isAfterRegistrationClosed, isBeforeRegistrationOpens } from '../../../common/utils/utils';
 
 export enum RegistrationState {
   BeforeOpen = 'Before',

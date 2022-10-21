@@ -3,7 +3,7 @@ import ShortTextQuestion from '../questions/ShortTextQuestion';
 import LongTextQuestion from '../questions/LongTextQuestion';
 import DropdownQuestion from '../questions/DropdownQuestion';
 import CheckboxesQuestion from '../questions/CheckboxesQuestion';
-import { assertUnreachable } from '../../common/utils';
+import { assertUnreachable } from '../../common/utils/utils';
 import React from 'react';
 import { FormInstance } from 'antd';
 
