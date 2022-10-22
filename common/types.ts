@@ -28,6 +28,7 @@ export interface ApplicationResponses {
   races?: Array<Race>;
   unlistedRace?: string;
   lgbtqia?: Lgbtqia;
+  identify?: string;
   education?: Education;
   yearOfEducation?: YearOfEducation;
   majors?: string;

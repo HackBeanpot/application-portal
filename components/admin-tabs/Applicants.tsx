@@ -5,9 +5,11 @@ import useSWR from 'swr';
 import { Button, Table, TablePaginationConfig, TableProps, Tooltip } from 'antd';
 import {
   ApplicantsApiResponse,
+  ApplicationResponses,
   ApplicationStatus,
   DecisionStatus,
   Dropdown as DropdownQuestionType,
+  PostAcceptanceResponses,
   QuestionDefinition,
   QuestionResponse,
   RSVPStatus,
@@ -178,8 +180,6 @@ const Applicants: React.FC = () => {
     );
   };
 
-  console.log(data);
-
   return (
     <div className={'applicants'}>
       <div className="title-container">
@@ -217,7 +217,7 @@ type DownloadProps = {
   sorter: TableSorter;
 };
 const downloadApplicationCsv = async (props: DownloadProps) =>
-  downloadFileAbstract(props, fields, Questions, (u) => u.responses, 'applications.csv');
+  downloadFileAbstract(props, fields, Questions, (u) => u.applicationResponses, 'applications.csv');
 const downloadPostAcceptanceCsv = async (props: DownloadProps) =>
   downloadFileAbstract(
     props,
@@ -237,7 +237,7 @@ const downloadFileAbstract = async (
   { totalCount, filters, sorter }: DownloadProps,
   fields: Array<keyof User>,
   questions: QuestionDefinition[],
-  responseGetter: (u: User) => Array<QuestionResponse> | undefined,
+  responseGetter: (u: User) => ApplicationResponses | QuestionResponse[] | undefined,
   fileName: string
 ): Promise<null> => {
   const pagination: TablePaginationConfig = {
@@ -251,7 +251,7 @@ const downloadFileAbstract = async (
       const userFieldCols = fields.map((f) => user[f]).map(String);
       const responses = responseGetter(user);
       if (responses) {
-        const responseCols = questions.map((q, idx) => serializeResponse(responses[idx]));
+        const responseCols = Object.values(responses).map((q) => serializeResponse(q));
         return [...userFieldCols, ...responseCols].map(escaper).join(separator);
       }
       return userFieldCols.map(escaper).join(separator);

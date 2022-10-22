@@ -166,10 +166,15 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
   makeShortText('unlistedRace', "If your race(s) aren't listed above, list it here!", false),
   makeDropdown(
     'lgbtqia',
-    'Do you identify as part of the LGBTQIA+ community? If yes, how do you identify?',
+    'Do you identify as part of the LGBTQIA+ community?',
     [Lgbtqia.Yes, Lgbtqia.No, Lgbtqia.Unsure, Lgbtqia.PreferNotToSay],
     true,
-    'How do you identify'
+    'Do you identify'
+  ),
+  makeShortText(
+    'identify',
+    'If you answered yes in the previous question, how do you identify?',
+    false
   ),
   makeDropdown(
     'school',
