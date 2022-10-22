@@ -99,9 +99,16 @@ export const PageLayout: React.FC<PageLayoutProps> = ({ currentPage, children })
         <div className="content">{children}</div>
       </Content>
       <Footer className="footer">
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfhz6MjZpdCmJdik0p5F7IrqZPTZQ7OLVydiCK_I0Lbzr3m4Q/viewform?usp=sf_link">
-          Feedback Form
-        </a>
+        If you have additional feedback, please let us know on this
+        <b>
+          <a
+            rel="noreferrer"
+            target="_blank"
+            href="https://docs.google.com/forms/d/e/1FAIpQLSfhz6MjZpdCmJdik0p5F7IrqZPTZQ7OLVydiCK_I0Lbzr3m4Q/viewform?usp=sf_link"
+          >
+            Feedback Form
+          </a>
+        </b>
       </Footer>
     </Layout>
   );
