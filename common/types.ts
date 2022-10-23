@@ -19,18 +19,19 @@ export interface User {
 }
 
 export interface ApplicationResponses {
+  test?: string;
   firstName?: string;
   preferredName?: string;
   lastName?: string;
   pronouns?: string;
   gender?: Gender;
   unlistedGender?: string;
+  identify?: string;
   school?: School;
   unlistedSchool?: string;
   races?: Array<Race>;
   unlistedRace?: string;
   lgbtqia?: Lgbtqia;
-  identify?: string;
   education?: Education;
   yearOfEducation?: YearOfEducation;
   majors?: string;

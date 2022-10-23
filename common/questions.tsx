@@ -130,6 +130,7 @@ export function makeSection(text: ReactNode, description?: ReactNode): QuestionS
 // when adding a new question add the question field to the User type in common/types.ts
 export const Sections: Array<QuestionSection | QuestionDefinition> = [
   makeSection(<>Let{"'"}s Get to Know You!</>),
+  makeShortText('test', 'Test', false, 'Test'),
   makeShortText('firstName', 'First name', true, 'First name'),
   makeShortText('preferredName', 'Preferred name', false, 'Preferred name'),
   makeShortText('lastName', 'Last name', true, 'Last name'),
@@ -178,6 +179,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     'If you answered yes in the previous question, how do you identify?',
     false
   ),
+  makeShortText('identify', "If you answered yes to the previous question, how do you identify?", false),
   makeDropdown(
     'school',
     'What school do you attend?',
