@@ -1,6 +1,7 @@
 import {
   Checkboxes,
   Dropdown,
+  FileUpload,
   LongText,
   QuestionDefinition,
   QuestionResponse,
@@ -22,6 +23,8 @@ export const convertQuestionDefinitionToJoiSchema = (
     return convertLongTextToJoiSchema(q);
   } else if (q.type === QuestionType.ShortText) {
     return convertShortTextToJoiSchema(q);
+  } else if (q.type === QuestionType.FileUpload) {
+    return convertFileUploadToJoiSchema(q);
   }
   throw new Error(`unexpected question type on question: ${q}`);
 };
@@ -55,6 +58,11 @@ export const convertLongTextToJoiSchema = (q: LongText): Joi.Schema => {
 export const convertShortTextToJoiSchema = (q: ShortText): Joi.Schema => {
   // expects a long text response
   const answerSchema = Joi.string().min(q.minLength).max(q.maxLength);
+  return makeRequiredIfNeeded(q, answerSchema);
+};
+
+export const convertFileUploadToJoiSchema = (q: FileUpload): Joi.Schema => {
+  const answerSchema = Joi.string();
   return makeRequiredIfNeeded(q, answerSchema);
 };
 

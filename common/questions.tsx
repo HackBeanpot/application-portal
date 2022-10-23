@@ -8,6 +8,7 @@ import React, { ReactNode } from 'react';
 import {
   Checkboxes,
   Dropdown,
+  FileUpload,
   LongText,
   QuestionDefinition,
   QuestionResponseField,
@@ -99,6 +100,32 @@ export function makeLongText(
     content: content,
     id: String(questionCount), // need to access questionID from questionidtoquestioncontent
     required: required,
+  };
+}
+
+/**
+ * @param accept file types to accept eg. '.pdf'
+ * @param multiple whether or not we can upload multiple files at once
+ * @param limit maximum # of files
+ */
+export function makeFileUpload(
+  field: QuestionResponseField,
+  content: ReactNode,
+  required: boolean,
+  accept: string,
+  multiple: boolean,
+  limit: number
+): FileUpload {
+  questionCount++;
+  return {
+    field,
+    type: QuestionType.FileUpload,
+    content: content,
+    id: String(questionCount),
+    required: required,
+    accept: accept,
+    multiple: multiple,
+    limit: limit,
   };
 }
 
@@ -199,14 +226,12 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     'Computer Science, etc.'
   ),
   makeShortText('minors', 'What are your minor(s)?', false, 'Interaction Design, etc.'),
-  // todo: replace with GDrive upload
-  // url to resume for now
-  makeShortText(
+  makeFileUpload(
     'resumeLink',
     <div>
       <p>
-        If you would like to hear about internships / job opportunities from our our sponsors, add a
-        link to your resume! (Google Drive, etc)
+        If you would like to hear about internships / job opportunities from our our sponsors,
+        upload your resume! (PDF only)
       </p>
       <i>
         Note: We do not read resumes as a part of the HBP application process. Your resume will only
@@ -214,7 +239,9 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       </i>
     </div>,
     false,
-    'https://link-to-your-resume'
+    '.pdf',
+    false,
+    1
   ),
   makeDropdown(
     'shirtSize',

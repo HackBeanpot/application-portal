@@ -3,6 +3,7 @@ import ShortTextQuestion from '../questions/ShortTextQuestion';
 import LongTextQuestion from '../questions/LongTextQuestion';
 import DropdownQuestion from '../questions/DropdownQuestion';
 import CheckboxesQuestion from '../questions/CheckboxesQuestion';
+import FileUploadQuestion from '../questions/FileUploadQuestion';
 import { assertUnreachable } from '../../common/utils/utils';
 import React from 'react';
 import { FormInstance } from 'antd';
@@ -17,6 +18,8 @@ export const getQuestionComponentFromType = (type: QuestionType) => {
       return DropdownQuestion;
     case QuestionType.Checkboxes:
       return CheckboxesQuestion;
+    case QuestionType.FileUpload:
+      return FileUploadQuestion;
     default:
       assertUnreachable(type);
   }
