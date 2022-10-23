@@ -26,7 +26,9 @@ export const PageLayout: React.FC<PageLayoutProps> = ({ currentPage, children })
     setNavOpen(false);
   };
   const signOutAndRouter = () => {
-    signOut();
+    signOut({
+      callbackUrl: '/auth/signin',
+    });
     router.push('/auth/signin');
   };
 
