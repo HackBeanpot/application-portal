@@ -99,7 +99,7 @@ export const PageLayout: React.FC<PageLayoutProps> = ({ currentPage, children })
         <div className="content">{children}</div>
       </Content>
       <Footer className="footer">
-        If you have additional feedback, please let us know on this
+        If you have additional feedback, please let us know on this{' '}
         <b>
           <a
             rel="noreferrer"

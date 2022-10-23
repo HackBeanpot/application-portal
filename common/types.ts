@@ -20,7 +20,9 @@ export interface User {
 
 export interface ApplicationResponses {
   firstName?: string;
+  preferredName?: string;
   lastName?: string;
+  pronouns?: string;
   gender?: Gender;
   unlistedGender?: string;
   school?: School;
@@ -51,10 +53,10 @@ export interface ApplicationResponses {
   dataScienceInterestLevel?: InterestLevel;
   cybersecurityInterestLevel?: InterestLevel;
   interestedWorkshops?: Array<Workshop>;
+  unlistedWorkshops?: string;
   prevHackathonFeedback?: string;
   hackBeanGoals?: string;
   tedTalkTopic?: string;
-  meetAlienSpeech?: string;
   referrers?: Array<Referrer>;
   unListedReferrer?: string;
   premadeTeam?: string;
@@ -203,12 +205,12 @@ export enum InterestLevel {
 }
 
 export enum Workshop {
-  MeetingOtherHackers = 'Meeting other hackers',
-  WinningPrizes = 'Winning prizes by attending workshops + activities',
-  ProjectIdeationAndTeamFormation = 'Project ideation/team formation',
   Git = 'Intro to Git',
   WebDev = 'Intro to Web Dev (HTML / CSS / JS)',
+  IntermediateWebDev = 'Intermediate Web Dev',
   React = 'Intro to React',
+  Apis = 'Intro to Apis',
+  GameDev = 'Intro to Game Dev',
   HBPPanel = 'HackBeanpot Panel',
   ResumesAndInternships = 'Resumes and Internships',
   Backend = 'Backend Workshop',
@@ -220,7 +222,7 @@ export enum Workshop {
   CareersInTech = 'Careers in Tech',
   DiversityInTech = 'Diversity in Tech',
   TechForSocialGood = 'Tech for Social Good',
-  NoneOrOther = 'None / Other',
+  None = 'None',
 }
 
 export enum Referrer {

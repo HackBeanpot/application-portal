@@ -131,7 +131,9 @@ export function makeSection(text: ReactNode, description?: ReactNode): QuestionS
 export const Sections: Array<QuestionSection | QuestionDefinition> = [
   makeSection(<>Let{"'"}s Get to Know You!</>),
   makeShortText('firstName', 'First name', true, 'First name'),
+  makeShortText('preferredName', 'Preferred name', false, 'Preferred name'),
   makeShortText('lastName', 'Last name', true, 'Last name'),
+  makeShortText('pronouns', 'Pronouns', true, 'Pronouns'),
   makeDropdown(
     'gender',
     'What is your gender?',
@@ -450,12 +452,12 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Which of the following workshops are you excited for?
     </div>,
     [
-      Workshop.MeetingOtherHackers,
-      Workshop.WinningPrizes,
-      Workshop.ProjectIdeationAndTeamFormation,
       Workshop.Git,
       Workshop.WebDev,
+      Workshop.IntermediateWebDev,
       Workshop.React,
+      Workshop.Apis,
+      Workshop.GameDev,
       Workshop.HBPPanel,
       Workshop.ResumesAndInternships,
       Workshop.Backend,
@@ -467,14 +469,19 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Workshop.CareersInTech,
       Workshop.DiversityInTech,
       Workshop.TechForSocialGood,
-      Workshop.NoneOrOther,
+      Workshop.None,
     ],
     true,
-    18
+    17
+  ),
+  makeShortText(
+    'unlistedWorkshops',
+    'Were there any workshops not listed that you’d be interested in?',
+    false
   ),
   makeLongText(
     'prevHackathonFeedback',
-    'If you’ve attended a hackathon (in person or virtual) previously, what did you like or dislike about it?',
+    'If you’ve attended a hackathon (in person or virtual) previously, what did you like or dislike about it? If you’ve never attended a hackathon, what would you like to see at HackBeanpot?',
     false
   ),
   makeLongText(

@@ -74,6 +74,7 @@ export const ApplicationForm = (): ReactElement => {
     const responses = Questions.map((q) => values[q.id] ?? null);
     setIsSubmitting(true);
     const response = await updateApplicantResponses({ fields, responses });
+    console.log(response);
     setIsSubmitting(false);
     if (200 <= response.status && response.status < 300) {
       notification.success({
