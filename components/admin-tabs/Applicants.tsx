@@ -12,6 +12,7 @@ import {
   PostAcceptanceResponses,
   QuestionDefinition,
   QuestionResponse,
+  QuestionResponseField,
   RSVPStatus,
   User,
 } from '../../common/types';
@@ -233,6 +234,32 @@ const serializeResponse = (response: QuestionResponse) => {
   }
   return response ?? '';
 };
+
+// fields = ['email', 'isAdmin', 'applicationStatus', 'rsvpStatus']
+// headersArr = ["email","isAdmin","applicationStatus","rsvpStatus","test","firstName","preferredName","lastName","pronouns","gender","unlistedGender","races","unlistedRace","lgbtqia","identify","identify","school","unlistedSchool","education","yearOfEducation","majors","minors","resumeLink","shirtSize","accomodations","hackathonsAttended","csClassesTaken","mobileAppDevelopmentFamiliarity","webDevelopmentFamiliarity","uiUxFamiliarity","backendFamiliarity","frontendFamiliarity","dataScienceFamiliarity","cybersecurityFamiliarity","mobileAppDevelopmentInterestLevel","webDevelopmentInterestLevel","uiUxInterestLevel","backendInterestLevel","frontendInterestLevel","dataScienceInterestLevel","cybersecurityInterestLevel","interestedWorkshops","unlistedWorkshops","prevHackathonFeedback","hackBeanGoals","tedTalkTopic","referrers","unListedReferrer","premadeTeam","interestedInTeamFormation","questionsToAdd","commentsQuestionsSuggestions","howCanCoreTeamHelp"]
+// responses = {test: null, firstName: 'asdg', preferredName: 'asdg', lastName: 'asdg', pronouns: 'asdg', …}
+const getUserFieldAndResponseCols = (
+  rowHeadersText: (keyof User | QuestionResponseField)[],
+  fields: (keyof User | QuestionResponseField)[],
+  responses: ApplicationResponses | QuestionResponse[] | undefined,
+  user: User & {
+    _id: string;
+  }
+) => {
+  const cols = [];
+  for (let i = 0; i < rowHeadersText.length; i++) {
+    const currHeader = rowHeadersText[i];
+    if (fields.includes(currHeader)) {
+      cols.push(user[currHeader].toString());
+    } else if (Object.keys(responses).includes(currHeader)) {
+      const questionResponse = responses[currHeader];
+      const serializedResponse = serializeResponse(questionResponse);
+      cols.push(serializedResponse);
+    }
+  }
+  return cols;
+};
+
 const downloadFileAbstract = async (
   { totalCount, filters, sorter }: DownloadProps,
   fields: Array<keyof User>,
@@ -244,17 +271,14 @@ const downloadFileAbstract = async (
     current: 1,
     pageSize: totalCount,
   };
+
   const data = await getAllApplicants(pagination, filters, sorter);
-  const rowHeadersText = [...fields, ...questions.map((q) => q.field)].map(escaper).join(separator);
+  const rowHeadersText = [...fields, ...questions.map((q) => q.field)];
   const rowCellsText = data.data.data
     .map((user) => {
-      const userFieldCols = fields.map((f) => user[f]).map(String);
       const responses = responseGetter(user);
-      if (responses) {
-        const responseCols = Object.values(responses).map((q) => serializeResponse(q));
-        return [...userFieldCols, ...responseCols].map(escaper).join(separator);
-      }
-      return userFieldCols.map(escaper).join(separator);
+      const cols = getUserFieldAndResponseCols(rowHeadersText, fields, responses, user);
+      return cols.map(escaper).join(separator);
     })
     .join('\n');
   const fileText = `${rowHeadersText}\n${rowCellsText}`;

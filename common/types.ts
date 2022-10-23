@@ -19,7 +19,6 @@ export interface User {
 }
 
 export interface ApplicationResponses {
-  test?: string;
   firstName?: string;
   preferredName?: string;
   lastName?: string;
