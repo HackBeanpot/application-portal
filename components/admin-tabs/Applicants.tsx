@@ -235,16 +235,12 @@ const serializeResponse = (response: QuestionResponse) => {
   return response ?? '';
 };
 
-// fields = ['email', 'isAdmin', 'applicationStatus', 'rsvpStatus']
-// headersArr = ["email","isAdmin","applicationStatus","rsvpStatus","test","firstName","preferredName","lastName","pronouns","gender","unlistedGender","races","unlistedRace","lgbtqia","identify","identify","school","unlistedSchool","education","yearOfEducation","majors","minors","resumeLink","shirtSize","accomodations","hackathonsAttended","csClassesTaken","mobileAppDevelopmentFamiliarity","webDevelopmentFamiliarity","uiUxFamiliarity","backendFamiliarity","frontendFamiliarity","dataScienceFamiliarity","cybersecurityFamiliarity","mobileAppDevelopmentInterestLevel","webDevelopmentInterestLevel","uiUxInterestLevel","backendInterestLevel","frontendInterestLevel","dataScienceInterestLevel","cybersecurityInterestLevel","interestedWorkshops","unlistedWorkshops","prevHackathonFeedback","hackBeanGoals","tedTalkTopic","referrers","unListedReferrer","premadeTeam","interestedInTeamFormation","questionsToAdd","commentsQuestionsSuggestions","howCanCoreTeamHelp"]
-// responses = {test: null, firstName: 'asdg', preferredName: 'asdg', lastName: 'asdg', pronouns: 'asdg', …}
 const getUserFieldAndResponseCols = (
   rowHeadersText: (keyof User | QuestionResponseField)[],
   fields: (keyof User | QuestionResponseField)[],
-  responses: ApplicationResponses | QuestionResponse[] | undefined,
-  user: User & {
-    _id: string;
-  }
+  // TO FIX IN FUTURE: figure out how to type these not as any
+  responses: any,
+  user: any
 ) => {
   const cols = [];
   for (let i = 0; i < rowHeadersText.length; i++) {
