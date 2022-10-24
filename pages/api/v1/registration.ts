@@ -11,6 +11,7 @@ import { attemptToValidateRegistrationApiRequest } from '../../../server/validat
 import Joi from 'joi';
 import { queryDate } from '../../../server/dates';
 import { isBefore } from 'date-fns';
+import { uploadApplicantResume } from '../../../server/upload/upload';
 
 const registrationHandler: NextApiHandler = async (req, res) => {
   switch (req.method) {
@@ -20,6 +21,8 @@ const registrationHandler: NextApiHandler = async (req, res) => {
     case 'POST':
       await postHandler(req, res);
       break;
+    case 'PATCH':
+      await patchHandler(req, res);
     default:
       return res.status(405).setHeader('Allow', 'GET, POST').send(undefined);
   }
@@ -66,6 +69,15 @@ const postHandler: NextApiHandler = async (req, res) => {
   });
 
   const email = await assumeLoggedInGetEmail(req);
+
+  // resume upload
+  if (userResponses.resumeLink) {
+    const fileAsBase64 = userResponses.resumeLink as string;
+    const fileBuffer = Buffer.from(fileAsBase64, 'base64');
+    const resumeLink = uploadApplicantResume(fileBuffer, `resume-${email}`);
+    userResponses.resumeLink = resumeLink ?? '';
+  }
+
   const { userDataCollection } = await connectToDatabase();
   // upsert = update, or if object doesn't exist, insert
   await userDataCollection.updateOne(
@@ -79,6 +91,52 @@ const postHandler: NextApiHandler = async (req, res) => {
       },
     },
     { upsert: true }
+  );
+  return res.status(200).send(undefined);
+};
+
+const patchHandler: NextApiHandler = async (req, res) => {
+  const [open, closed] = await Promise.all([
+    queryDate(SingletonType.RegistrationOpen),
+    queryDate(SingletonType.RegistrationClosed),
+  ]);
+  const NOW = new Date();
+  if (isBefore(NOW, new Date(open!))) {
+    return res.status(400).json('Registration is not yet open');
+  }
+  if (isBefore(new Date(closed!), NOW)) {
+    return res.status(400).json('Registration is already closed');
+  }
+
+  let result: RegistrationApiRequest;
+  try {
+    result = attemptToValidateRegistrationApiRequest(req.body);
+  } catch (e: unknown) {
+    if (Joi.isError(e)) {
+      return res.status(400).json(e.message);
+    }
+    return res.status(500).json('something broke. please email us immediately.');
+  }
+
+  const userResponses: Record<string, QuestionResponse> = {};
+
+  result.fields.forEach((field, index) => {
+    const response = result.responses[index];
+    userResponses[field] = response;
+  });
+
+  const email = await assumeLoggedInGetEmail(req);
+  const { userDataCollection } = await connectToDatabase();
+
+  await userDataCollection.updateOne(
+    { email },
+    {
+      $set: {
+        applicationResponses: userResponses,
+        email,
+        applicationStatus: ApplicationStatus.Submitted,
+      },
+    }
   );
   return res.status(200).send(undefined);
 };

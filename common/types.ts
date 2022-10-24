@@ -266,8 +266,9 @@ export enum QuestionType {
   ShortText = 'Short Text',
   Dropdown = 'Dropdown',
   LongText = 'Long Text',
+  FileUpload = 'File Upload',
 }
-export type QuestionDefinition = Checkboxes | ShortText | Dropdown | LongText;
+export type QuestionDefinition = Checkboxes | ShortText | Dropdown | LongText | FileUpload;
 export type QuestionSection = {
   id: string;
   type: 'SECTION';
@@ -304,6 +305,13 @@ export interface LongText extends IQuestion {
   type: QuestionType.LongText;
   maxLength: number;
   minLength: number;
+}
+
+export interface FileUpload extends IQuestion {
+  type: QuestionType.FileUpload;
+  accept: string;
+  multiple: boolean;
+  limit: number;
 }
 
 export enum ConfirmByState {
