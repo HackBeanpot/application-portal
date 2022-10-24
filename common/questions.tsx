@@ -3,7 +3,6 @@ This file is a mapping from question id to QuestionResponses in the application
 Serves as a single point of truth for what questions are displayed on application 
 frontend & validated on backend
 */
-
 import React, { ReactNode } from 'react';
 import {
   Checkboxes,
