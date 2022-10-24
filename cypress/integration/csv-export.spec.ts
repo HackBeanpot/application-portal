@@ -15,13 +15,13 @@ describe('downloads csv', () => {
     cy.contains('View / Modify Applicants').click({ force: true });
   });
 
-  // it('export applications', () => {
-  //   const buttonText = 'Export Application Responses';
-  //   cy.contains(buttonText).click({ force: true });
-  //   cy.contains(buttonText).click({ force: true });
-  //   const filename = join(downloadsFolder, 'applications.csv');
-  //   cy.readFile(filename, { timeout: 15000 }).should('have.length.gt', 50);
-  // });
+  it('export applications', () => {
+    const buttonText = 'Export Application Responses';
+    cy.contains(buttonText).click({ force: true });
+    cy.contains(buttonText).click({ force: true });
+    const filename = join(downloadsFolder, 'applications.csv');
+    cy.readFile(filename, { timeout: 15000 }).should('have.length.gt', 50);
+  });
 
   it('export post acceptance', () => {
     const buttonText = 'Export Post-Acceptance Responses';
