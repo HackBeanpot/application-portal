@@ -126,7 +126,6 @@ const Applicants: React.FC = () => {
     getAllApplicantsForSwr
   );
   const [exporting, setExporting] = useState(false);
-
   const onExportClick = (cb: typeof downloadApplicationCsv) => () => {
     if (!data) return;
     setExporting(true);
@@ -247,7 +246,7 @@ const getUserFieldAndResponseCols = (
     const currHeader = rowHeadersText[i];
     if (fields.includes(currHeader)) {
       cols.push(user[currHeader].toString());
-    } else if (Object.keys(responses).includes(currHeader)) {
+    } else if (responses && responses !== null && Object.keys(responses).includes(currHeader)) {
       const questionResponse = responses[currHeader];
       const serializedResponse = serializeResponse(questionResponse);
       cols.push(serializedResponse);

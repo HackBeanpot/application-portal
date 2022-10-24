@@ -18,10 +18,13 @@ export interface User {
   rsvpSubmissionTime?: Date;
 }
 
-export interface ApplicationResponses {
+export interface SharedResponses {
   firstName?: string;
-  preferredName?: string;
   lastName?: string;
+}
+
+export interface ApplicationResponses extends SharedResponses {
+  preferredName?: string;
   pronouns?: string;
   gender?: Gender;
   unlistedGender?: string;
@@ -69,9 +72,7 @@ export interface ApplicationResponses {
   howCanCoreTeamHelp?: string;
 }
 
-export interface PostAcceptanceResponses {
-  firstName?: string;
-  lastName?: string;
+export interface PostAcceptanceResponses extends SharedResponses {
   adult?: string;
   adultSignature?: string;
   minorSignature?: string;
