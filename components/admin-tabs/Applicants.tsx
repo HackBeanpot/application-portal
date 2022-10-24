@@ -126,6 +126,7 @@ const Applicants: React.FC = () => {
     getAllApplicantsForSwr
   );
   const [exporting, setExporting] = useState(false);
+
   const onExportClick = (cb: typeof downloadApplicationCsv) => () => {
     if (!data) return;
     setExporting(true);
