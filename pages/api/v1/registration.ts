@@ -24,7 +24,7 @@ const registrationHandler: NextApiHandler = async (req, res) => {
     case 'PATCH':
       await patchHandler(req, res);
     default:
-      return res.status(405).setHeader('Allow', 'GET, POST').send(undefined);
+      return res.status(405).setHeader('Allow', 'GET, POST, PATCH').send(undefined);
   }
 };
 
@@ -74,7 +74,7 @@ const postHandler: NextApiHandler = async (req, res) => {
   if (userResponses.resumeLink) {
     const fileAsBase64 = userResponses.resumeLink as string;
     const fileBuffer = Buffer.from(fileAsBase64, 'base64');
-    const resumeLink = await uploadApplicantResume(fileBuffer, `resume-${email}`);
+    const resumeLink = uploadApplicantResume(fileBuffer, `resume-${email}`);
     userResponses.resumeLink = resumeLink ?? '';
   }
 

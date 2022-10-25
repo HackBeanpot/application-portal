@@ -45,6 +45,7 @@ const FileUploadQuestion: FC<FileUploadProps> = ({ disabled, question, form }) =
         multiple={question.multiple}
         onChange={handleUpload}
         fileList={fileList}
+        action={'api/noop'} // see pages/api/noop.tsx
       >
         <Button disabled={disabled} icon={<UploadOutlined />}>
           Upload
