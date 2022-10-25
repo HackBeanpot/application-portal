@@ -28,6 +28,7 @@ async function uploadFile(
     .bucket(bucketName)
     .file(destinationFileName)
     .save(content, fileOptions)
+    .then((_) => console.log('uploaded with no errors'))
     .catch((e) => console.error('Error while uploading to google cloud storage:', e));
 }
 
