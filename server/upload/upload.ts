@@ -32,6 +32,7 @@ export function uploadApplicantResume(
 ): string | undefined {
   let bucketName = process.env.GOOGLE_CLOUD_STORAGE_RESUME_BUCKET;
   if (process.env.NODE_ENV !== 'production') {
+    console.log('not in production');
     bucketName = process.env.GOOGLE_CLOUD_STORAGE_RESUME_BUCKET_TEST;
   }
   if (!bucketName) {
