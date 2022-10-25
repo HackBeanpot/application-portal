@@ -21,9 +21,7 @@ async function uploadFile(
       projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
       credentials: {
         client_email: process.env.GOOGLE_CLOUD_EMAIL,
-        private_key: JSON.parse(
-          (process.env.GOOGLE_CLOUD_PRIVATE_KEY as string).replace(/\\n/g, '\n')
-        ),
+        private_key: (process.env.GOOGLE_CLOUD_PRIVATE_KEY as string).replace(/\\n/g, '\n'),
       },
     });
   }
