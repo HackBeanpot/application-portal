@@ -74,7 +74,7 @@ const postHandler: NextApiHandler = async (req, res) => {
   if (userResponses.resumeLink) {
     const fileAsBase64 = userResponses.resumeLink as string;
     const fileBuffer = Buffer.from(fileAsBase64, 'base64');
-    const resumeLink = uploadApplicantResume(fileBuffer, `resume-${email}`);
+    const resumeLink = await uploadApplicantResume(fileBuffer, `resume-${email}`);
     userResponses.resumeLink = resumeLink ?? '';
   }
 
@@ -126,6 +126,15 @@ const patchHandler: NextApiHandler = async (req, res) => {
   });
 
   const email = await assumeLoggedInGetEmail(req);
+
+  // resume upload
+  if (userResponses.resumeLink) {
+    const fileAsBase64 = userResponses.resumeLink as string;
+    const fileBuffer = Buffer.from(fileAsBase64, 'base64');
+    const resumeLink = await uploadApplicantResume(fileBuffer, `resume-${email}`);
+    userResponses.resumeLink = resumeLink ?? '';
+  }
+
   const { userDataCollection } = await connectToDatabase();
 
   await userDataCollection.updateOne(
