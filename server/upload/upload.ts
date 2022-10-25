@@ -15,6 +15,7 @@ async function uploadFile(
   deployed: boolean
 ): Promise<void> {
   let storage = new Storage();
+  console.log('gcloud email:', process.env.GOOGLE_CLOUD_EMAIL?.toString());
   if (deployed) {
     storage = new Storage({
       projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
