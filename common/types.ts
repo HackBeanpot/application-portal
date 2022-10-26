@@ -18,33 +18,61 @@ export interface User {
   rsvpSubmissionTime?: Date;
 }
 
-export interface ApplicationResponses {
-  name?: string;
+export interface SharedResponses {
+  firstName?: string;
+  lastName?: string;
+}
+
+export interface ApplicationResponses extends SharedResponses {
+  preferredName?: string;
+  pronouns?: string;
   gender?: Gender;
   unlistedGender?: string;
-  school?: string;
+  identify?: string;
+  school?: School;
   unlistedSchool?: string;
-  ethnicities?: Array<Ethnicity>;
+  races?: Array<Race>;
+  unlistedRace?: string;
+  lgbtqia?: Lgbtqia;
   education?: Education;
   yearOfEducation?: YearOfEducation;
   majors?: string;
   minors?: string;
   resumeLink?: string;
   shirtSize?: ShirtSize;
-  hackathonsAttended?: string;
+  hackathonsAttended?: NumberOf;
+  csClassesTaken?: NumberOf;
+  mobileAppDevelopmentFamiliarity?: Familiarity;
+  webDevelopmentFamiliarity?: Familiarity;
+  uiUxFamiliarity?: Familiarity;
+  backendFamiliarity?: Familiarity;
+  frontendFamiliarity?: Familiarity;
+  dataScienceFamiliarity?: Familiarity;
+  cybersecurityFamiliarity?: Familiarity;
+  mobileAppDevelopmentInterestLevel?: InterestLevel;
+  webDevelopmentInterestLevel?: InterestLevel;
+  uiUxInterestLevel?: InterestLevel;
+  backendInterestLevel?: InterestLevel;
+  frontendInterestLevel?: InterestLevel;
+  dataScienceInterestLevel?: InterestLevel;
+  cybersecurityInterestLevel?: InterestLevel;
+  interestedWorkshops?: Array<Workshop>;
+  unlistedWorkshops?: string;
   prevHackathonFeedback?: string;
   hackBeanGoals?: string;
   tedTalkTopic?: string;
   meetAlienSpeech?: string;
-  referrers?: Array<string>;
-  interestedWorkshops?: Array<string>;
-  applyingWithTeam?: string;
-  interestedInTeamFormation?: string;
+  referrers?: Array<Referrer>;
+  unListedReferrer?: string;
+  premadeTeam?: string;
+  interestedInTeamFormation?: YesOrNo;
+  accomodations?: string;
+  questionsToAdd?: string;
+  commentsQuestionsSuggestions?: string;
+  howCanCoreTeamHelp?: string;
 }
 
-export interface PostAcceptanceResponses {
-  firstName?: string;
-  lastName?: string;
+export interface PostAcceptanceResponses extends SharedResponses {
   adult?: string;
   adultSignature?: string;
   minorSignature?: string;
@@ -93,31 +121,131 @@ export enum Gender {
   Nonbinary = 'Nonbinary',
   Female = 'Female',
   Male = 'Male',
-  Unspecified = 'Unspecified',
+  Genderqueer = 'Genderqueer',
+  Unlisted = 'Unspecified',
+  PreferNotToSay = 'Prefer not to say',
 }
+
+export enum Lgbtqia {
+  Yes = 'Yes',
+  No = 'No',
+  Unsure = 'Unsure',
+  PreferNotToSay = 'Prefer not to say',
+}
+
+export enum School {
+  NortheasternUniversity = 'Northeastern University',
+  BostonUniversity = 'Boston University',
+  MIT = 'MIT',
+  HarvardUniversity = 'Harvard University',
+  TuftsUniversity = 'Tufts University',
+  UniversityOfMassachusettsAmherst = 'University of Massachusetts Amherst',
+  BostonCollege = 'Boston College',
+  EmersonCollege = 'Emerson College',
+  SuffolkUniversity = 'Suffolk University',
+  BrandeisUniversity = 'Brandeis University',
+  WellesleyCollege = 'Wellesley College',
+  WentworthInstituteOfTechnology = 'Wentworth Institute of Technology',
+  OlinCollegeOfEngineering = 'Olin College of Engineering',
+  BenjaminFranklinInstituteOfTechnology = 'Benjamin Franklin Institute of Technology',
+  SimmonsUniversity = 'Simmons University',
+  BristolCommunityCollege = 'Bristol Community College',
+  WorcesterPolytechnicInstitute = 'Worcester Polytechnic Institute',
+  Other = 'Other',
+}
+
 export enum Education {
   HighSchool = 'High School',
   Undergraduate = 'Undergraduate',
   Graduate = 'Graduate',
-  Doctorate = 'Doctorate',
 }
-type YearOfEducation = '1' | '2' | '3' | '4' | '5' | '5+';
-export enum Ethnicity {
+
+export enum YearOfEducation {
+  first = '1st year',
+  second = '2nd year',
+  third = '3rd year',
+  fourth = '4th year',
+  fifthOrAbove = '5th year +',
+}
+
+export enum Race {
   IndigenousAlaskaNative = 'Indigenous / Alaska Native',
-  Asian = 'Asian',
-  BlackAfricanAmerican = 'Black / African American',
-  HispanicLatino = 'Hispanic / Latino',
-  NativeHawaiianPacificIslander = 'Native Hawaiian / Pacific Islander',
+  Asian = 'Asian (East, Southeast, South)',
+  BlackAfricanAmerican = 'Black or African American',
+  HispanicLatinx = 'Hispanic or Latinx',
+  NativeHawaiianPacificIslander = 'Native Hawaiian or Pacific Islander',
   White = 'White',
-  Other = 'Other',
+  Unlisted = 'Unlisted',
+  PreferNotToSay = 'Prefer not to say',
 }
 export enum ShirtSize {
-  XSmall = 'XSmall',
-  Small = 'Small',
-  Medium = 'Medium',
-  Large = 'Large',
-  XLarge = 'XLarge',
+  XSmall = 'XS',
+  Small = 'S',
+  Medium = 'M',
+  Large = 'L',
+  XLarge = 'XL',
+  XXLarge = '2XL',
 }
+
+export enum NumberOf {
+  Zero = '0',
+  OneToTwo = '1-2',
+  ThreeToFive = '3-5',
+  SixOrAbove = '6',
+}
+
+export enum Familiarity {
+  CompletelyUnfamiliar = 'Completely unfamiliar',
+  VeryBasicKnowledge = 'Very basic knowledge',
+  Proficient = 'Proficient',
+  Expert = 'Expert',
+}
+
+export enum InterestLevel {
+  NotInterested = 'Not Interested',
+  SomewhatInterested = 'Somewhat Interested',
+  VeryInterested = 'Very Interested',
+}
+
+export enum Workshop {
+  Git = 'Intro to Git',
+  WebDev = 'Intro to Web Dev (HTML / CSS / JS)',
+  IntermediateWebDev = 'Intermediate Web Dev',
+  React = 'Intro to React',
+  Apis = 'Intro to APIs',
+  GameDev = 'Intro to Game Dev',
+  HBPPanel = 'HackBeanpot Panel',
+  ResumesAndInternships = 'Resumes and Internships',
+  Backend = 'Backend Workshop',
+  MobileAppDev = 'Intro to Mobile App Dev',
+  MachineLearning = 'Intro to Machine Learning',
+  Docker = 'Intro to Docker',
+  Go = 'Intro to Go',
+  DemoAProject = 'How to Demo a Project for Judging',
+  CareersInTech = 'Careers in Tech',
+  DiversityInTech = 'Diversity in Tech',
+  TechForSocialGood = 'Tech for Social Good',
+  None = 'None',
+}
+
+export enum Referrer {
+  Facebook = 'Facebook',
+  Instagram = 'Instagram',
+  LinkedIn = 'LinkedIn',
+  Twitter = 'Twitter',
+  Medium = 'Medium',
+  EmailOrNewsletter = 'HackBeanpot email / newsletter',
+  WordOfMouth = 'Word of mouth / friends',
+  OutreachEvents = 'HackBeanpot outreach events (MiniHacks, FUNdamentals of HTML / CSS / JS, etc.)',
+  SchoolCommunications = 'School communications / newsletter features',
+  Other = 'Other',
+}
+
+export enum YesOrNo {
+  Yes = 'Yes',
+  No = 'No',
+}
+
 export enum ApplicationStatus {
   Incomplete = 'Incomplete',
   Submitted = 'Submitted',

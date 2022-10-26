@@ -3,19 +3,30 @@ This file is a mapping from question id to QuestionResponses in the application
 Serves as a single point of truth for what questions are displayed on application 
 frontend & validated on backend
 */
-
 import React, { ReactNode } from 'react';
 import {
   Checkboxes,
   Dropdown,
+  Education,
+  Familiarity,
+  Gender,
+  InterestLevel,
+  Lgbtqia,
   FileUpload,
   LongText,
+  NumberOf,
   QuestionDefinition,
   QuestionResponseField,
   QuestionSection,
   QuestionType,
+  Race,
+  Referrer,
+  School,
+  ShirtSize,
   ShortText,
-  User,
+  Workshop,
+  YearOfEducation,
+  YesOrNo,
 } from './types';
 
 let questionCount = 0;
@@ -145,57 +156,81 @@ export function makeSection(text: ReactNode, description?: ReactNode): QuestionS
 // when adding a new question add the question field to the User type in common/types.ts
 export const Sections: Array<QuestionSection | QuestionDefinition> = [
   makeSection(<>Let{"'"}s Get to Know You!</>),
-  makeShortText('name', 'What is your name?', true, 'First Last'),
+  makeShortText('firstName', 'First name', true, 'First name'),
+  makeShortText('preferredName', 'Preferred name', false, 'Preferred name'),
+  makeShortText('lastName', 'Last name', true, 'Last name'),
+  makeShortText('pronouns', 'Pronouns', true, 'Pronouns'),
   makeDropdown(
     'gender',
     'What is your gender?',
-    ['Male', 'Female', 'Non-binary', 'Genderqueer', 'Agender', 'Unlisted', 'Prefer not to say'],
+    [
+      Gender.Male,
+      Gender.Female,
+      Gender.Nonbinary,
+      Gender.Genderqueer,
+      Gender.Unlisted,
+      Gender.PreferNotToSay,
+    ],
     true,
     'Gender'
   ),
-  makeShortText(
-    'unlistedGender',
-    "If your gender isn't listed above or you selected 'Unlisted', list it here!",
-    false
-  ),
+  makeShortText('unlistedGender', "If your gender isn't listed above, list it here!", false),
   makeCheckbox(
-    'ethnicities',
-    'What ethnicities do you identify as?',
+    'races',
+    'What race(s) do you identify as?',
     [
-      'Indigenous American or Alaska Native',
-      'East Asian',
-      'South / Southeast Asian',
-      'Black / African American',
-      'Hispanic / Latinx',
-      'Native Hawaiian or Other Pacific Islander',
-      'White',
-      'Unlisted',
-      'Prefer not to say',
+      Race.IndigenousAlaskaNative,
+      Race.Asian,
+      Race.BlackAfricanAmerican,
+      Race.HispanicLatinx,
+      Race.NativeHawaiianPacificIslander,
+      Race.White,
+      Race.Unlisted,
+      Race.PreferNotToSay,
     ],
     true,
-    9
+    8
+  ),
+  makeShortText('unlistedRace', "If your race(s) aren't listed above, list it here!", false),
+  makeDropdown(
+    'lgbtqia',
+    'Do you identify as part of the LGBTQIA+ community?',
+    [Lgbtqia.Yes, Lgbtqia.No, Lgbtqia.Unsure, Lgbtqia.PreferNotToSay],
+    true,
+    'Do you identify'
+  ),
+  makeShortText(
+    'identify',
+    'If you answered yes in the previous question, how do you identify?',
+    false
+  ),
+  makeShortText(
+    'identify',
+    'If you answered yes to the previous question, how do you identify?',
+    false
   ),
   makeDropdown(
     'school',
     'What school do you attend?',
     [
-      'Northeastern University',
-      'MIT',
-      'Harvard University',
-      'Tufts University',
-      'University of Massachusetts Amherst',
-      'Boston College',
-      'Boston University',
-      'Emerson College',
-      'Suffolk University',
-      'Brandeis University',
-      'Wellesley College',
-      'Wentworth Institute of Technology',
-      'Olin College of Engineering',
-      'Simmons University',
-      'Bristol Community College',
-      'Worcester Polytechnic Institute',
-      'Other',
+      School.NortheasternUniversity,
+      School.BostonUniversity,
+      School.MIT,
+      School.HarvardUniversity,
+      School.TuftsUniversity,
+      School.UniversityOfMassachusettsAmherst,
+      School.BostonCollege,
+      School.EmersonCollege,
+      School.SuffolkUniversity,
+      School.BrandeisUniversity,
+      School.WellesleyCollege,
+      School.WentworthInstituteOfTechnology,
+      School.OlinCollegeOfEngineering,
+      School.BenjaminFranklinInstituteOfTechnology,
+      School.SimmonsUniversity,
+      School.BristolCommunityCollege,
+      School.WorcesterPolytechnicInstitute,
+      School.Other,
     ],
     true,
     'School'
@@ -208,14 +243,20 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
   makeDropdown(
     'education',
     'What level of education are you currently pursuing?',
-    ['High school', 'Undergraduate', 'Graduate'],
+    [Education.HighSchool, Education.Undergraduate, Education.Graduate],
     true,
     'Level'
   ),
   makeDropdown(
     'yearOfEducation',
     'What year in your current education are you?',
-    ['1st year', '2nd year', '3rd year', '4th year', '5th year+'],
+    [
+      YearOfEducation.first,
+      YearOfEducation.second,
+      YearOfEducation.third,
+      YearOfEducation.fourth,
+      YearOfEducation.fifthOrAbove,
+    ],
     true,
     'Year'
   ),
@@ -249,36 +290,249 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       We will be handing out t-shirts and other fun swag at the event. What is your t-shirt size?{' '}
       <i>All sizes are unisex.</i>
     </div>,
-    ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+    [
+      ShirtSize.XSmall,
+      ShirtSize.Small,
+      ShirtSize.Medium,
+      ShirtSize.Large,
+      ShirtSize.XLarge,
+      ShirtSize.XXLarge,
+    ],
     true,
     'Size'
   ),
-  makeSection(<>Interests and Experience</>),
+  makeShortText(
+    'accomodations',
+    <div>
+      <p>
+        Do you require any special accommodations to fully participate in the event? If yes, please
+        list your requested accomodations and the best form of contact so that we can reach out to
+        you.
+      </p>
+      <i>
+        Please fill out this question if you don’t have access to a laptop for the event so we can
+        look for arrangements.
+      </i>
+    </div>,
+    false,
+    'Accomodations'
+  ),
+  makeSection(
+    <>Interests and Experience</>,
+    <p>P.S. All responses are read by hand so please put in effort (:</p>
+  ),
   makeDropdown(
     'hackathonsAttended',
     'How many hackathons have you attended?',
-    ['0', '1-2', '3-5', '6+'],
+    [NumberOf.Zero, NumberOf.OneToTwo, NumberOf.ThreeToFive, NumberOf.SixOrAbove],
     true,
     'Count'
   ),
+  makeDropdown(
+    'csClassesTaken',
+    'How many CS classes have you taken or are currently taking?',
+    [NumberOf.Zero, NumberOf.OneToTwo, NumberOf.ThreeToFive, NumberOf.SixOrAbove],
+    true,
+    'Count'
+  ),
+  makeSection(
+    <></>,
+    <i>
+      For each of the following CS disciplines, please rate your familiarity from (completely
+      unfamiliar, very basic knowledge, proficient, expert)
+    </i>
+  ),
+  makeDropdown(
+    'mobileAppDevelopmentFamiliarity',
+    'Mobile App Development',
+    [
+      Familiarity.CompletelyUnfamiliar,
+      Familiarity.VeryBasicKnowledge,
+      Familiarity.Proficient,
+      Familiarity.Expert,
+    ],
+    true,
+    'Familiarity'
+  ),
+  makeDropdown(
+    'webDevelopmentFamiliarity',
+    'Web Development',
+    [
+      Familiarity.CompletelyUnfamiliar,
+      Familiarity.VeryBasicKnowledge,
+      Familiarity.Proficient,
+      Familiarity.Expert,
+    ],
+    true,
+    'Familiarity'
+  ),
+  makeDropdown(
+    'uiUxFamiliarity',
+    'UI / UX',
+    [
+      Familiarity.CompletelyUnfamiliar,
+      Familiarity.VeryBasicKnowledge,
+      Familiarity.Proficient,
+      Familiarity.Expert,
+    ],
+    true,
+    'Familiarity'
+  ),
+  makeDropdown(
+    'backendFamiliarity',
+    'Backend',
+    [
+      Familiarity.CompletelyUnfamiliar,
+      Familiarity.VeryBasicKnowledge,
+      Familiarity.Proficient,
+      Familiarity.Expert,
+    ],
+    true,
+    'Familiarity'
+  ),
+  makeDropdown(
+    'frontendFamiliarity',
+    'Frontend',
+    [
+      Familiarity.CompletelyUnfamiliar,
+      Familiarity.VeryBasicKnowledge,
+      Familiarity.Proficient,
+      Familiarity.Expert,
+    ],
+    true,
+    'Familiarity'
+  ),
+  makeDropdown(
+    'dataScienceFamiliarity',
+    'Data Science',
+    [
+      Familiarity.CompletelyUnfamiliar,
+      Familiarity.VeryBasicKnowledge,
+      Familiarity.Proficient,
+      Familiarity.Expert,
+    ],
+    true,
+    'Familiarity'
+  ),
+  makeDropdown(
+    'cybersecurityFamiliarity',
+    'Cybersecurity',
+    [
+      Familiarity.CompletelyUnfamiliar,
+      Familiarity.VeryBasicKnowledge,
+      Familiarity.Proficient,
+      Familiarity.Expert,
+    ],
+    true,
+    'Familiarity'
+  ),
+  makeSection(<></>, <i>Which CS disciplines are you interested in learning more about?</i>),
+  makeDropdown(
+    'mobileAppDevelopmentInterestLevel',
+    'Mobile App Development',
+    [InterestLevel.NotInterested, InterestLevel.SomewhatInterested, InterestLevel.VeryInterested],
+    true,
+    'Interest level'
+  ),
+  makeDropdown(
+    'webDevelopmentInterestLevel',
+    'Web Development',
+    [InterestLevel.NotInterested, InterestLevel.SomewhatInterested, InterestLevel.VeryInterested],
+    true,
+    'Interest level'
+  ),
+  makeDropdown(
+    'uiUxInterestLevel',
+    'UI / UX',
+    [InterestLevel.NotInterested, InterestLevel.SomewhatInterested, InterestLevel.VeryInterested],
+    true,
+    'Interest level'
+  ),
+  makeDropdown(
+    'backendInterestLevel',
+    'Backend',
+    [InterestLevel.NotInterested, InterestLevel.SomewhatInterested, InterestLevel.VeryInterested],
+    true,
+    'Interest level'
+  ),
+  makeDropdown(
+    'frontendInterestLevel',
+    'Frontend',
+    [InterestLevel.NotInterested, InterestLevel.SomewhatInterested, InterestLevel.VeryInterested],
+    true,
+    'Interest level'
+  ),
+  makeDropdown(
+    'dataScienceInterestLevel',
+    'Data Science',
+    [InterestLevel.NotInterested, InterestLevel.SomewhatInterested, InterestLevel.VeryInterested],
+    true,
+    'Interest level'
+  ),
+  makeDropdown(
+    'cybersecurityInterestLevel',
+    'Cybersecurity',
+    [InterestLevel.NotInterested, InterestLevel.SomewhatInterested, InterestLevel.VeryInterested],
+    true,
+    'Interest level'
+  ),
+  makeCheckbox(
+    'interestedWorkshops',
+    <div>
+      <p>
+        As part of our desert exploration theme this year, you’ll be sorted into teams of explorers
+        as you venture out into the desert together and compete in exciting competitions for prizes!
+        You will also have mission commanders to guide you through the event as well as a way to get
+        to know the rest of your teammates.
+      </p>
+      Which of the following workshops are you excited for?
+    </div>,
+    [
+      Workshop.Git,
+      Workshop.WebDev,
+      Workshop.IntermediateWebDev,
+      Workshop.React,
+      Workshop.Apis,
+      Workshop.GameDev,
+      Workshop.HBPPanel,
+      Workshop.ResumesAndInternships,
+      Workshop.Backend,
+      Workshop.MobileAppDev,
+      Workshop.MachineLearning,
+      Workshop.Docker,
+      Workshop.Go,
+      Workshop.DemoAProject,
+      Workshop.CareersInTech,
+      Workshop.DiversityInTech,
+      Workshop.TechForSocialGood,
+      Workshop.None,
+    ],
+    true,
+    17
+  ),
+  makeShortText(
+    'unlistedWorkshops',
+    'Were there any workshops not listed that you’d be interested in?',
+    false
+  ),
   makeLongText(
     'prevHackathonFeedback',
-    "If you've previously attended an in-person or virtual hackthon, what did you like or dislike about it?",
+    'If you’ve attended a hackathon (in person or virtual) previously, what did you like or dislike about it? If you’ve never attended a hackathon, what would you like to see at HackBeanpot?',
     false
   ),
   makeLongText(
     'hackBeanGoals',
     <div>
       <p>
-        At HackBeanpot 2022, we aim to create a welcoming environment by focusing on exploration
-        into the “final frontier”, curiosity, and innovation! Space exploration relies on community,
-        spirit, and a drive to help each other thrive (and get back to Earth safely)!{' '}
+        At HackBeanpot 2023, we aim to create a welcoming environment by focusing on exploration
+        into the desert, community, and growth! Desert exploration relies on perseverance, teamwork,
+        innovation and a sense of adventure!
       </p>
       <p>
-        Whether you journey to the stars with a team or alone, what do you hope to get out of
-        HackBeanpot? What do you want to walk away having learned or experienced from this weekend?
+        Whether you journey along the sandy dunes alone or with a team, what do you hope to get out
+        of HackBeanpot? What do you want to walk away having learned or experienced from this
+        weekend?
       </p>
-      <i>P.S. All responses are read by hand, so please put in effort! :D</i>
     </div>,
     true
   ),
@@ -291,52 +545,84 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     </>,
     true
   ),
-  makeLongText(
-    'meetAlienSpeech',
-    'If you were the first human to meet a member of an extra-terrestrial intelligent species, what would you ask them?',
-    true
-  ),
   makeSection(<>Outreach</>),
   makeCheckbox(
     'referrers',
     'We want to know how best to reach talented students like you! How did you hear about HackBeanpot?',
     [
-      'HackBeanpot social media pages',
-      'HackBeanpot outreach events',
-      'HackBeanpot email / newsletter',
-      'School communications',
-      'Other clubs',
-      'Word of mouth',
-    ],
-    true,
-    6
-  ),
-  makeCheckbox(
-    'interestedWorkshops',
-    <div>
-      <p>
-        As part of our space theme this year, you will be embarking on a weekend journey to
-        different planets to collect soil - or gas - samples using your newly acquired tech skills.
-        You will be given the chance to compete with your fellow astronauts in exciting competitions
-        throughout the event to win the Planet Cup! You will also have mission commanders to guide
-        you through the event as well as a way to get to know the rest of your teammates!
-      </p>
-      Which of the following workshops are you excited for?
-    </div>,
-    [
-      'Intro to Git',
-      'Intro to React',
-      'Remote Hosting',
-      'Hackathons for Resumes',
-      'Careers in Tech',
-      'Diversity in Tech',
-      'Tech for Social Good',
-      'Project Ideation / Formation',
-      'Entry Level Jobs in Tech',
-      'None / Other',
+      Referrer.Facebook,
+      Referrer.Instagram,
+      Referrer.LinkedIn,
+      Referrer.Twitter,
+      Referrer.Medium,
+      Referrer.EmailOrNewsletter,
+      Referrer.WordOfMouth,
+      Referrer.OutreachEvents,
+      Referrer.SchoolCommunications,
+      Referrer.Other,
     ],
     true,
     10
+  ),
+  makeShortText(
+    'unListedReferrer',
+    "If you heard about HackBeanpot in a different way that isn't listed above, list it here!",
+    false
+  ),
+  makeSection(
+    <>Team Formation</>,
+    <i>
+      *Note: This question does not get factored into how your application is read! This question is
+      for us to plan ahead for team formation; applicants are accepted on an individual basis, and
+      it is not guaranteed that everyone in a premade team will be accepted.
+    </i>
+  ),
+  makeShortText(
+    'premadeTeam',
+    <p>
+      Do you plan on attending HackBeanpot with a premade team? If yes,
+      <b> please list their names (first and last).</b> Please note, team formations will not be
+      finalized until the day of the event!
+    </p>,
+    true
+  ),
+  makeDropdown(
+    'interestedInTeamFormation',
+    <p>
+      If you don’t have a team or would like to add more members to your team, we will have a
+      <b> project ideation session and team formation activity </b> we’d love for you to attend. In
+      the question below, if you express interest in finding a team at the event we will reach out
+      closer to the event with more details.
+      <br />
+      Would you be interested in creating a team or finding more members for your current team at
+      our team formation event?
+    </p>,
+    [YesOrNo.Yes, YesOrNo.No],
+    true,
+    'Interested'
+  ),
+  makeSection(
+    <>Core Feedback</>,
+    <i>
+      The HackBeanpot Core team is always looking to continue iterating and making this hackathon
+      the best possible experience for everyone! We’d really appreciate it if you took a few minutes
+      to leave some feedback for us :)
+    </i>
+  ),
+  makeLongText(
+    'questionsToAdd',
+    'Are there any questions you think we should have asked in this application?',
+    false
+  ),
+  makeLongText(
+    'commentsQuestionsSuggestions',
+    'Leave us any comments, questions, or suggestions on this application process!',
+    false
+  ),
+  makeLongText(
+    'howCanCoreTeamHelp',
+    'What can the Core team do to help you have the best experience at HackBeanpot 2023?',
+    false
   ),
 ];
 

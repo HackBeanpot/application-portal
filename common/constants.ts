@@ -3,11 +3,11 @@ import {
   Checkboxes,
   Dropdown,
   Education,
-  Ethnicity,
   Gender,
   LongText,
   QuestionDefinition,
   QuestionType,
+  Race,
   RegistrationApiRequest,
   RSVPStatus,
   ShirtSize,
@@ -20,7 +20,7 @@ export const RESPONSE_BY_DATE = new Date('02/01/2022'); // TODO: MAKE SINGLETON 
 
 export const EXAMPLE_GENDER = Gender.Female;
 export const EXAMPLE_EDUCATION = Education.Undergraduate;
-export const EXAMPLE_ETHNICITIES = [Ethnicity.Asian];
+export const EXAMPLE_ETHNICITIES = [Race.Asian];
 export const EXAMPLE_SHIRTSIZE = ShirtSize.Small;
 export const EXAMPLE_APPLICATION_STATUS = ApplicationStatus.Submitted;
 
@@ -39,7 +39,7 @@ export const EXAMPLE_USER: User = {
   rsvpStatus: RSVPStatus.Unconfirmed,
 };
 export const EXAMPLE_RESPONSE: RegistrationApiRequest = {
-  fields: ['name', 'ethnicities'],
+  fields: ['firstName', 'races'],
   responses: ['Judy Su', EXAMPLE_ETHNICITIES],
 };
 export const EXAMPLE_CHECKBOX_1: Checkboxes = {
