@@ -5,14 +5,25 @@ import { Storage, SaveOptions } from '@google-cloud/storage';
  * @param bucketName name of google cloud storage bucket to upload to
  * @param content content to upload
  * @param destinationFileName id for file in google cloud storage
+ * @param deployed true is deployed, false if in local development. For setting google credentials
  */
 async function uploadFile(
   bucketName: string,
   content: Buffer,
   fileOptions: SaveOptions,
-  destinationFileName: string
+  destinationFileName: string,
+  deployed: boolean
 ): Promise<void> {
-  const storage = new Storage();
+  let storage = new Storage();
+  if (deployed) {
+    storage = new Storage({
+      projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
+      credentials: {
+        client_email: process.env.GOOGLE_CLOUD_EMAIL,
+        private_key: (process.env.GOOGLE_CLOUD_PRIVATE_KEY as string).replace(/\\n/g, '\n'),
+      },
+    });
+  }
   await storage
     .bucket(bucketName)
     .file(destinationFileName)
@@ -30,9 +41,10 @@ export function uploadApplicantResume(
   content: Buffer,
   destinationFileName: string
 ): string | undefined {
-  let bucketName = process.env.GOOGLE_CLOUD_STORAGE_RESUME_BUCKET;
-  if (process.env.NODE_ENV !== 'production') {
-    bucketName = process.env.GOOGLE_CLOUD_STORAGE_RESUME_BUCKET_TEST;
+  const deployed = process.env.NODE_ENV === 'production';
+  let bucketName = process.env.GOOGLE_CLOUD_STORAGE_RESUME_BUCKET_TEST;
+  if (deployed) {
+    bucketName = process.env.GOOGLE_CLOUD_STORAGE_RESUME_BUCKET;
   }
   if (!bucketName) {
     console.log('env variable for resume upload to google cloud storage undefined!');
@@ -45,7 +57,7 @@ export function uploadApplicantResume(
       },
       public: true,
     };
-    uploadFile(bucketName, content, fileOptions, destinationFileName);
+    uploadFile(bucketName, content, fileOptions, destinationFileName, deployed);
     return `http://${bucketName}.storage.googleapis.com/${destinationFileName}`;
   }
 }
