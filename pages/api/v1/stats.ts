@@ -32,9 +32,7 @@ const getStats: NextApiHandler = async (
     .aggregate([
       {
         $group: {
-          _id: {
-            $arrayElemAt: ['$responses', 11],
-          },
+          _id: "$applicationResponses.shirtSize",
           count: { $sum: 1 },
         },
       },
@@ -50,44 +48,27 @@ const getStats: NextApiHandler = async (
     };
   });
 
-  const yearData = await userDataCollection
-    .aggregate([
-      {
-        $group: {
-          _id: {
-            $arrayElemAt: ['$responses', 7],
-          },
-          count: { $sum: 1 },
-        },
-      },
-    ])
-    .toArray();
+  const decisionStatusData = await userDataCollection
+    .aggregate([{ $group: { _id: '$decisionStatus', count: { $sum: 1 } } }])
+    .toArray()
 
-  const ABBV_YEAR = [
-    '1st year',
-    '2nd year',
-    '3rd year',
-    '4th year',
-    '5th year+',
-    'Unknown year',
-  ];
-  const orderedYearData = ABBV_YEAR.map((year: string) => {
-    return {
-      _id: `${year}`,
-      count: yearData.find(
-        (e) => e._id === (year === 'Unknown year' ? null : year)
-      )?.count,
-    };
-  });
+  const mappedDecisionStatusData = decisionStatusData.map((ds) => {
+    if (ds._id === null) {
+      return { _id: 'Undecided', count: ds.count }
+    } else {
+      return ds
+    }
+  })
 
+  console.log(mappedDecisionStatusData)
   const resData = convertData(
-    ['status', 'shirt', 'year'],
-    [statusData, orderedShirtData, orderedYearData],
+    ['status', 'shirt', 'decisionStatus'],
+    [statusData, orderedShirtData, mappedDecisionStatusData],
     {}
   );
 
   const total = await userDataCollection.find().toArray();
-  resData['Total'] = total.length;
+  resData['Total applicants'] = total.length;
 
   return res.status(200).json(resData);
 };
