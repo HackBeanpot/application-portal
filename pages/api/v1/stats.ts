@@ -13,10 +13,7 @@ const statsHandler: NextApiHandler = async (req, res) => {
   }
 };
 
-const getStats: NextApiHandler = async (
-  req: NextApiRequest,
-  res: NextApiResponse
-) => {
+const getStats: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   const adminCheck = await isAdmin(req);
   if (!adminCheck) {
     return res.status(401).send({ message: 'User is not an admin' });
@@ -32,7 +29,7 @@ const getStats: NextApiHandler = async (
     .aggregate([
       {
         $group: {
-          _id: "$applicationResponses.shirtSize",
+          _id: '$applicationResponses.shirtSize',
           count: { $sum: 1 },
         },
       },
@@ -43,24 +40,23 @@ const getStats: NextApiHandler = async (
   const orderedShirtData = ABBV_SHIRT_SIZE.map((size: string) => {
     return {
       _id: `T-shirt ${size}`,
-      count: shirtData.find((e) => e._id === (size === 'Unknown' ? null : size))
-        ?.count,
+      count: shirtData.find((e) => e._id === (size === 'Unknown' ? null : size))?.count,
     };
   });
 
   const decisionStatusData = await userDataCollection
     .aggregate([{ $group: { _id: '$decisionStatus', count: { $sum: 1 } } }])
-    .toArray()
+    .toArray();
 
   const mappedDecisionStatusData = decisionStatusData.map((ds) => {
     if (ds._id === null) {
-      return { _id: 'Undecided', count: ds.count }
+      return { _id: 'Undecided', count: ds.count };
     } else {
-      return ds
+      return ds;
     }
-  })
+  });
 
-  console.log(mappedDecisionStatusData)
+  console.log(mappedDecisionStatusData);
   const resData = convertData(
     ['status', 'shirt', 'decisionStatus'],
     [statusData, orderedShirtData, mappedDecisionStatusData],
@@ -73,11 +69,7 @@ const getStats: NextApiHandler = async (
   return res.status(200).json(resData);
 };
 
-const convertData = (
-  cat: string[],
-  collections: Document[][],
-  resData: Record<string, number>
-) => {
+const convertData = (cat: string[], collections: Document[][], resData: Record<string, number>) => {
   cat.forEach((c, ind) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
