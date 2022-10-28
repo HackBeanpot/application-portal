@@ -48,18 +48,15 @@ const getStats: NextApiHandler = async (req: NextApiRequest, res: NextApiRespons
     .aggregate([{ $group: { _id: '$decisionStatus', count: { $sum: 1 } } }])
     .toArray();
 
-  const mappedDecisionStatusData = decisionStatusData.map((ds) => {
+  decisionStatusData.forEach((ds) => {
     if (ds._id === null) {
-      return { _id: 'Undecided', count: ds.count };
-    } else {
-      return ds;
+      ds._id = 'Undecided';
     }
   });
 
-  console.log(mappedDecisionStatusData);
   const resData = convertData(
     ['status', 'shirt', 'decisionStatus'],
-    [statusData, orderedShirtData, mappedDecisionStatusData],
+    [statusData, orderedShirtData, decisionStatusData],
     {}
   );
 
