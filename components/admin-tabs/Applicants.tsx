@@ -5,11 +5,13 @@ import useSWR from 'swr';
 import { Button, Table, TablePaginationConfig, TableProps, Tooltip } from 'antd';
 import {
   ApplicantsApiResponse,
+  ApplicationResponses,
   ApplicationStatus,
   DecisionStatus,
   Dropdown as DropdownQuestionType,
   QuestionDefinition,
   QuestionResponse,
+  QuestionResponseField,
   RSVPStatus,
   User,
 } from '../../common/types';
@@ -28,7 +30,7 @@ const columns = [
     dataIndex: 'applicationResponses.name',
     sorter: true,
     editable: false,
-    render: (_: string, record: SingleRecordType) => record.applicationResponses?.name ?? '',
+    render: (_: string, record: SingleRecordType) => record.applicationResponses?.firstName ?? '',
   },
   {
     title: 'Email',
@@ -178,8 +180,6 @@ const Applicants: React.FC = () => {
     );
   };
 
-  console.log(data);
-
   return (
     <div className={'applicants'}>
       <div className="title-container">
@@ -217,7 +217,7 @@ type DownloadProps = {
   sorter: TableSorter;
 };
 const downloadApplicationCsv = async (props: DownloadProps) =>
-  downloadFileAbstract(props, fields, Questions, (u) => u.responses, 'applications.csv');
+  downloadFileAbstract(props, fields, Questions, (u) => u.applicationResponses, 'applications.csv');
 const downloadPostAcceptanceCsv = async (props: DownloadProps) =>
   downloadFileAbstract(
     props,
@@ -233,28 +233,47 @@ const serializeResponse = (response: QuestionResponse) => {
   }
   return response ?? '';
 };
+
+const getUserFieldAndResponseCols = (
+  rowHeadersText: (keyof User | QuestionResponseField)[],
+  fields: (keyof User | QuestionResponseField)[],
+  // TO FIX IN FUTURE: figure out how to type these not as any
+  responses: any,
+  user: any
+) => {
+  const cols = [];
+  for (let i = 0; i < rowHeadersText.length; i++) {
+    const currHeader = rowHeadersText[i];
+    if (fields.includes(currHeader)) {
+      cols.push(user[currHeader].toString());
+    } else if (responses && responses !== null && Object.keys(responses).includes(currHeader)) {
+      const questionResponse = responses[currHeader];
+      const serializedResponse = serializeResponse(questionResponse);
+      cols.push(serializedResponse);
+    }
+  }
+  return cols;
+};
+
 const downloadFileAbstract = async (
   { totalCount, filters, sorter }: DownloadProps,
   fields: Array<keyof User>,
   questions: QuestionDefinition[],
-  responseGetter: (u: User) => Array<QuestionResponse> | undefined,
+  responseGetter: (u: User) => ApplicationResponses | QuestionResponse[] | undefined,
   fileName: string
 ): Promise<null> => {
   const pagination: TablePaginationConfig = {
     current: 1,
     pageSize: totalCount,
   };
+
   const data = await getAllApplicants(pagination, filters, sorter);
-  const rowHeadersText = [...fields, ...questions.map((q) => q.field)].map(escaper).join(separator);
+  const rowHeadersText = [...fields, ...questions.map((q) => q.field)];
   const rowCellsText = data.data.data
     .map((user) => {
-      const userFieldCols = fields.map((f) => user[f]).map(String);
       const responses = responseGetter(user);
-      if (responses) {
-        const responseCols = questions.map((q, idx) => serializeResponse(responses[idx]));
-        return [...userFieldCols, ...responseCols].map(escaper).join(separator);
-      }
-      return userFieldCols.map(escaper).join(separator);
+      const cols = getUserFieldAndResponseCols(rowHeadersText, fields, responses, user);
+      return cols.map(escaper).join(separator);
     })
     .join('\n');
   const fileText = `${rowHeadersText}\n${rowCellsText}`;
