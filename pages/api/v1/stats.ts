@@ -25,6 +25,14 @@ const getStats: NextApiHandler = async (req: NextApiRequest, res: NextApiRespons
     .aggregate([{ $group: { _id: '$applicationStatus', count: { $sum: 1 } } }])
     .toArray();
 
+  const statuses = ['Incomplete', 'Submitted']
+  const statusDataWithEmpties = statuses.map((status: string) => {
+    return {
+      _id: status,
+      count: statusData.find((e) => e._id === status)?.count ?? 0,
+    }
+  })
+
   const shirtData = await userDataCollection
     .aggregate([
       {
@@ -40,7 +48,7 @@ const getStats: NextApiHandler = async (req: NextApiRequest, res: NextApiRespons
   const orderedShirtData = ABBV_SHIRT_SIZE.map((size: string) => {
     return {
       _id: `T-shirt ${size}`,
-      count: shirtData.find((e) => e._id === (size === 'Unknown' ? null : size))?.count,
+      count: shirtData.find((e) => e._id === (size === 'Unknown' ? null : size))?.count ?? 0,
     };
   });
 
@@ -48,15 +56,17 @@ const getStats: NextApiHandler = async (req: NextApiRequest, res: NextApiRespons
     .aggregate([{ $group: { _id: '$decisionStatus', count: { $sum: 1 } } }])
     .toArray();
 
-  decisionStatusData.forEach((ds) => {
-    if (ds._id === null) {
-      ds._id = 'Undecided';
+  const decisionStatuses = ['Admitted', 'Waitlisted', 'Declined', 'Undecided']
+  const decisionStatusDataWithEmpties = decisionStatuses.map((decisionStatus) => {
+    return {
+      _id: decisionStatus,
+      count: decisionStatusData.find((e) => e._id === (decisionStatus === 'Undecided' ? null : decisionStatus))?.count ?? 0
     }
-  });
+  })
 
   const resData = convertData(
     ['status', 'shirt', 'decisionStatus'],
-    [statusData, orderedShirtData, decisionStatusData],
+    [statusDataWithEmpties, orderedShirtData, decisionStatusDataWithEmpties],
     {}
   );
 
