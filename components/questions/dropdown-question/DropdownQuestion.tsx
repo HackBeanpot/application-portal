@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Dropdown as DropdownType, QuestionResponse } from '../../common/types';
+import { Dropdown as DropdownType, QuestionResponse } from '../../../common/types';
 import { FormInstance, Select, Form } from 'antd';
 
 type DropdownProps = {
@@ -9,7 +9,7 @@ type DropdownProps = {
 };
 const DropdownQuestion: FC<DropdownProps> = ({ question, form, disabled }) => {
   return (
-    <Form.Item
+    <Form.Item data-testid="dropbox-question"
       className="question"
       name={question.id}
       wrapperCol={{ span: 8 }}

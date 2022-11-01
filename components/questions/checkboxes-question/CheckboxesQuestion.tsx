@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Checkboxes, QuestionResponse } from '../../common/types';
+import { Checkboxes, QuestionResponse } from '../../../common/types';
 import { Checkbox, Form, FormInstance, Row } from 'antd';
 
 type CheckboxesProps = {
@@ -15,7 +15,7 @@ const CheckboxesQuestion: FC<CheckboxesProps> = ({
   const options: string[] = [];
   question.options.map((o) => options.push(o.name));
   return (
-    <Form.Item
+    <Form.Item data-testid="checkboxes-question"
       className="question"
       name={question.id}
       label={question.content}
