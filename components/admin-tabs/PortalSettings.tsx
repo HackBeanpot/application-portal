@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ADMIN_TABS } from '../../common/constants';
 import useSWR from 'swr';
 import {
@@ -13,6 +13,7 @@ import {
 } from '../../common/apiClient';
 import { Col, Row, Spin, Switch } from 'antd';
 import PortalSettingsRow from './PortalSettingsRow';
+import { use } from 'chai';
 
 const getShowDecisionData = () => getShowDecision().then((d) => d.data);
 
@@ -29,13 +30,17 @@ const PortalSettings: React.FC = () => {
     '/api/v1/dates/registration-open',
     getRegistrationOpen
   );
-  const { mutate: mutateShowDecision } = useSWR('/api/v1/show-decision', getShowDecisionData);
+  const { data: showDecision } = useSWR('/api/v1/show-decision', getShowDecisionData);
 
   const [myRegistrationOpen, setMyRegistrationOpen] = useState<string | undefined>(undefined);
   const [myRegistrationClosed, setMyRegistrationClosed] = useState<string | undefined>(undefined);
   const [myConfirmBy, setMyConfirmBy] = useState<string | undefined>(undefined);
-  const [myShowDecision, setMyShowDecision] = useState<boolean | undefined>(undefined);
+  const [myShowDecision, setMyShowDecision] = useState<boolean | undefined>(showDecision);
   const loading = !confirmBy || !registrationClosed || !registrationOpen;
+
+  useEffect(() => {
+    setMyShowDecision(showDecision);
+  }, [showDecision]);
 
   return (
     <div>
@@ -82,7 +87,15 @@ const PortalSettings: React.FC = () => {
               onClick={(value) => {
                 setMyShowDecision(value);
                 updateShowDecision(value);
-                mutateShowDecision(value);
+                updateShowDecision(value).then((resp) => {
+                  if (resp.status == 200) {
+                    getShowDecisionData().then((checked) => {
+                      setMyShowDecision(checked);
+                    });
+                  } else {
+                    alert('Connection failed, please try again or contact team@hackbeanpot.com');
+                  }
+                });
               }}
             />
           </div>
