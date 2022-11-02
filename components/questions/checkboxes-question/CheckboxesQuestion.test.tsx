@@ -17,12 +17,11 @@ describe('CheckboxesQuestion component', () => {
     options: ['English', 'Java', 'Typescript', 'Japanese'].map(n),
     required: true,
   };
-  const [exampleForm] = Form.useForm<Record<string, QuestionResponse>>();
 
   it('renders', () => {
     render(<CheckboxesQuestion 
       question={exampleQuestion}
-      form={exampleForm}
+      form={Form.useForm<Record<string, QuestionResponse>>()[0]}
       disabled={false}
     />);
     const confirmedDialogText = screen.getByTestId('checkboxes-question');
