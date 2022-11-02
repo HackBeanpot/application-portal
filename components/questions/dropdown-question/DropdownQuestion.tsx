@@ -9,7 +9,7 @@ type DropdownProps = {
 };
 const DropdownQuestion: FC<DropdownProps> = ({ question, form, disabled }) => {
   return (
-    <Form.Item data-testid="dropbox-question"
+    <Form.Item data-testid="dropdown-question"
       className="question"
       name={question.id}
       wrapperCol={{ span: 8 }}
