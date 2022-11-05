@@ -330,7 +330,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
   ),
   makeDropdown(
     'csClassesTaken',
-    'How many CS classes have you taken or are currently taking?',
+    'How many CS classes have you taken?',
     [NumberOf.Zero, NumberOf.OneToTwo, NumberOf.ThreeToFive, NumberOf.SixOrAbove],
     true,
     'Count'
@@ -482,7 +482,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       <p>
         As part of our desert exploration theme this year, you’ll be sorted into teams of explorers
         as you venture out into the desert together and compete in exciting competitions for prizes!
-        You will also have mission commanders to guide you through the event as well as a way to get
+        You will also have expedition leaders to guide you through the event as well as a way to get
         to know the rest of your teammates.
       </p>
       Which of the following workshops are you excited for?
@@ -581,7 +581,8 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     'premadeTeam',
     <p>
       Do you plan on attending HackBeanpot with a premade team? If yes,
-      <b> please list their names (first and last).</b> Please note, team formations will not be
+      <b> please list their names (first and last).</b> If not, write "N/A".
+      Please note, team formations will not be
       finalized until the day of the event!
     </p>,
     true
