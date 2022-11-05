@@ -11,7 +11,6 @@ import {
   Familiarity,
   Gender,
   InterestLevel,
-  Lgbtqia,
   FileUpload,
   LongText,
   NumberOf,
@@ -27,6 +26,7 @@ import {
   Workshop,
   YearOfEducation,
   YesOrNo,
+  Orientation,
 } from './types';
 
 let questionCount = 0;
@@ -175,6 +175,23 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     'Gender'
   ),
   makeShortText('unlistedGender', "If your gender isn't listed above, list it here!", false),
+  makeDropdown(
+    'gender',
+    'What is your sexual orientation?',
+    [
+      Orientation.Heterosexual,
+      Orientation.Gay,
+      Orientation.Lesbian,
+      Orientation.Bisexual,
+      Orientation.Pansexual,
+      Orientation.Asexual,
+      Orientation.PreferNotToSay,
+      Orientation.NotSure,
+      Orientation.Other,
+    ],
+    true,
+    'Gender'
+  ),
   makeCheckbox(
     'races',
     'What race(s) do you identify as?',
@@ -192,18 +209,6 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     8
   ),
   makeShortText('unlistedRace', "If your race(s) aren't listed above, list it here!", false),
-  makeDropdown(
-    'lgbtqia',
-    'Do you identify as part of the LGBTQIA+ community?',
-    [Lgbtqia.Yes, Lgbtqia.No, Lgbtqia.Unsure, Lgbtqia.PreferNotToSay],
-    true,
-    'Do you identify'
-  ),
-  makeShortText(
-    'identify',
-    'If you answered yes in the previous question, how do you identify?',
-    false
-  ),
   makeShortText(
     'identify',
     'If you answered yes to the previous question, how do you identify?',
