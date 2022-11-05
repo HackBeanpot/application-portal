@@ -6,6 +6,7 @@ import {
   getRegistrationClosed,
   getRegistrationOpen,
   getUser,
+  getShowDecision,
 } from '../common/apiClient';
 import { Alert, Spin } from 'antd';
 import { ConfirmByState, DecisionStatus, RSVPStatus, User } from '../common/types';
@@ -17,11 +18,14 @@ import { ApplicationForm } from '../components/application/ApplicationForm';
 import { PostAcceptanceForm } from '../components/application/PostAcceptanceForm';
 import { useConfirmByState } from '../components/hooks/use-confirm-by-state/useConfirmByState';
 
+const getShowDecisionData = () => getShowDecision().then((d) => d.data);
+
 const Application = (): ReactElement => {
   const { data: user } = useSWR('/api/v1/user', getUser);
   const { data: rOpen } = useSWR('/api/v1/dates/registration-open', getRegistrationOpen);
   const { data: rClosed } = useSWR('/api/v1/dates/registration-closed', getRegistrationClosed);
   const { data: confirmByData } = useSWR('/api/v1/dates/confirm-by', getConfirmBy);
+  const { data: showDecision } = useSWR('/api/v1/show-decision', getShowDecisionData);
 
   if (!user || !rOpen || !rClosed || !confirmByData) {
     return (
@@ -39,7 +43,9 @@ const Application = (): ReactElement => {
   return (
     <PageLayout currentPage={'application'}>
       <div className="application">
-        <FormDecider {...{ registrationOpen, registrationClosed, user: user.data, confirmBy }} />
+        <FormDecider
+          {...{ registrationOpen, registrationClosed, user: user.data, confirmBy, showDecision }}
+        />
       </div>
     </PageLayout>
   );
@@ -50,12 +56,14 @@ type FormDeciderProps = {
   registrationClosed: Date;
   user: User;
   confirmBy: Date;
+  showDecision: boolean | undefined;
 };
 const FormDecider: React.FC<FormDeciderProps> = ({
   registrationOpen,
   registrationClosed,
   user,
   confirmBy,
+  showDecision,
 }) => {
   const registrationState = useRegistrationState({ registrationOpen, registrationClosed });
   const confirmByState = useConfirmByState({ confirmBy });
@@ -68,7 +76,8 @@ const FormDecider: React.FC<FormDeciderProps> = ({
   if (
     confirmByState === ConfirmByState.Before &&
     decisionStatus === DecisionStatus.Admitted &&
-    rsvpStatus === RSVPStatus.Unconfirmed
+    rsvpStatus === RSVPStatus.Unconfirmed &&
+    showDecision
   ) {
     return <PostAcceptanceForm />;
   }
