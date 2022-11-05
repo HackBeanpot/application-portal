@@ -72,8 +72,6 @@ export const ApplicationForm = (): ReactElement => {
 
   useWarnIfUnsavedChanges(isEditing || appStatus === ApplicationStatus.Incomplete);
 
-  console.log(`isEditing ${isEditing}`);
-  console.log(`status ${status?.data.applicationStatus}`);
   const onSubmit = async (values: Record<string, QuestionResponse>) => {
     const fields = Questions.map((q) => q.field) as Array<keyof ApplicationResponses>;
     const responses = Questions.map((q) => values[q.id] ?? null);
