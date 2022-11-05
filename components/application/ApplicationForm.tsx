@@ -37,10 +37,10 @@ export const ApplicationForm = (): ReactElement => {
   const [form] = Form.useForm<Record<string, QuestionResponse>>();
   const [appStatus, setAppStatus] = useState(status?.data?.applicationStatus);
 
+  // observations
   const alreadySubmitted =
     status?.data.applicationStatus === ApplicationStatus.Submitted &&
     (userResponses?.data?.responses.length ?? 0) > 0;
-  // observations
   const submittedFormData: Record<string, QuestionResponse> = {};
   userResponses?.data?.responses?.forEach((response, index) => {
     // get index of question with corresponding field, in case we added a question in the middle of the application
