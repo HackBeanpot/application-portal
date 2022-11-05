@@ -191,7 +191,7 @@ export enum NumberOf {
   Zero = '0',
   OneToTwo = '1-2',
   ThreeToFive = '3-5',
-  SixOrAbove = '6',
+  SixOrAbove = '6+',
 }
 
 export enum Familiarity {
