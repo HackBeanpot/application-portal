@@ -33,11 +33,12 @@ export const ApplicationForm = (): ReactElement => {
   const [disabled, setDisabled] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [form] = Form.useForm<Record<string, QuestionResponse>>();
+  const [alreadySubmitted, setAlreadySubmitted] = useState(
+    status?.data.applicationStatus === ApplicationStatus.Submitted &&
+      (userResponses?.data?.responses.length ?? 0) > 0
+  );
 
   // observations
-  const alreadySubmitted =
-    status?.data.applicationStatus === ApplicationStatus.Submitted &&
-    (userResponses?.data?.responses?.length ?? 0) > 0;
   const submittedFormData: Record<string, QuestionResponse> = {};
   userResponses?.data?.responses?.forEach((response, index) => {
     // get index of question with corresponding field, in case we added a question in the middle of the application
@@ -66,6 +67,7 @@ export const ApplicationForm = (): ReactElement => {
       resetFields();
     }
   }, [alreadySubmitted, isAfterRegistration, isBeforeRegistration, resetFields]);
+
   useWarnIfUnsavedChanges(
     isEditing || status?.data.applicationStatus === ApplicationStatus.Incomplete
   );
@@ -76,17 +78,18 @@ export const ApplicationForm = (): ReactElement => {
     setIsSubmitting(true);
     const response = alreadySubmitted
       ? await updateApplicantResponses({ fields, responses })
-      : await addApplicantResponses({ fields, responses }) ;
+      : await addApplicantResponses({ fields, responses });
     setIsSubmitting(false);
     if (200 <= response.status && response.status < 300) {
+      setAlreadySubmitted(true);
+      setDisabled(true);
+      await fetchUserResponses();
+      window?.scrollTo({ top: 0, behavior: 'smooth' });
       notification.success({
         message: 'Application Successfully Submitted',
         placement: 'bottomRight',
         duration: 5,
       });
-      await fetchUserResponses();
-      window?.scrollTo({ top: 0, behavior: 'smooth' });
-      setDisabled(true);
     } else {
       notification.error({
         message: 'Error Submitting Application',
