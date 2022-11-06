@@ -127,7 +127,7 @@ export enum Gender {
 }
 
 export enum Orientation {
-  Heterosexual = 'Heterosexual',
+  Straight = 'Straight',
   Gay = 'Gay',
   Lesbian = 'Lesbian',
   Bisexual = 'Bisexual',

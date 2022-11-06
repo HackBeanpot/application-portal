@@ -179,7 +179,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     'orientation',
     'What is your sexual orientation?',
     [
-      Orientation.Heterosexual,
+      Orientation.Straight,
       Orientation.Gay,
       Orientation.Lesbian,
       Orientation.Bisexual,
