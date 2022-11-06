@@ -209,11 +209,6 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     8
   ),
   makeShortText('unlistedRace', "If your race(s) aren't listed above, list it here!", false),
-  makeShortText(
-    'identify',
-    'If you answered yes to the previous question, how do you identify?',
-    false
-  ),
   makeDropdown(
     'school',
     'What school do you attend?',
