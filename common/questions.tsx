@@ -158,11 +158,39 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
   makeSection(<>Let{"'"}s Get to Know You!</>),
   makeShortText('firstName', 'First name', true, 'First name'),
   makeShortText('preferredName', 'Preferred name', false, 'Preferred name'),
+
   makeShortText('lastName', 'Last name', true, 'Last name'),
-  makeShortText('pronouns', 'Pronouns', true, 'Pronouns'),
+  makeSection(
+    <>Demographics</>,
+    <p>
+      None of the information in your application will be publicly shared except for your resume (if
+      you opt in to share that with us). Your application will only be used to track our diversity,
+      equity and inclusion efforts.
+    </p>
+  ),
+  makeShortText(
+    'pronouns',
+    <div>
+      <p>
+        <br />
+        Pronouns
+        <br />
+        <i>Your pronouns will not be shared publicly or to companies.</i>
+      </p>
+    </div>,
+    true,
+    'Pronouns'
+  ),
   makeDropdown(
     'gender',
-    'What is your gender?',
+    <div>
+      <p>
+        <br />
+        What is your gender?
+        <br />
+        <i>Your gender identity will not be shared publicly or to companies.</i>
+      </p>
+    </div>,
     [
       Gender.Male,
       Gender.Female,
@@ -581,9 +609,8 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     'premadeTeam',
     <p>
       Do you plan on attending HackBeanpot with a premade team? If yes,
-      <b> please list their names (first and last).</b> If not, write "N/A".
-      Please note, team formations will not be
-      finalized until the day of the event!
+      <b> please list their names (first and last).</b> If not, write "N/A". Please note, team
+      formations will not be finalized until the day of the event!
     </p>,
     true
   ),
