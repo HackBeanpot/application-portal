@@ -29,7 +29,7 @@ const authHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       EmailProvider({
         server: {
           host: process.env.EMAIL_SERVER_HOST,
-          port: process.env.EMAIL_SERVER_PORT ? parseInt(process.env.EMAIL_SERVER_PORT) : 0,
+          port: process.env.EMAIL_SERVER_PORT ? parseInt(process.env.EMAIL_SERVER_PORT) : 0, //need to throw error in the future
           auth: {
             user: process.env.EMAIL_SERVER_USER,
             pass: process.env.EMAIL_SERVER_PASSWORD,
@@ -151,7 +151,7 @@ function html({ url, host, email }: Record<'url' | 'host' | 'email', string>) {
           </tr>
           <tr>
           <td align="center" style="padding: 10px 0px 0px 0px; font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: ${textColor};">
-          if the above link doesn't work for you, copy and paste this into your browser: ${url}
+          If the above link doesn't work for you, copy and paste this into your browser: ${url}
           </td>
           </tr>
         </table>

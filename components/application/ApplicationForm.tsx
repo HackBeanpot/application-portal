@@ -100,6 +100,17 @@ export const ApplicationForm = (): ReactElement => {
   return (
     <>
       <h1 className="app-header">Application Page</h1>
+      <div>
+        <ul>
+          <li>The application takes around 15-20 mins to complete.</li>
+          <li>It is advised to complete it in one sitting because you can not save changes.</li>
+          <li>
+            After submitting, you can re-submit your application as many times as you want before
+            the deadline.
+          </li>
+          <li>If you have questions please reach out to team@hackbeanpot.com.</li>
+        </ul>
+      </div>
       {registrationCloseDate && registrationOpenDate && alreadySubmitted && (
         <Alert
           className="alert"
@@ -136,17 +147,6 @@ export const ApplicationForm = (): ReactElement => {
           showIcon
         />
       )}
-      <div>
-        <ul>
-          <li>The application takes around 15-20 mins to complete.</li>
-          <li>It is advised to complete it in one sitting because you can not save changes.</li>
-          <li>
-            After submitting, you can re-submit your application as many times as you want before
-            the deadline.
-          </li>
-          <li>If you have questions please reach out to team@hackbeanpot.com.</li>
-        </ul>
-      </div>
       <Form
         initialValues={submittedFormData}
         form={form}
