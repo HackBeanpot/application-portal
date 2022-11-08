@@ -177,7 +177,14 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
   makeShortText('unlistedGender', "If your gender isn't listed above, list it here!", false),
   makeDropdown(
     'orientation',
-    'What is your sexual orientation?',
+    <div>
+      <p>
+        <br />
+        What is your sexual orientation?
+        <br />
+        <i>Your sexual orientation will not be shared publicly or to companies.</i>
+      </p>
+    </div>,
     [
       Orientation.Straight,
       Orientation.Gay,
@@ -190,7 +197,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Orientation.Other,
     ],
     true,
-    'orientation'
+    'Orientation'
   ),
   makeCheckbox(
     'races',
