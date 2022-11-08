@@ -11,7 +11,6 @@ import {
   Familiarity,
   Gender,
   InterestLevel,
-  Lgbtqia,
   FileUpload,
   LongText,
   NumberOf,
@@ -27,6 +26,7 @@ import {
   Workshop,
   YearOfEducation,
   YesOrNo,
+  Orientation,
 } from './types';
 
 let questionCount = 0;
@@ -158,11 +158,39 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
   makeSection(<>Let{"'"}s Get to Know You!</>),
   makeShortText('firstName', 'First name', true, 'First name'),
   makeShortText('preferredName', 'Preferred name', false, 'Preferred name'),
+
   makeShortText('lastName', 'Last name', true, 'Last name'),
-  makeShortText('pronouns', 'Pronouns', true, 'Pronouns'),
+  makeSection(
+    <>Demographics</>,
+    <p>
+      None of the information in your application will be publicly shared except for your resume (if
+      you opt in to share that with us). Your application will only be used to track our diversity,
+      equity and inclusion efforts.
+    </p>
+  ),
+  makeShortText(
+    'pronouns',
+    <div>
+      <p>
+        <br />
+        Pronouns
+        <br />
+        <i>Your pronouns will not be shared publicly or to companies.</i>
+      </p>
+    </div>,
+    true,
+    'Pronouns'
+  ),
   makeDropdown(
     'gender',
-    'What is your gender?',
+    <div>
+      <p>
+        <br />
+        What is your gender?
+        <br />
+        <i>Your gender identity will not be shared publicly or to companies.</i>
+      </p>
+    </div>,
     [
       Gender.Male,
       Gender.Female,
@@ -175,6 +203,30 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     'Gender'
   ),
   makeShortText('unlistedGender', "If your gender isn't listed above, list it here!", false),
+  makeDropdown(
+    'orientation',
+    <div>
+      <p>
+        <br />
+        What is your sexual orientation?
+        <br />
+        <i>Your sexual orientation will not be shared publicly or to companies.</i>
+      </p>
+    </div>,
+    [
+      Orientation.Straight,
+      Orientation.Gay,
+      Orientation.Lesbian,
+      Orientation.Bisexual,
+      Orientation.Pansexual,
+      Orientation.Asexual,
+      Orientation.PreferNotToSay,
+      Orientation.NotSure,
+      Orientation.Other,
+    ],
+    true,
+    'Orientation'
+  ),
   makeCheckbox(
     'races',
     'What race(s) do you identify as?',
@@ -192,23 +244,6 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     8
   ),
   makeShortText('unlistedRace', "If your race(s) aren't listed above, list it here!", false),
-  makeDropdown(
-    'lgbtqia',
-    'Do you identify as part of the LGBTQIA+ community?',
-    [Lgbtqia.Yes, Lgbtqia.No, Lgbtqia.Unsure, Lgbtqia.PreferNotToSay],
-    true,
-    'Do you identify'
-  ),
-  makeShortText(
-    'identify',
-    'If you answered yes in the previous question, how do you identify?',
-    false
-  ),
-  makeShortText(
-    'identify',
-    'If you answered yes to the previous question, how do you identify?',
-    false
-  ),
   makeDropdown(
     'school',
     'What school do you attend?',
@@ -330,7 +365,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
   ),
   makeDropdown(
     'csClassesTaken',
-    'How many CS classes have you taken or are currently taking?',
+    'How many CS classes have you taken?',
     [NumberOf.Zero, NumberOf.OneToTwo, NumberOf.ThreeToFive, NumberOf.SixOrAbove],
     true,
     'Count'
@@ -482,7 +517,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       <p>
         As part of our desert exploration theme this year, you’ll be sorted into teams of explorers
         as you venture out into the desert together and compete in exciting competitions for prizes!
-        You will also have mission commanders to guide you through the event as well as a way to get
+        You will also have expedition leaders to guide you through the event as well as a way to get
         to know the rest of your teammates.
       </p>
       Which of the following workshops are you excited for?
@@ -581,8 +616,8 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     'premadeTeam',
     <p>
       Do you plan on attending HackBeanpot with a premade team? If yes,
-      <b> please list their names (first and last).</b> Please note, team formations will not be
-      finalized until the day of the event!
+      <b> please list their names (first and last).</b> If not, write "N/A". Please note, team
+      formations will not be finalized until the day of the event!
     </p>,
     true
   ),

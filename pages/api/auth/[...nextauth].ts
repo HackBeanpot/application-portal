@@ -29,9 +29,7 @@ const authHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       EmailProvider({
         server: {
           host: process.env.EMAIL_SERVER_HOST,
-          port: process.env.EMAIL_SERVER_PORT
-            ? parseInt(process.env.EMAIL_SERVER_PORT)
-            : 0,
+          port: process.env.EMAIL_SERVER_PORT ? parseInt(process.env.EMAIL_SERVER_PORT) : 0, //need to throw error in the future
           auth: {
             user: process.env.EMAIL_SERVER_USER,
             pass: process.env.EMAIL_SERVER_PASSWORD,
@@ -65,9 +63,7 @@ const authHandler = async (req: NextApiRequest, res: NextApiResponse) => {
           });
 
           // Create DB entry if user does not exist and email is valid
-          const re = new RegExp(
-            '[a-zA-Z0-9_\\.\\+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-\\.]+'
-          );
+          const re = new RegExp('[a-zA-Z0-9_\\.\\+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-\\.]+');
           if (!existingUser && re.test(userEmail)) {
             // all users with @hackbeanpot.com are made admins by default
             const [, domain] = userEmail.split('@');
@@ -152,6 +148,11 @@ function html({ url, host, email }: Record<'url' | 'host' | 'email', string>) {
         <table border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td align="center" style="border-radius: 5px;" bgcolor="${buttonBackgroundColor}"><a href="${url}" target="_blank" style="font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: ${buttonTextColor}; text-decoration: none; border-radius: 5px; padding: 10px 20px; border: 1px solid ${buttonBorderColor}; display: inline-block; font-weight: bold;">Sign in</a></td>
+          </tr>
+          <tr>
+          <td align="center" style="padding: 10px 0px 0px 0px; font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: ${textColor};">
+          If the above link doesn't work for you, copy and paste this into your browser: ${url}
+          </td>
           </tr>
         </table>
       </td>

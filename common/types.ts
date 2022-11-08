@@ -28,12 +28,12 @@ export interface ApplicationResponses extends SharedResponses {
   pronouns?: string;
   gender?: Gender;
   unlistedGender?: string;
+  orientation?: Orientation;
   identify?: string;
   school?: School;
   unlistedSchool?: string;
   races?: Array<Race>;
   unlistedRace?: string;
-  lgbtqia?: Lgbtqia;
   education?: Education;
   yearOfEducation?: YearOfEducation;
   majors?: string;
@@ -126,11 +126,16 @@ export enum Gender {
   PreferNotToSay = 'Prefer not to say',
 }
 
-export enum Lgbtqia {
-  Yes = 'Yes',
-  No = 'No',
-  Unsure = 'Unsure',
+export enum Orientation {
+  Straight = 'Straight',
+  Gay = 'Gay',
+  Lesbian = 'Lesbian',
+  Bisexual = 'Bisexual',
+  Pansexual = 'Pansexual',
+  Asexual = 'Asexual',
   PreferNotToSay = 'Prefer not to say',
+  NotSure = 'Not sure',
+  Other = 'Other',
 }
 
 export enum School {
@@ -191,7 +196,7 @@ export enum NumberOf {
   Zero = '0',
   OneToTwo = '1-2',
   ThreeToFive = '3-5',
-  SixOrAbove = '6',
+  SixOrAbove = '6+',
 }
 
 export enum Familiarity {
