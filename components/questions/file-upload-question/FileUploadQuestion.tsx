@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { FileUpload, QuestionResponse } from '../../common/types';
+import { FileUpload, QuestionResponse } from '../../../common/types';
 import { Button, Form, FormInstance, Upload } from 'antd';
 import type { UploadProps } from 'antd';
 import type { UploadFile } from 'antd/es/upload/interface';
@@ -34,12 +34,14 @@ const FileUploadQuestion: FC<FileUploadProps> = ({ disabled, question, form }) =
 
   return (
     <Form.Item
+      data-testid="fileUpload-question"
       className="question"
       name={question.id}
       label={<div>{question.content}</div>}
       rules={[{ required: question.required, message: 'This question is required' }]}
     >
       <Upload
+        data-testid="upload"
         accept={question.accept}
         listType="picture"
         multiple={question.multiple}
@@ -47,7 +49,7 @@ const FileUploadQuestion: FC<FileUploadProps> = ({ disabled, question, form }) =
         fileList={fileList}
         action={'api/noop'} // see pages/api/noop.tsx
       >
-        <Button disabled={disabled} icon={<UploadOutlined />}>
+        <Button data-testid="button" disabled={disabled} icon={<UploadOutlined />}>
           Upload
         </Button>
       </Upload>

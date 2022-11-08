@@ -1,9 +1,9 @@
 import { QuestionDefinition, QuestionType } from '../../common/types';
-import ShortTextQuestion from '../questions/ShortTextQuestion';
-import LongTextQuestion from '../questions/LongTextQuestion';
+import ShortTextQuestion from '../questions/short-test-question/ShortTextQuestion';
+import LongTextQuestion from '../questions/long-text-question/LongTextQuestion';
 import DropdownQuestion from '../questions/DropdownQuestion';
 import CheckboxesQuestion from '../questions/CheckboxesQuestion';
-import FileUploadQuestion from '../questions/FileUploadQuestion';
+import FileUploadQuestion from '../questions/file-upload-question/FileUploadQuestion';
 import { assertUnreachable } from '../../common/utils/utils';
 import React from 'react';
 import { FormInstance } from 'antd';
