@@ -68,6 +68,9 @@ export const ApplicationForm = (): ReactElement => {
       setDisabled(true);
       resetFields();
     }
+    getStatusData().then((status) => {
+      setAppStatus(status?.applicationStatus);
+    });
   }, [alreadySubmitted, isAfterRegistration, isBeforeRegistration, resetFields]);
 
   useWarnIfUnsavedChanges(isEditing || appStatus === ApplicationStatus.Incomplete);
