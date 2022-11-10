@@ -5,6 +5,8 @@ import Stats from '../components/admin-tabs/Stats';
 import { PageLayout } from '../components/Layout';
 import { Tabs } from 'antd';
 import { ADMIN_TABS } from '../common/constants';
+import { GetServerSideProps } from 'next';
+import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect';
 
 const Admin = (): ReactElement => {
   return (
@@ -25,5 +27,7 @@ const Admin = (): ReactElement => {
     </PageLayout>
   );
 };
+
+export const getServerSideProps: GetServerSideProps = getServerSideSessionOrRedirect;
 
 export default Admin;

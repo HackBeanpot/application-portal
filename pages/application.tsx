@@ -17,6 +17,8 @@ import {
 import { ApplicationForm } from '../components/application/ApplicationForm';
 import { PostAcceptanceForm } from '../components/application/PostAcceptanceForm';
 import { useConfirmByState } from '../components/hooks/use-confirm-by-state/useConfirmByState';
+import { GetServerSideProps } from 'next';
+import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect';
 
 const Application = (): ReactElement => {
   const { data: user } = useSWR('/api/v1/user', getUser);
@@ -99,5 +101,7 @@ const FormDecider: React.FC<FormDeciderProps> = ({
     </>
   );
 };
+
+export const getServerSideProps: GetServerSideProps = getServerSideSessionOrRedirect;
 
 export default Application;
