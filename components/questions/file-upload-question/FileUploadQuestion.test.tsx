@@ -18,7 +18,7 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
-describe('ShortTextQuestion component', () => {
+describe('FileUploadQuestion component', () => {
   const questionText = 'Upload File Please';
   const fileUploadExample: FileUpload = {
     type: QuestionType.FileUpload,
