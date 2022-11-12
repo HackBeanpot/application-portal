@@ -223,7 +223,7 @@ const downloadPostAcceptanceCsv = async (props: DownloadProps) =>
     props,
     fields,
     PostAcceptanceFormQuestions,
-    (u) => Object.values(u.postAcceptanceResponses ?? {}),
+    (u) => u.postAcceptanceResponses,
     'post-acceptance.csv'
   );
 
