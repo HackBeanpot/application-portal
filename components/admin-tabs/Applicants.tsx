@@ -250,6 +250,8 @@ const getUserFieldAndResponseCols = (
       const questionResponse = responses[currHeader];
       const serializedResponse = serializeResponse(questionResponse);
       cols.push(serializedResponse);
+    } else {
+      cols.push('');
     }
   }
   return cols;
@@ -273,6 +275,7 @@ const downloadFileAbstract = async (
     .map((user) => {
       const responses = responseGetter(user);
       const cols = getUserFieldAndResponseCols(rowHeadersText, fields, responses, user);
+      console.log(cols);
       return cols.map(escaper).join(separator);
     })
     .join('\n');
