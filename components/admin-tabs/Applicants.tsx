@@ -275,7 +275,6 @@ const downloadFileAbstract = async (
     .map((user) => {
       const responses = responseGetter(user);
       const cols = getUserFieldAndResponseCols(rowHeadersText, fields, responses, user);
-      console.log(cols);
       return cols.map(escaper).join(separator);
     })
     .join('\n');
