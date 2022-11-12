@@ -125,7 +125,8 @@ export function makeFileUpload(
   required: boolean,
   accept: string,
   multiple: boolean,
-  limit: number
+  limit: number,
+  submittedText: string
 ): FileUpload {
   questionCount++;
   return {
@@ -137,6 +138,7 @@ export function makeFileUpload(
     accept: accept,
     multiple: multiple,
     limit: limit,
+    submittedText: submittedText,
   };
 }
 
@@ -317,7 +319,8 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     false,
     '.pdf',
     false,
-    1
+    1,
+    "You've already submitted a resume, but feel free to upload another one! (This will replace the old resume you've submitted.)"
   ),
   makeDropdown(
     'shirtSize',
