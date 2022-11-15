@@ -161,7 +161,7 @@ export const ApplicationForm = (): ReactElement => {
         initialValues={submittedFormData}
         form={form}
         onFinish={onSubmit}
-        scrollToFirstError={{ behavior: 'smooth' }}
+        scrollToFirstError={{ behavior: 'smooth', inline: 'center', block: 'center' }}
         layout="vertical"
       >
         <FormSectionsAndQuestions
