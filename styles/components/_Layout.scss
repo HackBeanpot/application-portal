@@ -20,7 +20,7 @@ body {
 
 .layout {
   $scaled-width: calc(100vw / #{$scale});
-  height: 100vh;
+  min-height: max-content;
 
   .hamburger-open {
     height: 100%;

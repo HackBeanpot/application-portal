@@ -40,7 +40,7 @@ const FileUploadQuestion: FC<FileUploadProps> = ({ disabled, question, form, sub
       name={question.id}
       label={<div>{question.content}</div>}
       rules={[{ required: question.required, message: 'This question is required' }]}
-      extra={submitted ? question.submittedText : ''}
+      extra={submitted ? <div className="file-upload-label">{question.submittedText}</div> : ''}
     >
       <Upload
         data-testid="upload"

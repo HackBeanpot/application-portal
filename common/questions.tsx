@@ -132,13 +132,13 @@ export function makeFileUpload(
   return {
     field,
     type: QuestionType.FileUpload,
-    content: content,
+    content,
     id: String(questionCount),
-    required: required,
-    accept: accept,
-    multiple: multiple,
-    limit: limit,
-    submittedText: submittedText,
+    required,
+    accept,
+    multiple,
+    limit,
+    submittedText,
   };
 }
 
