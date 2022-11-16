@@ -223,7 +223,7 @@ const downloadPostAcceptanceCsv = async (props: DownloadProps) =>
     props,
     fields,
     PostAcceptanceFormQuestions,
-    (u) => Object.values(u.postAcceptanceResponses ?? {}),
+    (u) => u.postAcceptanceResponses,
     'post-acceptance.csv'
   );
 
@@ -250,6 +250,8 @@ const getUserFieldAndResponseCols = (
       const questionResponse = responses[currHeader];
       const serializedResponse = serializeResponse(questionResponse);
       cols.push(serializedResponse);
+    } else {
+      cols.push('');
     }
   }
   return cols;
