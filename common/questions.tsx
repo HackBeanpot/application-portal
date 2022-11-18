@@ -26,7 +26,7 @@ import {
   Workshop,
   YearOfEducation,
   YesOrNo,
-  Orientation,
+  Lgbtq,
 } from './types';
 
 let questionCount = 0;
@@ -142,6 +142,10 @@ export function makeFileUpload(
 
 let sectionCount = 0;
 
+const characterRecommendationMessage = (
+  <i> Though there is no minimum, the recommended character amount is 750-1000.</i>
+);
+
 export function makeSection(text: ReactNode, description?: ReactNode): QuestionSection {
   sectionCount++;
   return {
@@ -204,28 +208,18 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
   ),
   makeShortText('unlistedGender', "If your gender isn't listed above, list it here!", false),
   makeDropdown(
-    'orientation',
+    'lgbtq',
     <div>
       <p>
         <br />
-        What is your sexual orientation?
+        Do you identify as LGBTQ+?
         <br />
-        <i>Your sexual orientation will not be shared publicly or to companies.</i>
+        <i>Your orientation will not be shared publicly or to companies.</i>
       </p>
     </div>,
-    [
-      Orientation.Straight,
-      Orientation.Gay,
-      Orientation.Lesbian,
-      Orientation.Bisexual,
-      Orientation.Pansexual,
-      Orientation.Asexual,
-      Orientation.PreferNotToSay,
-      Orientation.NotSure,
-      Orientation.Other,
-    ],
+    [Lgbtq.Yes, Lgbtq.No, Lgbtq.PreferNotToSay],
     true,
-    'Orientation'
+    'Identify'
   ),
   makeCheckbox(
     'races',
@@ -243,6 +237,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     true,
     8
   ),
+
   makeShortText('unlistedRace', "If your race(s) aren't listed above, list it here!", false),
   makeDropdown(
     'school',
@@ -568,16 +563,20 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
         of HackBeanpot? What do you want to walk away having learned or experienced from this
         weekend?
       </p>
+      {characterRecommendationMessage}
     </div>,
     true
   ),
   makeLongText(
     'tedTalkTopic',
-    <>
-      We want to get to know you and your interests better! If you had to give a thirty minute TED
-      talk on any subject, what would it be and why? This could be about chicken raising, fantasy
-      football, the Fermi paradox, or anything you would ramble about to friends at 2 am!
-    </>,
+    <div>
+      <p>
+        We want to get to know you and your interests better! If you had to give a thirty minute TED
+        talk on any subject, what would it be and why? This could be about chicken raising, fantasy
+        football, the Fermi paradox, or anything you would ramble about to friends at 2 am!
+      </p>
+      {characterRecommendationMessage}
+    </div>,
     true
   ),
   makeSection(<>Outreach</>),
@@ -616,8 +615,8 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     'premadeTeam',
     <p>
       Do you plan on attending HackBeanpot with a premade team? If yes,
-      <b> please list their names (first and last).</b> If not, write "N/A". Please note, team
-      formations will not be finalized until the day of the event!
+      <b> please list their names (first and last).</b> If not, write &quot;N/A&quot;. Please note,
+      team formations will not be finalized until the day of the event!
     </p>,
     true
   ),
