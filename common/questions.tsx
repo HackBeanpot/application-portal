@@ -615,8 +615,8 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     'premadeTeam',
     <p>
       Do you plan on attending HackBeanpot with a premade team? If yes,
-      <b> please list their names (first and last).</b> If not, write "N/A". Please note, team
-      formations will not be finalized until the day of the event!
+      <b> please list their names (first and last).</b> If not, write &quot;N/A&quot;. Please note,
+      team formations will not be finalized until the day of the event!
     </p>,
     true
   ),
