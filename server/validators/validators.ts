@@ -52,12 +52,22 @@ export const convertDropdownToJoiSchema = (q: Dropdown): Joi.Schema => {
 };
 export const convertLongTextToJoiSchema = (q: LongText): Joi.Schema => {
   // expects a long text response
-  const answerSchema = Joi.string().min(q.minLength).max(q.maxLength);
+  let answerSchema;
+  if (q.required) {
+    answerSchema = Joi.string().trim().min(10).max(q.maxLength).label(`${q.field}`);
+  } else {
+    answerSchema = Joi.string().trim().min(q.minLength).max(q.maxLength);
+  }
   return makeRequiredIfNeeded(q, answerSchema);
 };
 export const convertShortTextToJoiSchema = (q: ShortText): Joi.Schema => {
   // expects a long text response
-  const answerSchema = Joi.string().min(q.minLength).max(q.maxLength);
+  let answerSchema;
+  if (q.required) {
+    answerSchema = Joi.string().trim().min(1).max(q.maxLength).label(`${q.field}`);
+  } else {
+    answerSchema = Joi.string().trim().min(q.minLength).max(q.maxLength);
+  }
   return makeRequiredIfNeeded(q, answerSchema);
 };
 
