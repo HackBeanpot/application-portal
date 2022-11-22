@@ -29,6 +29,7 @@ describe('FileUploadQuestion component', () => {
     content: questionText,
     id: '1',
     required: true,
+    submittedText: 'abcd',
   };
 
   const mock = jest.fn;
@@ -36,7 +37,12 @@ describe('FileUploadQuestion component', () => {
   const FileUploadQuestionWrapper = () => {
     const form = Form.useForm<Record<string, QuestionResponse>>()[0];
     return (
-      <FileUploadQuestion question={fileUploadExample} form={form} disabled={false}>
+      <FileUploadQuestion
+        question={fileUploadExample}
+        form={form}
+        disabled={false}
+        submitted={false}
+      >
         <Upload onChange={mock} />
       </FileUploadQuestion>
     );

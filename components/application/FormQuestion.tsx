@@ -29,13 +29,20 @@ type FormQuestionProps = {
   q: QuestionDefinition;
   form: FormInstance;
   disabled: boolean;
+  submittedResume: boolean;
 };
 
-export const FormQuestion: React.FC<FormQuestionProps> = ({ q, form, disabled }) => {
+export const FormQuestion: React.FC<FormQuestionProps> = ({
+  q,
+  form,
+  disabled,
+  submittedResume,
+}) => {
   const QuestionComponent = getQuestionComponentFromType(q.type);
   return React.createElement(QuestionComponent as any, {
     question: q,
     form,
     disabled,
+    submitted: submittedResume,
   });
 };

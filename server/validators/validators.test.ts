@@ -40,7 +40,7 @@ const lt = (d?: Partial<LongText>): LongText => {
     type: QuestionType.LongText,
     id: '1',
     content: 'Tell me something about yourself, in 10-50 characters.',
-    minLength: 10,
+    minLength: 1,
     maxLength: 50,
     required: true,
   };
@@ -114,12 +114,12 @@ describe('registration endpoint schema tests', () => {
   const lts1 = convertLongTextToJoiSchema(lt());
 
   describe('longtext', () => {
-    const nine = 'too short';
+    const zero = '';
     const ten = '1234567890';
     const fifty_one = '123456789_123456789_123456789_123456789_123456789_1';
     const fifty = '123456789_123456789_123456789_123456789_123456789_';
     it('throws when text is too short or too long', () => {
-      expect(() => Joi.assert(nine, lts1)).toThrow();
+      expect(() => Joi.assert(zero, lts1)).toThrow();
       expect(() => Joi.assert(fifty_one, lts1)).toThrow();
     });
     it("doesn't throw when text length is ok", () => {
