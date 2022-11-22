@@ -54,7 +54,7 @@ export const convertLongTextToJoiSchema = (q: LongText): Joi.Schema => {
   // expects a long text response
   let answerSchema;
   if (q.required) {
-    answerSchema = Joi.string().trim().min(10).max(q.maxLength).label(`${q.field}`);
+    answerSchema = Joi.string().trim().min(1).max(q.maxLength).label(`${q.field}`);
   } else {
     answerSchema = Joi.string().trim().min(q.minLength).max(q.maxLength);
   }
