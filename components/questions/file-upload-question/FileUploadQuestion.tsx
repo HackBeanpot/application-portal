@@ -8,9 +8,10 @@ interface FileUploadProps {
   disabled: boolean;
   question: FileUpload;
   form: FormInstance<Record<string, QuestionResponse>>;
+  submitted: boolean;
 }
 
-const FileUploadQuestion: FC<FileUploadProps> = ({ disabled, question, form }) => {
+const FileUploadQuestion: FC<FileUploadProps> = ({ disabled, question, form, submitted }) => {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   const readFile = (file: File) =>
@@ -39,6 +40,7 @@ const FileUploadQuestion: FC<FileUploadProps> = ({ disabled, question, form }) =
       name={question.id}
       label={<div>{question.content}</div>}
       rules={[{ required: question.required, message: 'This question is required' }]}
+      extra={submitted ? <div className="file-upload-label">{question.submittedText}</div> : ''}
     >
       <Upload
         data-testid="upload"

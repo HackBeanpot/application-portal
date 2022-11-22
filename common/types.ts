@@ -311,6 +311,7 @@ export interface FileUpload extends IQuestion {
   accept: string;
   multiple: boolean;
   limit: number;
+  submittedText: string;
 }
 
 export enum ConfirmByState {

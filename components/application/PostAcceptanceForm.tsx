@@ -144,6 +144,7 @@ const FullForm: React.FC = () => {
         sectionsAndQuestions={PostAcceptanceFormSections}
         form={form}
         disabled={disabled}
+        submittedResume={false}
       />
       <Form.Item noStyle>
         <div className="submit-container">

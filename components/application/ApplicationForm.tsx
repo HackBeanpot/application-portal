@@ -60,6 +60,8 @@ export const ApplicationForm = (): ReactElement => {
   const isAfterRegistration = Boolean(
     registrationCloseDate && isAfterRegistrationClosed(registrationCloseDate)
   );
+  const resumeLink =
+    userResponses?.data.responses[userResponses?.data.fields.indexOf('resumeLink')] ?? '';
 
   // effects
   const resetFields = form.resetFields;
@@ -159,10 +161,15 @@ export const ApplicationForm = (): ReactElement => {
         initialValues={submittedFormData}
         form={form}
         onFinish={onSubmit}
-        scrollToFirstError={{ behavior: 'smooth' }}
+        scrollToFirstError={{ behavior: 'smooth', inline: 'center', block: 'center' }}
         layout="vertical"
       >
-        <FormSectionsAndQuestions sectionsAndQuestions={Sections} form={form} disabled={disabled} />
+        <FormSectionsAndQuestions
+          sectionsAndQuestions={Sections}
+          form={form}
+          disabled={disabled}
+          submittedResume={!!resumeLink}
+        />
         <Form.Item noStyle>
           <div className="submit-container">
             <Button
