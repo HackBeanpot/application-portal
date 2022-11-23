@@ -11,7 +11,6 @@ import {
   Familiarity,
   Gender,
   InterestLevel,
-  Lgbtqia,
   FileUpload,
   LongText,
   NumberOf,
@@ -27,6 +26,7 @@ import {
   Workshop,
   YearOfEducation,
   YesOrNo,
+  Lgbtq,
 } from './types';
 
 let questionCount = 0;
@@ -125,22 +125,28 @@ export function makeFileUpload(
   required: boolean,
   accept: string,
   multiple: boolean,
-  limit: number
+  limit: number,
+  submittedText: string
 ): FileUpload {
   questionCount++;
   return {
     field,
     type: QuestionType.FileUpload,
-    content: content,
+    content,
     id: String(questionCount),
-    required: required,
-    accept: accept,
-    multiple: multiple,
-    limit: limit,
+    required,
+    accept,
+    multiple,
+    limit,
+    submittedText,
   };
 }
 
 let sectionCount = 0;
+
+const characterRecommendationMessage = (
+  <i> Though there is no minimum, the recommended character amount is 750-1000.</i>
+);
 
 export function makeSection(text: ReactNode, description?: ReactNode): QuestionSection {
   sectionCount++;
@@ -158,11 +164,39 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
   makeSection(<>Let{"'"}s Get to Know You!</>),
   makeShortText('firstName', 'First name', true, 'First name'),
   makeShortText('preferredName', 'Preferred name', false, 'Preferred name'),
+
   makeShortText('lastName', 'Last name', true, 'Last name'),
-  makeShortText('pronouns', 'Pronouns', true, 'Pronouns'),
+  makeSection(
+    <>Demographics</>,
+    <p>
+      None of the information in your application will be publicly shared except for your resume (if
+      you opt in to share that with us). Your application will only be used to track our diversity,
+      equity and inclusion efforts.
+    </p>
+  ),
+  makeShortText(
+    'pronouns',
+    <div>
+      <p>
+        <br />
+        Pronouns
+        <br />
+        <i>Your pronouns will not be shared publicly or to companies.</i>
+      </p>
+    </div>,
+    true,
+    'Pronouns'
+  ),
   makeDropdown(
     'gender',
-    'What is your gender?',
+    <div>
+      <p>
+        <br />
+        What is your gender?
+        <br />
+        <i>Your gender identity will not be shared publicly or to companies.</i>
+      </p>
+    </div>,
     [
       Gender.Male,
       Gender.Female,
@@ -175,6 +209,20 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     'Gender'
   ),
   makeShortText('unlistedGender', "If your gender isn't listed above, list it here!", false),
+  makeDropdown(
+    'lgbtq',
+    <div>
+      <p>
+        <br />
+        Do you identify as LGBTQ+?
+        <br />
+        <i>Your orientation will not be shared publicly or to companies.</i>
+      </p>
+    </div>,
+    [Lgbtq.Yes, Lgbtq.No, Lgbtq.PreferNotToSay],
+    true,
+    'Identify'
+  ),
   makeCheckbox(
     'races',
     'What race(s) do you identify as?',
@@ -191,24 +239,8 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     true,
     8
   ),
+
   makeShortText('unlistedRace', "If your race(s) aren't listed above, list it here!", false),
-  makeDropdown(
-    'lgbtqia',
-    'Do you identify as part of the LGBTQIA+ community?',
-    [Lgbtqia.Yes, Lgbtqia.No, Lgbtqia.Unsure, Lgbtqia.PreferNotToSay],
-    true,
-    'Do you identify'
-  ),
-  makeShortText(
-    'identify',
-    'If you answered yes in the previous question, how do you identify?',
-    false
-  ),
-  makeShortText(
-    'identify',
-    'If you answered yes to the previous question, how do you identify?',
-    false
-  ),
   makeDropdown(
     'school',
     'What school do you attend?',
@@ -282,7 +314,8 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     false,
     '.pdf',
     false,
-    1
+    1,
+    "You've already submitted a resume, but feel free to upload another one! (This will replace the old resume you've submitted.)"
   ),
   makeDropdown(
     'shirtSize',
@@ -330,7 +363,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
   ),
   makeDropdown(
     'csClassesTaken',
-    'How many CS classes have you taken or are currently taking?',
+    'How many CS classes have you taken?',
     [NumberOf.Zero, NumberOf.OneToTwo, NumberOf.ThreeToFive, NumberOf.SixOrAbove],
     true,
     'Count'
@@ -482,7 +515,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       <p>
         As part of our desert exploration theme this year, you’ll be sorted into teams of explorers
         as you venture out into the desert together and compete in exciting competitions for prizes!
-        You will also have mission commanders to guide you through the event as well as a way to get
+        You will also have expedition leaders to guide you through the event as well as a way to get
         to know the rest of your teammates.
       </p>
       Which of the following workshops are you excited for?
@@ -533,16 +566,20 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
         of HackBeanpot? What do you want to walk away having learned or experienced from this
         weekend?
       </p>
+      {characterRecommendationMessage}
     </div>,
     true
   ),
   makeLongText(
     'tedTalkTopic',
-    <>
-      We want to get to know you and your interests better! If you had to give a thirty minute TED
-      talk on any subject, what would it be and why? This could be about chicken raising, fantasy
-      football, the Fermi paradox, or anything you would ramble about to friends at 2 am!
-    </>,
+    <div>
+      <p>
+        We want to get to know you and your interests better! If you had to give a thirty minute TED
+        talk on any subject, what would it be and why? This could be about chicken raising, fantasy
+        football, the Fermi paradox, or anything you would ramble about to friends at 2 am!
+      </p>
+      {characterRecommendationMessage}
+    </div>,
     true
   ),
   makeSection(<>Outreach</>),
@@ -581,8 +618,8 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     'premadeTeam',
     <p>
       Do you plan on attending HackBeanpot with a premade team? If yes,
-      <b> please list their names (first and last).</b> Please note, team formations will not be
-      finalized until the day of the event!
+      <b> please list their names (first and last).</b> If not, write &quot;N/A&quot;. Please note,
+      team formations will not be finalized until the day of the event!
     </p>,
     true
   ),

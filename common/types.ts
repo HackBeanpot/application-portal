@@ -28,12 +28,11 @@ export interface ApplicationResponses extends SharedResponses {
   pronouns?: string;
   gender?: Gender;
   unlistedGender?: string;
-  identify?: string;
+  lgbtq?: Lgbtq;
   school?: School;
   unlistedSchool?: string;
   races?: Array<Race>;
   unlistedRace?: string;
-  lgbtqia?: Lgbtqia;
   education?: Education;
   yearOfEducation?: YearOfEducation;
   majors?: string;
@@ -126,13 +125,6 @@ export enum Gender {
   PreferNotToSay = 'Prefer not to say',
 }
 
-export enum Lgbtqia {
-  Yes = 'Yes',
-  No = 'No',
-  Unsure = 'Unsure',
-  PreferNotToSay = 'Prefer not to say',
-}
-
 export enum School {
   NortheasternUniversity = 'Northeastern University',
   BostonUniversity = 'Boston University',
@@ -191,7 +183,7 @@ export enum NumberOf {
   Zero = '0',
   OneToTwo = '1-2',
   ThreeToFive = '3-5',
-  SixOrAbove = '6',
+  SixOrAbove = '6+',
 }
 
 export enum Familiarity {
@@ -244,6 +236,12 @@ export enum Referrer {
 export enum YesOrNo {
   Yes = 'Yes',
   No = 'No',
+}
+
+export enum Lgbtq {
+  Yes = 'Yes',
+  No = 'No',
+  PreferNotToSay = 'Prefer not to say',
 }
 
 export enum ApplicationStatus {
@@ -313,6 +311,7 @@ export interface FileUpload extends IQuestion {
   accept: string;
   multiple: boolean;
   limit: number;
+  submittedText: string;
 }
 
 export enum ConfirmByState {

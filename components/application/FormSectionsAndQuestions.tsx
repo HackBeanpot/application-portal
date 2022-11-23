@@ -7,12 +7,14 @@ type FormSectionsAndQuestionsProps = {
   sectionsAndQuestions: Array<QuestionSection | QuestionDefinition>;
   form: FormInstance;
   disabled: boolean;
+  submittedResume: boolean;
 };
 
 export const FormSectionsAndQuestions: React.FC<FormSectionsAndQuestionsProps> = ({
   sectionsAndQuestions,
   form,
   disabled,
+  submittedResume,
 }) => {
   return (
     <>
@@ -32,6 +34,7 @@ export const FormSectionsAndQuestions: React.FC<FormSectionsAndQuestionsProps> =
             q={sectionOrQuestion}
             form={form}
             disabled={disabled}
+            submittedResume={submittedResume}
           />
         );
       })}
