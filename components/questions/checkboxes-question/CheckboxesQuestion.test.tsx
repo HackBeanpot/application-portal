@@ -1,8 +1,9 @@
 import { describe, expect, it } from '@jest/globals';
-import { fireEvent, getByTestId, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import CheckboxesQuestion from './CheckboxesQuestion';
 import { Checkboxes, QuestionResponse, QuestionType } from '../../../common/types';
 import { Form } from 'antd';
+import '@testing-library/jest-dom/extend-expect';
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -47,13 +48,5 @@ describe('CheckboxesQuestion component', () => {
     expect(confirmedDialogText.textContent).toContain("Java");
     expect(confirmedDialogText.textContent).toContain("Typescript");
     expect(confirmedDialogText.textContent).toContain("Japanese");
-    expect(confirmedDialogText.textContent).toContain("This question is required");
-  });
-
-  it('changes display text when field text changes', async () => {
-    const elt = screen.getByTestId('checkboxes-question');
-    fireEvent.mouseDown(elt);
-
-    expect(elt.textContent).toBe('English');
   });
 });
