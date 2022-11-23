@@ -47,11 +47,11 @@ describe('CheckboxesQuestion component', () => {
     expect(confirmedDialogText.textContent).toContain("Java");
     expect(confirmedDialogText.textContent).toContain("Typescript");
     expect(confirmedDialogText.textContent).toContain("Japanese");
+    expect(confirmedDialogText.textContent).toContain("This question is required");
   });
 
   it('changes display text when field text changes', async () => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const elt: Element = screen.getByTestId('checkboxes-question').firstElementChild!;
+    const elt = screen.getByTestId('checkboxes-question');
     fireEvent.mouseDown(elt);
 
     expect(elt.textContent).toBe('English');
