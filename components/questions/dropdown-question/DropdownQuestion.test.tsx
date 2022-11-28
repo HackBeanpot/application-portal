@@ -50,20 +50,20 @@ describe('CheckboxesQuestion component', () => {
     expect(confirmedDialogText.textContent).toContain("Select");
   });
 
-  it('renders the correct dropdown values', async () => {
-    render(<DropdownQuestionWrapper />);
-    const confirmedDialogText = screen.getByTestId('dropdown-question');
+  // it('renders the correct dropdown values', async () => {
+  //   render(<DropdownQuestionWrapper />);
+  //   const confirmedDialogText = screen.getByTestId('dropdown-question');
 
-    if (confirmedDialogText instanceof Element) {
-      fireEvent.mouseDown(confirmedDialogText);
-    }
-    await waitFor(() => expect(screen.getAllByText('1')).toHaveLength(2));
+  //   if (confirmedDialogText instanceof Element) {
+  //     fireEvent.mouseDown(confirmedDialogText);
+  //   }
+  //   await waitFor(() => expect(screen.getAllByText('1')).toHaveLength(2));
 
-    if (confirmedDialogText instanceof Element) {
-      fireEvent.mouseDown(confirmedDialogText);
-    }
-    await waitFor(() => expect(screen.getAllByText('2')).toHaveLength(2));
-  });
+  //   if (confirmedDialogText instanceof Element) {
+  //     fireEvent.mouseDown(confirmedDialogText);
+  //   }
+  //   await waitFor(() => expect(screen.getAllByText('2')).toHaveLength(2));
+  // });
 
   it('does not render options when clicked, if it is disabled', async () => {
     render(<DisabledDropdownQuestionWrapper />);
