@@ -1,9 +1,8 @@
 import { describe, expect, it } from '@jest/globals';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import CheckboxesQuestion from './CheckboxesQuestion';
 import { Checkboxes, QuestionResponse, QuestionType } from '../../../common/types';
 import { Form } from 'antd';
-import '@testing-library/jest-dom/extend-expect';
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,

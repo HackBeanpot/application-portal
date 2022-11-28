@@ -67,7 +67,7 @@ describe('CheckboxesQuestion component', () => {
 
   it('does not render options when clicked, if it is disabled', async () => {
     render(<DisabledDropdownQuestionWrapper />);
-    const confirmedDialogText = screen.getByTestId('disabled-dropdown-question');
+    const confirmedDialogText = screen.getByTestId('dropdown-question');
 
     if (confirmedDialogText instanceof Element) {
       fireEvent.mouseDown(confirmedDialogText);
