@@ -118,6 +118,12 @@ export const ApplicationForm = (): ReactElement => {
             After submitting, you can re-submit your application as many times as you want before
             the deadline.
           </li>
+          <li>
+            We want people who are excited about learning and HackBeanpot to come to our hackathon!
+            We do not consider level of experience in our application but rather level of effort +
+            interest so please keep this in mind as you&apos;re filling out the application, thanks
+            :)
+          </li>
           <li>If you have questions please reach out to team@hackbeanpot.com.</li>
         </ul>
       </div>

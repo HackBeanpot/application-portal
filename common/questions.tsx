@@ -350,10 +350,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     false,
     'Accomodations'
   ),
-  makeSection(
-    <>Interests and Experience</>,
-    <p>P.S. All responses are read by hand so please put in effort (:</p>
-  ),
+  makeSection(<>Interests and Experience</>),
   makeDropdown(
     'hackathonsAttended',
     'How many hackathons have you attended?',
