@@ -210,7 +210,13 @@ const Applicants: React.FC = () => {
 
 const escaper = (s: string) => `"${s.replaceAll('"', '""')}"`;
 const separator = ',';
-const fields: Array<keyof User> = ['email', 'isAdmin', 'applicationStatus', 'rsvpStatus'];
+const fields: Array<keyof User> = [
+  'email',
+  'isAdmin',
+  'applicationStatus',
+  'rsvpStatus',
+  'appSubmissionTime',
+];
 type DownloadProps = {
   totalCount: number;
   filters: TableFilters;
@@ -244,8 +250,8 @@ const getUserFieldAndResponseCols = (
   const cols = [];
   for (let i = 0; i < rowHeadersText.length; i++) {
     const currHeader = rowHeadersText[i];
-    if (fields.includes(currHeader)) {
-      cols.push(user[currHeader].toString());
+    if (fields.includes(currHeader) && user[currHeader]) {
+      cols.push(user[currHeader]?.toString());
     } else if (responses && responses !== null && Object.keys(responses).includes(currHeader)) {
       const questionResponse = responses[currHeader];
       const serializedResponse = serializeResponse(questionResponse);
