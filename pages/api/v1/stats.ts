@@ -2,7 +2,7 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { connectToDatabase } from '../../../server/mongoDB';
 import { isAdmin, protect } from '../../../server/protect';
 import { Document } from 'mongodb';
-import { Workshop } from '../../../common/types';
+import { Race, Workshop } from '../../../common/types';
 
 const statsHandler: NextApiHandler = async (req, res) => {
   switch (req.method) {
@@ -57,8 +57,6 @@ const getStats: NextApiHandler = async (req: NextApiRequest, res: NextApiRespons
     .aggregate([{ $group: { _id: '$decisionStatus', count: { $sum: 1 } } }])
     .toArray();
 
-  console.log('shirt data:', shirtData);
-
   const decisionStatuses = ['Admitted', 'Waitlisted', 'Declined', 'Undecided'];
   const decisionStatusDataWithEmpties = decisionStatuses.map((decisionStatus) => {
     return {
@@ -70,34 +68,74 @@ const getStats: NextApiHandler = async (req: NextApiRequest, res: NextApiRespons
     };
   });
 
+  const schoolData = await userDataCollection
+    .aggregate([{ $group: { _id: '$applicationResponses.school', count: { $sum: 1 } } }])
+    .toArray();
+
+  const mappedSchoolData = schoolData
+    .map((data) => {
+      return {
+        _id: `University: ${data._id}`,
+        count: data.count,
+      };
+    })
+    .filter((data) => data._id !== 'University: null');
+
+  const educationData = await userDataCollection
+    .aggregate([{ $group: { _id: '$applicationResponses.education', count: { $sum: 1 } } }])
+    .toArray();
+
+  const mappedEducationData = educationData.map((data) => {
+    return {
+      _id: `Education level: ${data._id}`,
+      count: data.count,
+    };
+  });
+
+  const hackathonsAttendedData = await userDataCollection
+    .aggregate([
+      { $group: { _id: '$applicationResponses.hackathonsAttended', count: { $sum: 1 } } },
+    ])
+    .toArray();
+
+  const mappedHackathonsAttendedData = hackathonsAttendedData.map((data) => {
+    return {
+      _id: `Hackathons attended: ${data._id}`,
+      count: data.count,
+    };
+  });
+
+  const csClassesTakenData = await userDataCollection
+    .aggregate([{ $group: { _id: '$applicationResponses.csClassesTaken', count: { $sum: 1 } } }])
+    .toArray();
+
+  const mappedCsClassesTakenData = csClassesTakenData.map((data) => {
+    return {
+      _id: `CS classes taken: ${data._id}`,
+      count: data.count,
+    };
+  });
+
   const total = await userDataCollection.find().toArray();
 
-  const workshops = [
-    'Intro to Git',
-    'Intro to Web Dev (HTML / CSS / JS)',
-    'Intermediate Web Dev',
-    'Intro to React',
-    'Intro to APIs',
-    'Intro to Game Dev',
-    'HackBeanpot Panel',
-    'Resumes and Internships',
-    'Backend Workshop',
-    'Intro to Mobile App Dev',
-    'Intro to Machine Learning',
-    'Intro to Docker',
-    'Intro to Go',
-    'How to Demo a Project for Judging',
-    'Careers in Tech',
-    'Diversity in Tech',
-    'Tech for Social Good',
-    'None',
-  ];
+  const mappedRaceData = Object.values(Race).map((race) => {
+    let raceCount = 0;
+    total.forEach((user) => {
+      if (user.applicationResponses?.races?.includes(race)) {
+        raceCount++;
+      }
+    });
+    return {
+      _id: `Race: ${race}`,
+      count: raceCount,
+    };
+  });
 
-  const mappedWorkshopData = workshops
+  const mappedWorkshopData = Object.values(Workshop)
     .map((workshop) => {
       let workshopCount = 0;
       total.forEach((user) => {
-        if (user.applicationResponses?.interestedWorkshops?.includes(workshop as Workshop)) {
+        if (user.applicationResponses?.interestedWorkshops?.includes(workshop)) {
           workshopCount++;
         }
       });
@@ -108,24 +146,32 @@ const getStats: NextApiHandler = async (req: NextApiRequest, res: NextApiRespons
     })
     .filter((workshopData) => workshopData.count > 0);
 
-  console.log(mappedWorkshopData);
+  const statsData: Record<string, number> = {};
+  statsData['Total applicants'] = total.length;
 
   const resData = convertData(
-    ['status', 'shirt', 'decisionStatus', 'workshops'],
-    [statusDataWithEmpties, orderedShirtData, decisionStatusDataWithEmpties, mappedWorkshopData],
-    {}
+    [
+      statusDataWithEmpties,
+      orderedShirtData,
+      decisionStatusDataWithEmpties,
+      mappedSchoolData,
+      mappedEducationData,
+      mappedHackathonsAttendedData,
+      mappedCsClassesTakenData,
+      mappedRaceData,
+      mappedWorkshopData,
+    ],
+    statsData
   );
-
-  resData['Total applicants'] = total.length;
 
   return res.status(200).json(resData);
 };
 
-const convertData = (cat: string[], collections: Document[][], resData: Record<string, number>) => {
-  cat.forEach((c, ind) => {
+const convertData = (collections: Document[][], resData: Record<string, number>) => {
+  collections.forEach((collection) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    collections[ind].forEach((category: { _id: string; count: number }) => {
+    collection.forEach((category: { _id: string; count: number }) => {
       resData[category._id] = category.count;
     });
   });
