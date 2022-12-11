@@ -2,6 +2,7 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { connectToDatabase } from '../../../server/mongoDB';
 import { isAdmin, protect } from '../../../server/protect';
 import { Document } from 'mongodb';
+import { Workshop } from '../../../common/types';
 
 const statsHandler: NextApiHandler = async (req, res) => {
   switch (req.method) {
@@ -56,6 +57,8 @@ const getStats: NextApiHandler = async (req: NextApiRequest, res: NextApiRespons
     .aggregate([{ $group: { _id: '$decisionStatus', count: { $sum: 1 } } }])
     .toArray();
 
+  console.log('shirt data:', shirtData);
+
   const decisionStatuses = ['Admitted', 'Waitlisted', 'Declined', 'Undecided'];
   const decisionStatusDataWithEmpties = decisionStatuses.map((decisionStatus) => {
     return {
@@ -67,13 +70,52 @@ const getStats: NextApiHandler = async (req: NextApiRequest, res: NextApiRespons
     };
   });
 
+  const total = await userDataCollection.find().toArray();
+
+  const workshops = [
+    'Intro to Git',
+    'Intro to Web Dev (HTML / CSS / JS)',
+    'Intermediate Web Dev',
+    'Intro to React',
+    'Intro to APIs',
+    'Intro to Game Dev',
+    'HackBeanpot Panel',
+    'Resumes and Internships',
+    'Backend Workshop',
+    'Intro to Mobile App Dev',
+    'Intro to Machine Learning',
+    'Intro to Docker',
+    'Intro to Go',
+    'How to Demo a Project for Judging',
+    'Careers in Tech',
+    'Diversity in Tech',
+    'Tech for Social Good',
+    'None',
+  ];
+
+  const mappedWorkshopData = workshops
+    .map((workshop) => {
+      let workshopCount = 0;
+      total.forEach((user) => {
+        if (user.applicationResponses?.interestedWorkshops?.includes(workshop as Workshop)) {
+          workshopCount++;
+        }
+      });
+      return {
+        _id: `Interested in workshop: ${workshop}`,
+        count: workshopCount,
+      };
+    })
+    .filter((workshopData) => workshopData.count > 0);
+
+  console.log(mappedWorkshopData);
+
   const resData = convertData(
-    ['status', 'shirt', 'decisionStatus'],
-    [statusDataWithEmpties, orderedShirtData, decisionStatusDataWithEmpties],
+    ['status', 'shirt', 'decisionStatus', 'workshops'],
+    [statusDataWithEmpties, orderedShirtData, decisionStatusDataWithEmpties, mappedWorkshopData],
     {}
   );
 
-  const total = await userDataCollection.find().toArray();
   resData['Total applicants'] = total.length;
 
   return res.status(200).json(resData);
