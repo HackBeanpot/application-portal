@@ -210,24 +210,24 @@ const Applicants: React.FC = () => {
 
 const escaper = (s: string) => `"${s.replaceAll('"', '""')}"`;
 const separator = ',';
-const fields: Array<keyof User> = [
-  'email',
-  'isAdmin',
-  'applicationStatus',
-  'rsvpStatus',
-  'appSubmissionTime',
-];
+const fields: Array<keyof User> = ['email', 'isAdmin', 'applicationStatus', 'rsvpStatus'];
 type DownloadProps = {
   totalCount: number;
   filters: TableFilters;
   sorter: TableSorter;
 };
 const downloadApplicationCsv = async (props: DownloadProps) =>
-  downloadFileAbstract(props, fields, Questions, (u) => u.applicationResponses, 'applications.csv');
+  downloadFileAbstract(
+    props,
+    [...fields, 'appSubmissionTime'],
+    Questions,
+    (u) => u.applicationResponses,
+    'applications.csv'
+  );
 const downloadPostAcceptanceCsv = async (props: DownloadProps) =>
   downloadFileAbstract(
     props,
-    fields,
+    [...fields, 'rsvpSubmissionTime'],
     PostAcceptanceFormQuestions,
     (u) => u.postAcceptanceResponses,
     'post-acceptance.csv'
