@@ -23,21 +23,54 @@ const getStats: NextApiHandler = async (req: NextApiRequest, res: NextApiRespons
   const { userDataCollection } = await connectToDatabase();
 
   const statuses = ['Incomplete', 'Submitted'];
-  const statusData = await aggregateWithZeros(userDataCollection, '$applicationStatus', 'Application status', statuses)
+  const statusData = await aggregateWithZeros(
+    userDataCollection,
+    '$applicationStatus',
+    'Application status',
+    statuses
+  );
 
   const ABBV_SHIRT_SIZE = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'Unknown'];
-  const shirtData = await aggregateWithZeros(userDataCollection, '$applicationResponses.shirtSize', 'Shirt size', ABBV_SHIRT_SIZE, 'Unknown')
+  const shirtData = await aggregateWithZeros(
+    userDataCollection,
+    '$applicationResponses.shirtSize',
+    'Shirt size',
+    ABBV_SHIRT_SIZE,
+    'Unknown'
+  );
 
   const decisionStatuses = ['Admitted', 'Waitlisted', 'Declined', 'Undecided'];
-  const decisionStatusData = await aggregateWithZeros(userDataCollection, '$decisionStatus', 'Decision status', decisionStatuses, 'Undecided')
-  
-  const schoolData = await aggregateData(userDataCollection, '$applicationResponses.school', 'University')
+  const decisionStatusData = await aggregateWithZeros(
+    userDataCollection,
+    '$decisionStatus',
+    'Decision status',
+    decisionStatuses,
+    'Undecided'
+  );
 
-  const educationData = await aggregateData(userDataCollection, '$applicationResponses.education', 'Education level')
+  const schoolData = await aggregateData(
+    userDataCollection,
+    '$applicationResponses.school',
+    'University'
+  );
 
-  const hackathonsAttendedData = await aggregateData(userDataCollection, '$applicationResponses.hackathonsAttended', 'Hackathons attended')
+  const educationData = await aggregateData(
+    userDataCollection,
+    '$applicationResponses.education',
+    'Education level'
+  );
 
-  const csClassesTakenData = await aggregateData(userDataCollection, '$applicationResponses.csClassesTaken', 'CS classes taken')
+  const hackathonsAttendedData = await aggregateData(
+    userDataCollection,
+    '$applicationResponses.hackathonsAttended',
+    'Hackathons attended'
+  );
+
+  const csClassesTakenData = await aggregateData(
+    userDataCollection,
+    '$applicationResponses.csClassesTaken',
+    'CS classes taken'
+  );
 
   const total = await userDataCollection.find().toArray();
 
@@ -103,8 +136,12 @@ const convertData = (collections: Document[][], resData: Record<string, number>)
   return resData;
 };
 
-const aggregateData = async (userDataCollection: Collection<User>, column: string, labelPrefix: string) => {
-  const data = await getAggregatedData(userDataCollection, column)
+const aggregateData = async (
+  userDataCollection: Collection<User>,
+  column: string,
+  labelPrefix: string
+) => {
+  const data = await getAggregatedData(userDataCollection, column);
 
   return data.map((data) => {
     return {
@@ -112,23 +149,29 @@ const aggregateData = async (userDataCollection: Collection<User>, column: strin
       count: data.count,
     };
   });
-}
+};
 
-const aggregateWithZeros = async (userDataCollection: Collection<User>, column: string, labelPrefix: string, options: string[], excludedOption?: string) => {
-  const data = await getAggregatedData(userDataCollection, column)
+const aggregateWithZeros = async (
+  userDataCollection: Collection<User>,
+  column: string,
+  labelPrefix: string,
+  options: string[],
+  excludedOption?: string
+) => {
+  const data = await getAggregatedData(userDataCollection, column);
 
   return options.map((option) => {
     return {
       _id: `${labelPrefix}: ${option}`,
-      count: data.find((e) => e._id === (excludedOption && option === excludedOption ? null : option))?.count ?? 0,
+      count:
+        data.find((e) => e._id === (excludedOption && option === excludedOption ? null : option))
+          ?.count ?? 0,
     };
-  })
-}
+  });
+};
 
 const getAggregatedData = async (userDataCollection: Collection<User>, column: string) => {
-  return userDataCollection
-  .aggregate([{ $group: { _id: column, count: { $sum: 1 } } }])
-  .toArray();
-}
+  return userDataCollection.aggregate([{ $group: { _id: column, count: { $sum: 1 } } }]).toArray();
+};
 
 export default protect(statsHandler);
