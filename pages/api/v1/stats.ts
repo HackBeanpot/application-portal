@@ -1,8 +1,8 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { connectToDatabase } from '../../../server/mongoDB';
 import { isAdmin, protect } from '../../../server/protect';
-import { Document } from 'mongodb';
-import { Race, Workshop } from '../../../common/types';
+import { Collection, Document } from 'mongodb';
+import { Race, User, Workshop } from '../../../common/types';
 
 const statsHandler: NextApiHandler = async (req, res) => {
   switch (req.method) {
@@ -22,102 +22,26 @@ const getStats: NextApiHandler = async (req: NextApiRequest, res: NextApiRespons
 
   const { userDataCollection } = await connectToDatabase();
 
-  const statusData = await userDataCollection
-    .aggregate([{ $group: { _id: '$applicationStatus', count: { $sum: 1 } } }])
-    .toArray();
-
   const statuses = ['Incomplete', 'Submitted'];
-  const statusDataWithEmpties = statuses.map((status: string) => {
-    return {
-      _id: status,
-      count: statusData.find((e) => e._id === status)?.count ?? 0,
-    };
-  });
-
-  const shirtData = await userDataCollection
-    .aggregate([
-      {
-        $group: {
-          _id: '$applicationResponses.shirtSize',
-          count: { $sum: 1 },
-        },
-      },
-    ])
-    .toArray();
+  const statusData = await aggregateWithZeros(userDataCollection, '$applicationStatus', 'Application status', statuses)
 
   const ABBV_SHIRT_SIZE = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'Unknown'];
-  const orderedShirtData = ABBV_SHIRT_SIZE.map((size: string) => {
-    return {
-      _id: `T-shirt ${size}`,
-      count: shirtData.find((e) => e._id === (size === 'Unknown' ? null : size))?.count ?? 0,
-    };
-  });
-
-  const decisionStatusData = await userDataCollection
-    .aggregate([{ $group: { _id: '$decisionStatus', count: { $sum: 1 } } }])
-    .toArray();
+  const shirtData = await aggregateWithZeros(userDataCollection, '$applicationResponses.shirtSize', 'Shirt size', ABBV_SHIRT_SIZE, 'Unknown')
 
   const decisionStatuses = ['Admitted', 'Waitlisted', 'Declined', 'Undecided'];
-  const decisionStatusDataWithEmpties = decisionStatuses.map((decisionStatus) => {
-    return {
-      _id: decisionStatus,
-      count:
-        decisionStatusData.find(
-          (e) => e._id === (decisionStatus === 'Undecided' ? null : decisionStatus)
-        )?.count ?? 0,
-    };
-  });
+  const decisionStatusData = await aggregateWithZeros(userDataCollection, '$decisionStatus', 'Decision status', decisionStatuses, 'Undecided')
+  
+  const schoolData = await aggregateData(userDataCollection, '$applicationResponses.school', 'University')
 
-  const schoolData = await userDataCollection
-    .aggregate([{ $group: { _id: '$applicationResponses.school', count: { $sum: 1 } } }])
-    .toArray();
+  const educationData = await aggregateData(userDataCollection, '$applicationResponses.education', 'Education level')
 
-  const mappedSchoolData = schoolData
-    .map((data) => {
-      return {
-        _id: `University: ${data._id}`,
-        count: data.count,
-      };
-    })
-    .filter((data) => data._id !== 'University: null');
+  const hackathonsAttendedData = await aggregateData(userDataCollection, '$applicationResponses.hackathonsAttended', 'Hackathons attended')
 
-  const educationData = await userDataCollection
-    .aggregate([{ $group: { _id: '$applicationResponses.education', count: { $sum: 1 } } }])
-    .toArray();
-
-  const mappedEducationData = educationData.map((data) => {
-    return {
-      _id: `Education level: ${data._id}`,
-      count: data.count,
-    };
-  });
-
-  const hackathonsAttendedData = await userDataCollection
-    .aggregate([
-      { $group: { _id: '$applicationResponses.hackathonsAttended', count: { $sum: 1 } } },
-    ])
-    .toArray();
-
-  const mappedHackathonsAttendedData = hackathonsAttendedData.map((data) => {
-    return {
-      _id: `Hackathons attended: ${data._id}`,
-      count: data.count,
-    };
-  });
-
-  const csClassesTakenData = await userDataCollection
-    .aggregate([{ $group: { _id: '$applicationResponses.csClassesTaken', count: { $sum: 1 } } }])
-    .toArray();
-
-  const mappedCsClassesTakenData = csClassesTakenData.map((data) => {
-    return {
-      _id: `CS classes taken: ${data._id}`,
-      count: data.count,
-    };
-  });
+  const csClassesTakenData = await aggregateData(userDataCollection, '$applicationResponses.csClassesTaken', 'CS classes taken')
 
   const total = await userDataCollection.find().toArray();
 
+  // Aggregations for multi-select questions
   const mappedRaceData = Object.values(Race).map((race) => {
     let raceCount = 0;
     total.forEach((user) => {
@@ -151,13 +75,13 @@ const getStats: NextApiHandler = async (req: NextApiRequest, res: NextApiRespons
 
   const resData = convertData(
     [
-      statusDataWithEmpties,
-      orderedShirtData,
-      decisionStatusDataWithEmpties,
-      mappedSchoolData,
-      mappedEducationData,
-      mappedHackathonsAttendedData,
-      mappedCsClassesTakenData,
+      statusData,
+      shirtData,
+      decisionStatusData,
+      schoolData,
+      educationData,
+      hackathonsAttendedData,
+      csClassesTakenData,
       mappedRaceData,
       mappedWorkshopData,
     ],
@@ -178,5 +102,33 @@ const convertData = (collections: Document[][], resData: Record<string, number>)
 
   return resData;
 };
+
+const aggregateData = async (userDataCollection: Collection<User>, column: string, labelPrefix: string) => {
+  const data = await getAggregatedData(userDataCollection, column)
+
+  return data.map((data) => {
+    return {
+      _id: `${labelPrefix}: ${data._id}`,
+      count: data.count,
+    };
+  });
+}
+
+const aggregateWithZeros = async (userDataCollection: Collection<User>, column: string, labelPrefix: string, options: string[], excludedOption?: string) => {
+  const data = await getAggregatedData(userDataCollection, column)
+
+  return options.map((option) => {
+    return {
+      _id: `${labelPrefix}: ${option}`,
+      count: data.find((e) => e._id === (excludedOption && option === excludedOption ? null : option))?.count ?? 0,
+    };
+  })
+}
+
+const getAggregatedData = async (userDataCollection: Collection<User>, column: string) => {
+  return userDataCollection
+  .aggregate([{ $group: { _id: column, count: { $sum: 1 } } }])
+  .toArray();
+}
 
 export default protect(statsHandler);
