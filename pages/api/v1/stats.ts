@@ -48,28 +48,32 @@ const getStats: NextApiHandler = async (req: NextApiRequest, res: NextApiRespons
     'Undecided'
   );
 
-  const schoolData = await aggregateData(
-    userDataCollection,
-    '$applicationResponses.school',
-    'University'
-  );
+  // Label : column in mongo
+  const aggregations: Record<string, string> = {
+    University: '$applicationResponses.school',
+    'Education level': '$applicationResponses.education',
+    'Hackathons attended': '$applicationResponses.hackathonsAttended',
+    'CS classes taken': '$applicationResponses.csClassesTaken',
+    'Mobile dev familiarity': '$applicationResponses.mobileAppDevelopmentFamiliarity',
+    'Web dev familiarity': '$applicationResponses.webDevelopmentFamiliarity',
+    'UI/UX familiarity': '$applicationResponses.uiUxFamiliarity',
+    'Backend familiarity': '$applicationResponses.backendFamiliarity',
+    'Frontend familiarity': '$applicationResponses.frontendFamiliarity',
+    'Data science familiarity': '$applicationResponses.dataScienceFamiliarity',
+    'Cybersecurity familiarity': '$applicationResponses.cybersecurityFamiliarity',
+    'Mobile dev interest level': '$applicationResponses.mobileAppDevelopmentInterestLevel',
+    'Web dev interest level': '$applicationResponses.webDevelopmentInterestLevel',
+    'UI/UX interest level': '$applicationResponses.uiUxInterestLevel',
+    'Backend interest level': '$applicationResponses.backendInterestLevel',
+    'Frontend interest level': '$applicationResponses.frontendInterestLevel',
+    'Data science interest level': '$applicationResponses.dataScienceInterestLevel',
+    'Cybersecurity interest level': '$applicationResponses.cybersecurityInterestLevel',
+  };
 
-  const educationData = await aggregateData(
-    userDataCollection,
-    '$applicationResponses.education',
-    'Education level'
-  );
-
-  const hackathonsAttendedData = await aggregateData(
-    userDataCollection,
-    '$applicationResponses.hackathonsAttended',
-    'Hackathons attended'
-  );
-
-  const csClassesTakenData = await aggregateData(
-    userDataCollection,
-    '$applicationResponses.csClassesTaken',
-    'CS classes taken'
+  const aggregatedData = await Promise.all(
+    Object.entries(aggregations).map(
+      async ([label, column]) => await aggregateData(userDataCollection, column, label)
+    )
   );
 
   const total = await userDataCollection.find().toArray();
@@ -111,12 +115,9 @@ const getStats: NextApiHandler = async (req: NextApiRequest, res: NextApiRespons
       statusData,
       shirtData,
       decisionStatusData,
-      schoolData,
-      educationData,
-      hackathonsAttendedData,
-      csClassesTakenData,
       mappedRaceData,
       mappedWorkshopData,
+      ...aggregatedData,
     ],
     statsData
   );
