@@ -1,4 +1,16 @@
 import { ReactNode } from 'react';
+import {
+  Aspirations,
+  Club,
+  DuringClass,
+  HangingWithFriends,
+  SocialMedia,
+  StuckInElevator,
+  Study,
+  Swag,
+  TakeOverNation,
+  ZombieApocalypse,
+} from './postAcceptanceTypes';
 
 /**
  * @param applicationStatus deez nuts :0
@@ -76,15 +88,16 @@ export interface PostAcceptanceResponses extends SharedResponses {
   adultSignature?: string;
   minorSignature?: string;
   guardianSignature?: string;
-  swag?: Array<string>;
-  accomodations?: string;
-  pickUpSwag?: string;
-  address?: string;
-  careerInTech?: string;
-  personAtParty?: string;
-  wonLottery?: string;
-  themePark?: string;
-  celebrity?: string;
+  swag?: Array<Swag>;
+  hangingWithFriends?: HangingWithFriends;
+  zombieApocalypse?: ZombieApocalypse;
+  takeOverNation?: TakeOverNation;
+  aspirations?: Aspirations;
+  study?: Study;
+  stuckInElevator?: StuckInElevator;
+  club?: Club;
+  socialMedia?: SocialMedia;
+  duringClass?: DuringClass;
 }
 
 export type QuestionResponseField = keyof ApplicationResponses | keyof PostAcceptanceResponses;

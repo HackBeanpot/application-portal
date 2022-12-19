@@ -25,7 +25,7 @@ describe('FileUploadQuestion component', () => {
     accept: '',
     multiple: false,
     limit: 0,
-    field: 'address',
+    field: 'adult',
     content: questionText,
     id: '1',
     required: true,
