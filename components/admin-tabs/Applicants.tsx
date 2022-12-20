@@ -217,11 +217,17 @@ type DownloadProps = {
   sorter: TableSorter;
 };
 const downloadApplicationCsv = async (props: DownloadProps) =>
-  downloadFileAbstract(props, fields, Questions, (u) => u.applicationResponses, 'applications.csv');
+  downloadFileAbstract(
+    props,
+    [...fields, 'appSubmissionTime'],
+    Questions,
+    (u) => u.applicationResponses,
+    'applications.csv'
+  );
 const downloadPostAcceptanceCsv = async (props: DownloadProps) =>
   downloadFileAbstract(
     props,
-    fields,
+    [...fields, 'rsvpSubmissionTime'],
     PostAcceptanceFormQuestions,
     (u) => u.postAcceptanceResponses,
     'post-acceptance.csv'
@@ -244,8 +250,8 @@ const getUserFieldAndResponseCols = (
   const cols = [];
   for (let i = 0; i < rowHeadersText.length; i++) {
     const currHeader = rowHeadersText[i];
-    if (fields.includes(currHeader)) {
-      cols.push(user[currHeader].toString());
+    if (fields.includes(currHeader) && user[currHeader]) {
+      cols.push(user[currHeader]?.toString());
     } else if (responses && responses !== null && Object.keys(responses).includes(currHeader)) {
       const questionResponse = responses[currHeader];
       const serializedResponse = serializeResponse(questionResponse);
