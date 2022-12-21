@@ -739,10 +739,7 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
     true,
     'First Last'
   ),
-  makeSection(
-    <>Now the fun stuff!</>,
-    "Even though our event will be mostly virtual, we still plan on getting our awesome swag to our attendees! We will be having Swag Outpost stations on certain days at Northeastern University's campus in Boston. For those unable to pick up in Boston, we will try our best to ship swag to you if you're within the continental US. If you would like to cover your international shipping costs for swag shipping costs, please email team@hackbeanpot.com with your mailing address."
-  ),
+  makeSection(<>Now the fun stuff!</>),
   makeCheckbox(
     'swag',
     <div>
@@ -758,8 +755,8 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
   makeSection(
     <>Fictional Desert Crews Sorting!</>,
     <div>
-      <p>Three… two… one… liftoff!</p>
-      In the spirit of our space theme, each attendees will be apart of a fictional desert crew!
+      <p>Desert adventurers, ready your canteens and compasses, and set course for adventure!</p>
+      In the spirit of our desert theme, each attendees will be apart of a fictional desert crew!
       Fictional desert crews will be a space for hackers to meet and socialize with other attendees
       outside of your project team through the endless desert. Throughout the weekend, you{"'"}ll
       have chances to win points for your new homeworld at different workshops/activities and
