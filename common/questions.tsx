@@ -28,6 +28,17 @@ import {
   YesOrNo,
   Lgbtq,
 } from './types';
+import {
+  HangingWithFriends,
+  ZombieApocalypse,
+  TakeOverNation,
+  Swag,
+  Aspirations,
+  Study,
+  Club,
+  SocialMedia,
+  DuringClass,
+} from './postAcceptanceTypes';
 
 let questionCount = 0;
 // constants for min/max length of q + others
@@ -728,10 +739,7 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
     true,
     'First Last'
   ),
-  makeSection(
-    <>Now the fun stuff!</>,
-    "Even though our event will be mostly virtual, we still plan on getting our awesome swag to our attendees! We will be having Swag Outpost stations on certain days at Northeastern University's campus in Boston. For those unable to pick up in Boston, we will try our best to ship swag to you if you're within the continental US. If you would like to cover your international shipping costs for swag shipping costs, please email team@hackbeanpot.com with your mailing address."
-  ),
+  makeSection(<>Now the fun stuff!</>),
   makeCheckbox(
     'swag',
     <div>
@@ -740,131 +748,124 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
       and appreciated by everyone! Please help us by only opting in to the items that you would
       actually like.
     </div>,
-    [
-      'T-shirt: our annual event shirt',
-      'Sticker sheet: classic HBP logo sticker with special space themed stickers',
-      'Cafe glasses: clear glass coffee cups with HBP logo printed on them',
-      'All of the above',
-      'None or N/A',
-    ],
+    [Swag.TShirt, Swag.StickerSheet, Swag.CoffeeMugs, Swag.Totes, Swag.All, Swag.None],
     true,
-    2
-  ),
-  makeShortText(
-    'accomodations',
-    <div>
-      <p>
-        Are there any accommodations (e.g. dietary restrictions) you would need from us for snacks?
-      </p>
-    </div>,
-    false,
-    'accomodations'
-  ),
-  makeDropdown(
-    'pickUpSwag',
-    <div>
-      <p>
-        If you are in the Boston area, would you be able to pick up your swag box at a location on
-        the Northeastern University campus from January 29 - February 5? A separate Google form for
-        swag outpost pickup will be sent to your email at a later time to coordinate Swag Pickup
-        timeslots.
-      </p>
-      It would really help us out :{"'"}) Shipping is expensive these days but we want to get you
-      the BEST swag out there!
-    </div>,
-    ['Yes', 'No/Not in Boston'],
-    true,
-    'Yes'
-  ),
-  makeLongText(
-    'address',
-    <div>
-      <p>
-        Otherwise, what physical address would you like your swag to be shipped to? Please include
-        the full name the package should be addressed to. *Note: At this time we can only ship to
-        addresses in the US. Please write N/A if not in the US.
-      </p>
-      Disclaimer: This information will not be shared with anyone outside of our organizing team and
-      will only be used for shipping. Please note that the package will take two weeks to ship and
-      will arrive mid-February.
-    </div>,
-    false
+    3
   ),
   makeSection(
-    <>Planet Mission Crew Sorting!</>,
+    <>Fictional Desert Crews Sorting!</>,
     <div>
-      <p>Three… two… one… liftoff!</p>
-      In the spirit of our space theme, each attendees will be apart of a planet mission crew!
-      Planet mission crews will be a space for hackers to meet and socialize with other attendees
-      outside of your project team through the vacuum of empty interplanetary space. Throughout the
-      weekend, you{"'"}ll have chances to win points for your new homeworld at different
-      workshops/activities and compete for the Space Race to the moon.
+      <p>Desert adventurers, ready your canteens and compasses, and set course for adventure!</p>
+      In the spirit of our desert theme, each attendees will be apart of a fictional desert crew!
+      Fictional desert crews will be a space for hackers to meet and socialize with other attendees
+      outside of your project team through the endless desert. Throughout the weekend, you{"'"}ll
+      have chances to win points for your new homeworld at different workshops/activities and
+      compete for the Desert race through the Sahara.
     </div>
   ),
   makeDropdown(
-    'careerInTech',
-    'What career in tech most interests you?',
+    'hangingWithFriends',
+    'You’re hanging out with your friends. You are likely...',
     [
-      'Backend software engineering',
-      'Frontend software engineering',
-      'Designer',
-      'Product Manager',
-      'Data Analyst/Engineer',
+      HangingWithFriends.RockClimbing,
+      HangingWithFriends.Book,
+      HangingWithFriends.Conversational,
+      HangingWithFriends.Listening,
+      HangingWithFriends.Discord,
     ],
     true,
-    'Backend software engineering'
+    'Select an option'
   ),
   makeDropdown(
-    'personAtParty',
-    'What kind of person are you most like at a party?',
+    'zombieApocalypse',
+    'In the event of a zombie apocalypse, you need to get to safe territory. What’s one item you are definitely packing with you?',
     [
-      'Eating/bringing all the food',
-      'Mingling with everyone',
-      'Jamming out on the dancefloor',
-      'Chilling in the corner',
-      'Hosting the party',
+      ZombieApocalypse.Laptop,
+      ZombieApocalypse.Survival,
+      ZombieApocalypse.GoPro,
+      ZombieApocalypse.WaterBottle,
+      ZombieApocalypse.Backpack,
     ],
     true,
-    'Eating/bringing all the food'
+    'Select an option'
   ),
   makeDropdown(
-    'wonLottery',
-    'You just won the lottery! What are you doing first?',
+    'takeOverNation',
+    'If you were given the task to take over a nation, how would you approach it?',
     [
-      'Booking a trip around the world!',
-      'Donate to a charity of your choice',
-      'Invest in #stonks',
-      'Go on a shopping spree with all your friends',
-      'Put it in your bank account to save for when you need it',
+      TakeOverNation.Exploit,
+      TakeOverNation.Hopeless,
+      TakeOverNation.CyberAttack,
+      TakeOverNation.SurpriseAttack,
+      TakeOverNation.Marry,
     ],
     true,
-    'Booking a trip around the world!'
+    'Select an option'
   ),
   makeDropdown(
-    'themePark',
-    'You’re at a theme park. Where are you heading first?',
+    'aspirations',
+    'What are your long-term aspirations?',
     [
-      'The biggest roller coaster in the park!',
-      'Something classic, like the ferris wheel',
-      'The snack stands, the food is the best part!',
-      'The game booths, you don’t really like rides',
-      'Whatever is at the front of the park/closest',
+      Aspirations.WellLiked,
+      Aspirations.Boss,
+      Aspirations.Wise,
+      Aspirations.RiskTaker,
+      Aspirations.Remembered,
     ],
     true,
-    'The biggest roller coaster in the park!'
+    'Select an option'
   ),
   makeDropdown(
-    'celebrity',
-    'In 5 years from now, you’re a celebrity! What are you famous for?',
+    'study',
+    'How would you typically study for exams?',
     [
-      'Accidentally became a meme',
-      'Founder of a successful startup',
-      'Popular actor/actress',
-      'Influencer on Instagram/TikTok',
-      'I’m not famous, but the Insta account I run for my dog is',
+      Study.Upperclassmen,
+      Study.DrillPass,
+      Study.StudyGroup,
+      Study.OfficeHours,
+      Study.TrickProfessor,
     ],
     true,
-    'Accidentally became a meme'
+    'Select an option'
+  ),
+  makeDropdown(
+    'stuckInElevator',
+    'If you get stuck in an elevator in your dorm(the door doesn’t open) with your friends, what would you do? ',
+    [
+      Study.Upperclassmen,
+      Study.DrillPass,
+      Study.StudyGroup,
+      Study.OfficeHours,
+      Study.TrickProfessor,
+    ],
+    true,
+    'Select an option'
+  ),
+  makeDropdown(
+    'club',
+    'Pick a social media platform! ',
+    [
+      SocialMedia.None,
+      SocialMedia.Instagram,
+      SocialMedia.Pinterest,
+      SocialMedia.Tiktok,
+      SocialMedia.Twitch,
+    ],
+    true,
+    'Select an option'
+  ),
+  makeDropdown(
+    'club',
+    'What do you do during class? (a really hard class, not a joke class)',
+    [
+      DuringClass.Game,
+      DuringClass.AskQuestions,
+      DuringClass.Listening,
+      DuringClass.OtherHomework,
+      DuringClass.NotInClass,
+    ],
+    true,
+    'Select an option'
   ),
 ];
 
