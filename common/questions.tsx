@@ -38,6 +38,7 @@ import {
   Club,
   SocialMedia,
   DuringClass,
+  ProofOfVaccination,
 } from './postAcceptanceTypes';
 
 let questionCount = 0;
@@ -687,8 +688,6 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
         answer the following questions to help us finalize logistics of making the event as great as
         it can be for our attendees!
       </p>
-      *NOTE: We will only be able to guarantee swag for the first 200 hackers who complete this form
-      and qualify for domestic shipping. Thanks for your understanding.
     </div>
   ),
   makeShortText('firstName', 'First name', true, 'First name'),
@@ -707,8 +706,8 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
         Waiver.
       </p>
       PARTICIPANT WAIVER:{' '}
-      <a href="https://bit.ly/hbp2022-waiver" target="_blank" rel="noreferrer">
-        bit.ly/hbp2022-waiver
+      <a href="http://bit.ly/3XjlJEz" target="_blank" rel="noreferrer">
+        bit.ly/3XjlJEz
       </a>
     </div>,
     true,
@@ -726,8 +725,8 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
         conditions stated in the Participant Waiver.
       </p>
       PARTICIPANT WAIVER:{' '}
-      <a href="https://bit.ly/hbp2022-waiver" target="_blank" rel="noreferrer">
-        bit.ly/hbp2022-waiver
+      <a href="http://bit.ly/3XjlJEz" target="_blank" rel="noreferrer">
+        bit.ly/3XjlJEz
       </a>
     </div>,
     true,
@@ -738,6 +737,18 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
     'Guardian: I acknowledge that I am above 18 years of age. I have read and agreed to the terms and conditions stated in the Participant Waiver and will make sure the attendee follows the platform usage defined in the Media & Platform Release.',
     true,
     'First Last'
+  ),
+  makeSection(<>Proof of Vaccination</>),
+  makeCheckbox(
+    'proofOfVaccination',
+    <div>
+      Please acknowledge that you must show proof of vaccination upon entry of the event. Proof of
+      vaccination means a photo or physical copy of your vaccination card. If you have a religious
+      or medical exemption, please notify us at team@hackbeanpot.com by the time you RSVP.
+    </div>,
+    [ProofOfVaccination.Acknowledgement],
+    true,
+    1
   ),
   makeSection(<>Now the fun stuff!</>),
   makeCheckbox(

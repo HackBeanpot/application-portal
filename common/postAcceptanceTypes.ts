@@ -7,6 +7,10 @@ export enum Swag {
   None = 'N/A',
 }
 
+export enum ProofOfVaccination {
+  Acknowledgement = 'I acknowledge that I must show proof of vaccination at the door otherwise I will be turned away at the event. If I have a religious or medical exemption, I will notify team@hackbeanpot.com by the time I RSVP.',
+}
+
 export enum HangingWithFriends {
   RockClimbing = 'Talking everyone’s ear off about your latest rock climbing experience',
   Book = 'Thinking about what book you’re going to read when you get home',
