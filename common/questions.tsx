@@ -853,7 +853,7 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
     'Select an option'
   ),
   makeDropdown(
-    'club',
+    'socialMedia',
     'Pick a social media platform! ',
     [
       SocialMedia.None,
@@ -866,7 +866,7 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
     'Select an option'
   ),
   makeDropdown(
-    'club',
+    'duringClass',
     'What do you do during class? (a really hard class, not a joke class)',
     [
       DuringClass.Game,

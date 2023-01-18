@@ -97,7 +97,6 @@ export interface PostAcceptanceResponses extends SharedResponses {
   aspirations?: Aspirations;
   study?: Study;
   stuckInElevator?: StuckInElevator;
-  club?: Club;
   socialMedia?: SocialMedia;
   duringClass?: DuringClass;
 }
