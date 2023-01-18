@@ -56,13 +56,9 @@ export const Admitted: React.FC<AdmittedProps> = ({ confirmBy }) => {
         message="Admitted"
         description={
           <div data-testid="admitted-dialog-text">
-            <p>
-              Congratulations, we would love to have you attend this year{"'"}s event! Please
-              navigate to the <strong>Application</strong> tab to mark your RSVP status. The
-              deadline to confirm your attendance is {format(confirmBy)}.
-            </p>
-            Please note: if you don{"'"}t complete the RSVP form by{' '}
-            <strong>{format(confirmBy)}</strong>, you will be ineligible for swag.
+            Congratulations, we would love to have you attend this year{"'"}s event! Please navigate
+            to the <strong>Application</strong> tab to mark your RSVP status. The deadline to
+            confirm your attendance is {format(confirmBy)}.
           </div>
         }
       />

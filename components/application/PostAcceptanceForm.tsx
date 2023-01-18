@@ -50,9 +50,10 @@ const AttendingForm: React.FC<AttendingFormProps> = ({ setAttendingState }) => {
   const submitAttending = () => setAttendingState(AttendingState.Yes);
   const submitNotAttending = async () => {
     setIsSubmitting(true);
-    console.log('in the correct function');
     const response = await updatePostAcceptanceFormResponses({
       rsvpStatus: RSVPStatus.NotAttending,
+      fields: [],
+      responses: [],
     });
     if (200 <= response.status && response.status < 300) {
       success();

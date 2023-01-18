@@ -36,7 +36,6 @@ const postHandler: NextApiHandler = async (req, res) => {
   if (confirmByState === ConfirmByState.After) {
     return res.status(400).json('Confirm by date has passed; post acceptance form is now closed.');
   }
-
   // todo: add validation later
   const { rsvpStatus, fields, responses } = req.body;
   if (![RSVPStatus.NotAttending, RSVPStatus.Confirmed].includes(rsvpStatus)) {
@@ -45,14 +44,12 @@ const postHandler: NextApiHandler = async (req, res) => {
   if (rsvpStatus === RSVPStatus.Confirmed) {
     QuestionResponseSchemas.map((schema, i) => Joi.attempt(responses[i], schema));
   }
-
   const userResponses: Record<string, QuestionResponse> = {};
 
   fields.forEach((field: keyof User, index: number) => {
     const response = responses[index];
     userResponses[field] = response;
   });
-
   const email = await assumeLoggedInGetEmail(req);
   const { userDataCollection } = await connectToDatabase();
   await userDataCollection.updateOne(
