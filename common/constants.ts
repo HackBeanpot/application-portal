@@ -15,8 +15,7 @@ import {
   User,
 } from './types';
 
-export const APPLY_BY_DATE = '12/20/2021';
-export const RESPONSE_BY_DATE = new Date('02/01/2022'); // TODO: MAKE SINGLETON IN DB
+export const RESPONSE_BY_DATE = new Date('02/01/2023'); // TODO: MAKE SINGLETON IN DB
 
 export const EXAMPLE_GENDER = Gender.Female;
 export const EXAMPLE_EDUCATION = Education.Undergraduate;
@@ -27,7 +26,7 @@ export const EXAMPLE_APPLICATION_STATUS = ApplicationStatus.Submitted;
 export const WELCOME_MESSAGE = 'Welcome to the Application Portal!';
 export const REJECTION_MESSAGE =
   'Unfortunately, we were not able to accept your application' +
-  'for the 2022 HackBeanpot Hackathon.';
+  'for the 2023 HackBeanpot Hackathon.';
 /**
  * example json User to use for now
  */

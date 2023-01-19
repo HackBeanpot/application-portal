@@ -52,6 +52,8 @@ const AttendingForm: React.FC<AttendingFormProps> = ({ setAttendingState }) => {
     setIsSubmitting(true);
     const response = await updatePostAcceptanceFormResponses({
       rsvpStatus: RSVPStatus.NotAttending,
+      fields: [],
+      responses: [],
     });
     if (200 <= response.status && response.status < 300) {
       success();
@@ -64,8 +66,8 @@ const AttendingForm: React.FC<AttendingFormProps> = ({ setAttendingState }) => {
   return (
     <>
       <p style={{ textAlign: 'center' }}>
-        Please select if you will be attending HackBeanpot on the weekend of February 11 - 13th,
-        2022. If you cannot make it, please select {'"No"'} so that we can admit others on the wait
+        Please select if you will be attending HackBeanpot on the weekend of February 10 - 12th,
+        2023. If you cannot make it, please select {'"No"'} so that we can admit others on the wait
         list instead.
       </p>
       <div style={{ display: 'flex', justifyContent: 'center' }}>

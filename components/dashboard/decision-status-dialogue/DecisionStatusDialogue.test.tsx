@@ -80,9 +80,7 @@ describe('`Admitted` decision component', () => {
     const admittedDecisionExpectedText =
       "Congratulations, we would love to have you attend this year's event! Please navigate to the Application tab to mark your RSVP status. The deadline to confirm your attendance is " +
       decisionConfirmByDateHumanized +
-      ".Please note: if you don't complete the RSVP form by " +
-      decisionConfirmByDateHumanized +
-      ', you will be ineligible for swag.';
+      '.';
     render(
       <DecisionStatusDialogue
         decisionStatus={DecisionStatus.Declined}

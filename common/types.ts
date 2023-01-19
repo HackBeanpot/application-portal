@@ -4,6 +4,7 @@ import {
   Club,
   DuringClass,
   HangingWithFriends,
+  ProofOfVaccination,
   SocialMedia,
   StuckInElevator,
   Study,
@@ -88,6 +89,7 @@ export interface PostAcceptanceResponses extends SharedResponses {
   adultSignature?: string;
   minorSignature?: string;
   guardianSignature?: string;
+  proofOfVaccination?: ProofOfVaccination;
   swag?: Array<Swag>;
   hangingWithFriends?: HangingWithFriends;
   zombieApocalypse?: ZombieApocalypse;
@@ -95,7 +97,6 @@ export interface PostAcceptanceResponses extends SharedResponses {
   aspirations?: Aspirations;
   study?: Study;
   stuckInElevator?: StuckInElevator;
-  club?: Club;
   socialMedia?: SocialMedia;
   duringClass?: DuringClass;
 }

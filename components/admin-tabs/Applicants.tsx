@@ -274,7 +274,6 @@ const downloadFileAbstract = async (
     current: 1,
     pageSize: totalCount,
   };
-
   const data = await getAllApplicants(pagination, filters, sorter);
   const rowHeadersText = [...fields, ...questions.map((q) => q.field)];
   const rowCellsText = data.data.data

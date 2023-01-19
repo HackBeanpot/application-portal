@@ -35,7 +35,7 @@ describe('NotAttending component', () => {
     const notAttendingDialogText = screen.getByTestId('not-attending-dialog-text');
 
     expect(notAttendingDialogText.textContent).toBe(
-      "We're sorry that you are not able to attend HackBeanpot 2022, and appreciate you letting us know. We hope that you continue to apply to our events in the future!"
+      "We're sorry that you are not able to attend HackBeanpot 2023, and appreciate you letting us know. We hope that you continue to apply to our events in the future!"
     );
   });
 });
