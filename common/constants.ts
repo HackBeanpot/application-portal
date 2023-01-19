@@ -15,7 +15,6 @@ import {
   User,
 } from './types';
 
-export const APPLY_BY_DATE = '12/20/2021';
 export const RESPONSE_BY_DATE = new Date('02/01/2023'); // TODO: MAKE SINGLETON IN DB
 
 export const EXAMPLE_GENDER = Gender.Female;
