@@ -44,7 +44,7 @@ export const NotAttending: React.FC = () => {
       message={'Not Attending'}
       description={
         <div data-testid="not-attending-dialog-text">
-          We{"'"}re sorry that you are not able to attend HackBeanpot 2022, and appreciate you
+          We{"'"}re sorry that you are not able to attend HackBeanpot 2023, and appreciate you
           letting us know. We hope that you continue to apply to our events in the future!
         </div>
       }

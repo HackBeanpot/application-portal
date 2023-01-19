@@ -27,7 +27,7 @@ describe('ShortTextQuestion component', () => {
     placeholder: 'Name',
     maxLength: 20,
     minLength: 1,
-    field: 'address',
+    field: 'adult',
     id: '1',
     required: true,
   };
