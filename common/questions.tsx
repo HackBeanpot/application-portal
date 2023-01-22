@@ -39,6 +39,7 @@ import {
   SocialMedia,
   DuringClass,
   ProofOfVaccination,
+  StuckInElevator,
 } from './postAcceptanceTypes';
 
 let questionCount = 0;
@@ -843,11 +844,11 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
     'stuckInElevator',
     'If you get stuck in an elevator in your dorm(the door doesn’t open) with your friends, what would you do? ',
     [
-      Study.Upperclassmen,
-      Study.DrillPass,
-      Study.StudyGroup,
-      Study.OfficeHours,
-      Study.TrickProfessor,
+      StuckInElevator.CallRA,
+      StuckInElevator.Debug,
+      StuckInElevator.Brainstorm,
+      StuckInElevator.KickDoor,
+      StuckInElevator.Game,
     ],
     true,
     'Select an option'
