@@ -78,9 +78,7 @@ describe('DecisionStatusDialogue', () => {
 describe('`Admitted` decision component', () => {
   it('renders', () => {
     const admittedDecisionExpectedText =
-      "Congratulations, we would love to have you attend this year's event! Please navigate to the Application tab to mark your RSVP status. The deadline to confirm your attendance is " +
-      decisionConfirmByDateHumanized +
-      '.';
+      "Congratulations, we would love to have you attend this year's event! Please navigate to the Application tab to mark your RSVP status. The deadline to confirm your attendance is Sunday, January 29th by 11:59pm.";
     render(
       <DecisionStatusDialogue
         decisionStatus={DecisionStatus.Declined}
