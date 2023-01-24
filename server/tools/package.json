@@ -1,0 +1,12 @@
+{
+  "name": "tools",
+  "version": "1.0.0",
+  "description": "",
+  "type": "commonjs",
+  "main": "process-apps.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "judy XD",
+  "license": "ISC"
+}
