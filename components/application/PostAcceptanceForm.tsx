@@ -29,7 +29,9 @@ export const PostAcceptanceForm: React.FC = () => {
         <div>
           <Form.Item noStyle>
             {confirmByData && (
-              <p>This RSVP form is DUE {new Date(confirmByData.data).toString()}.</p>
+              <p>
+                This RSVP form is DUE <strong>Sunday, January 29th by 11:59pm</strong>.
+              </p>
             )}
           </Form.Item>
           {attendingState === AttendingState.Unspecified ? (
@@ -66,9 +68,12 @@ const AttendingForm: React.FC<AttendingFormProps> = ({ setAttendingState }) => {
   return (
     <>
       <p style={{ textAlign: 'center' }}>
-        Please select if you will be attending HackBeanpot on the weekend of February 10 - 12th,
-        2023. If you cannot make it, please select {'"No"'} so that we can admit others on the wait
-        list instead.
+        Please select if you will be attending HackBeanpot on the weekend of{' '}
+        <strong>
+          February 10 - 12th, 2023 at Wood Mackenzie (179 Lincoln St, Boston, MA 02111)
+        </strong>{' '}
+        . If you cannot make it, please select {'"No"'} so that we can admit others on the wait list
+        instead.
       </p>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Popconfirm
