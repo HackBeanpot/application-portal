@@ -1,12 +1,3 @@
-export enum Swag {
-  TShirt = 'T-shirt: our annual event shirt in beige',
-  StickerSheet = 'Sticker sheet: classic HBP logo sticker with several specially designed desert-themed stickers',
-  CoffeeMugs = 'Coffee mugs: ceramic diner mugs with the HBP logo printed on them',
-  Totes = 'Tote bags: lightweight cotton tote bag with the HBP logo printed on them',
-  All = 'All of the above',
-  None = 'N/A',
-}
-
 export enum ProofOfVaccination {
   Acknowledgement = 'I acknowledge that I must show proof of vaccination at the door otherwise I will be turned away at the event. If I have a religious or medical exemption, I will notify team@hackbeanpot.com by the time I RSVP.',
 }
