@@ -32,7 +32,6 @@ import {
   HangingWithFriends,
   ZombieApocalypse,
   TakeOverNation,
-  Swag,
   Aspirations,
   Study,
   Club,
@@ -751,19 +750,6 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
     true,
     1
   ),
-  makeSection(<>Now the fun stuff!</>),
-  makeCheckbox(
-    'swag',
-    <div>
-      <p>Which of the following swag items would you like to receive?</p>
-      In the spirit of sustainability, we want to make sure that all of our swag items are useful
-      and appreciated by everyone! Please help us by only opting in to the items that you would
-      actually like.
-    </div>,
-    [Swag.TShirt, Swag.StickerSheet, Swag.CoffeeMugs, Swag.Totes, Swag.All, Swag.None],
-    true,
-    3
-  ),
   makeSection(
     <>Fictional Desert Crews Sorting!</>,
     <div>
@@ -850,6 +836,13 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
       StuckInElevator.KickDoor,
       StuckInElevator.Game,
     ],
+    true,
+    'Select an option'
+  ),
+  makeDropdown(
+    'club',
+    'What club would you be most likely to join!',
+    [Club.Gardening, Club.Debate, Club.Book, Club.Adventure, Club.Gaming],
     true,
     'Select an option'
   ),

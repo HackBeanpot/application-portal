@@ -42,7 +42,7 @@ export const EXAMPLE_RESPONSE: RegistrationApiRequest = {
   responses: ['Judy Su', EXAMPLE_ETHNICITIES],
 };
 export const EXAMPLE_CHECKBOX_1: Checkboxes = {
-  field: 'swag',
+  field: 'proofOfVaccination',
   id: '1',
   content: 'Who is the sassiest?',
   required: true,
@@ -65,7 +65,7 @@ export const EXAMPLE_SHORT_TEXT_1: ShortText = {
 // at least one of the options is equal to the response
 // make function that validates a function
 export const EXAMPLE_DROPDOWN_1: Dropdown = {
-  field: 'swag',
+  field: 'school',
   id: '3',
   content: "What's your favorite color?",
   required: true,
