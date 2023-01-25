@@ -8,7 +8,6 @@ import {
   SocialMedia,
   StuckInElevator,
   Study,
-  Swag,
   TakeOverNation,
   ZombieApocalypse,
 } from './postAcceptanceTypes';
@@ -90,13 +89,13 @@ export interface PostAcceptanceResponses extends SharedResponses {
   minorSignature?: string;
   guardianSignature?: string;
   proofOfVaccination?: ProofOfVaccination;
-  swag?: Array<Swag>;
   hangingWithFriends?: HangingWithFriends;
   zombieApocalypse?: ZombieApocalypse;
   takeOverNation?: TakeOverNation;
   aspirations?: Aspirations;
   study?: Study;
   stuckInElevator?: StuckInElevator;
+  club?: Club;
   socialMedia?: SocialMedia;
   duringClass?: DuringClass;
 }
