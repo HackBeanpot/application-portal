@@ -108,19 +108,16 @@ export const Declined: React.FC = () => {
 export const FailedToConfirm: React.FC<AdmittedProps> = ({ confirmBy }) => {
   return (
     <Alert
-      type={'success'}
+      type={'warning'}
       showIcon
-      message={'Accepted'}
+      message={'Failed to confirm'}
       description={
         <div data-testid="failed-to-confirm-dialog-text">
           <p>
-            Congratulations, you have been accepted to attend HackBeanpot. However, because you did
-            not finish your RSVP form by <strong>{format(confirmBy)}</strong>, you are ineligible
-            for swag.
+            You were accepted to HackBeanpot 2023 but because you did not RSVP in time by
+            <strong> Sunday, January 29th, </strong> you will be moved to the waitlist until
+            additional spots open up.
           </p>
-          However, if you would still like to attend the event, please email{' '}
-          <a href="mailto:team@hackbeanpot.com">team@hackbeanpot.com</a> letting us know of your
-          status so we can send you the appropriate details to join the event.
         </div>
       }
     />
