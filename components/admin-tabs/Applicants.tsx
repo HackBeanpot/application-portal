@@ -210,7 +210,13 @@ const Applicants: React.FC = () => {
 
 const escaper = (s: string) => `"${s.replaceAll('"', '""')}"`;
 const separator = ',';
-const fields: Array<keyof User> = ['email', 'isAdmin', 'applicationStatus', 'rsvpStatus'];
+const fields: Array<keyof User> = [
+  'email',
+  'isAdmin',
+  'applicationStatus',
+  'rsvpStatus',
+  'decisionStatus',
+];
 type DownloadProps = {
   totalCount: number;
   filters: TableFilters;
