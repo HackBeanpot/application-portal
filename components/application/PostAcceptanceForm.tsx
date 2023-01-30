@@ -30,7 +30,7 @@ export const PostAcceptanceForm: React.FC = () => {
           <Form.Item noStyle>
             {confirmByData && (
               <p>
-                This RSVP form is DUE <strong>Sunday, January 29th by 11:59pm</strong>.
+                This RSVP form is DUE <strong>Friday, February 3rd by 11:59pm</strong>.
               </p>
             )}
           </Form.Item>
