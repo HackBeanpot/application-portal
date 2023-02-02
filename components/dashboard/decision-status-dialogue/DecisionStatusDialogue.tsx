@@ -114,9 +114,9 @@ export const FailedToConfirm: React.FC<AdmittedProps> = ({ confirmBy }) => {
       description={
         <div data-testid="failed-to-confirm-dialog-text">
           <p>
-            You were accepted to HackBeanpot 2023 but because you did not RSVP in time by
-            <strong> Sunday, January 29th, </strong> you will be moved to the waitlist until
-            additional spots open up.
+            You were accepted to HackBeanpot 2023 but you did not RSVP in time by
+            <strong> Friday, February 3rd. </strong>Please let us know at team@hackbeanpot.com if
+            you would like to be added to the waitlist for if additional spots open up.
           </p>
         </div>
       }

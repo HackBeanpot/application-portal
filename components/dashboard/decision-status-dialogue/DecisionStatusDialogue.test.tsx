@@ -113,7 +113,7 @@ describe('`Declined` decision component', () => {
 describe('`FailedToConfirm` decision component', () => {
   it('renders', () => {
     const failedToConfirmDecisionExpectedText =
-      'You were accepted to HackBeanpot 2023 but because you did not RSVP in time by Sunday, January 29th,  you will be moved to the waitlist until additional spots open up.';
+      'You were accepted to HackBeanpot 2023 but you did not RSVP in time by Friday, February 3rd. Please let us know at team@hackbeanpot.com if you would like to be added to the waitlist for if additional spots open up.';
     render(<FailedToConfirm confirmBy={decisionConfirmByDatePast} />);
     const failedToConfirmDecisionText = screen.getByTestId('failed-to-confirm-dialog-text');
     expect(failedToConfirmDecisionText.textContent).toBe(failedToConfirmDecisionExpectedText);
