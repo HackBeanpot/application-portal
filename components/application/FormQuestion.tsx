@@ -1,13 +1,14 @@
 import { QuestionDefinition, QuestionType } from '../../common/types';
 import ShortTextQuestion from '../questions/short-test-question/ShortTextQuestion';
 import LongTextQuestion from '../questions/long-text-question/LongTextQuestion';
-import DropdownQuestion from '../questions/DropdownQuestion';
-import CheckboxesQuestion from '../questions/CheckboxesQuestion';
 import FileUploadQuestion from '../questions/file-upload-question/FileUploadQuestion';
 import { assertUnreachable } from '../../common/utils/utils';
 import React from 'react';
 import { FormInstance } from 'antd';
+import DropdownQuestion from '../questions/dropdown-question/DropdownQuestion';
+import CheckboxesQuestion from '../questions/checkboxes-question/CheckboxesQuestion';
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const getQuestionComponentFromType = (type: QuestionType) => {
   switch (type) {
     case QuestionType.ShortText:
