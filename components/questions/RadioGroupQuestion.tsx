@@ -7,7 +7,7 @@ type RadioGroupQuestionProps = {
     question: RadioGroup;
     form: FormInstance<Record<string, QuestionResponse>>;
 };
-const DropdownQuestion: FC<RadioGroupQuestionProps> = ({ question, form, disabled }) => {
+const DropdownQuestion: FC<RadioGroupQuestionProps> = ({ question, form, disabled, }) => {
     return (
         <Form.Item
             className="question"
@@ -16,6 +16,7 @@ const DropdownQuestion: FC<RadioGroupQuestionProps> = ({ question, form, disable
             label={question.content}
             rules={[{ required: question.required, message: 'This question is required' }]}
         >
+            {question.placeholder}
             <Radio.Group
                 disabled={disabled}
                 buttonStyle='solid'
