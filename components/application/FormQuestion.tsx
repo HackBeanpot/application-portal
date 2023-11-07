@@ -7,6 +7,7 @@ import FileUploadQuestion from '../questions/file-upload-question/FileUploadQues
 import { assertUnreachable } from '../../common/utils/utils';
 import React from 'react';
 import { FormInstance } from 'antd';
+import RadioGroupQuestion from '../questions/RadioGroupQuestion';
 
 export const getQuestionComponentFromType = (type: QuestionType) => {
   switch (type) {
