@@ -279,6 +279,7 @@ export enum QuestionType {
   Dropdown = 'Dropdown',
   LongText = 'Long Text',
   FileUpload = 'File Upload',
+  RadioGroup = 'RadioGroup',
 }
 export type QuestionDefinition = Checkboxes | ShortText | Dropdown | LongText | FileUpload;
 export type QuestionSection = {
