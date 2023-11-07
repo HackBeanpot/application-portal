@@ -6,6 +6,7 @@ import {
   QuestionDefinition,
   QuestionResponse,
   QuestionType,
+  RadioGroup,
   RegistrationApiRequest,
   ShortText,
 } from '../../common/types';
@@ -25,6 +26,9 @@ export const convertQuestionDefinitionToJoiSchema = (
     return convertShortTextToJoiSchema(q);
   } else if (q.type === QuestionType.FileUpload) {
     return convertFileUploadToJoiSchema(q);
+  }
+  else if (q.type === QuestionType.RadioGroup) {
+    return convertRadioGroupToJoiSchema(q);
   }
   throw new Error(`unexpected question type on question: ${q}`);
 };
@@ -50,6 +54,13 @@ export const convertDropdownToJoiSchema = (q: Dropdown): Joi.Schema => {
   const answerSchema = Joi.valid(...q.options.map((s) => s.name));
   return makeRequiredIfNeeded(q, answerSchema);
 };
+
+export const convertRadioGroupToJoiSchema = (q: RadioGroup): Joi.Schema => {
+  // dropdown expects a single string
+  const answerSchema = Joi.valid(...q.options.map((s) => s.name));
+  return makeRequiredIfNeeded(q, answerSchema);
+};
+
 export const convertLongTextToJoiSchema = (q: LongText): Joi.Schema => {
   // expects a long text response
   let answerSchema;
