@@ -114,7 +114,6 @@ export function makeRadioGroup(
   content: ReactNode,
   options: Array<string>,
   required: boolean,
-  placeholder?: string
 ): RadioGroup {
   questionCount++;
   return {
@@ -122,7 +121,6 @@ export function makeRadioGroup(
     type: QuestionType.RadioGroup,
     options: options.map((name) => ({ name })),
     content: content,
-    placeholder,
     id: String(questionCount), // need to access questionID from questionidtoquestioncontent
     required: required,
   };
@@ -414,7 +412,6 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Familiarity.Expert,
     ],
     true,
-    'Familiarity'
   ),
   makeRadioGroup(
     'webDevelopmentFamiliarity',
@@ -426,7 +423,6 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Familiarity.Expert,
     ],
     true,
-    'Familiarity'
   ),
   makeRadioGroup(
     'uiUxFamiliarity',
@@ -438,7 +434,6 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Familiarity.Expert,
     ],
     true,
-    'Familiarity'
   ),
   makeRadioGroup(
     'backendFamiliarity',
@@ -450,7 +445,6 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Familiarity.Expert,
     ],
     true,
-    'Familiarity'
   ),
   makeRadioGroup(
     'frontendFamiliarity',
@@ -462,7 +456,6 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Familiarity.Expert,
     ],
     true,
-    'Familiarity'
   ),
   makeRadioGroup(
     'dataScienceFamiliarity',
@@ -474,7 +467,6 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Familiarity.Expert,
     ],
     true,
-    'Familiarity'
   ),
   makeRadioGroup(
     'cybersecurityFamiliarity',
@@ -486,7 +478,6 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Familiarity.Expert,
     ],
     true,
-    'Familiarity'
   ),
   makeSection(<></>, <i>Which CS disciplines are you interested in learning more about?</i>),
   makeRadioGroup(
@@ -494,49 +485,42 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     'Mobile App Development',
     [InterestLevel.NotInterested, InterestLevel.SomewhatInterested, InterestLevel.VeryInterested],
     true,
-    'Interest level'
   ),
   makeRadioGroup(
     'webDevelopmentInterestLevel',
     'Web Development',
     [InterestLevel.NotInterested, InterestLevel.SomewhatInterested, InterestLevel.VeryInterested],
     true,
-    'Interest level'
   ),
   makeRadioGroup(
     'uiUxInterestLevel',
     'UI / UX',
     [InterestLevel.NotInterested, InterestLevel.SomewhatInterested, InterestLevel.VeryInterested],
     true,
-    'Interest level'
   ),
   makeRadioGroup(
     'backendInterestLevel',
     'Backend',
     [InterestLevel.NotInterested, InterestLevel.SomewhatInterested, InterestLevel.VeryInterested],
     true,
-    'Interest level'
   ),
   makeRadioGroup(
     'frontendInterestLevel',
     'Frontend',
     [InterestLevel.NotInterested, InterestLevel.SomewhatInterested, InterestLevel.VeryInterested],
     true,
-    'Interest level'
   ),
   makeRadioGroup(
     'dataScienceInterestLevel',
     'Data Science',
     [InterestLevel.NotInterested, InterestLevel.SomewhatInterested, InterestLevel.VeryInterested],
     true,
-    'Interest level'
   ),
   makeRadioGroup(
     'cybersecurityInterestLevel',
     'Cybersecurity',
     [InterestLevel.NotInterested, InterestLevel.SomewhatInterested, InterestLevel.VeryInterested],
     true,
-    'Interest level'
   ),
   makeCheckbox(
     'interestedWorkshops',

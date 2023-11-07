@@ -328,7 +328,6 @@ export interface LongText extends IQuestion {
 
 export interface RadioGroup extends IQuestion {
   type: QuestionType.RadioGroup;
-  placeholder?: string;
   options: Array<{ name: string }>;
 }
 

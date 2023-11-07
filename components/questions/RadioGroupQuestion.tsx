@@ -12,14 +12,11 @@ const DropdownQuestion: FC<RadioGroupQuestionProps> = ({ question, form, disable
         <Form.Item
             className="question"
             name={question.id}
-            wrapperCol={{ span: 8 }}
             label={question.content}
             rules={[{ required: question.required, message: 'This question is required' }]}
         >
-            {question.placeholder}
             <Radio.Group
                 disabled={disabled}
-                buttonStyle='solid'
                 onChange={(e) => { form.setFieldsValue({ [question.field]: e.target.value as string }) }}
             >
                 {question.options.map(({ name }) => (

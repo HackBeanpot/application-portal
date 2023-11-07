@@ -29,21 +29,21 @@ export const getQuestionComponentFromType = (type: QuestionType) => {
 };
 
 type FormQuestionProps = {
-  q: QuestionDefinition;
+  question: QuestionDefinition;
   form: FormInstance;
   disabled: boolean;
   submittedResume: boolean;
 };
 
 export const FormQuestion: React.FC<FormQuestionProps> = ({
-  q,
+  question,
   form,
   disabled,
   submittedResume,
 }) => {
-  const QuestionComponent = getQuestionComponentFromType(q.type);
+  const QuestionComponent = getQuestionComponentFromType(question.type);
   return React.createElement(QuestionComponent as any, {
-    q,
+    question,
     form,
     disabled,
     submitted: submittedResume,

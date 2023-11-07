@@ -31,7 +31,7 @@ export const FormSectionsAndQuestions: React.FC<FormSectionsAndQuestionsProps> =
         return (
           <FormQuestion
             key={sectionOrQuestion.id}
-            q={sectionOrQuestion}
+            question={sectionOrQuestion}
             form={form}
             disabled={disabled}
             submittedResume={submittedResume}
