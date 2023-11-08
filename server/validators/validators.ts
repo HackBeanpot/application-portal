@@ -14,85 +14,85 @@ import Joi from 'joi';
 import { Questions } from '../../common/questions';
 
 export const convertQuestionDefinitionToJoiSchema = (
-  q: QuestionDefinition
+  question: QuestionDefinition
 ): Joi.Schema<QuestionResponse> => {
-  if (q.type === QuestionType.Checkboxes) {
-    return convertCheckboxesToJoiSchema(q);
-  } else if (q.type === QuestionType.Dropdown) {
-    return convertDropdownToJoiSchema(q);
-  } else if (q.type === QuestionType.LongText) {
-    return convertLongTextToJoiSchema(q);
-  } else if (q.type === QuestionType.ShortText) {
-    return convertShortTextToJoiSchema(q);
-  } else if (q.type === QuestionType.FileUpload) {
-    return convertFileUploadToJoiSchema(q);
+  if (question.type === QuestionType.Checkboxes) {
+    return convertCheckboxesToJoiSchema(question);
+  } else if (question.type === QuestionType.Dropdown) {
+    return convertDropdownToJoiSchema(question);
+  } else if (question.type === QuestionType.LongText) {
+    return convertLongTextToJoiSchema(question);
+  } else if (question.type === QuestionType.ShortText) {
+    return convertShortTextToJoiSchema(question);
+  } else if (question.type === QuestionType.FileUpload) {
+    return convertFileUploadToJoiSchema(question);
   }
-  else if (q.type === QuestionType.RadioGroup) {
-    return convertRadioGroupToJoiSchema(q);
+  else if (question.type === QuestionType.RadioGroup) {
+    return convertRadioGroupToJoiSchema(question);
   }
-  throw new Error(`unexpected question type on question: ${q}`);
+  throw new Error(`unexpected question type on question: ${question}`);
 };
 
 // joi documentation is pretty good: checkout joi.dev/api
-export const makeRequiredIfNeeded = (q: QuestionDefinition, schema: Joi.Schema): Joi.Schema => {
+export const makeRequiredIfNeeded = (question: QuestionDefinition, schema: Joi.Schema): Joi.Schema => {
   // by default, joi allows undefined, but not null.
-  if (q.required) {
+  if (question.required) {
     // required means don't allow undefined
     return schema.required();
   }
   // if not required, then allow undefined (implicitly), and null
   return schema.allow(null);
 };
-export const convertCheckboxesToJoiSchema = (q: Checkboxes): Joi.Schema => {
+export const convertCheckboxesToJoiSchema = (question: Checkboxes): Joi.Schema => {
   // checkboxes expects an array of strings back
-  const itemSchema = Joi.valid(...q.options.map((s) => s.name));
-  const arraySchema = Joi.array().items(itemSchema).unique().min(q.minNumber).max(q.maxNumber);
-  return makeRequiredIfNeeded(q, arraySchema);
+  const itemSchema = Joi.valid(...question.options.map((s) => s.name));
+  const arraySchema = Joi.array().items(itemSchema).unique().min(question.minNumber).max(question.maxNumber);
+  return makeRequiredIfNeeded(question, arraySchema);
 };
-export const convertDropdownToJoiSchema = (q: Dropdown): Joi.Schema => {
+export const convertDropdownToJoiSchema = (question: Dropdown): Joi.Schema => {
   // dropdown expects a single string
-  const answerSchema = Joi.valid(...q.options.map((s) => s.name));
-  return makeRequiredIfNeeded(q, answerSchema);
+  const answerSchema = Joi.valid(...question.options.map((s) => s.name));
+  return makeRequiredIfNeeded(question, answerSchema);
 };
 
-export const convertRadioGroupToJoiSchema = (q: RadioGroup): Joi.Schema => {
+export const convertRadioGroupToJoiSchema = (question: RadioGroup): Joi.Schema => {
   // dropdown expects a single string
-  const answerSchema = Joi.valid(...q.options.map((s) => s.name));
-  return makeRequiredIfNeeded(q, answerSchema);
+  const answerSchema = Joi.valid(...question.options.map((s) => s.name));
+  return makeRequiredIfNeeded(question, answerSchema);
 };
 
-export const convertLongTextToJoiSchema = (q: LongText): Joi.Schema => {
+export const convertLongTextToJoiSchema = (question: LongText): Joi.Schema => {
   // expects a long text response
   let answerSchema;
-  if (q.required) {
-    answerSchema = Joi.string().trim().min(1).max(q.maxLength).label(`${q.field}`);
+  if (question.required) {
+    answerSchema = Joi.string().trim().min(1).max(question.maxLength).label(`${question.field}`);
   } else {
-    answerSchema = Joi.string().trim().min(q.minLength).max(q.maxLength);
+    answerSchema = Joi.string().trim().min(question.minLength).max(question.maxLength);
   }
-  return makeRequiredIfNeeded(q, answerSchema);
+  return makeRequiredIfNeeded(question, answerSchema);
 };
-export const convertShortTextToJoiSchema = (q: ShortText): Joi.Schema => {
+export const convertShortTextToJoiSchema = (question: ShortText): Joi.Schema => {
   // expects a long text response
   let answerSchema;
-  if (q.required) {
-    answerSchema = Joi.string().trim().min(1).max(q.maxLength).label(`${q.field}`);
+  if (question.required) {
+    answerSchema = Joi.string().trim().min(1).max(question.maxLength).label(`${question.field}`);
   } else {
-    answerSchema = Joi.string().trim().min(q.minLength).max(q.maxLength);
+    answerSchema = Joi.string().trim().min(question.minLength).max(question.maxLength);
   }
-  return makeRequiredIfNeeded(q, answerSchema);
+  return makeRequiredIfNeeded(question, answerSchema);
 };
 
-export const convertFileUploadToJoiSchema = (q: FileUpload): Joi.Schema => {
+export const convertFileUploadToJoiSchema = (question: FileUpload): Joi.Schema => {
   const answerSchema = Joi.string();
-  return makeRequiredIfNeeded(q, answerSchema);
+  return makeRequiredIfNeeded(question, answerSchema);
 };
 
-export const makeQuestionResponseSchemas = (qs: QuestionDefinition[]): Joi.Schema[] =>
-  qs.map(convertQuestionDefinitionToJoiSchema);
-export const makeRegistrationApiRequestSchema = (qs: QuestionDefinition[]): Joi.Schema =>
+export const makeQuestionResponseSchemas = (questions: QuestionDefinition[]): Joi.Schema[] =>
+  questions.map(convertQuestionDefinitionToJoiSchema);
+export const makeRegistrationApiRequestSchema = (questions: QuestionDefinition[]): Joi.Schema =>
   Joi.object<RegistrationApiRequest>({
-    fields: Joi.array().sparse().length(qs.length).required(),
-    responses: Joi.array().sparse().length(qs.length).required(),
+    fields: Joi.array().sparse().length(questions.length).required(),
+    responses: Joi.array().sparse().length(questions.length).required(),
   });
 
 // an array of the schema for each question in order

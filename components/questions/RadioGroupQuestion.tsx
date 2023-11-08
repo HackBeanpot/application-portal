@@ -7,7 +7,7 @@ type RadioGroupQuestionProps = {
     question: RadioGroup;
     form: FormInstance<Record<string, QuestionResponse>>;
 };
-const DropdownQuestion: FC<RadioGroupQuestionProps> = ({ question, form, disabled, }) => {
+const RadioGroupQuestion: FC<RadioGroupQuestionProps> = ({ question, form, disabled, }) => {
     return (
         <Form.Item
             className="question"
@@ -28,4 +28,4 @@ const DropdownQuestion: FC<RadioGroupQuestionProps> = ({ question, form, disable
         </Form.Item>
     );
 };
-export default DropdownQuestion;
+export default RadioGroupQuestion;
