@@ -180,7 +180,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
 
   makeShortText('lastName', 'Last name', true, 'Last name'),
   makeShortText('age', 'Age', true, 'Age'),
-  makeShortText('countryOfResidence', 'Country Of Residence', true, 'Country of Residence'),
+  makeShortText('countryOfResidence', 'Country Of Residence  (Please input full name of country, Ex: United States of America)', true, 'Country of Residence'),
   makeShortText('phoneNumber', 'Phone Number', true, 'Phone Number'),
 
   makeSection(
@@ -239,7 +239,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
   makeDropdown('school', 'What school do you attend?', Object.values(School), true, 'School'),
   makeShortText(
     'unlistedSchool',
-    'If your school was not listed in the previous question, list it here!',
+    'If your school was not listed in the previous question, list it here! (Please input full name of university, Ex: University of Southern California)',
     false
   ),
   makeDropdown(
