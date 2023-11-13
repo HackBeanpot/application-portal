@@ -42,6 +42,9 @@ export interface ApplicationResponses extends SharedResponses {
   age?: string;
   phoneNumber?: string;
   countryOfResidence?: string;
+  homeTown?: string;
+  linkedIn?: string;
+  github?: string;
   unlistedGender?: string;
   lgbtq?: Lgbtq;
   school?: School;
@@ -63,6 +66,9 @@ export interface ApplicationResponses extends SharedResponses {
   frontendFamiliarity?: Familiarity;
   dataScienceFamiliarity?: Familiarity;
   cybersecurityFamiliarity?: Familiarity;
+  ai?: Familiarity;
+  productManagement?: Familiarity;
+  entrepreneurship?: Familiarity;
   mobileAppDevelopmentInterestLevel?: InterestLevel;
   webDevelopmentInterestLevel?: InterestLevel;
   uiUxInterestLevel?: InterestLevel;
@@ -70,11 +76,15 @@ export interface ApplicationResponses extends SharedResponses {
   frontendInterestLevel?: InterestLevel;
   dataScienceInterestLevel?: InterestLevel;
   cybersecurityInterestLevel?: InterestLevel;
+  aiInterestLevel?: InterestLevel;
+  productManagementInterestLevel?: InterestLevel;
+  entrepreneurshipInterestLevel?: InterestLevel;
   interestedWorkshops?: Array<Workshop>;
   unlistedWorkshops?: string;
   prevHackathonFeedback?: string;
   hackBeanGoals?: string;
   tedTalkTopic?: string;
+  plannedProjectIdea?: string;
   meetAlienSpeech?: string;
   referrers?: Array<Referrer>;
   unListedReferrer?: string;
@@ -269,6 +279,7 @@ export enum Lgbtq {
   Yes = 'Yes',
   No = 'No',
   PreferNotToSay = 'Prefer not to say',
+  Unsure = 'Unsure',
 }
 
 export enum ApplicationStatus {
