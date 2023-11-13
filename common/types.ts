@@ -279,8 +279,15 @@ export enum QuestionType {
   Dropdown = 'Dropdown',
   LongText = 'Long Text',
   FileUpload = 'File Upload',
+  RadioGroup = 'RadioGroup',
 }
-export type QuestionDefinition = Checkboxes | ShortText | Dropdown | LongText | FileUpload;
+export type QuestionDefinition =
+  | Checkboxes
+  | ShortText
+  | Dropdown
+  | LongText
+  | FileUpload
+  | RadioGroup;
 export type QuestionSection = {
   id: string;
   type: 'SECTION';
@@ -317,6 +324,11 @@ export interface LongText extends IQuestion {
   type: QuestionType.LongText;
   maxLength: number;
   minLength: number;
+}
+
+export interface RadioGroup extends IQuestion {
+  type: QuestionType.RadioGroup;
+  options: Array<{ name: string }>;
 }
 
 export interface FileUpload extends IQuestion {

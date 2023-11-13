@@ -27,6 +27,7 @@ import {
   YearOfEducation,
   YesOrNo,
   Lgbtq,
+  RadioGroup,
 } from './types';
 import {
   HangingWithFriends,
@@ -102,6 +103,23 @@ export function makeDropdown(
     type: QuestionType.Dropdown,
     options: options.map((name) => ({ name })),
     placeholder,
+    content: content,
+    id: String(questionCount), // need to access questionID from questionidtoquestioncontent
+    required: required,
+  };
+}
+
+export function makeRadioGroup(
+  field: QuestionResponseField,
+  content: ReactNode,
+  options: Array<string>,
+  required: boolean,
+): RadioGroup {
+  questionCount++;
+  return {
+    field,
+    type: QuestionType.RadioGroup,
+    options: options.map((name) => ({ name })),
     content: content,
     id: String(questionCount), // need to access questionID from questionidtoquestioncontent
     required: required,
@@ -384,7 +402,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       unfamiliar, very basic knowledge, proficient, expert)
     </i>
   ),
-  makeDropdown(
+  makeRadioGroup(
     'mobileAppDevelopmentFamiliarity',
     'Mobile App Development',
     [
@@ -394,9 +412,8 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Familiarity.Expert,
     ],
     true,
-    'Familiarity'
   ),
-  makeDropdown(
+  makeRadioGroup(
     'webDevelopmentFamiliarity',
     'Web Development',
     [
@@ -406,9 +423,8 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Familiarity.Expert,
     ],
     true,
-    'Familiarity'
   ),
-  makeDropdown(
+  makeRadioGroup(
     'uiUxFamiliarity',
     'UI / UX',
     [
@@ -418,9 +434,8 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Familiarity.Expert,
     ],
     true,
-    'Familiarity'
   ),
-  makeDropdown(
+  makeRadioGroup(
     'backendFamiliarity',
     'Backend',
     [
@@ -430,9 +445,8 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Familiarity.Expert,
     ],
     true,
-    'Familiarity'
   ),
-  makeDropdown(
+  makeRadioGroup(
     'frontendFamiliarity',
     'Frontend',
     [
@@ -442,9 +456,8 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Familiarity.Expert,
     ],
     true,
-    'Familiarity'
   ),
-  makeDropdown(
+  makeRadioGroup(
     'dataScienceFamiliarity',
     'Data Science',
     [
@@ -454,9 +467,8 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Familiarity.Expert,
     ],
     true,
-    'Familiarity'
   ),
-  makeDropdown(
+  makeRadioGroup(
     'cybersecurityFamiliarity',
     'Cybersecurity',
     [
@@ -466,57 +478,49 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Familiarity.Expert,
     ],
     true,
-    'Familiarity'
   ),
   makeSection(<></>, <i>Which CS disciplines are you interested in learning more about?</i>),
-  makeDropdown(
+  makeRadioGroup(
     'mobileAppDevelopmentInterestLevel',
     'Mobile App Development',
     [InterestLevel.NotInterested, InterestLevel.SomewhatInterested, InterestLevel.VeryInterested],
     true,
-    'Interest level'
   ),
-  makeDropdown(
+  makeRadioGroup(
     'webDevelopmentInterestLevel',
     'Web Development',
     [InterestLevel.NotInterested, InterestLevel.SomewhatInterested, InterestLevel.VeryInterested],
     true,
-    'Interest level'
   ),
-  makeDropdown(
+  makeRadioGroup(
     'uiUxInterestLevel',
     'UI / UX',
     [InterestLevel.NotInterested, InterestLevel.SomewhatInterested, InterestLevel.VeryInterested],
     true,
-    'Interest level'
   ),
-  makeDropdown(
+  makeRadioGroup(
     'backendInterestLevel',
     'Backend',
     [InterestLevel.NotInterested, InterestLevel.SomewhatInterested, InterestLevel.VeryInterested],
     true,
-    'Interest level'
   ),
-  makeDropdown(
+  makeRadioGroup(
     'frontendInterestLevel',
     'Frontend',
     [InterestLevel.NotInterested, InterestLevel.SomewhatInterested, InterestLevel.VeryInterested],
     true,
-    'Interest level'
   ),
-  makeDropdown(
+  makeRadioGroup(
     'dataScienceInterestLevel',
     'Data Science',
     [InterestLevel.NotInterested, InterestLevel.SomewhatInterested, InterestLevel.VeryInterested],
     true,
-    'Interest level'
   ),
-  makeDropdown(
+  makeRadioGroup(
     'cybersecurityInterestLevel',
     'Cybersecurity',
     [InterestLevel.NotInterested, InterestLevel.SomewhatInterested, InterestLevel.VeryInterested],
     true,
-    'Interest level'
   ),
   makeCheckbox(
     'interestedWorkshops',
