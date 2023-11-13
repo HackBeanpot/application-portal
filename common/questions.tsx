@@ -41,6 +41,7 @@ import {
   ProofOfVaccination,
   StuckInElevator,
 } from './postAcceptanceTypes';
+import { mlhAuthorizeShareApplicationText } from './constants';
 
 let questionCount = 0;
 // constants for min/max length of q + others
@@ -196,6 +197,10 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
   makeShortText('preferredName', 'Preferred name', false, 'Preferred name'),
 
   makeShortText('lastName', 'Last name', true, 'Last name'),
+  makeShortText('age', 'Age', true, 'Age'),
+  makeShortText('countryOfResidence', 'Country Of Residence  (Please input full name of country, Ex: United States of America)', true, 'Country of Residence'),
+  makeShortText('phoneNumber', 'Phone Number', true, 'Phone Number'),
+
   makeSection(
     <>Demographics</>,
     <p>
@@ -227,14 +232,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
         <i>Your gender identity will not be shared publicly or to companies.</i>
       </p>
     </div>,
-    [
-      Gender.Male,
-      Gender.Female,
-      Gender.Nonbinary,
-      Gender.Genderqueer,
-      Gender.Unlisted,
-      Gender.PreferNotToSay,
-    ],
+    Object.keys(Gender),
     true,
     'Gender'
   ),
@@ -253,72 +251,26 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     true,
     'Identify'
   ),
-  makeCheckbox(
-    'races',
-    'What race(s) do you identify as?',
-    [
-      Race.IndigenousAlaskaNative,
-      Race.Asian,
-      Race.BlackAfricanAmerican,
-      Race.HispanicLatinx,
-      Race.NativeHawaiianPacificIslander,
-      Race.White,
-      Race.Unlisted,
-      Race.PreferNotToSay,
-    ],
-    true,
-    8
-  ),
+  makeCheckbox('races', 'What race(s) do you identify as?', Object.values(Race), true, 8),
 
   makeShortText('unlistedRace', "If your race(s) aren't listed above, list it here!", false),
-  makeDropdown(
-    'school',
-    'What school do you attend?',
-    [
-      School.NortheasternUniversity,
-      School.BostonUniversity,
-      School.MIT,
-      School.HarvardUniversity,
-      School.TuftsUniversity,
-      School.UniversityOfMassachusettsAmherst,
-      School.BostonCollege,
-      School.EmersonCollege,
-      School.SuffolkUniversity,
-      School.BrandeisUniversity,
-      School.WellesleyCollege,
-      School.WentworthInstituteOfTechnology,
-      School.OlinCollegeOfEngineering,
-      School.BenjaminFranklinInstituteOfTechnology,
-      School.SimmonsUniversity,
-      School.BristolCommunityCollege,
-      School.WorcesterPolytechnicInstitute,
-      School.Other,
-    ],
-    true,
-    'School'
-  ),
+  makeDropdown('school', 'What school do you attend?', Object.values(School), true, 'School'),
   makeShortText(
     'unlistedSchool',
-    'If your school was not listed in the previous question, list it here!',
+    'If your school was not listed in the previous question, list it here! (Please input full name of university, Ex: University of Southern California)',
     false
   ),
   makeDropdown(
     'education',
     'What level of education are you currently pursuing?',
-    [Education.HighSchool, Education.Undergraduate, Education.Graduate],
+    Object.values(Education),
     true,
     'Level'
   ),
   makeDropdown(
     'yearOfEducation',
     'What year in your current education are you?',
-    [
-      YearOfEducation.first,
-      YearOfEducation.second,
-      YearOfEducation.third,
-      YearOfEducation.fourth,
-      YearOfEducation.fifthOrAbove,
-    ],
+    Object.values(YearOfEducation),
     true,
     'Year'
   ),
@@ -353,14 +305,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       We will be handing out t-shirts and other fun swag at the event. What is your t-shirt size?{' '}
       <i>All sizes are unisex.</i>
     </div>,
-    [
-      ShirtSize.XSmall,
-      ShirtSize.Small,
-      ShirtSize.Medium,
-      ShirtSize.Large,
-      ShirtSize.XLarge,
-      ShirtSize.XXLarge,
-    ],
+    Object.values(ShirtSize),
     true,
     'Size'
   ),
@@ -672,6 +617,25 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
   makeLongText(
     'howCanCoreTeamHelp',
     'What can the Core team do to help you have the best experience at HackBeanpot 2023?',
+    false
+  ),
+  makeSection(<>Code of Conduct and Policy</>),
+  makeDropdown(
+    'mlhCodeOfConduct',
+    'I have read and agree to the MLH Code of Conduct(https://static.mlh.io/docs/mlh-code-of-conduct.pdf)',
+    ['Yes'],
+    true
+  ),
+  makeDropdown(
+    'mlhApplicationSharingAuthorization',
+    mlhAuthorizeShareApplicationText,
+    ['Yes'],
+    true
+  ),
+  makeDropdown(
+    'mlhMarketingAuthorization',
+    'I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements.',
+    Object.values(YesOrNo),
     false
   ),
 ];

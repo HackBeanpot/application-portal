@@ -39,6 +39,9 @@ export interface ApplicationResponses extends SharedResponses {
   preferredName?: string;
   pronouns?: string;
   gender?: Gender;
+  age?: string;
+  phoneNumber?: string;
+  countryOfResidence?: string;
   unlistedGender?: string;
   lgbtq?: Lgbtq;
   school?: School;
@@ -77,6 +80,9 @@ export interface ApplicationResponses extends SharedResponses {
   unListedReferrer?: string;
   premadeTeam?: string;
   interestedInTeamFormation?: YesOrNo;
+  mlhCodeOfConduct?: Omit<YesOrNo, 'No'>;
+  mlhApplicationSharingAuthorization?: Omit<YesOrNo, 'No'>;
+  mlhMarketingAuthorization?: YesOrNo;
   accomodations?: string;
   questionsToAdd?: string;
   commentsQuestionsSuggestions?: string;
@@ -160,9 +166,17 @@ export enum School {
 }
 
 export enum Education {
-  HighSchool = 'High School',
-  Undergraduate = 'Undergraduate',
-  Graduate = 'Graduate',
+  LessThanSecondary = 'Less than Secondary / High School',
+  HighSchool = 'Secondary / High School',
+  CommunityCollege = 'Community College',
+  UndergraduateUniversity = 'Undergraduate University',
+  GraduateUniversity = 'Graduate University',
+  CodeSchool = 'Code School',
+  OtherVocational = 'Vocational',
+  PostDoctorate = 'Post Graduate',
+  Other = 'Other',
+  NotAStudent = `I’m not currently a student`,
+  PreferToNotAnswer = 'Prefer to not answer',
 }
 
 export enum YearOfEducation {

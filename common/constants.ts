@@ -18,7 +18,7 @@ import {
 export const RESPONSE_BY_DATE = new Date('02/01/2023'); // TODO: MAKE SINGLETON IN DB
 
 export const EXAMPLE_GENDER = Gender.Female;
-export const EXAMPLE_EDUCATION = Education.Undergraduate;
+export const EXAMPLE_EDUCATION = Education.UndergraduateUniversity;
 export const EXAMPLE_ETHNICITIES = [Race.Asian];
 export const EXAMPLE_SHIRTSIZE = ShirtSize.Small;
 export const EXAMPLE_APPLICATION_STATUS = ApplicationStatus.Submitted;
@@ -27,6 +27,7 @@ export const WELCOME_MESSAGE = 'Welcome to the Application Portal!';
 export const REJECTION_MESSAGE =
   'Unfortunately, we were not able to accept your application' +
   'for the 2023 HackBeanpot Hackathon.';
+export const mlhAuthorizeShareApplicationText = `I authorize you to share my application/registration information with Major League Hacking for event administration, ranking, and MLH administration in-line with the MLH Privacy Policy (https://mlh.io/privacy). I further agree to the terms of both the MLH Contest Terms and Conditions (https://github.com/MLH/mlh-policies/blob/main/contest-terms.md)and the MLH Privacy Policy (https://mlh.io/privacy)`;
 /**
  * example json User to use for now
  */
