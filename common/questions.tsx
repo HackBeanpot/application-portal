@@ -615,6 +615,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     'What can the Core team do to help you have the best experience at HackBeanpot 2023?',
     false
   ),
+  makeSection(<>Code of Conduct and Policy</>),
   makeDropdown(
     'mlhCodeOfConduct',
     'I have read and agree to the MLH Code of Conduct(https://static.mlh.io/docs/mlh-code-of-conduct.pdf)',
