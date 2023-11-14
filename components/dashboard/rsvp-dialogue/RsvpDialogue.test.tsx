@@ -24,7 +24,7 @@ describe('Confirmed component', () => {
     const confirmedDialogText = screen.getByTestId('confirmed-dialog-text');
 
     expect(confirmedDialogText.textContent).toBe(
-      "We look forward to seeing you the weekend of the event! Stay on the lookout for emails regarding logistics closer to the date of the event, and in the meantime if you have any questions, don't hesitate to email us at team@hackbeanpot.com!"
+      "We look forward to seeing you the weekend of the event! Stay on the lookout for emails regarding logistics closer to the date of the event, and in the meantime if you have any questions, don't hesitate to email us at core@hackbeanpot.com!"
     );
   });
 });

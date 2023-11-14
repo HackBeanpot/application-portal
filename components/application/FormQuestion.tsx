@@ -7,6 +7,7 @@ import FileUploadQuestion from '../questions/file-upload-question/FileUploadQues
 import { assertUnreachable } from '../../common/utils/utils';
 import React from 'react';
 import { FormInstance } from 'antd';
+import RadioGroupQuestion from '../questions/RadioGroupQuestion';
 
 export const getQuestionComponentFromType = (type: QuestionType) => {
   switch (type) {
@@ -20,27 +21,29 @@ export const getQuestionComponentFromType = (type: QuestionType) => {
       return CheckboxesQuestion;
     case QuestionType.FileUpload:
       return FileUploadQuestion;
+    case QuestionType.RadioGroup:
+      return RadioGroupQuestion;
     default:
       assertUnreachable(type);
   }
 };
 
 type FormQuestionProps = {
-  q: QuestionDefinition;
+  question: QuestionDefinition;
   form: FormInstance;
   disabled: boolean;
   submittedResume: boolean;
 };
 
 export const FormQuestion: React.FC<FormQuestionProps> = ({
-  q,
+  question,
   form,
   disabled,
   submittedResume,
 }) => {
-  const QuestionComponent = getQuestionComponentFromType(q.type);
+  const QuestionComponent = getQuestionComponentFromType(question.type);
   return React.createElement(QuestionComponent as any, {
-    question: q,
+    question,
     form,
     disabled,
     submitted: submittedResume,

@@ -29,7 +29,7 @@ export const Confirmed: React.FC = () => {
         <div data-testid="confirmed-dialog-text">
           We look forward to seeing you the weekend of the event! Stay on the lookout for emails
           regarding logistics closer to the date of the event, and in the meantime if you have any
-          questions, don{"'"}t hesitate to email us at team@hackbeanpot.com!
+          questions, don{"'"}t hesitate to email us at core@hackbeanpot.com!
         </div>
       }
     />

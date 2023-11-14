@@ -39,6 +39,12 @@ export interface ApplicationResponses extends SharedResponses {
   preferredName?: string;
   pronouns?: string;
   gender?: Gender;
+  age?: string;
+  phoneNumber?: string;
+  countryOfResidence?: string;
+  homeTown?: string;
+  linkedIn?: string;
+  github?: string;
   unlistedGender?: string;
   lgbtq?: Lgbtq;
   school?: School;
@@ -60,6 +66,9 @@ export interface ApplicationResponses extends SharedResponses {
   frontendFamiliarity?: Familiarity;
   dataScienceFamiliarity?: Familiarity;
   cybersecurityFamiliarity?: Familiarity;
+  ai?: Familiarity;
+  productManagement?: Familiarity;
+  entrepreneurship?: Familiarity;
   mobileAppDevelopmentInterestLevel?: InterestLevel;
   webDevelopmentInterestLevel?: InterestLevel;
   uiUxInterestLevel?: InterestLevel;
@@ -67,16 +76,23 @@ export interface ApplicationResponses extends SharedResponses {
   frontendInterestLevel?: InterestLevel;
   dataScienceInterestLevel?: InterestLevel;
   cybersecurityInterestLevel?: InterestLevel;
+  aiInterestLevel?: InterestLevel;
+  productManagementInterestLevel?: InterestLevel;
+  entrepreneurshipInterestLevel?: InterestLevel;
   interestedWorkshops?: Array<Workshop>;
   unlistedWorkshops?: string;
   prevHackathonFeedback?: string;
   hackBeanGoals?: string;
   tedTalkTopic?: string;
+  plannedProjectIdea?: string;
   meetAlienSpeech?: string;
   referrers?: Array<Referrer>;
   unListedReferrer?: string;
   premadeTeam?: string;
   interestedInTeamFormation?: YesOrNo;
+  mlhCodeOfConduct?: Omit<YesOrNo, 'No'>;
+  mlhApplicationSharingAuthorization?: Omit<YesOrNo, 'No'>;
+  mlhMarketingAuthorization?: YesOrNo;
   accomodations?: string;
   questionsToAdd?: string;
   commentsQuestionsSuggestions?: string;
@@ -160,9 +176,17 @@ export enum School {
 }
 
 export enum Education {
-  HighSchool = 'High School',
-  Undergraduate = 'Undergraduate',
-  Graduate = 'Graduate',
+  LessThanSecondary = 'Less than Secondary / High School',
+  HighSchool = 'Secondary / High School',
+  CommunityCollege = 'Community College',
+  UndergraduateUniversity = 'Undergraduate University',
+  GraduateUniversity = 'Graduate University',
+  CodeSchool = 'Code School',
+  OtherVocational = 'Vocational',
+  PostDoctorate = 'Post Graduate',
+  Other = 'Other',
+  NotAStudent = `I’m not currently a student`,
+  PreferToNotAnswer = 'Prefer to not answer',
 }
 
 export enum YearOfEducation {
@@ -255,6 +279,7 @@ export enum Lgbtq {
   Yes = 'Yes',
   No = 'No',
   PreferNotToSay = 'Prefer not to say',
+  Unsure = 'Unsure',
 }
 
 export enum ApplicationStatus {
@@ -279,8 +304,15 @@ export enum QuestionType {
   Dropdown = 'Dropdown',
   LongText = 'Long Text',
   FileUpload = 'File Upload',
+  RadioGroup = 'RadioGroup',
 }
-export type QuestionDefinition = Checkboxes | ShortText | Dropdown | LongText | FileUpload;
+export type QuestionDefinition =
+  | Checkboxes
+  | ShortText
+  | Dropdown
+  | LongText
+  | FileUpload
+  | RadioGroup;
 export type QuestionSection = {
   id: string;
   type: 'SECTION';
@@ -317,6 +349,11 @@ export interface LongText extends IQuestion {
   type: QuestionType.LongText;
   maxLength: number;
   minLength: number;
+}
+
+export interface RadioGroup extends IQuestion {
+  type: QuestionType.RadioGroup;
+  options: Array<{ name: string }>;
 }
 
 export interface FileUpload extends IQuestion {
