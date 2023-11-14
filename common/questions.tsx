@@ -785,7 +785,7 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
     <div>
       Please acknowledge that you must show proof of vaccination upon entry of the event. Proof of
       vaccination means a photo or physical copy of your vaccination card. If you have a religious
-      or medical exemption, please notify us at team@hackbeanpot.com by the time you RSVP.
+      or medical exemption, please notify us at core@hackbeanpot.com by the time you RSVP.
     </div>,
     [ProofOfVaccination.Acknowledgement],
     true,
