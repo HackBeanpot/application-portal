@@ -175,7 +175,7 @@ export function makeFileUpload(
 
 let sectionCount = 0;
 
-const characterRecommendationMessage = <i>250 words max</i>;
+const characterRecommendationMessage = "(250 words maximum)";
 
 export function makeSection(text: ReactNode, description?: ReactNode): QuestionSection {
   sectionCount++;
