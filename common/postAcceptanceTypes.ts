@@ -1,5 +1,5 @@
 export enum ProofOfVaccination {
-  Acknowledgement = 'I acknowledge that I must show proof of vaccination at the door otherwise I will be turned away at the event. If I have a religious or medical exemption, I will notify team@hackbeanpot.com by the time I RSVP.',
+  Acknowledgement = 'I acknowledge that I must show proof of vaccination at the door otherwise I will be turned away at the event. If I have a religious or medical exemption, I will notify core@hackbeanpot.com by the time I RSVP.',
 }
 
 export enum HangingWithFriends {

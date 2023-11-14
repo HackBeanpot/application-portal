@@ -93,7 +93,7 @@ const PortalSettings: React.FC = () => {
                       setMyShowDecision(checked);
                     });
                   } else {
-                    alert('Connection failed, please try again or contact team@hackbeanpot.com');
+                    alert('Connection failed, please try again or contact core@hackbeanpot.com');
                   }
                 });
               }}

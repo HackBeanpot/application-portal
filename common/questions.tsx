@@ -175,7 +175,7 @@ export function makeFileUpload(
 
 let sectionCount = 0;
 
-const characterRecommendationMessage = <i>250 words max</i>;
+const characterRecommendationMessage = "(250 words maximum)";
 
 export function makeSection(text: ReactNode, description?: ReactNode): QuestionSection {
   sectionCount++;
@@ -430,7 +430,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     ],
     true,
   ),
-  makeDropdown(
+  makeRadioGroup(
     'ai',
     'AI/Machine Learning',
     [
@@ -440,9 +440,8 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Familiarity.Expert,
     ],
     true,
-    'Familiarity'
   ),
-  makeDropdown(
+  makeRadioGroup(
     'productManagement',
     'Product Management',
     [
@@ -452,9 +451,8 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Familiarity.Expert,
     ],
     true,
-    'Familiarity'
   ),
-  makeDropdown(
+  makeRadioGroup(
     'entrepreneurship',
     'Entrepreneurship',
     [
@@ -464,7 +462,6 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Familiarity.Expert,
     ],
     true,
-    'Familiarity'
   ),
   makeSection(<></>, <i>Which CS disciplines are you interested in learning more about?</i>),
   makeRadioGroup(
@@ -508,23 +505,20 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     'Cybersecurity',
     Object.values(InterestLevel),
     true,
-    'Interest level'
   ),
-  makeDropdown(
+  makeRadioGroup(
     'aiInterestLevel',
     'Ai/Machine Learning',
     Object.values(InterestLevel),
     true,
-    'Interest level'
   ),
-  makeDropdown(
+  makeRadioGroup(
     'productManagementInterestLevel',
     'Product Management',
     Object.values(InterestLevel),
     true,
-    'Interest level'
   ),
-  makeDropdown(
+  makeRadioGroup(
     'entrepreneurshipInterestLevel',
     'Entrepreneurship',
     Object.values(InterestLevel),
@@ -785,7 +779,7 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
     <div>
       Please acknowledge that you must show proof of vaccination upon entry of the event. Proof of
       vaccination means a photo or physical copy of your vaccination card. If you have a religious
-      or medical exemption, please notify us at team@hackbeanpot.com by the time you RSVP.
+      or medical exemption, please notify us at core@hackbeanpot.com by the time you RSVP.
     </div>,
     [ProofOfVaccination.Acknowledgement],
     true,

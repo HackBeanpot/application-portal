@@ -124,7 +124,7 @@ export const ApplicationForm = (): ReactElement => {
             interest so please keep this in mind as you&apos;re filling out the application, thanks
             :)
           </li>
-          <li>If you have questions please reach out to team@hackbeanpot.com.</li>
+          <li>If you have questions please reach out to core@hackbeanpot.com.</li>
         </ul>
       </div>
       {registrationCloseDate && registrationOpenDate && alreadySubmitted && (
