@@ -175,9 +175,7 @@ export function makeFileUpload(
 
 let sectionCount = 0;
 
-const characterRecommendationMessage = (
-  <i> Though there is no minimum, the recommended character amount is 750-1000.</i>
-);
+const characterRecommendationMessage = <i>250 words max</i>;
 
 export function makeSection(text: ReactNode, description?: ReactNode): QuestionSection {
   sectionCount++;
@@ -198,8 +196,16 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
 
   makeShortText('lastName', 'Last name', true, 'Last name'),
   makeShortText('age', 'Age', true, 'Age'),
-  makeShortText('countryOfResidence', 'Country Of Residence  (Please input full name of country, Ex: United States of America)', true, 'Country of Residence'),
+  makeShortText('homeTown', 'Home Town', true, 'ex: Boston'),
+  makeShortText(
+    'countryOfResidence',
+    'Country Of Residence  (Please input full name of country, Ex: United States of America)',
+    true,
+    'Country of Residence'
+  ),
   makeShortText('phoneNumber', 'Phone Number', true, 'Phone Number'),
+  makeShortText('github', 'Github Url', false, 'ex: github.com/HackBeanpot'),
+  makeShortText('linkedIn', 'LinkedIn url', false, 'ex: linkedin.com/company/hackbeanpot-inc'),
 
   makeSection(
     <>Demographics</>,
@@ -242,12 +248,12 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     <div>
       <p>
         <br />
-        Do you identify as LGBTQ+?
+        Do you identify as part of the LGBTQIA+ community??
         <br />
         <i>Your orientation will not be shared publicly or to companies.</i>
       </p>
     </div>,
-    [Lgbtq.Yes, Lgbtq.No, Lgbtq.PreferNotToSay],
+    [Lgbtq.Yes, Lgbtq.No, Lgbtq.PreferNotToSay, Lgbtq.Unsure],
     true,
     'Identify'
   ),
@@ -285,20 +291,20 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     'resumeLink',
     <div>
       <p>
-        If you would like to hear about internships / job opportunities from our our sponsors,
-        upload your resume! (PDF only)
+        Please upload your resume as a PDF! We do not read resumes as a part of the HBP application
+        process. The resumes are shared with interested sponsors who may contact you about
+        internship/job opportunities, and will only be read by them. Here is a Google doc template
+        to help you get started if you don’t have a resume yet:
+        https://docs.google.com/document/d/1vOdGOeGk5XTKL4Zu-9lctJKbDfC1zIVSKO2xowXnC3Q/edit
       </p>
-      <i>
-        Note: We do not read resumes as a part of the HBP application process. Your resume will only
-        shared with sponsors regarding job opportunities, and will only be read by them.
-      </i>
     </div>,
-    false,
+    true,
     '.pdf',
     false,
     1,
     "You've already submitted a resume, but feel free to upload another one! (This will replace the old resume you've submitted.)"
   ),
+
   makeDropdown(
     'shirtSize',
     <div>
@@ -424,47 +430,104 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     ],
     true,
   ),
+  makeDropdown(
+    'ai',
+    'AI/Machine Learning',
+    [
+      Familiarity.CompletelyUnfamiliar,
+      Familiarity.VeryBasicKnowledge,
+      Familiarity.Proficient,
+      Familiarity.Expert,
+    ],
+    true,
+    'Familiarity'
+  ),
+  makeDropdown(
+    'productManagement',
+    'Product Management',
+    [
+      Familiarity.CompletelyUnfamiliar,
+      Familiarity.VeryBasicKnowledge,
+      Familiarity.Proficient,
+      Familiarity.Expert,
+    ],
+    true,
+    'Familiarity'
+  ),
+  makeDropdown(
+    'entrepreneurship',
+    'Entrepreneurship',
+    [
+      Familiarity.CompletelyUnfamiliar,
+      Familiarity.VeryBasicKnowledge,
+      Familiarity.Proficient,
+      Familiarity.Expert,
+    ],
+    true,
+    'Familiarity'
+  ),
   makeSection(<></>, <i>Which CS disciplines are you interested in learning more about?</i>),
   makeRadioGroup(
     'mobileAppDevelopmentInterestLevel',
     'Mobile App Development',
-    [InterestLevel.NotInterested, InterestLevel.SomewhatInterested, InterestLevel.VeryInterested],
+    Object.values(InterestLevel),
     true,
   ),
   makeRadioGroup(
     'webDevelopmentInterestLevel',
     'Web Development',
-    [InterestLevel.NotInterested, InterestLevel.SomewhatInterested, InterestLevel.VeryInterested],
+    Object.values(InterestLevel),
     true,
   ),
   makeRadioGroup(
     'uiUxInterestLevel',
     'UI / UX',
-    [InterestLevel.NotInterested, InterestLevel.SomewhatInterested, InterestLevel.VeryInterested],
+    Object.values(InterestLevel),
     true,
   ),
   makeRadioGroup(
     'backendInterestLevel',
     'Backend',
-    [InterestLevel.NotInterested, InterestLevel.SomewhatInterested, InterestLevel.VeryInterested],
+    Object.values(InterestLevel),
     true,
   ),
   makeRadioGroup(
     'frontendInterestLevel',
     'Frontend',
-    [InterestLevel.NotInterested, InterestLevel.SomewhatInterested, InterestLevel.VeryInterested],
+    Object.values(InterestLevel),
     true,
   ),
   makeRadioGroup(
     'dataScienceInterestLevel',
     'Data Science',
-    [InterestLevel.NotInterested, InterestLevel.SomewhatInterested, InterestLevel.VeryInterested],
+    Object.values(InterestLevel),
     true,
   ),
   makeRadioGroup(
     'cybersecurityInterestLevel',
     'Cybersecurity',
-    [InterestLevel.NotInterested, InterestLevel.SomewhatInterested, InterestLevel.VeryInterested],
+    Object.values(InterestLevel),
+    true,
+    'Interest level'
+  ),
+  makeDropdown(
+    'aiInterestLevel',
+    'Ai/Machine Learning',
+    Object.values(InterestLevel),
+    true,
+    'Interest level'
+  ),
+  makeDropdown(
+    'productManagementInterestLevel',
+    'Product Management',
+    Object.values(InterestLevel),
+    true,
+    'Interest level'
+  ),
+  makeDropdown(
+    'entrepreneurshipInterestLevel',
+    'Entrepreneurship',
+    Object.values(InterestLevel),
     true,
   ),
   makeCheckbox(
@@ -507,20 +570,15 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     false
   ),
   makeLongText(
-    'prevHackathonFeedback',
-    'If you’ve attended a hackathon (in person or virtual) previously, what did you like or dislike about it? If you’ve never attended a hackathon, what would you like to see at HackBeanpot?',
-    false
-  ),
-  makeLongText(
     'hackBeanGoals',
     <div>
       <p>
-        At HackBeanpot 2023, we aim to create a welcoming environment by focusing on exploration
-        into the desert, community, and growth! Desert exploration relies on perseverance, teamwork,
+        At HackBeanpot 2024, we aim to create a welcoming environment by focusing on exploration
+        into the desert, community, and growth! Ocean exploration relies on perseverance, teamwork,
         innovation and a sense of adventure!
       </p>
       <p>
-        Whether you journey along the sandy dunes alone or with a team, what do you hope to get out
+        Whether you journey along the sea depths alone or with a team, what do you hope to get out
         of HackBeanpot? What do you want to walk away having learned or experienced from this
         weekend?
       </p>
@@ -539,6 +597,52 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       {characterRecommendationMessage}
     </div>,
     true
+  ),
+  makeLongText(
+    'prevHackathonFeedback',
+    `Have you attended HackBeanpot previously? If you’ve attended a hackathon (in person or virtual) previously, what did you like or dislike about it? If this is your first hackathon, what would you like to see at HackBeanpot? `,
+    false
+  ),
+  makeSection(
+    <>Team Formation</>,
+    <i>
+      *Note: This question does not get factored into how your application is read! This question is
+      for us to plan ahead for team formation; applicants are accepted on an individual basis, and
+      it is not guaranteed that everyone in a premade team will be accepted. As part of our under
+      the sea theme this year, you’ll be sorted into teams of explorers as you venture out into the
+      sea together and compete in exciting competitions for prizes! You will also have captains to
+      guide you through the event as well as a way to get to know the rest of your teammates.
+    </i>
+  ),
+  makeShortText(
+    'premadeTeam',
+    <p>
+      Do you plan on attending HackBeanpot with a premade team? If yes,
+      <b> please list their names (first and last).</b> If not, write &quot;N/A&quot;. Please note,
+      team formations will not be finalized until the day of the event!
+    </p>,
+    true
+  ),
+  makeShortText(
+    'plannedProjectIdea',
+    `What are you planning to work on?
+This doesn't have to be a final idea! We just want to know what you're thinking of working on. This can include a specific API you want to work with, an idea for a new app you want to build, or a general area of tech you're looking to learn more about. Feel free to meet with a mentor or core member or use the #ask-an-organizer Slack channel to workshop your ideas with us!`,
+    true
+  ),
+  makeDropdown(
+    'interestedInTeamFormation',
+    <p>
+      If you don’t have a team or would like to add more members to your team, we will have a
+      <b> project ideation session and team formation activity </b> we’d love for you to attend. In
+      the question below, if you express interest in finding a team at the event we will reach out
+      closer to the event with more details.
+      <br />
+      Would you be interested in creating a team or finding more members for your current team at
+      our team formation event?
+    </p>,
+    [YesOrNo.Yes, YesOrNo.No],
+    true,
+    'Interested'
   ),
   makeSection(<>Outreach</>),
   makeCheckbox(
@@ -564,38 +668,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     "If you heard about HackBeanpot in a different way that isn't listed above, list it here!",
     false
   ),
-  makeSection(
-    <>Team Formation</>,
-    <i>
-      *Note: This question does not get factored into how your application is read! This question is
-      for us to plan ahead for team formation; applicants are accepted on an individual basis, and
-      it is not guaranteed that everyone in a premade team will be accepted.
-    </i>
-  ),
-  makeShortText(
-    'premadeTeam',
-    <p>
-      Do you plan on attending HackBeanpot with a premade team? If yes,
-      <b> please list their names (first and last).</b> If not, write &quot;N/A&quot;. Please note,
-      team formations will not be finalized until the day of the event!
-    </p>,
-    true
-  ),
-  makeDropdown(
-    'interestedInTeamFormation',
-    <p>
-      If you don’t have a team or would like to add more members to your team, we will have a
-      <b> project ideation session and team formation activity </b> we’d love for you to attend. In
-      the question below, if you express interest in finding a team at the event we will reach out
-      closer to the event with more details.
-      <br />
-      Would you be interested in creating a team or finding more members for your current team at
-      our team formation event?
-    </p>,
-    [YesOrNo.Yes, YesOrNo.No],
-    true,
-    'Interested'
-  ),
+
   makeSection(
     <>Core Feedback</>,
     <i>
@@ -616,7 +689,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
   ),
   makeLongText(
     'howCanCoreTeamHelp',
-    'What can the Core team do to help you have the best experience at HackBeanpot 2023?',
+    'What can the Core team do to help you have the best experience at HackBeanpot 2024?',
     false
   ),
   makeSection(<>Code of Conduct and Policy</>),
