@@ -205,7 +205,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
   ),
   makeShortText('phoneNumber', 'Phone Number', true, 'Phone Number'),
   makeShortText('github', 'Github Url', false, 'ex: github.com/HackBeanpot'),
-  makeShortText('linkedIn', 'LinkedIn url', false, 'ex: linkedin.com/company/hackbeanpot-inc'),
+  makeShortText('linkedIn', 'LinkedIn Url', false, 'ex: linkedin.com/company/hackbeanpot-inc'),
 
   makeSection(
     <>Demographics</>,
@@ -315,7 +315,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     true,
     'Size'
   ),
-  makeShortText(
+  makeLongText(
     'accomodations',
     <div>
       <p>
@@ -328,8 +328,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
         look for arrangements.
       </i>
     </div>,
-    false,
-    'Accomodations'
+    false
   ),
   makeSection(<>Interests and Experience</>),
   makeDropdown(
@@ -508,7 +507,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
   ),
   makeRadioGroup(
     'aiInterestLevel',
-    'Ai/Machine Learning',
+    'AI/Machine Learning',
     Object.values(InterestLevel),
     true,
   ),
@@ -528,10 +527,10 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     'interestedWorkshops',
     <div>
       <p>
-        As part of our desert exploration theme this year, you’ll be sorted into teams of explorers
-        as you venture out into the desert together and compete in exciting competitions for prizes!
-        You will also have expedition leaders to guide you through the event as well as a way to get
-        to know the rest of your teammates.
+      As part of our under the sea theme this year, you’ll be sorted into teams of explorers 
+      as you venture out into the sea together and compete in exciting competitions for 
+      prizes! You will also have captains to guide you through the event as well as a 
+      way to get to know the rest of your teammates.
       </p>
       Which of the following workshops are you excited for?
     </div>,
@@ -608,7 +607,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       guide you through the event as well as a way to get to know the rest of your teammates.
     </i>
   ),
-  makeShortText(
+  makeLongText(
     'premadeTeam',
     <p>
       Do you plan on attending HackBeanpot with a premade team? If yes,
@@ -620,8 +619,8 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
   makeShortText(
     'plannedProjectIdea',
     `What are you planning to work on?
-This doesn't have to be a final idea! We just want to know what you're thinking of working on. This can include a specific API you want to work with, an idea for a new app you want to build, or a general area of tech you're looking to learn more about. Feel free to meet with a mentor or core member or use the #ask-an-organizer Slack channel to workshop your ideas with us!`,
-    true
+  This doesn't have to be a final idea! We just want to know what you're thinking of working on. This can include a specific API you want to work with, an idea for a new app you want to build, or a general area of tech you're looking to learn more about. Feel free to meet with a mentor or core member or use the #ask-an-organizer Slack channel to workshop your ideas with us!`,
+    false
   ),
   makeDropdown(
     'interestedInTeamFormation',
