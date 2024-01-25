@@ -67,5 +67,12 @@ function parseSort(queryString: string | string[]): any {
   // sort may not be stable, so sort by email as well
   return { [field]: sort.order === 'ascend' ? 1 : -1, email: -1 };
 }
+export const config = {
+  api: {
+      bodyParser: {
+          sizeLimit: '3mb'
+      }
+  }
+}
 
 export default protect(handler);
