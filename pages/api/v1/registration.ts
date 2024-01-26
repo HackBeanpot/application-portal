@@ -150,4 +150,12 @@ const patchHandler: NextApiHandler = async (req, res) => {
   return res.status(200).send(undefined);
 };
 
+export const config = {
+  api: {
+      bodyParser: {
+          sizeLimit: '3mb'
+      }
+  }
+}
+
 export default protect(registrationHandler);
