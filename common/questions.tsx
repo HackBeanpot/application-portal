@@ -742,18 +742,6 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
     true,
     'First Last'
   ),
-  makeSection(<>Proof of Vaccination</>),
-  makeCheckbox(
-    'proofOfVaccination',
-    <div>
-      Please acknowledge that you must show proof of vaccination upon entry of the event. Proof of
-      vaccination means a photo or physical copy of your vaccination card. If you have a religious
-      or medical exemption, please notify us at core@hackbeanpot.com by the time you RSVP.
-    </div>,
-    [ProofOfVaccination.Acknowledgement],
-    true,
-    1
-  ),
   makeSection(
     <>Sea Cabin Sorting!</>,
     <div>
