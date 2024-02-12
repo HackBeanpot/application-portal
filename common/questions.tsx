@@ -38,7 +38,6 @@ import {
   Club,
   SocialMedia,
   DuringClass,
-  ProofOfVaccination,
   StuckInElevator,
 } from './postAcceptanceTypes';
 import { mlhAuthorizeShareApplicationText } from './constants';
@@ -114,7 +113,7 @@ export function makeRadioGroup(
   field: QuestionResponseField,
   content: ReactNode,
   options: Array<string>,
-  required: boolean,
+  required: boolean
 ): RadioGroup {
   questionCount++;
   return {
@@ -175,7 +174,7 @@ export function makeFileUpload(
 
 let sectionCount = 0;
 
-const characterRecommendationMessage = "(250 words maximum)";
+const characterRecommendationMessage = '(250 words maximum)';
 
 export function makeSection(text: ReactNode, description?: ReactNode): QuestionSection {
   sectionCount++;
@@ -361,7 +360,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Familiarity.Proficient,
       Familiarity.Expert,
     ],
-    true,
+    true
   ),
   makeRadioGroup(
     'webDevelopmentFamiliarity',
@@ -372,7 +371,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Familiarity.Proficient,
       Familiarity.Expert,
     ],
-    true,
+    true
   ),
   makeRadioGroup(
     'uiUxFamiliarity',
@@ -383,7 +382,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Familiarity.Proficient,
       Familiarity.Expert,
     ],
-    true,
+    true
   ),
   makeRadioGroup(
     'backendFamiliarity',
@@ -394,7 +393,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Familiarity.Proficient,
       Familiarity.Expert,
     ],
-    true,
+    true
   ),
   makeRadioGroup(
     'frontendFamiliarity',
@@ -405,7 +404,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Familiarity.Proficient,
       Familiarity.Expert,
     ],
-    true,
+    true
   ),
   makeRadioGroup(
     'dataScienceFamiliarity',
@@ -416,7 +415,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Familiarity.Proficient,
       Familiarity.Expert,
     ],
-    true,
+    true
   ),
   makeRadioGroup(
     'cybersecurityFamiliarity',
@@ -427,7 +426,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Familiarity.Proficient,
       Familiarity.Expert,
     ],
-    true,
+    true
   ),
   makeRadioGroup(
     'ai',
@@ -438,7 +437,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Familiarity.Proficient,
       Familiarity.Expert,
     ],
-    true,
+    true
   ),
   makeRadioGroup(
     'productManagement',
@@ -449,7 +448,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Familiarity.Proficient,
       Familiarity.Expert,
     ],
-    true,
+    true
   ),
   makeRadioGroup(
     'entrepreneurship',
@@ -460,77 +459,47 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       Familiarity.Proficient,
       Familiarity.Expert,
     ],
-    true,
+    true
   ),
   makeSection(<></>, <i>Which CS disciplines are you interested in learning more about?</i>),
   makeRadioGroup(
     'mobileAppDevelopmentInterestLevel',
     'Mobile App Development',
     Object.values(InterestLevel),
-    true,
+    true
   ),
   makeRadioGroup(
     'webDevelopmentInterestLevel',
     'Web Development',
     Object.values(InterestLevel),
-    true,
+    true
   ),
-  makeRadioGroup(
-    'uiUxInterestLevel',
-    'UI / UX',
-    Object.values(InterestLevel),
-    true,
-  ),
-  makeRadioGroup(
-    'backendInterestLevel',
-    'Backend',
-    Object.values(InterestLevel),
-    true,
-  ),
-  makeRadioGroup(
-    'frontendInterestLevel',
-    'Frontend',
-    Object.values(InterestLevel),
-    true,
-  ),
-  makeRadioGroup(
-    'dataScienceInterestLevel',
-    'Data Science',
-    Object.values(InterestLevel),
-    true,
-  ),
-  makeRadioGroup(
-    'cybersecurityInterestLevel',
-    'Cybersecurity',
-    Object.values(InterestLevel),
-    true,
-  ),
-  makeRadioGroup(
-    'aiInterestLevel',
-    'AI/Machine Learning',
-    Object.values(InterestLevel),
-    true,
-  ),
+  makeRadioGroup('uiUxInterestLevel', 'UI / UX', Object.values(InterestLevel), true),
+  makeRadioGroup('backendInterestLevel', 'Backend', Object.values(InterestLevel), true),
+  makeRadioGroup('frontendInterestLevel', 'Frontend', Object.values(InterestLevel), true),
+  makeRadioGroup('dataScienceInterestLevel', 'Data Science', Object.values(InterestLevel), true),
+  makeRadioGroup('cybersecurityInterestLevel', 'Cybersecurity', Object.values(InterestLevel), true),
+  makeRadioGroup('aiInterestLevel', 'AI/Machine Learning', Object.values(InterestLevel), true),
   makeRadioGroup(
     'productManagementInterestLevel',
     'Product Management',
     Object.values(InterestLevel),
-    true,
+    true
   ),
   makeRadioGroup(
     'entrepreneurshipInterestLevel',
     'Entrepreneurship',
     Object.values(InterestLevel),
-    true,
+    true
   ),
   makeCheckbox(
     'interestedWorkshops',
     <div>
       <p>
-      As part of our under the sea theme this year, you’ll be sorted into teams of explorers 
-      as you venture out into the sea together and compete in exciting competitions for 
-      prizes! You will also have captains to guide you through the event as well as a 
-      way to get to know the rest of your teammates.
+        As part of our under the sea theme this year, you’ll be sorted into teams of explorers as
+        you venture out into the sea together and compete in exciting competitions for prizes! You
+        will also have captains to guide you through the event as well as a way to get to know the
+        rest of your teammates.
       </p>
       Which of the following workshops are you excited for?
     </div>,
@@ -772,27 +741,18 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
     true,
     'First Last'
   ),
-  makeSection(<>Proof of Vaccination</>),
-  makeCheckbox(
-    'proofOfVaccination',
-    <div>
-      Please acknowledge that you must show proof of vaccination upon entry of the event. Proof of
-      vaccination means a photo or physical copy of your vaccination card. If you have a religious
-      or medical exemption, please notify us at core@hackbeanpot.com by the time you RSVP.
-    </div>,
-    [ProofOfVaccination.Acknowledgement],
-    true,
-    1
-  ),
   makeSection(
-    <>Fictional Desert Crews Sorting!</>,
+    <>Sea Cabin Sorting!</>,
     <div>
-      <p>Desert adventurers, ready your canteens and compasses, and set course for adventure!</p>
-      In the spirit of our desert theme, each attendees will be apart of a fictional desert crew!
-      Fictional desert crews will be a space for hackers to meet and socialize with other attendees
-      outside of your project team through the endless desert. Throughout the weekend, you{"'"}ll
-      have chances to win points for your new homeworld at different workshops/activities and
-      compete for the Desert race through the Sahara.
+      <p>
+        Under the sea explorers, prepare your diving gear and navigation charts, and embark on an
+        aquatic odyssey!
+      </p>
+      Embracing our new under the sea theme, each participant will join a fictional sea cabin with other hackers!
+      These fictional cabins will serve as a hub for hackers to connect and mingle with fellow
+      attendees amidst the wonders of the ocean depths. Over the course of the event, you{"'"}ll
+      have opportunities to earn points for your underwater realm in various workshops/activities
+      and vie for victory in the Undersea Expedition across the vast ocean floor.
     </div>
   ),
   makeDropdown(
