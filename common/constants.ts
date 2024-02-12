@@ -43,7 +43,7 @@ export const EXAMPLE_RESPONSE: RegistrationApiRequest = {
   responses: ['Judy Su', EXAMPLE_ETHNICITIES],
 };
 export const EXAMPLE_CHECKBOX_1: Checkboxes = {
-  field: 'proofOfVaccination',
+  field: 'mlhCodeOfConduct',
   id: '1',
   content: 'Who is the sassiest?',
   required: true,

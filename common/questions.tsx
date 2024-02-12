@@ -38,7 +38,6 @@ import {
   Club,
   SocialMedia,
   DuringClass,
-  ProofOfVaccination,
   StuckInElevator,
 } from './postAcceptanceTypes';
 import { mlhAuthorizeShareApplicationText } from './constants';
