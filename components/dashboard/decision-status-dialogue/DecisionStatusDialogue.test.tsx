@@ -78,7 +78,7 @@ describe('DecisionStatusDialogue', () => {
 describe('`Admitted` decision component', () => {
   it('renders', () => {
     const admittedDecisionExpectedText =
-      "Congratulations, we would love to have you attend this year's event! Please navigate to the Application tab to mark your RSVP status. The deadline to confirm your attendance is Friday, February 3rd by 11:59pm.";
+      "Congratulations, we would love to have you attend this year's event! Please navigate to the Application tab to mark your RSVP status. The deadline to confirm your attendance is Friday, February 16th by 11:59pm.";
     render(
       <DecisionStatusDialogue
         decisionStatus={DecisionStatus.Declined}
@@ -113,7 +113,7 @@ describe('`Declined` decision component', () => {
 describe('`FailedToConfirm` decision component', () => {
   it('renders', () => {
     const failedToConfirmDecisionExpectedText =
-      'You were accepted to HackBeanpot 2023 but you did not RSVP in time by Friday, February 3rd. Please let us know at core@hackbeanpot.com if you would like to be added to the waitlist for if additional spots open up.';
+      'You were accepted to HackBeanpot 2024 but you did not RSVP in time by Friday, February 16th. Please let us know at core@hackbeanpot.com if you would like to be added to the waitlist for if additional spots open up.';
     render(<FailedToConfirm confirmBy={decisionConfirmByDatePast} />);
     const failedToConfirmDecisionText = screen.getByTestId('failed-to-confirm-dialog-text');
     expect(failedToConfirmDecisionText.textContent).toBe(failedToConfirmDecisionExpectedText);
