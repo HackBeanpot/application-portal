@@ -30,7 +30,7 @@ export const PostAcceptanceForm: React.FC = () => {
           <Form.Item noStyle>
             {confirmByData && (
               <p>
-                This RSVP form is DUE <strong>Friday, February 3rd by 11:59pm</strong>.
+                This RSVP form is DUE <strong>Friday, February 16th by 11:59pm</strong>.
               </p>
             )}
           </Form.Item>
@@ -70,7 +70,7 @@ const AttendingForm: React.FC<AttendingFormProps> = ({ setAttendingState }) => {
       <p style={{ textAlign: 'center' }}>
         Please select if you will be attending HackBeanpot on the weekend of{' '}
         <strong>
-          February 10 - 12th, 2023 at Wood Mackenzie (179 Lincoln St, Boston, MA 02111)
+          February 23 - 25th, 2024 at Wood Mackenzie (179 Lincoln St, Boston, MA 02111)
         </strong>{' '}
         . If you cannot make it, please select {'"No"'} so that we can admit others on the wait list
         instead.
