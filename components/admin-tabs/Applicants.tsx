@@ -20,6 +20,11 @@ import { saveAs } from 'file-saver';
 import { EditableRow } from './table/EditableRow';
 import { EditableCell, EditableCellProps } from './table/EditableCell';
 
+// imports for search bar
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import SearchIcon from '@mui/icons-material/Search';
+
 // add other Question fields not defined in User type in intersection here
 export type SingleRecordType = ApplicantsApiResponse['data'][number];
 
@@ -184,6 +189,17 @@ const Applicants: React.FC = () => {
     <div className={'applicants'}>
       <div className="title-container">
         <h3 className="title">{ADMIN_TABS.VIEW_AND_MODIFY_APPLICANTS}</h3>
+        <Box>
+          <SearchIcon sx={{ mr: 2, mt: 0.5}}/>
+            <TextField
+              sx={{ m: -1.5, mr: 2}}
+              label="Search"
+              id="filled-hidden-label-small"
+              margin="dense"
+              variant="standard"
+              size="small"
+            />
+        </Box>
         <ExportButton cb={downloadApplicationCsv} text="Export Application Responses" />
         <ExportButton cb={downloadPostAcceptanceCsv} text="Export Post-Acceptance Responses" />
       </div>
