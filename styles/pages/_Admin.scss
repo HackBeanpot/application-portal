@@ -12,7 +12,9 @@
   .applicants {
     .title-container {
       display: flex;
-      flex-direction: row;
+      // flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
 
       .title {
         margin-right: auto;
@@ -20,6 +22,12 @@
 
       .export-button {
         margin-left: 10px;
+      }
+
+      .clear-button {
+        margin-left: auto;
+        background-color: red;
+        border-color: red;
       }
     }
   }
