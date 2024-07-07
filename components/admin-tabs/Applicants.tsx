@@ -180,15 +180,10 @@ const Applicants: React.FC = () => {
     );
   };
 
-  const ClearButton: React.FC<{ text: string }> =({
-    text,
-  }) => {
+  const ClearButton: React.FC<{ text: string }> = ({ text }) => {
     return (
       <Tooltip overlay={'Clears all applicant data in the table'}>
-        <Button
-          className="clear-button"
-          type="primary"
-        >
+        <Button className="clear-button" type="primary">
           {text}
         </Button>
       </Tooltip>
@@ -198,27 +193,29 @@ const Applicants: React.FC = () => {
   return (
     <div className={'applicants'}>
       <div className="title-container">
-          <h3 className="title">{ADMIN_TABS.VIEW_AND_MODIFY_APPLICANTS}</h3>
-          <ExportButton cb={downloadApplicationCsv} text="Export Application Responses" />
-          <ExportButton cb={downloadPostAcceptanceCsv} text="Export Post-Acceptance Responses" />
-          <ClearButton text="Clear Applicant Data" />
+        <h3 className="title">{ADMIN_TABS.VIEW_AND_MODIFY_APPLICANTS}</h3>
+        <ExportButton cb={downloadApplicationCsv} text="Export Application Responses" />
+        <ExportButton cb={downloadPostAcceptanceCsv} text="Export Post-Acceptance Responses" />
       </div>
-        <Table
-          size={'small'}
-          className={'applicants'}
-          columns={columns2}
-          components={components}
-          rowKey={(record) => record.email}
-          dataSource={data?.data ?? []}
-          pagination={{
-            ...pagination,
-            total: data?.totalCount,
-            position: ['topLeft', 'bottomRight'],
-            showTotal: (t) => `${t} results`,
-          }}
-          loading={!data}
-          onChange={onChange}
-        />
+      <Table
+        size={'small'}
+        className={'applicants'}
+        columns={columns2}
+        components={components}
+        rowKey={(record) => record.email}
+        dataSource={data?.data ?? []}
+        pagination={{
+          ...pagination,
+          total: data?.totalCount,
+          position: ['topLeft', 'bottomRight'],
+          showTotal: (t) => `${t} results`,
+        }}
+        loading={!data}
+        onChange={onChange}
+      />
+      <div className="pagination-container">
+        <ClearButton text="Clear Applicant Data" />
+      </div>
       <div className={'filler'} />
     </div>
   );

@@ -23,12 +23,18 @@
       .export-button {
         margin-left: 10px;
       }
+    }
 
-      .clear-button {
-        margin-left: auto;
-        background-color: red;
-        border-color: red;
-      }
+    .pagination-container {
+      position: relative;
+    }
+    
+    .clear-button {
+      position: absolute;
+      right: 0;
+      bottom: 495px;
+      background-color: red;
+      border-color: red;
     }
   }
 
