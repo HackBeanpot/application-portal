@@ -26,11 +26,18 @@ export type SingleRecordType = ApplicantsApiResponse['data'][number];
 // table columns: name, email, school, application status, rsvp status
 const columns = [
   {
-    title: 'Name',
+    title: 'First Name',
     dataIndex: 'applicationResponses.firstName',
     sorter: true,
     editable: false,
     render: (_: string, record: SingleRecordType) => record.applicationResponses?.firstName ?? '',
+  },
+  {
+    title: 'Last Name',
+    dataIndex: 'applicationResponses.lastName',
+    sorter: true,
+    editable: false,
+    render: (_: string, record: SingleRecordType) => record.applicationResponses?.lastName ?? '',
   },
   {
     title: 'Email',
