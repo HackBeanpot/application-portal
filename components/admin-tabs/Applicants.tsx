@@ -47,7 +47,7 @@ const columns = [
   },
   {
     title: 'School',
-    dataIndex: 'school',
+    dataIndex: 'applicationResponses.school',
     filters: (
       Questions.find((question) => question.field === 'school') as DropdownQuestionType
     ).options.map(({ name }) => ({
@@ -63,7 +63,7 @@ const columns = [
   },
   {
     title: 'Year',
-    dataIndex: 'yearOfEducation',
+    dataIndex: 'applicationResponses.yearOfEducation',
     filters: (
       Questions.find((question) => question.field === 'yearOfEducation') as DropdownQuestionType
     ).options.map(({ name }) => ({
