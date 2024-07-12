@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { connectToDatabase } from './mongoDB';
-import { DateSingleton } from '../common/types';
-import { isAdmin } from './protect';
+import { connectToDatabase } from '../mongoDB';
+import { DateSingleton } from '../../common/types';
+import { isAdmin } from '../protect';
 
 export const queryDate = async (dateName: DateSingleton['type']): Promise<string | undefined> => {
   const { singletonDataCollection } = await connectToDatabase();

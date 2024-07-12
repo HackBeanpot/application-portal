@@ -6,13 +6,13 @@ import {
   SingletonType,
   User,
 } from '../../../common/types';
-import { queryDate } from '../../../server/dates';
 import { makeQuestionResponseSchemas } from '../../../server/validators/validators';
 import Joi from 'joi';
 import { connectToDatabase } from '../../../server/mongoDB';
 import { assumeLoggedInGetEmail, protect } from '../../../server/protect';
 import { getConfirmByState } from '../../../common/utils/utils';
 import { PostAcceptanceFormQuestions } from '../../../common/questions';
+import { queryDate } from '../../../server/dates/dates';
 
 const postAcceptanceHandler: NextApiHandler = async (req, res) => {
   switch (req.method) {

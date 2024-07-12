@@ -1,5 +1,7 @@
 import { MongoClient, Db, Collection } from 'mongodb';
 import { SingletonDefinition, User } from '../common/types';
+import { TextEncoder } from 'util';
+global.TextEncoder = TextEncoder;
 
 const retrieveEnvVarChecked = (s: string) => {
   const envVar = process.env[s] || '';

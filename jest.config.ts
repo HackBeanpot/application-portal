@@ -1,4 +1,5 @@
 module.exports = {
+  setupFiles: ['<rootDir>/test-env-vars.ts'],
   collectCoverage: true,
   // on node 14.x coverage provider v8 offers good speed and more or less good report
   coverageProvider: 'v8',
@@ -30,6 +31,7 @@ module.exports = {
   // setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/'],
   testEnvironment: 'jsdom',
+  testTimeout: 30000,
   transform: {
     // Use babel-jest to transpile tests with the next/babel preset
     // https://jestjs.io/docs/configuration#transform-objectstring-pathtotransformer--pathtotransformer-object
