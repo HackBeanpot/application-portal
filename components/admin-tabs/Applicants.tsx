@@ -190,6 +190,7 @@ const Applicants: React.FC = () => {
     );
   };
 
+  
   return (
     <div className={'applicants'}>
       <div className="title-container">
