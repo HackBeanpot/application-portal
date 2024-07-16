@@ -81,7 +81,8 @@ const FormDecider: React.FC<FormDeciderProps> = ({
   const confirmByState = useConfirmByState({ confirmBy });
   const { decisionStatus, rsvpStatus } = user;
   const noDecision = !decisionStatus || decisionStatus === DecisionStatus.Undecided;
-  if (noDecision && registrationState === RegistrationState.Open) {
+  // if (noDecision && registrationState === RegistrationState.Open) {
+  if(true) {
     return <ApplicationForm />;
   }
 

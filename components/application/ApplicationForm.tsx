@@ -77,6 +77,11 @@ export const ApplicationForm = (): ReactElement => {
 
   useWarnIfUnsavedChanges(isEditing || appStatus === ApplicationStatus.Incomplete);
 
+
+  const onSave = async () => {
+    form.getFieldsValue()
+  }
+
   const onSubmit = async (values: Record<string, QuestionResponse>) => {
     const fields = Questions.map((q) => q.field) as Array<keyof ApplicationResponses>;
     const responses = Questions.map((q) => values[q.id] ?? null);
@@ -173,13 +178,23 @@ export const ApplicationForm = (): ReactElement => {
         <FormSectionsAndQuestions
           sectionsAndQuestions={Sections}
           form={form}
-          disabled={disabled}
+          disabled={false}
           submittedResume={!!resumeLink}
         />
         <Form.Item noStyle>
           <div className="submit-container">
+          <Button
+          // disabled={disabled}
+          disabled={false}
+          className="button"
+          type="primary"
+          htmlType="button" onClick={onSave}
+          loading={isSubmitting}
+          size="large"
+          >Save</Button>
             <Button
-              disabled={disabled}
+              // disabled={disabled}
+              disabled={false}
               className="button"
               type="primary"
               htmlType="submit"
