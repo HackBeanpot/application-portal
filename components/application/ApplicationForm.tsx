@@ -9,7 +9,8 @@ import {
   updateApplicantResponses,
 } from '../../common/apiClient';
 import { Questions, Sections } from '../../common/questions';
-import { Alert, Button, Form, notification } from 'antd';
+import { Alert, Button, Form, notification, Typography } from 'antd';
+const { Text } = Typography;
 import useSWR from 'swr';
 import { format } from '../dashboard/status-dialogue/StatusDialogue';
 import { isAfterRegistrationClosed, isBeforeRegistrationOpens } from '../../common/utils/utils';
@@ -36,6 +37,8 @@ export const ApplicationForm = (): ReactElement => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [form] = Form.useForm<Record<string, QuestionResponse>>();
   const [appStatus, setAppStatus] = useState(status?.data?.applicationStatus);
+  const [savePressed, setSavePressed] = useState(false);
+  const [lastSavedDate, setLastSavedDate] = useState('');
 
   // observations
   const alreadySubmitted =
@@ -107,6 +110,14 @@ export const ApplicationForm = (): ReactElement => {
     }
   };
 
+  const onSave = () => {
+    const currentDateTime = new Date();
+    setSavePressed(true);
+    // get current time in EST
+    const formattedDateTime = currentDateTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true, day: '2-digit', month: '2-digit', year: 'numeric', });
+    setLastSavedDate(formattedDateTime + ' EST')
+  }
+
   return (
     <>
       <h1 className="app-header">Application Page</h1>
@@ -177,6 +188,24 @@ export const ApplicationForm = (): ReactElement => {
           submittedResume={!!resumeLink}
         />
         <Form.Item noStyle>
+          <div className="button-container">
+            <div className="save-container">
+          <div className="save-button">
+            <Button
+              disabled={disabled}
+              className="button"
+              type="default"
+              loading={isSubmitting}
+              size="large"
+              onClick={onSave}
+            >
+              {'Save Responses'}
+            </Button>
+          </div>
+          <div className='save-text'>
+            {savePressed && <Text>Application last saved at {lastSavedDate}</Text>}
+          </div>
+          </div>
           <div className="submit-container">
             <Button
               disabled={disabled}
@@ -188,6 +217,7 @@ export const ApplicationForm = (): ReactElement => {
             >
               {alreadySubmitted ? 'Resubmit Application' : 'Submit Application'}
             </Button>
+          </div>
           </div>
         </Form.Item>
       </Form>

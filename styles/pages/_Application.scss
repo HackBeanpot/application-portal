@@ -23,9 +23,25 @@
   .submit-container {
     display: flex;
     justify-content: center;
+    margin-left: 24px;
 
     .button {
       height: max-content;
     }
   }
+
+   .button-container {
+    display: flex;
+  }
+
+  .save-container {
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: left; /* Center align items horizontally */
+}
+
+.save-text {
+  font-size: 12px;
+}
+
 }
