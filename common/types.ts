@@ -152,6 +152,8 @@ export enum Gender {
   PreferNotToSay = 'Prefer not to say',
 }
 
+// function to parse csv 
+
 export enum School {
   NortheasternUniversity = 'Northeastern University',
   BostonUniversity = 'Boston University',
@@ -174,17 +176,11 @@ export enum School {
 }
 
 export enum Education {
-  LessThanSecondary = 'Less than Secondary / High School',
-  HighSchool = 'Secondary / High School',
-  CommunityCollege = 'Community College',
-  UndergraduateUniversity = 'Undergraduate University',
-  GraduateUniversity = 'Graduate University',
-  CodeSchool = 'Code School',
-  OtherVocational = 'Vocational',
-  PostDoctorate = 'Post Graduate',
-  Other = 'Other',
-  NotAStudent = `I’m not currently a student`,
-  PreferToNotAnswer = 'Prefer to not answer',
+  UndergraduateUniversity2 = 'Undergraduate University (2 year - community college or similar)',
+  UndergraduateUniversity3 = 'Undergraduate University (3+ year)',
+  GraduateUniversity = 'Graduate University (Masters, Professional, Doctoral, etc)',
+  CodeSchool = 'Code School / Bootcamp',
+  Other = 'Other Vocational / Trade Program or Apprenticeship',
 }
 
 export enum YearOfEducation {
