@@ -31,11 +31,18 @@ export type SingleRecordType = ApplicantsApiResponse['data'][number];
 // table columns: name, email, school, application status, rsvp status
 const columns = [
   {
-    title: 'Name',
-    dataIndex: 'applicationResponses.name',
+    title: 'First Name',
+    dataIndex: 'applicationResponses.firstName',
     sorter: true,
     editable: false,
     render: (_: string, record: SingleRecordType) => record.applicationResponses?.firstName ?? '',
+  },
+  {
+    title: 'Last Name',
+    dataIndex: 'applicationResponses.lastName',
+    sorter: true,
+    editable: false,
+    render: (_: string, record: SingleRecordType) => record.applicationResponses?.lastName ?? '',
   },
   {
     title: 'Email',
@@ -45,7 +52,7 @@ const columns = [
   },
   {
     title: 'School',
-    dataIndex: 'school',
+    dataIndex: 'applicationResponses.school',
     filters: (
       Questions.find((question) => question.field === 'school') as DropdownQuestionType
     ).options.map(({ name }) => ({
@@ -61,7 +68,7 @@ const columns = [
   },
   {
     title: 'Year',
-    dataIndex: 'yearOfEducation',
+    dataIndex: 'applicationResponses.yearOfEducation',
     filters: (
       Questions.find((question) => question.field === 'yearOfEducation') as DropdownQuestionType
     ).options.map(({ name }) => ({
