@@ -72,6 +72,7 @@ const authHandler = async (req: NextApiRequest, res: NextApiResponse) => {
               applicationStatus: ApplicationStatus.Incomplete,
               isAdmin: domain === 'hackbeanpot.com',
               rsvpStatus: RSVPStatus.Unconfirmed,
+              applicationResponses: {}
             });
           }
           return true;

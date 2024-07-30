@@ -33,7 +33,8 @@
     "react-dom": "^17.0.2",
     "rollbar": "^2.24.0",
     "sass": "^1.42.1",
-    "swr": "^1.1.2-beta.0"
+    "swr": "^1.1.2-beta.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
