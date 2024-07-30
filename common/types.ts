@@ -16,6 +16,8 @@ import {
  */
 export interface User {
   email: string;
+
+  //remove the question mark so its required?
   applicationResponses?: ApplicationResponses;
   postAcceptanceResponses?: PostAcceptanceResponses;
   isAdmin: boolean;
@@ -33,6 +35,7 @@ export interface SharedResponses {
   firstName?: string;
   lastName?: string;
 }
+
 
 export interface ApplicationResponses extends SharedResponses {
   preferredName?: string;
@@ -411,3 +414,13 @@ export type PostAcceptanceApiRequest = {
   fields?: Array<keyof PostAcceptanceResponses>;
   responses?: Array<QuestionResponse>;
 };
+
+class Application implements User {
+  email = "";
+  applicationResponses = {};
+  isAdmin = false;
+  applicationStatus = ApplicationStatus.Incomplete;
+  rsvpStatus = RSVPStatus.Unconfirmed;
+}
+
+const test = new Application();
