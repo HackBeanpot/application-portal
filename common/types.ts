@@ -400,6 +400,7 @@ export type ApplicantsApiResponse = {
   totalCount: number;
   page: number;
   pageSize: number;
+  searchQuery?: string;
 };
 
 export type SingleApplicantApiResponse = {
