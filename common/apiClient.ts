@@ -44,7 +44,8 @@ export const updateApplicantResponses = (
 export function getAllApplicants(
   pagination: TablePaginationConfig,
   filters: TableFilters,
-  sorter: TableSorter
+  sorter: TableSorter, 
+  searchQuery?: string
 ): Promise<AxiosResponse<ApplicantsApiResponse>> {
   return Axios.get<ApplicantsApiResponse>(`/api/v1/applicants`, {
     params: {
@@ -52,6 +53,7 @@ export function getAllApplicants(
       pageSize: pagination.pageSize,
       filters,
       sorter,
+      searchQuery,
     },
   });
 }
