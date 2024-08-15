@@ -105,4 +105,3 @@ const FormDecider: React.FC<FormDeciderProps> = ({
 export const getServerSideProps: GetServerSideProps = getServerSideSessionOrRedirect;
 
 export default Application;
-
