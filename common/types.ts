@@ -1667,6 +1667,7 @@ export enum School {
   OrleansTechnicalInstitute = 'Orleans Technical Institute',
   OsbournParkHighSchool = 'Osbourn Park High School',
   OstbayerischeTechnischeHochschuleRegensburg = 'Ostbayerische Technische Hochschule Regensburg',
+  Other = 'Other',
   OtterbeinUniversity = 'Otterbein University',
   OverbrookHighSchoolPhiladelphia = 'Overbrook High School - Philadelphia',
   OxfordAcademyHighSchool = 'Oxford Academy High School',
