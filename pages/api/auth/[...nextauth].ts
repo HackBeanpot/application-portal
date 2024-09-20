@@ -48,7 +48,7 @@ const authHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     callbacks: {
       async signIn({ user, email }) {
         // can implement banned users if needed
-        if (email.verificationRequest) {
+        if (email?.verificationRequest) {
           // don't create user on validation request, only on sign-in
           return true;
         }
@@ -105,7 +105,7 @@ async function sendVerificationRequest({
   await transport.sendMail({
     to: email,
     from,
-    subject: `Log into HBP Application Portal @ ${host}`, // TODO: What do we actually want here
+    subject: `Log into HBP Application Portal @ ${host}`,
     text: text({ url, host }),
     html: html({ url, host, email }),
   });

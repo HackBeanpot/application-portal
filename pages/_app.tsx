@@ -28,10 +28,7 @@ type AppProps = NextAppProps & {
   session?: Session | null;
 };
 
-const App: React.FC<AppProps> = ({
-  Component,
-  pageProps: { session, ...pageProps },
-}) => {
+const App: React.FC<AppProps> = ({ Component, pageProps: { session, ...pageProps } }) => {
   // Provider instantiates Rollbar client instance handling any uncaught errors or unhandled promises in the browser
   // ErrorBoundary catches all React errors in the tree below and logs them to Rollbar
   return (
