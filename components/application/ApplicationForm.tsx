@@ -188,6 +188,7 @@ export const ApplicationForm = (): ReactElement => {
           submittedResume={!!resumeLink}
         />
         <Form.Item noStyle>
+          <div className='buttons-text-container'>
           <div className="button-container">
             <div className="save-container">
           <div className="save-button">
@@ -195,16 +196,15 @@ export const ApplicationForm = (): ReactElement => {
               disabled={disabled}
               className="button"
               type="default"
-              loading={isSubmitting}
               size="large"
               onClick={onSave}
             >
               {'Save Responses'}
             </Button>
           </div>
-          <div className='save-text'>
+          {/* <div className='save-text'>
             {savePressed && <Text>Application last saved at {lastSavedDate}</Text>}
-          </div>
+          </div> */}
           </div>
           <div className="submit-container">
             <Button
@@ -217,6 +217,11 @@ export const ApplicationForm = (): ReactElement => {
             >
               {alreadySubmitted ? 'Resubmit Application' : 'Submit Application'}
             </Button>
+          </div>
+             
+          </div>
+           <div className='save-text'>
+            {savePressed && <Text>Application last saved at {lastSavedDate}</Text>}
           </div>
           </div>
         </Form.Item>
