@@ -67,7 +67,7 @@ export const ApplicationForm = (): ReactElement => {
   const resetFields = form.resetFields;
   useEffect(() => {
     if (alreadySubmitted || isBeforeRegistration || isAfterRegistration) {
-      setDisabled(true);
+      setDisabled(false);
       resetFields();
     }
     getStatusData().then((status) => {

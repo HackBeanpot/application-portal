@@ -4,6 +4,9 @@ Serves as a single point of truth for what questions are displayed on applicatio
 frontend & validated on backend
 */
 import React, { ReactNode } from 'react';
+import countryList from 'iso3166-2-db/countryList/en.json';
+
+
 import {
   Checkboxes,
   Dropdown,
@@ -196,12 +199,11 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
   makeShortText('lastName', 'Last name', true, 'Last name'),
   makeShortText('age', 'Age', true, 'Age'),
   makeShortText('homeTown', 'Home Town', true, 'ex: Boston'),
-  makeShortText(
-    'countryOfResidence',
-    'Country Of Residence  (Please input full name of country, Ex: United States of America)',
-    true,
-    'Country of Residence'
-  ),
+  makeDropdown('countryOfResidence',
+    'Country Of Residence', 
+    Object.values(countryList).map(country => country.name).sort((a, b) => a.localeCompare(b)),
+    true, 
+    'Country of Residence'),
   makeShortText('phoneNumber', 'Phone Number', true, 'Phone Number'),
   makeShortText('github', 'Github Url', false, 'ex: github.com/HackBeanpot'),
   makeShortText('linkedIn', 'LinkedIn Url', false, 'ex: linkedin.com/company/hackbeanpot-inc'),
