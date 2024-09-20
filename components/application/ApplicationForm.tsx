@@ -202,9 +202,6 @@ export const ApplicationForm = (): ReactElement => {
               {'Save Responses'}
             </Button>
           </div>
-          {/* <div className='save-text'>
-            {savePressed && <Text>Application last saved at {lastSavedDate}</Text>}
-          </div> */}
           </div>
           <div className="submit-container">
             <Button
