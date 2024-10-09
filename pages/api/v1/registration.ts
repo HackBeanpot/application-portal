@@ -1,5 +1,6 @@
 import { NextApiHandler } from 'next';
 import {
+  applicationResponsesSchema,
   ApplicationStatus,
   QuestionResponse,
   RegistrationApiRequest,
@@ -21,10 +22,14 @@ const registrationHandler: NextApiHandler = async (req, res) => {
     case 'POST':
       await postHandler(req, res);
       break;
+    case 'PUT':
+      await putHandler(req, res);
+      break;
     case 'PATCH':
-      await patchHandler(req, res);
+        await patchHandler(req, res);
+      break;
     default:
-      return res.status(405).setHeader('Allow', 'GET, POST, PATCH').send(undefined);
+      return res.status(405).setHeader('Allow', 'GET, POST, PUT, PATCH').send(undefined);
   }
 };
 
@@ -95,7 +100,54 @@ const postHandler: NextApiHandler = async (req, res) => {
   return res.status(200).send(undefined);
 };
 
+
 const patchHandler: NextApiHandler = async (req, res) => {
+  const { userDataCollection } = await connectToDatabase();
+  const email = await assumeLoggedInGetEmail(req);
+  const userWithId = await userDataCollection.findOne({ email });
+  if (userWithId === null) {
+    return res.status(400).json({"message": `User with email ${email} does not exist.`});
+  }
+
+const { fields, responses } = req.body;
+const fieldResponsePair = {};
+
+for (let i = 0; i < fields.length; i++) {
+  fieldResponsePair[fields[i]] = ({fields: fields[i], responses: responses[i]})
+}
+
+console.log({ fields, responses })
+  let validBody;
+  try {
+    validBody = applicationResponsesSchema.parse(req.body);
+  } catch (error) {
+    res.status(400).json({"error": error})
+  }
+
+  if (validBody) {
+    try {
+      // console.log(validBody)
+      // await userDataCollection.updateOne(
+      //   { email },
+      //   {
+      //     $set: {
+      //       applicationResponses: validBody,
+      //       email,
+      //       applicationStatus: ApplicationStatus.Submitted,
+      //       appSubmissionTime: new Date(),
+      //     },
+      //   },
+      //   { upsert: true });
+    } catch (error) {
+      res.status(500).json({"error": error})
+    }
+  }
+
+
+  res.status(200)
+}
+
+const putHandler: NextApiHandler = async (req, res) => {
   const [open, closed] = await Promise.all([
     queryDate(SingletonType.RegistrationOpen),
     queryDate(SingletonType.RegistrationClosed),

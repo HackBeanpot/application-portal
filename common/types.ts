@@ -391,6 +391,14 @@ export type RegistrationApiRequest = {
 };
 export type RegistrationApiResponse = RegistrationApiRequest;
 
+
+export type UpdateRegistrationApiRequest = {
+  fields: Array<keyof Partial<ApplicationResponses>>;
+  responses: Array< Partial<QuestionResponse>>;
+};
+
+
+
 export type StatusApiResponse = {
   applicationStatus: ApplicationStatus;
   postAcceptanceStatus: ApplicationStatus;
@@ -418,7 +426,7 @@ export type PostAcceptanceApiRequest = {
 
 const GenderSchema = z.nativeEnum(Gender);
 const LgbtqSchema = z.nativeEnum(Lgbtq);
-const SchoolSchema = z.nativeEnum(Gender);
+const SchoolSchema = z.nativeEnum(School);
 const RaceSchema = z.nativeEnum(Race);
 const EducationSchema = z.nativeEnum(Education);
 const YearOfEducationSchema = z.nativeEnum(YearOfEducation);

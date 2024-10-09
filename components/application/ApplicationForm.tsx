@@ -6,6 +6,7 @@ import {
   getRegistrationClosed,
   getRegistrationOpen,
   getStatus,
+  saveApplicantResponses,
   updateApplicantResponses,
 } from '../../common/apiClient';
 import { Questions, Sections } from '../../common/questions';
@@ -79,7 +80,12 @@ export const ApplicationForm = (): ReactElement => {
 
 
   const onSave = async () => {
-    form.getFieldsValue()
+    const values = form.getFieldsValue();
+    const fields = Questions.map((q) => q.field) as Array<keyof ApplicationResponses>;
+    const responses = Questions.map((q) => values[q.id] ?? null);
+
+    const response = await saveApplicantResponses({ fields, responses })
+    console.log(`this is the response ${response}`)
   }
 
   const onSubmit = async (values: Record<string, QuestionResponse>) => {
@@ -184,8 +190,6 @@ export const ApplicationForm = (): ReactElement => {
         <Form.Item noStyle>
           <div className="submit-container">
           <Button
-          // disabled={disabled}
-          disabled={false}
           className="button"
           type="primary"
           htmlType="button" onClick={onSave}
@@ -193,8 +197,6 @@ export const ApplicationForm = (): ReactElement => {
           size="large"
           >Save</Button>
             <Button
-              // disabled={disabled}
-              disabled={false}
               className="button"
               type="primary"
               htmlType="submit"
