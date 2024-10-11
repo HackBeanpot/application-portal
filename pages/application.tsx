@@ -85,21 +85,23 @@ const FormDecider: React.FC<FormDeciderProps> = ({
     return <ApplicationForm />;
   }
 
-  if (
-    confirmByState === ConfirmByState.Before &&
-    decisionStatus === DecisionStatus.Admitted &&
-    rsvpStatus === RSVPStatus.Unconfirmed &&
-    showDecisionState
-  ) {
-    return <PostAcceptanceForm />;
-  }
+  return <PostAcceptanceForm />;
 
-  return (
-    <>
-      <h1>Application Page</h1>
-      <Alert type="info" message={'No form to fill out at this time'} />
-    </>
-  );
+  // if (
+  //   confirmByState === ConfirmByState.Before &&
+  //   decisionStatus === DecisionStatus.Admitted &&
+  //   rsvpStatus === RSVPStatus.Unconfirmed &&
+  //   showDecisionState
+  // ) {
+  //   return <PostAcceptanceForm />;
+  // }
+
+  // return (
+  //   <>
+  //     <h1>Application Page</h1>
+  //     <Alert type="info" message={'No form to fill out at this time'} />
+  //   </>
+  // );
 };
 
 export const getServerSideProps: GetServerSideProps = getServerSideSessionOrRedirect;

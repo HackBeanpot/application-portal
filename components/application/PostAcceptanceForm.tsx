@@ -12,6 +12,7 @@ import { PostAcceptanceFormQuestions, PostAcceptanceFormSections } from '../../c
 import { getConfirmBy, getStatus, updatePostAcceptanceFormResponses } from '../../common/apiClient';
 import { FormSectionsAndQuestions } from './FormSectionsAndQuestions';
 import useSWR, { mutate } from 'swr';
+import SaveIcon from '@mui/icons-material/Save';
 
 // assume this is the first time they're filling out the form
 export const PostAcceptanceForm: React.FC = () => {
@@ -139,6 +140,19 @@ const FullForm: React.FC = () => {
     await mutate('/api/v1/user');
   };
 
+  const buttonStyle = {
+    display: 'grid',
+    gridTemplateColumns: 'auto 1fr',
+    alignItems: 'center',
+  };
+  
+  const iconStyle = {
+    gridColumn: '1',
+    marginRight: '8px',
+    fontSize: '18px',
+  };
+  
+
   return (
     <Form
       form={form}
@@ -164,6 +178,17 @@ const FullForm: React.FC = () => {
             size="large"
           >
             Submit RSVP
+          </Button>
+          
+          <Button
+            className="button"
+            type="primary"
+            size="large"
+            style={buttonStyle}
+            disabled={disabled}
+            icon={<SaveIcon style={iconStyle} />}
+          >
+            Save Responses
           </Button>
         </div>
       </Form.Item>

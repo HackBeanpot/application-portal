@@ -187,6 +187,17 @@ const Applicants: React.FC = () => {
     );
   };
 
+  const ClearButton: React.FC<{ text: string }> = ({ text }) => {
+    return (
+      <Tooltip overlay={'Clears all applicant data in the table'}>
+        <Button className="clear-button" type="primary">
+          {text}
+        </Button>
+      </Tooltip>
+    );
+  };
+
+  
   return (
     <div className={'applicants'}>
       <div className="title-container">
@@ -210,6 +221,9 @@ const Applicants: React.FC = () => {
         loading={!data}
         onChange={onChange}
       />
+      <div className="pagination-container">
+        <ClearButton text="Clear Applicant Data" />
+      </div>
       <div className={'filler'} />
     </div>
   );
