@@ -1,6 +1,6 @@
 {
   "name": "application-portal",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -23,34 +23,38 @@
     "@mui/icons-material": "^5.15.20",
     "@mui/material": "^5.15.20",
     "@next-auth/mongodb-adapter": "0.0.2-next.281",
-    "@rollbar/react": "^0.8.0",
+    "@rollbar/react": "^0.12.0-beta",
     "antd": "^4.18.2",
     "axios": "^0.21.1",
     "check-files": "^0.0.2",
     "file-saver": "^2.0.5",
     "joi": "^17.4.2",
     "mongodb": "^4.1.2",
-    "next": "^11.0.1",
-    "next-auth": "4.0.0-beta.4",
+    "next": "13",
+    "next-auth": "4",
     "nodemailer": "^6.7.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "rollbar": "^2.24.0",
+    "prop-types": "^15.7.2",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "rollbar": "^2.26.4",
     "sass": "^1.42.1",
     "swr": "^1.1.2-beta.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "12.1.2",
     "@types/file-saver": "^2.0.4",
     "@types/jest": "^27.0.1",
+    "@types/node": "*",
     "@types/nodemailer": "^6.4.4",
     "@types/react": "17.0.13",
     "@typescript-eslint/eslint-plugin": "^4.28.3",
+    "@typescript-eslint/parser": "^4.0.0",
     "babel-jest": "^29.1.2",
     "cypress": "^9.2.0",
     "eslint": "^7.30.0",
-    "eslint-config-next": "^11.0.1",
+    "eslint-config-next": "13",
     "eslint-config-prettier": "^8.3.0",
     "husky": ">=6",
     "identity-obj-proxy": "^3.0.0",
@@ -84,5 +88,8 @@
         }
       }
     }
+  },
+  "engines": {
+    "node": "^18.12.0"
   }
 }
