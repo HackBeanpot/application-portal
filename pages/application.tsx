@@ -29,6 +29,7 @@ const Application = (): ReactElement => {
   const [showDecisionState, setShowDecisionState] = useState<boolean | undefined>(
     showDecision?.data
   );
+
   useEffect(() => {
     setShowDecisionState(showDecision?.data);
   }, [showDecision]);
@@ -46,6 +47,7 @@ const Application = (): ReactElement => {
   const registrationOpen = new Date(rOpen.data);
   const registrationClosed = new Date(rClosed.data);
   const confirmBy = new Date(confirmByData.data);
+
   return (
     <PageLayout currentPage={'application'}>
       <div className="application">
@@ -70,6 +72,7 @@ type FormDeciderProps = {
   confirmBy: Date;
   showDecisionState: boolean | undefined;
 };
+
 const FormDecider: React.FC<FormDeciderProps> = ({
   registrationOpen,
   registrationClosed,
