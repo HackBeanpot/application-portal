@@ -32,25 +32,24 @@
 
    .button-container {
     display: flex;
-
+    white-space: normal;
   }
 
   .save-container {
-  display: flex;
-  align-items: flex-start;
-}
+    display: flex;
+    align-items: flex-start;
+  }
 
-.save-text {
-  font-size: 12px;
-  display: block; 
-  white-space: normal;
-  overflow-wrap: break-word; 
-    margin-top: 10px;
+  .save-text {
+    font-size: 12px;
+    display: block; 
+    white-space: normal;
+    overflow-wrap: break-word; 
+      margin-top: 10px;
+  }
 
-}
-
-.buttons-text-container {
-  display: flex;
-  flex-direction: column;
-}
+  .buttons-text-container {
+    display: flex;
+    flex-direction: column;
+  }
 }
