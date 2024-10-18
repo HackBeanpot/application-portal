@@ -23,9 +23,33 @@
   .submit-container {
     display: flex;
     justify-content: center;
+    margin-left: 24px;
 
     .button {
       height: max-content;
     }
+  }
+
+   .button-container {
+    display: flex;
+    white-space: normal;
+  }
+
+  .save-container {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .save-text {
+    font-size: 12px;
+    display: block; 
+    white-space: normal;
+    overflow-wrap: break-word; 
+      margin-top: 10px;
+  }
+
+  .buttons-text-container {
+    display: flex;
+    flex-direction: column;
   }
 }
