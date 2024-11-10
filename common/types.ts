@@ -35,7 +35,6 @@ export interface SharedResponses {
   lastName?: string;
 }
 
-
 export interface ApplicationResponses extends SharedResponses {
   preferredName?: string;
   pronouns?: string;
