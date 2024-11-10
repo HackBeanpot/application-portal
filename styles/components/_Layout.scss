@@ -8,14 +8,10 @@ body {
   background: #f0f2f5;
 }
 
-// dropdown portal popup needs to be scaled separately
-.ant-select-dropdown {
+.ant-select-dropdown .dropdown-content {
   zoom: $scale !important;
-  @supports (-moz-appearance:none) {
-    // Only for Firefox
-    transform: scale($scale) !important;
-    transform-origin: 0 0 !important;
-  }
+  transform: scale($scale);
+  transform-origin: center;
 }
 
 .layout {
