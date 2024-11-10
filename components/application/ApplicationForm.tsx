@@ -37,11 +37,8 @@ export const ApplicationForm = (): ReactElement => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [form] = Form.useForm<Record<string, QuestionResponse>>();
   const [appStatus, setAppStatus] = useState(status?.data?.applicationStatus);
+  const [existingData, setExistingData] = useState<Record<string, QuestionResponse>>({});
 
-  // observations
-  const alreadySubmitted =
-    status?.data.applicationStatus === ApplicationStatus.Submitted &&
-    (userResponses?.data?.responses.length ?? 0) > 0;
   const submittedFormData: Record<string, QuestionResponse> = {};
   userResponses?.data?.responses?.forEach((response, index) => {
     // get index of question with corresponding field, in case we added a question in the middle of the application
@@ -52,6 +49,11 @@ export const ApplicationForm = (): ReactElement => {
     // use question index in submittedFormData
     submittedFormData[String(questionIndex + 1)] = response;
   });
+  // observations
+  const alreadySubmitted =
+    status?.data.applicationStatus === ApplicationStatus.Submitted &&
+    (userResponses?.data?.responses.length ?? 0) > 0;
+
   const isEditing = alreadySubmitted && !disabled;
   const registrationOpenDate = registrationOpen?.data && new Date(registrationOpen?.data);
   const registrationCloseDate = registrationClosed?.data && new Date(registrationClosed?.data);
@@ -76,6 +78,10 @@ export const ApplicationForm = (): ReactElement => {
     });
   }, [alreadySubmitted, isAfterRegistration, isBeforeRegistration, resetFields]);
 
+  useEffect(() => {
+    form.setFieldsValue(submittedFormData);
+  }, [submittedFormData]);
+
   useWarnIfUnsavedChanges(isEditing || appStatus === ApplicationStatus.Incomplete);
 
 
@@ -84,8 +90,7 @@ export const ApplicationForm = (): ReactElement => {
     const fields = Questions.map((q) => q.field) as Array<keyof ApplicationResponses>;
     const responses = Questions.map((q) => values[q.id] ?? null);
 
-    const response = await saveApplicantResponses({ fields, responses })
-    console.log(`this is the response ${response}`)
+    await saveApplicantResponses({ fields, responses })
   }
 
   const onSubmit = async (values: Record<string, QuestionResponse>) => {
@@ -175,7 +180,7 @@ export const ApplicationForm = (): ReactElement => {
         />
       )}
       <Form
-        initialValues={submittedFormData}
+        initialValues={existingData}
         form={form}
         onFinish={onSubmit}
         scrollToFirstError={{ behavior: 'smooth', inline: 'center', block: 'center' }}
@@ -189,13 +194,13 @@ export const ApplicationForm = (): ReactElement => {
         />
         <Form.Item noStyle>
           <div className="submit-container">
-          <Button
-          className="button"
-          type="primary"
-          htmlType="button" onClick={onSave}
-          loading={isSubmitting}
-          size="large"
-          >Save</Button>
+            <Button
+              className="button"
+              type="primary"
+              htmlType="button" onClick={onSave}
+              loading={isSubmitting}
+              size="large"
+            >Save</Button>
             <Button
               className="button"
               type="primary"

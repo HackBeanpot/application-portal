@@ -50,7 +50,7 @@ const postHandler: NextApiHandler = async (req, res) => {
     const response = responses[index];
     userResponses[field] = response;
   });
-  const email = await assumeLoggedInGetEmail(req);
+  const email = await assumeLoggedInGetEmail(req, res);
   const { userDataCollection } = await connectToDatabase();
   await userDataCollection.updateOne(
     { email },
