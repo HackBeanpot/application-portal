@@ -189,7 +189,7 @@ export const ApplicationForm = (): ReactElement => {
         <FormSectionsAndQuestions
           sectionsAndQuestions={Sections}
           form={form}
-          disabled={false}
+          disabled={disabled}
           submittedResume={!!resumeLink}
         />
         <Form.Item noStyle>
