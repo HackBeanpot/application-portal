@@ -14,11 +14,11 @@ const SignIn = (): ReactElement => {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    if (session.data?.user) {
-      console.log('redirecting to /', JSON.stringify(session, null, 2));
+    console.dir('useEffecting', session);
+    if (session.data?.user?.email) {
       router.push('/');
     }
-  }, [router, session.data?.user]);
+  }, [router, session.data?.user?.email]);
 
   const onSubmit = async (values: { email: string }) => {
     setIsLoading(true);

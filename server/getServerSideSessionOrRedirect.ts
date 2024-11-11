@@ -17,5 +17,8 @@ export const getServerSideSessionOrRedirect: GetServerSideProps = async (
       },
     };
   }
+
+  // expect only email to be defined
+  session.user = {email: session.user?.email}
   return { props: { session } };
 };
