@@ -14,6 +14,7 @@ const SignIn = (): ReactElement => {
   const [form] = Form.useForm();
 
   useEffect(() => {
+    console.log('useeffecting')
     if (session.data?.user?.email) {
       console.log("rerouteing")
       router.push('/');
