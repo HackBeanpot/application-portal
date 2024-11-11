@@ -8,6 +8,7 @@ import { safe } from '../../../server/errors';
 import nodemailer from 'nodemailer';
 import type { NextAuthOptions } from "next-auth"
 
+
 export const authOptions: NextAuthOptions = {
   pages: {
     signIn: '/auth/signin',
