@@ -1,4 +1,3 @@
-import { getSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next';
 import { SIGN_IN_PAGE } from '../pages/_app';
 import { getServerSession } from 'next-auth';

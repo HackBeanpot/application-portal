@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import { Form, Input, Button } from 'antd';
-import { getSession, signIn, useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { type InferGetServerSidePropsType, GetServerSideProps } from 'next';
 import Image from 'next/image';
