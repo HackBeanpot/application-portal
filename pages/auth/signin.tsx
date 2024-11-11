@@ -2,23 +2,24 @@ import React, { ReactElement, useEffect, useState } from 'react';
 import { Form, Input, Button } from 'antd';
 import { getSession, signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { GetServerSideProps } from 'next';
+import { type InferGetServerSidePropsType, GetServerSideProps } from 'next';
 import Image from 'next/image';
+import { Session, getServerSession } from 'next-auth';
+import { authOptions } from '../api/auth/[...nextauth]';
 
-const SignIn = (): ReactElement => {
+
+const SignIn = ({session}: InferGetServerSidePropsType<typeof getServerSideProps>): ReactElement => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const session = useSession();
 
   const [form] = Form.useForm();
 
   useEffect(() => {
-    console.dir('useEffecting', session);
-    if (session.data?.user?.email) {
+    if (session?.user?.email) {
       router.push('/');
     }
-  }, [router, session.data?.user?.email]);
+  }, [router, session?.user?.email]);
 
   const onSubmit = async (values: { email: string }) => {
     setIsLoading(true);
@@ -88,8 +89,9 @@ const SignIn = (): ReactElement => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const session = await getSession(ctx);
+export const getServerSideProps: GetServerSideProps = (async (ctx) => {
+  const {req, res} = ctx
+  const session = await getServerSession(req, res, authOptions);
   if (session) {
     return {
       redirect: {
@@ -99,6 +101,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
   return { props: { session } };
-};
+}) satisfies GetServerSideProps<{ session: Session | null }>;
 
 export default SignIn;
