@@ -5,7 +5,7 @@ import { ApplicationStatus, RSVPStatus } from '../../../common/types';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { safe } from '../../../server/errors';
 import nodemailer from 'nodemailer';
-import NextAuth, { type NextAuthOptions } from "next-auth"
+import NextAuth, { User, type NextAuthOptions } from "next-auth"
 
 
 export const authOptions = {
@@ -44,7 +44,7 @@ export const authOptions = {
   adapter: MongoDBAdapter(client),
   // callback so that we can add a user to the database
   callbacks: {
-    async signIn({ user, email }) {
+    async signIn({ user, email }: {user:User, email: {verificationRequest: boolean}}) {
       // can implement banned users if needed
       if (email?.verificationRequest) {
         // don't create user on validation request, only on sign-in
