@@ -77,6 +77,13 @@ export const authOptions: NextAuthOptions = {
         // or we can return a URL to redirect to:
         // return /unauthorized
       }
+    },
+    async redirect({ url, baseUrl }) {
+      // Allows relative callback URLs
+      if (url.startsWith("/")) return `${baseUrl}${url}`
+      // Allows callback URLs on the same origin
+      else if (new URL(url).origin === baseUrl) return url
+      return baseUrl
     }
   }
 }
