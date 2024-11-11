@@ -1,15 +1,14 @@
-import NextAuth from 'next-auth';
 import EmailProvider, { EmailConfig } from 'next-auth/providers/email';
-import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
-import { connectToDatabase, databaseInstance } from '../../../server/mongoDB';
+import { MongoDBAdapter } from "@auth/mongodb-adapter"
+import client, { connectToDatabase } from '../../../server/mongoDB';
 import { ApplicationStatus, RSVPStatus } from '../../../common/types';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { safe } from '../../../server/errors';
 import nodemailer from 'nodemailer';
-import type { NextAuthOptions } from "next-auth"
+import NextAuth, { type NextAuthOptions } from "next-auth"
 
 
-export const authOptions: NextAuthOptions = {
+export const authOptions = {
   pages: {
     signIn: '/auth/signin',
     signOut: '/auth/signin',
@@ -42,9 +41,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   // A database is optional, but required to persist accounts in a database
-  adapter: MongoDBAdapter({
-    db: databaseInstance().db()
-  }),
+  adapter: MongoDBAdapter(client),
   // callback so that we can add a user to the database
   callbacks: {
     async signIn({ user, email }) {
@@ -88,7 +85,7 @@ export const authOptions: NextAuthOptions = {
 }
 
 const authHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  return await NextAuth(req, res, authOptions);
+  return await NextAuth(req, res, authOptions as NextAuthOptions);
 };
 
 // Unclear if this actually works but this is some black magic right here

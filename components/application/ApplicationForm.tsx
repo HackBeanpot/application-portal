@@ -37,7 +37,6 @@ export const ApplicationForm = (): ReactElement => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [form] = Form.useForm<Record<string, QuestionResponse>>();
   const [appStatus, setAppStatus] = useState(status?.data?.applicationStatus);
-  const [existingData, setExistingData] = useState<Record<string, QuestionResponse>>({});
 
   const submittedFormData: Record<string, QuestionResponse> = {};
   userResponses?.data?.responses?.forEach((response, index) => {
@@ -180,7 +179,7 @@ export const ApplicationForm = (): ReactElement => {
         />
       )}
       <Form
-        initialValues={existingData}
+        initialValues={submittedFormData}
         form={form}
         onFinish={onSubmit}
         scrollToFirstError={{ behavior: 'smooth', inline: 'center', block: 'center' }}
