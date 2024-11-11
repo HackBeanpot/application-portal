@@ -13,11 +13,11 @@ const SignIn = (): ReactElement => {
 
   const [form] = Form.useForm();
 
-  useEffect(() => {
-    if (session.data?.user?.email) {
-      router.push('/');
-    }
-  }, [router, session.data?.user?.email]);
+  // useEffect(() => {
+  //   if (session.data?.user?.email) {
+  //     router.push('/');
+  //   }
+  // }, [router, session.data?.user?.email]);
 
   const onSubmit = async (values: { email: string }) => {
     setIsLoading(true);
@@ -25,6 +25,7 @@ const SignIn = (): ReactElement => {
       redirect: false,
       email: values.email,
     });
+
     if (response?.ok) {
       setIsSubmitted(true);
     }
