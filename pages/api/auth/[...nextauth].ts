@@ -44,33 +44,22 @@ export const authOptions: NextAuthOptions = {
   // callback so that we can add a user to the database
   callbacks: {
     async signIn({ user, email }) {
-      console.log("sign in callback", user, email);
       // can implement banned users if needed
       if (email?.verificationRequest) {
         // don't create user on validation request, only on sign-in
-        console.log('email verification request');
         return true;
       }
-
-      console.log('not verfiication request');
       // non-null assertion ok because email is currently the only form of sign-in
       const userEmail = user.email!;
       const isAllowedToSignIn = true;
       if (isAllowedToSignIn) {
-        console.log('allowed to sign in');
         const { userDataCollection } = await connectToDatabase();
-        console.log('connected to db');
         const existingUser = await userDataCollection.findOne({
           email: userEmail,
         });
-
-        console.log('found user', existingUser);
-
         // Create DB entry if user does not exist and email is valid
         const re = new RegExp('[a-zA-Z0-9_\\.\\+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-\\.]+');
         if (!existingUser && re.test(userEmail)) {
-          console.log('not user and valid emial');
-
           // all users with @hackbeanpot.com are made admins by default
           const [, domain] = userEmail.split('@');
           await userDataCollection.insertOne({
@@ -80,19 +69,22 @@ export const authOptions: NextAuthOptions = {
             rsvpStatus: RSVPStatus.Unconfirmed,
             applicationResponses: {}
           });
-          console.log('CREATED USER');
         }
-        console.log("exit")
         return true;
       } else {
         // return false to display a default error message
-        console.log('not allow to sign in!?!??!??!!?');
-
         return false;
         // or we can return a URL to redirect to:
         // return /unauthorized
       }
     },
+    async redirect({ url, baseUrl }) {
+      // Allows relative callback URLs
+      if (url.startsWith("/")) return `${baseUrl}${url}`
+      // Allows callback URLs on the same origin
+      else if (new URL(url).origin === baseUrl) return url
+      return baseUrl
+    }
   }
 }
 
