@@ -37,6 +37,7 @@ export const EXAMPLE_USER: User = {
   applicationStatus: EXAMPLE_APPLICATION_STATUS,
   isAdmin: true,
   rsvpStatus: RSVPStatus.Unconfirmed,
+  applicationResponses: {},
 };
 export const EXAMPLE_RESPONSE: RegistrationApiRequest = {
   fields: ['firstName', 'races'],
