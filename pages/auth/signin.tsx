@@ -14,12 +14,12 @@ const SignIn = (): ReactElement => {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    console.log('useeffecting')
-    if (session.data?.user?.email) {
+    console.log('useeffecting', session)
+    if (session) {
       console.log(session)
       router.push('/');
     }
-  }, [router, session.data?.user?.email]);
+  }, [router, session]);
 
   const onSubmit = async (values: { email: string }) => {
     setIsLoading(true);
