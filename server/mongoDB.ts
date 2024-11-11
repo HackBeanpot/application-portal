@@ -35,6 +35,7 @@ type MongoCtx = {
 
 type GlobalWithMongo = {
   mongo?: {
+    client?: MongoClient;
     conn?: MongoCtx;
     promise?: Promise<MongoCtx>;
   };
@@ -55,7 +56,9 @@ export async function connectToDatabase(): Promise<MongoCtx> {
 
   // instantiate to a promise resolved with the context
   if (!cached.promise) {
-    cached.promise = new MongoClient(connectionString).connect().then((client) => {
+    const client = new MongoClient(connectionString)
+    cached.client = client;
+    cached.promise = client.connect().then((client) => {
       const db = client.db(dbName);
       const userDataCollection = db.collection<User>('applicant_data');
 
@@ -73,4 +76,17 @@ export async function connectToDatabase(): Promise<MongoCtx> {
   // this might happen multiple times, but that's ok
   cached.conn = await cached.promise;
   return cached.conn;
+}
+
+export function databaseInstance(): MongoClient {
+  const cached = g.mongo!;
+
+  // if there already is a connection, then use it
+  if (cached.client) {
+    return cached.client;
+  }
+
+  const client =  new MongoClient(connectionString)
+  cached.client = client
+  return client
 }

@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth';
 import EmailProvider, { EmailConfig } from 'next-auth/providers/email';
 import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
-import { connectToDatabase } from '../../../server/mongoDB';
+import { connectToDatabase, databaseInstance } from '../../../server/mongoDB';
 import { ApplicationStatus, RSVPStatus } from '../../../common/types';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { safe } from '../../../server/errors';
@@ -42,7 +42,7 @@ export const authOptions: NextAuthOptions = {
   ],
   // A database is optional, but required to persist accounts in a database
   adapter: MongoDBAdapter({
-    db: await connectToDatabase().then((ctx) => ctx.client.db('next-auth')),
+    db: databaseInstance().db()
   }),
   // callback so that we can add a user to the database
   callbacks: {
