@@ -37,6 +37,7 @@ export const ApplicationForm = (): ReactElement => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [form] = Form.useForm<Record<string, QuestionResponse>>();
   const [appStatus, setAppStatus] = useState(status?.data?.applicationStatus);
+  const [lastSaved, setLastSaved] = useState<string | null>(null);
 
   const submittedFormData: Record<string, QuestionResponse> = {};
   userResponses?.data?.responses?.forEach((response, index) => {
@@ -89,7 +90,22 @@ export const ApplicationForm = (): ReactElement => {
     const fields = Questions.map((q) => q.field) as Array<keyof ApplicationResponses>;
     const responses = Questions.map((q) => values[q.id] ?? null);
 
-    await saveApplicantResponses({ fields, responses })
+    try {
+      await saveApplicantResponses({ fields, responses });
+      const now = new Date().toLocaleString();
+      setLastSaved(now);
+      notification.success({
+        message: 'Responses Saved',
+        placement: 'bottomRight',
+        duration: 3,
+      });
+    } catch (error) {
+      notification.error({
+        message: 'Error Saving Responses',
+        placement: 'bottomRight',
+        duration: 5,
+      });
+    }
   }
 
   const onSubmit = async (values: Record<string, QuestionResponse>) => {
@@ -196,10 +212,12 @@ export const ApplicationForm = (): ReactElement => {
             <Button
               className="button"
               type="primary"
-              htmlType="button" onClick={onSave}
+              htmlType="button" 
+              onClick={onSave}
               loading={isSubmitting}
               size="large"
-            >Save</Button>
+            >Save Responses</Button>
+            
             <Button
               className="button"
               type="primary"
@@ -210,6 +228,12 @@ export const ApplicationForm = (): ReactElement => {
               {alreadySubmitted ? 'Resubmit Application' : 'Submit Application'}
             </Button>
           </div>
+          <br />
+          {lastSaved && (
+                <div>
+                  Last saved: {lastSaved}
+                </div>
+            )}
         </Form.Item>
       </Form>
     </>
