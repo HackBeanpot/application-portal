@@ -495,12 +495,6 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
   makeCheckbox(
     'interestedWorkshops',
     <div>
-      <p>
-        As part of our under the sea theme this year, you’ll be sorted into teams of explorers as
-        you venture out into the sea together and compete in exciting competitions for prizes! You
-        will also have captains to guide you through the event as well as a way to get to know the
-        rest of your teammates.
-      </p>
       Which of the following workshops are you excited for?
     </div>,
     [
@@ -535,14 +529,10 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     'hackBeanGoals',
     <div>
       <p>
-        At HackBeanpot 2024, we aim to create a welcoming environment by focusing on exploration
-        into the desert, community, and growth! Ocean exploration relies on perseverance, teamwork,
-        innovation and a sense of adventure!
+        At HackBeanpot 2025, we aim to create a welcoming environment by focusing on trekking into the unknown and bonding with your fellow hikers! A 3-day roadtrip relies on perseverance, teamwork, innovation and a sense of adventure! 
       </p>
       <p>
-        Whether you journey along the sea depths alone or with a team, what do you hope to get out
-        of HackBeanpot? What do you want to walk away having learned or experienced from this
-        weekend?
+        Whether you journey along the mountain trails alone or with a team, what do you hope to get out of HackBeanpot? Do you have a specific project you’d like to pursue? What do you want to walk away having learned or experienced from this weekend?
       </p>
       {characterRecommendationMessage}
     </div>,
@@ -552,9 +542,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     'tedTalkTopic',
     <div>
       <p>
-        We want to get to know you and your interests better! If you had to give a thirty minute TED
-        talk on any subject, what would it be and why? This could be about chicken raising, fantasy
-        football, the Fermi paradox, or anything you would ramble about to friends at 2 am!
+       Where people see problems, hackers/entrepreneurs see solutions! Is there an issue you’ve been itching to resolve? If you had to give a thirty minute TED talk on any subject to solve a world problem, what would it be and why?
       </p>
       {characterRecommendationMessage}
     </div>,
@@ -570,17 +558,15 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     <i>
       *Note: This question does not get factored into how your application is read! This question is
       for us to plan ahead for team formation; applicants are accepted on an individual basis, and
-      it is not guaranteed that everyone in a premade team will be accepted. As part of our under
-      the sea theme this year, you’ll be sorted into teams of explorers as you venture out into the
-      sea together and compete in exciting competitions for prizes! You will also have captains to
-      guide you through the event as well as a way to get to know the rest of your teammates.
+      it is not guaranteed that everyone in a premade team will be accepted. <br></br>
+      *To connect with your fellow prospective hackers and potentially form teams(it's not guaranteed everyone on the team will be accepted), please join the Discord: https://discord.gg/QypjXeYb
     </i>
   ),
   makeLongText(
     'premadeTeam',
     <p>
       Do you plan on attending HackBeanpot with a premade team? If yes,
-      <b> please list their names (first and last).</b> If not, write &quot;N/A&quot;. Please note,
+      <b> If yes, please list the first and last name and email of your team captain (captain is just for application purpose!).</b> If not, write &quot;N/A&quot;. Please note,
       team formations will not be finalized until the day of the event!
     </p>,
     true
@@ -588,7 +574,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
   makeShortText(
     'plannedProjectIdea',
     `What are you planning to work on?
-  This doesn't have to be a final idea! We just want to know what you're thinking of working on. This can include a specific API you want to work with, an idea for a new app you want to build, or a general area of tech you're looking to learn more about. Feel free to meet with a mentor or core member or use the #ask-an-organizer Slack channel to workshop your ideas with us!`,
+  This doesn't have to be a final idea! We just want to know what you're thinking of working on. This can include a specific API you want to work with, an idea for a new app you want to build, or a general area of tech you're looking to learn more about.`,
     false
   ),
   makeDropdown(
@@ -682,6 +668,7 @@ const filterQuestion = (q: QuestionSection | QuestionDefinition): q is QuestionD
 export const Questions: Array<QuestionDefinition> = Sections.filter(filterQuestion);
 
 // when adding a new question add the question field to the User type in common/types.ts
+// TODO: CHANGE OUT CABIN SORTING - not doing that this year
 export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinition> = [
   makeSection(
     <>Post-Acceptance Form</>,
