@@ -24,7 +24,7 @@ const statusHandler: NextApiHandler = async (req, res) => {
 
 const getHandler: NextApiHandler = async (req, res) => {
   const { userDataCollection } = await connectToDatabase();
-  const email = await assumeLoggedInGetEmail(req);
+  const email = await assumeLoggedInGetEmail(req, res);
   const user = (await userDataCollection.findOne({ email }))!;
   const body: StatusApiResponse = {
     rsvpStatus: user.rsvpStatus,
@@ -47,7 +47,7 @@ const postHandler: NextApiHandler = async (req, res) => {
     return res.status(403).send({ error: 'Deadline has passed' });
   }
 
-  const email = await assumeLoggedInGetEmail(req);
+  const email = await assumeLoggedInGetEmail(req, res);
   const { userDataCollection } = await connectToDatabase();
   const user = await userDataCollection.findOne({ email });
   if (user?.decisionStatus !== DecisionStatus.Admitted) {

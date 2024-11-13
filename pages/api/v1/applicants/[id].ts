@@ -5,7 +5,7 @@ import { connectToDatabase } from '../../../../server/mongoDB';
 import { isAdmin, protect } from '../../../../server/protect';
 
 const applicantHandler: NextApiHandler = async (req, res) => {
-  const admin = await isAdmin(req);
+  const admin = await isAdmin(req, res);
   if (!admin) {
     return res.status(401).send({ message: 'User is not an admin' });
   }

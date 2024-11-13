@@ -10,13 +10,14 @@ import {
   TakeOverNation,
   ZombieApocalypse,
 } from './postAcceptanceTypes';
+import { z } from 'zod';
 
 /**
  * @param applicationStatus deez nuts :0
  */
 export interface User {
   email: string;
-  applicationResponses?: ApplicationResponses;
+  applicationResponses: ApplicationResponses;
   postAcceptanceResponses?: PostAcceptanceResponses;
   isAdmin: boolean;
   applicationStatus: ApplicationStatus;
@@ -98,6 +99,7 @@ export interface ApplicationResponses extends SharedResponses {
   howCanCoreTeamHelp?: string;
 }
 
+
 export interface PostAcceptanceResponses extends SharedResponses {
   adult?: string;
   adultSignature?: string;
@@ -142,6 +144,7 @@ export interface PortalState {
   numAttendees: number;
   totalConfirmed: number;
 }
+
 
 export enum Gender {
   Nonbinary = 'Nonbinary',
@@ -387,6 +390,14 @@ export type RegistrationApiRequest = {
 };
 export type RegistrationApiResponse = RegistrationApiRequest;
 
+
+export type UpdateRegistrationApiRequest = {
+  fields: Array<keyof Partial<ApplicationResponses>>;
+  responses: Array< Partial<QuestionResponse>>;
+};
+
+
+
 export type StatusApiResponse = {
   applicationStatus: ApplicationStatus;
   postAcceptanceStatus: ApplicationStatus;
@@ -411,3 +422,89 @@ export type PostAcceptanceApiRequest = {
   fields?: Array<keyof PostAcceptanceResponses>;
   responses?: Array<QuestionResponse>;
 };
+
+const GenderSchema = z.nativeEnum(Gender);
+const LgbtqSchema = z.nativeEnum(Lgbtq);
+const SchoolSchema = z.nativeEnum(School);
+const RaceSchema = z.nativeEnum(Race);
+const EducationSchema = z.nativeEnum(Education);
+const YearOfEducationSchema = z.nativeEnum(YearOfEducation);
+const ShirtSizeSchema = z.nativeEnum(ShirtSize);
+const NumberOfSchema = z.nativeEnum(NumberOf);
+const FamiliaritySchema = z.nativeEnum(Familiarity);
+const InterestLevelSchema = z.nativeEnum(InterestLevel);
+const WorkshopSchema = z.nativeEnum(Workshop);
+const ReferrerSchema = z.nativeEnum(Referrer);
+const YesOrNoSchema = z.nativeEnum(YesOrNo);
+const YesSchema = z.enum([YesOrNo.Yes]);
+
+const SharedResponsesSchema = z.object({
+  firstName: z.string().optional(),
+  lastName: z.string().optional()
+})
+
+export const applicationResponsesSchema = SharedResponsesSchema.extend({
+  preferredName: z.string().optional(),
+  pronouns: z.string().optional(),
+  gender: GenderSchema.optional(),
+  age: z.string().optional(),
+  phoneNumber: z.string().optional(),
+  countryOfResidence: z.string().optional(),
+  homeTown: z.string().optional(),
+  linkedIn: z.string().optional(),
+  github: z.string().optional(),
+  unlistedGender: z.string().optional(),
+  lgbtq: LgbtqSchema.optional(),
+  school: SchoolSchema.optional(),
+  unlistedSchool: z.string().optional(),
+  races: z.array(RaceSchema).optional(),
+  unlistedRace: z.string().optional(),
+  education: EducationSchema.optional(),
+  yearOfEducation: YearOfEducationSchema.optional(),
+  majors: z.string().optional(),
+  minors: z.string().optional(),
+  resumeLink: z.string().optional(),
+  shirtSize: ShirtSizeSchema.optional(),
+  hackathonsAttended: NumberOfSchema.optional(),
+  csClassesTaken: NumberOfSchema.optional(),
+  mobileAppDevelopmentFamiliarity: FamiliaritySchema.optional(),
+  webDevelopmentFamiliarity: FamiliaritySchema.optional(),
+  uiUxFamiliarity: FamiliaritySchema.optional(),
+  backendFamiliarity: FamiliaritySchema.optional(),
+  frontendFamiliarity: FamiliaritySchema.optional(),
+  dataScienceFamiliarity: FamiliaritySchema.optional(),
+  cybersecurityFamiliarity: FamiliaritySchema.optional(),
+  ai: FamiliaritySchema.optional(),
+  productManagement: FamiliaritySchema.optional(),
+  entrepreneurship: FamiliaritySchema.optional(),
+  mobileAppDevelopmentInterestLevel: InterestLevelSchema.optional(),
+  webDevelopmentInterestLevel: InterestLevelSchema.optional(),
+  uiUxInterestLevel: InterestLevelSchema.optional(),
+  backendInterestLevel: InterestLevelSchema.optional(),
+  frontendInterestLevel: InterestLevelSchema.optional(),
+  dataScienceInterestLevel: InterestLevelSchema.optional(),
+  cybersecurityInterestLevel: InterestLevelSchema.optional(),
+  aiInterestLevel: InterestLevelSchema.optional(),
+  productManagementInterestLevel: InterestLevelSchema.optional(),
+  entrepreneurshipInterestLevel: InterestLevelSchema.optional(),
+  interestedWorkshops: z.array(WorkshopSchema).optional(),
+  unlistedWorkshops: z.string().optional(),
+  prevHackathonFeedback: z.string().optional(),
+  hackBeanGoals: z.string().optional(),
+  tedTalkTopic: z.string().optional(),
+  plannedProjectIdea: z.string().optional(),
+  meetAlienSpeech: z.string().optional(),
+  referrers: z.array(ReferrerSchema).optional(),
+  unListedReferrer: z.string().optional(),
+  premadeTeam: z.string().optional(),
+  interestedInTeamFormation: YesOrNoSchema.optional(),
+  mlhCodeOfConduct: YesSchema.optional(),
+  mlhApplicationSharingAuthorization: YesSchema.optional(),
+  mlhMarketingAuthorization: YesOrNoSchema.optional(),
+  accomodations: z.string().optional(),
+  questionsToAdd: z.string().optional(),
+  commentsQuestionsSuggestions: z.string().optional(),
+  howCanCoreTeamHelp: z.string().optional()
+});
+
+export type ApplicationResponsesType = z.infer<typeof applicationResponsesSchema>

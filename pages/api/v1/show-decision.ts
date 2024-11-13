@@ -41,7 +41,7 @@ export const postShowDecision = async (
   res: NextApiResponse,
   showDecision: SingletonType.ShowDecision
 ) => {
-  const adminCheck = await isAdmin(req);
+  const adminCheck = await isAdmin(req, res);
   if (!adminCheck) {
     return res.status(401).send({ message: 'User is not an admin' });
   }

@@ -1,5 +1,6 @@
 import { NextApiHandler } from 'next';
 import {
+  applicationResponsesSchema,
   ApplicationStatus,
   QuestionResponse,
   RegistrationApiRequest,
@@ -21,15 +22,19 @@ const registrationHandler: NextApiHandler = async (req, res) => {
     case 'POST':
       await postHandler(req, res);
       break;
+    case 'PUT':
+      await putHandler(req, res);
+      break;
     case 'PATCH':
       await patchHandler(req, res);
+      break;
     default:
-      return res.status(405).setHeader('Allow', 'GET, POST, PATCH').send(undefined);
+      return res.status(405).setHeader('Allow', 'GET, POST, PUT, PATCH').send(undefined);
   }
 };
 
 const getHandler: NextApiHandler = async (req, res) => {
-  const email = await assumeLoggedInGetEmail(req);
+  const email = await assumeLoggedInGetEmail(req, res);
   const { userDataCollection } = await connectToDatabase();
   const data = await userDataCollection.findOne({ email });
   return res.status(200).json({
@@ -68,7 +73,7 @@ const postHandler: NextApiHandler = async (req, res) => {
     userResponses[field] = response;
   });
 
-  const email = await assumeLoggedInGetEmail(req);
+  const email = await assumeLoggedInGetEmail(req, res);
 
   // resume upload
   if (userResponses.resumeLink) {
@@ -95,7 +100,53 @@ const postHandler: NextApiHandler = async (req, res) => {
   return res.status(200).send(undefined);
 };
 
+
 const patchHandler: NextApiHandler = async (req, res) => {
+  const email = await assumeLoggedInGetEmail(req, res);
+  const { userDataCollection } = await connectToDatabase();
+  const userWithId = await userDataCollection.findOne({ email });
+  if (userWithId === null) {
+    return res.status(400).json({ "message": `User with email ${email} does not exist.` });
+  }
+
+  const { fields, responses } = req.body;
+  const fieldResponsePair: Record<string, any> = {};
+
+  for (let i = 0; i < fields.length; i++) {
+    if(responses[i] !== null) {
+      fieldResponsePair[fields[i]] = responses[i]
+    }
+  }
+
+  let validBody;
+  try {
+    validBody = applicationResponsesSchema.parse(fieldResponsePair);
+  } catch (error) {
+    res.status(400).json({ "error": error })
+  }
+
+  if (validBody) {
+    try {
+      await userDataCollection.updateOne(
+        { email },
+        {
+          $set: {
+            applicationResponses: validBody,
+            email,
+            applicationStatus: ApplicationStatus.Incomplete,
+          },
+        },
+        { upsert: true });
+      return res.status(500).json({ "message": "Successfully updated user responses" })
+    } catch (error) {
+      return res.status(500).json({ "error": error })
+    }
+  }
+
+  return res.status(200)
+}
+
+const putHandler: NextApiHandler = async (req, res) => {
   const [open, closed] = await Promise.all([
     queryDate(SingletonType.RegistrationOpen),
     queryDate(SingletonType.RegistrationClosed),
@@ -125,7 +176,7 @@ const patchHandler: NextApiHandler = async (req, res) => {
     userResponses[field] = response;
   });
 
-  const email = await assumeLoggedInGetEmail(req);
+  const email = await assumeLoggedInGetEmail(req, res);
 
   // resume upload
   if (userResponses.resumeLink) {
@@ -152,9 +203,9 @@ const patchHandler: NextApiHandler = async (req, res) => {
 
 export const config = {
   api: {
-      bodyParser: {
-          sizeLimit: '3mb'
-      }
+    bodyParser: {
+      sizeLimit: '3mb'
+    }
   }
 }
 

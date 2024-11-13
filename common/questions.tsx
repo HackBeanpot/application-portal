@@ -658,13 +658,13 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
   makeDropdown(
     'mlhCodeOfConduct',
     'I have read and agree to the MLH Code of Conduct(https://static.mlh.io/docs/mlh-code-of-conduct.pdf)',
-    ['Yes'],
+    [YesOrNo.Yes, YesOrNo.No],
     true
   ),
   makeDropdown(
     'mlhApplicationSharingAuthorization',
     mlhAuthorizeShareApplicationText,
-    ['Yes'],
+    [YesOrNo.Yes, YesOrNo.No],
     true
   ),
   makeDropdown(
