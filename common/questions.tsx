@@ -611,11 +611,6 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     true,
     10
   ),
-  makeShortText(
-    'unListedReferrer',
-    "If you heard about HackBeanpot in a different way that isn't listed above, list it here!",
-    false
-  ),
 
   makeSection(
     <>Core Feedback</>,
