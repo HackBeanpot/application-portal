@@ -81,6 +81,7 @@ module.exports = (
         isAdmin: arg.isAdmin,
         applicationStatus: ApplicationStatus.Incomplete,
         rsvpStatus: RSVPStatus.Unconfirmed,
+        applicationResponses: {},
         ...userFields,
       });
       const insertTokenTask = ctx.nextAuthDb.verificationTokens.insertOne({

@@ -3,7 +3,7 @@ import { isAdmin, protect } from '../../../../server/protect';
 import { connectToDatabase } from '../../../../server/mongoDB';
 
 const handler: NextApiHandler = async (req, res) => {
-  const admin = await isAdmin(req);
+  const admin = await isAdmin(req, res);
   if (!admin) {
     return res.status(401).send({ message: 'User is not an admin' });
   }
@@ -22,10 +22,10 @@ const getHandler: NextApiHandler = async (req, res) => {
   const params = req.query;
 
   // assume page is 1 indexed
-  const page = Number(params?.page ?? 1);
-  const pageSize = Number(params?.pageSize ?? 10);
-  const filters = parseFilters(params?.filters);
-  const sort = parseSort(params?.sorter);
+  const page = Number(params.page ?? 1);
+  const pageSize = Number(params.pageSize ?? 10);
+  const filters = parseFilters(params.filters ?? '');
+  const sort = parseSort(params.sorter ?? '');
 
   const { userDataCollection } = await connectToDatabase();
   const data = userDataCollection
@@ -36,15 +36,11 @@ const getHandler: NextApiHandler = async (req, res) => {
     .limit(pageSize);
   const totalCount = await userDataCollection.countDocuments(filters);
 
-  return res
-    .status(200)
-    .json({ data: await data.toArray(), totalCount, page, pageSize });
+  return res.status(200).json({ data: await data.toArray(), totalCount, page, pageSize });
 };
 
 function parseFilters(queryString: string | string[]): Record<string, any> {
-  const filterString = Array.isArray(queryString)
-    ? queryString[0]
-    : queryString;
+  const filterString = Array.isArray(queryString) ? queryString[0] : queryString;
   const filters: Record<string, any> = JSON.parse(filterString);
   for (const key in filters) {
     const value = filters[key];
@@ -69,10 +65,10 @@ function parseSort(queryString: string | string[]): any {
 }
 export const config = {
   api: {
-      bodyParser: {
-          sizeLimit: '3mb'
-      }
-  }
-}
+    bodyParser: {
+      sizeLimit: '3mb',
+    },
+  },
+};
 
 export default protect(handler);

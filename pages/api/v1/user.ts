@@ -19,7 +19,7 @@ const handler: NextApiHandler = async (req, res) => {
 
 const getHandler: NextApiHandler = async (req, res) => {
   const { userDataCollection } = await connectToDatabase();
-  const email = await assumeLoggedInGetEmail(req);
+  const email = await assumeLoggedInGetEmail(req, res);
   const userWithId = await userDataCollection.findOne({ email });
   if (userWithId === null) {
     return res.status(200).json(null);
@@ -37,6 +37,7 @@ const getHandler: NextApiHandler = async (req, res) => {
 
   res.status(200).json(user);
 };
+
 
 const getShowDecisionDB = async (): Promise<boolean> => {
   const { singletonDataCollection } = await connectToDatabase();
