@@ -209,15 +209,18 @@ export const ApplicationForm = (): ReactElement => {
         />
         <Form.Item noStyle>
           <div className="submit-container">
-            <Button
-              className="button"
-              type="primary"
-              htmlType="button" 
-              onClick={onSave}
-              loading={isSubmitting}
-              size="large"
-            >Save Responses</Button>
-            
+            {!alreadySubmitted &&
+              <Button
+                className="button"
+                type="primary"
+                htmlType="button"
+                onClick={onSave}
+                loading={isSubmitting}
+                size="large"
+              >
+                Save Responses
+              </Button>}
+
             <Button
               className="button"
               type="primary"
@@ -230,10 +233,10 @@ export const ApplicationForm = (): ReactElement => {
           </div>
           <br />
           {lastSaved && (
-                <div>
-                  Last saved: {lastSaved}
-                </div>
-            )}
+            <div>
+              Last saved: {lastSaved}
+            </div>
+          )}
         </Form.Item>
       </Form>
     </>
