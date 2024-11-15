@@ -237,7 +237,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
         <i>Your gender identity will not be shared publicly or to companies.</i>
       </p>
     </div>,
-    Object.keys(Gender),
+    Object.values(Gender),
     true,
     'Gender'
   ),
@@ -252,7 +252,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
         <i>Your orientation will not be shared publicly or to companies.</i>
       </p>
     </div>,
-    [Lgbtq.Yes, Lgbtq.No, Lgbtq.PreferNotToSay, Lgbtq.Unsure],
+    Object.values(Lgbtq),
     true,
     'Identify'
   ),
