@@ -30,7 +30,7 @@ export const postDate = async (
     return res.status(401).send({ message: 'User is not an admin' });
   }
 
-  const newDate: string = JSON.stringify(new Date(req.body.date));
+  const newDate = new Date(req.body.date).toISOString();
   const { singletonDataCollection } = await connectToDatabase();
   await singletonDataCollection.updateOne(
     { type: dateName },
