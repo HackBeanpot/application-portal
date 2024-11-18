@@ -43,7 +43,6 @@ import {
   DuringClass,
   StuckInElevator,
 } from './postAcceptanceTypes';
-import { mlhAuthorizeShareApplicationText } from './constants';
 
 let questionCount = 0;
 // constants for min/max length of q + others
