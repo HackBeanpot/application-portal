@@ -18,7 +18,7 @@ import {
 export const RESPONSE_BY_DATE = new Date('02/01/2023'); // TODO: MAKE SINGLETON IN DB
 
 export const EXAMPLE_GENDER = Gender.Female;
-export const EXAMPLE_EDUCATION = Education.UndergraduateUniversity;
+export const EXAMPLE_EDUCATION = Education.UndergraduateUniversity2;
 export const EXAMPLE_ETHNICITIES = [Race.Asian];
 export const EXAMPLE_SHIRTSIZE = ShirtSize.Small;
 export const EXAMPLE_APPLICATION_STATUS = ApplicationStatus.Submitted;
