@@ -6,6 +6,7 @@ import {
   getRegistrationClosed,
   getRegistrationOpen,
   getStatus,
+  saveApplicantResponses,
   updateApplicantResponses,
 } from '../../common/apiClient';
 import { Questions, Sections } from '../../common/questions';
@@ -36,11 +37,8 @@ export const ApplicationForm = (): ReactElement => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [form] = Form.useForm<Record<string, QuestionResponse>>();
   const [appStatus, setAppStatus] = useState(status?.data?.applicationStatus);
+  const [lastSaved, setLastSaved] = useState<string | null>(null);
 
-  // observations
-  const alreadySubmitted =
-    status?.data.applicationStatus === ApplicationStatus.Submitted &&
-    (userResponses?.data?.responses.length ?? 0) > 0;
   const submittedFormData: Record<string, QuestionResponse> = {};
   userResponses?.data?.responses?.forEach((response, index) => {
     // get index of question with corresponding field, in case we added a question in the middle of the application
@@ -51,6 +49,11 @@ export const ApplicationForm = (): ReactElement => {
     // use question index in submittedFormData
     submittedFormData[String(questionIndex + 1)] = response;
   });
+  // observations
+  const alreadySubmitted =
+    status?.data.applicationStatus === ApplicationStatus.Submitted &&
+    (userResponses?.data?.responses.length ?? 0) > 0;
+
   const isEditing = alreadySubmitted && !disabled;
   const registrationOpenDate = registrationOpen?.data && new Date(registrationOpen?.data);
   const registrationCloseDate = registrationClosed?.data && new Date(registrationClosed?.data);
@@ -75,7 +78,35 @@ export const ApplicationForm = (): ReactElement => {
     });
   }, [alreadySubmitted, isAfterRegistration, isBeforeRegistration, resetFields]);
 
+  useEffect(() => {
+    form.setFieldsValue(submittedFormData);
+  }, [submittedFormData]);
+
   useWarnIfUnsavedChanges(isEditing || appStatus === ApplicationStatus.Incomplete);
+
+
+  const onSave = async () => {
+    const values = form.getFieldsValue();
+    const fields = Questions.map((q) => q.field) as Array<keyof ApplicationResponses>;
+    const responses = Questions.map((q) => values[q.id] ?? null);
+
+    try {
+      await saveApplicantResponses({ fields, responses });
+      const now = new Date().toLocaleString();
+      setLastSaved(now);
+      notification.success({
+        message: 'Responses Saved',
+        placement: 'bottomRight',
+        duration: 3,
+      });
+    } catch (error) {
+      notification.error({
+        message: 'Error Saving Responses',
+        placement: 'bottomRight',
+        duration: 5,
+      });
+    }
+  }
 
   const onSubmit = async (values: Record<string, QuestionResponse>) => {
     const fields = Questions.map((q) => q.field) as Array<keyof ApplicationResponses>;
@@ -112,8 +143,10 @@ export const ApplicationForm = (): ReactElement => {
       <h1 className="app-header">Application Page</h1>
       <div>
         <ul>
-          <li>The application takes around 15-20 mins to complete.</li>
-          <li>It is advised to complete it in one sitting because you can not save changes.</li>
+          <li>HackBeanpot 2025 is tentatively planned to be on February 7 - February 9, 2025 in Boston.</li>
+          <li>Follow us at @HackBeanpot on Instagram to stay up to date! To connect with your fellow prospective hackers, join our Discord! https://discord.gg/QypjXeYb</li>
+          <li>The application itself takes around 15-20 mins to complete.</li>
+          <li>You can save changes throughout, so feel free to come back to it whenever.</li>
           <li>
             After submitting, you can re-submit your application as many times as you want before
             the deadline.
@@ -178,8 +211,19 @@ export const ApplicationForm = (): ReactElement => {
         />
         <Form.Item noStyle>
           <div className="submit-container">
+            {!alreadySubmitted &&
+              <Button
+                className="button"
+                type="primary"
+                htmlType="button"
+                onClick={onSave}
+                loading={isSubmitting}
+                size="large"
+              >
+                Save Responses
+              </Button>}
+
             <Button
-              disabled={disabled}
               className="button"
               type="primary"
               htmlType="submit"
@@ -189,6 +233,12 @@ export const ApplicationForm = (): ReactElement => {
               {alreadySubmitted ? 'Resubmit Application' : 'Submit Application'}
             </Button>
           </div>
+          <br />
+          {lastSaved && (
+            <div>
+              Last saved: {lastSaved}
+            </div>
+          )}
         </Form.Item>
       </Form>
     </>

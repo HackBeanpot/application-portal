@@ -15,7 +15,7 @@ const statsHandler: NextApiHandler = async (req, res) => {
 };
 
 const getStats: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const adminCheck = await isAdmin(req);
+  const adminCheck = await isAdmin(req, res);
   if (!adminCheck) {
     return res.status(401).send({ message: 'User is not an admin' });
   }

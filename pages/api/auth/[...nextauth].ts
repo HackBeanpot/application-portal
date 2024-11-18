@@ -1,89 +1,88 @@
-import NextAuth from 'next-auth';
 import EmailProvider, { EmailConfig } from 'next-auth/providers/email';
-import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
-import { connectToDatabase } from '../../../server/mongoDB';
+import { MongoDBAdapter } from "@auth/mongodb-adapter"
+import client, { connectToDatabase } from '../../../server/mongoDB';
 import { ApplicationStatus, RSVPStatus } from '../../../common/types';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { safe } from '../../../server/errors';
 import nodemailer from 'nodemailer';
+import NextAuth, { type NextAuthOptions } from "next-auth"
+
+export const authOptions: NextAuthOptions = {
+  pages: {
+    signIn: '/auth/signin',
+    signOut: '/auth/signin',
+    error: '/auth/signin',
+    verifyRequest: '/auth/signin',
+  },
+  theme: {
+    colorScheme: 'auto', // "auto" | "dark" | "light"
+    brandColor: '', // Hex color code
+    logo: '/logo_big.png',
+  },
+  // Configure one or more authentication providers
+  providers: [
+    // Providers.GitHub({
+    //   clientId: process.env.GITHUB_ID,
+    //   clientSecret: process.env.GITHUB_SECRET,
+    // }),
+    EmailProvider({
+      server: {
+        host: process.env.EMAIL_SERVER_HOST,
+        port: process.env.EMAIL_SERVER_PORT ? parseInt(process.env.EMAIL_SERVER_PORT) : 0, //need to throw error in the future
+        auth: {
+          user: process.env.EMAIL_SERVER_USER,
+          pass: process.env.EMAIL_SERVER_PASSWORD,
+        },
+      },
+      from: process.env.EMAIL_FROM,
+      maxAge: 15 * 60, // email links are valid for 15 minutes
+      sendVerificationRequest,
+    }),
+  ],
+  // A database is optional, but required to persist accounts in a database
+  adapter: MongoDBAdapter(client),
+  // callback so that we can add a user to the database
+  callbacks: {
+    async signIn({ user, email }) {
+      // can implement banned users if needed
+      if (email?.verificationRequest) {
+        // don't create user on validation request, only on sign-in
+        return true;
+      }
+      // non-null assertion ok because email is currently the only form of sign-in
+      const userEmail = user.email!;
+      const isAllowedToSignIn = true;
+      if (isAllowedToSignIn) {
+        const { userDataCollection } = await connectToDatabase();
+        const existingUser = await userDataCollection.findOne({
+          email: userEmail,
+        });
+        // Create DB entry if user does not exist and email is valid
+        const re = new RegExp('[a-zA-Z0-9_\\.\\+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-\\.]+');
+        if (!existingUser && re.test(userEmail)) {
+          // all users with @hackbeanpot.com are made admins by default
+          const [, domain] = userEmail.split('@');
+          await userDataCollection.insertOne({
+            email: userEmail,
+            applicationStatus: ApplicationStatus.Incomplete,
+            isAdmin: domain === 'hackbeanpot.com',
+            rsvpStatus: RSVPStatus.Unconfirmed,
+            applicationResponses: {}
+          });
+        }
+        return true;
+      } else {
+        // return false to display a default error message
+        return false;
+        // or we can return a URL to redirect to:
+        // return /unauthorized
+      }
+    }
+  }
+}
 
 const authHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  return await NextAuth(req, res, {
-    pages: {
-      signIn: '/auth/signin',
-      signOut: '/auth/signin',
-      error: '/auth/signin',
-      verifyRequest: '/auth/signin',
-    },
-    theme: {
-      colorScheme: 'auto', // "auto" | "dark" | "light"
-      brandColor: '', // Hex color code
-      logo: '/logo_big.png',
-    },
-    // Configure one or more authentication providers
-    providers: [
-      // Providers.GitHub({
-      //   clientId: process.env.GITHUB_ID,
-      //   clientSecret: process.env.GITHUB_SECRET,
-      // }),
-      EmailProvider({
-        server: {
-          host: process.env.EMAIL_SERVER_HOST,
-          port: process.env.EMAIL_SERVER_PORT ? parseInt(process.env.EMAIL_SERVER_PORT) : 0, //need to throw error in the future
-          auth: {
-            user: process.env.EMAIL_SERVER_USER,
-            pass: process.env.EMAIL_SERVER_PASSWORD,
-          },
-        },
-        from: process.env.EMAIL_FROM,
-        maxAge: 15 * 60, // email links are valid for 15 minutes
-        sendVerificationRequest,
-      }),
-    ],
-    // A database is optional, but required to persist accounts in a database
-    adapter: MongoDBAdapter({
-      db: await connectToDatabase().then((ctx) => ctx.client.db('next-auth')),
-    }),
-    // callback so that we can add a user to the database
-    callbacks: {
-      async signIn({ user, email }) {
-        // can implement banned users if needed
-        if (email?.verificationRequest) {
-          // don't create user on validation request, only on sign-in
-          return true;
-        }
-
-        // non-null assertion ok because email is currently the only form of sign-in
-        const userEmail = user.email!;
-        const isAllowedToSignIn = true;
-        if (isAllowedToSignIn) {
-          const { userDataCollection } = await connectToDatabase();
-          const existingUser = await userDataCollection.findOne({
-            email: userEmail,
-          });
-
-          // Create DB entry if user does not exist and email is valid
-          const re = new RegExp('[a-zA-Z0-9_\\.\\+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-\\.]+');
-          if (!existingUser && re.test(userEmail)) {
-            // all users with @hackbeanpot.com are made admins by default
-            const [, domain] = userEmail.split('@');
-            await userDataCollection.insertOne({
-              email: userEmail,
-              applicationStatus: ApplicationStatus.Incomplete,
-              isAdmin: domain === 'hackbeanpot.com',
-              rsvpStatus: RSVPStatus.Unconfirmed,
-            });
-          }
-          return true;
-        } else {
-          // return false to display a default error message
-          return false;
-          // or we can return a URL to redirect to:
-          // return /unauthorized
-        }
-      },
-    },
-  });
+  return await NextAuth(req, res, authOptions);
 };
 
 // Unclear if this actually works but this is some black magic right here

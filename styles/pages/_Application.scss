@@ -22,10 +22,11 @@
 
   .submit-container {
     display: flex;
-    justify-content: center;
-
+    justify-content: space-around;
     .button {
       height: max-content;
+      width: 100%;
+      margin: 0 5vw;
     }
   }
 }
