@@ -205,8 +205,6 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     true, 
     'Country of Residence'),
   makeShortText('phoneNumber', 'Phone Number', true, 'Phone Number'),
-  makeShortText('github', 'Github Url', false, 'ex: github.com/HackBeanpot'),
-  makeShortText('linkedIn', 'LinkedIn Url', false, 'ex: linkedin.com/company/hackbeanpot-inc'),
 
   makeSection(
     <>Demographics</>,
@@ -258,13 +256,14 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     true,
     'Identify'
   ),
+  makeShortText('lgbtqIdentity', "If you said yes to the question above, how do you identify yourself?", false),
   makeCheckbox('races', 'What race(s) do you identify as?', Object.values(Race), true, 8),
 
   makeShortText('unlistedRace', "If your race(s) aren't listed above, list it here!", false),
   makeDropdown('school', 'What school do you attend?', Object.values(School), true, 'School'),
   makeShortText(
     'unlistedSchool',
-    'If your school was not listed in the previous question, list it here! (Please input full name of university, Ex: University of Southern California)',
+    'If your school was not listed in the previous question, list it here! (Please input full name of university)',
     false
   ),
   makeDropdown(
@@ -294,9 +293,16 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       <p>
         Please upload your resume as a PDF! We do not read resumes as a part of the HBP application
         process. The resumes are shared with interested sponsors who may contact you about
-        internship/job opportunities, and will only be read by them. Here is a Google doc template
-        to help you get started if you don’t have a resume yet:
-        https://docs.google.com/document/d/1vOdGOeGk5XTKL4Zu-9lctJKbDfC1zIVSKO2xowXnC3Q/edit
+        internship/job opportunities, and will only be read by them. Here is a Google doc template 
+        to help you get started if you don't have a resume yet:{' '}
+        <a 
+          href="https://docs.google.com/document/d/1vOdGOeGk5XTKL4Zu-9lctJKbDfC1zIVSKO2xowXnC3Q/edit"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: '#1890ff', textDecoration: 'underline' }}
+        >
+          Google Docs Resume Template
+        </a>
       </p>
     </div>,
     true,
@@ -306,11 +312,15 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     "You've already submitted a resume, but feel free to upload another one! (This will replace the old resume you've submitted.)"
   ),
 
+  makeShortText('github', 'Github Url', false, 'ex: github.com/HackBeanpot'),
+  makeShortText('linkedIn', 'LinkedIn Url', false, 'ex: linkedin.com/company/hackbeanpot-inc'),
+  makeShortText('personalWebsite', 'Personal Website / Portfolio Url', false),
+
   makeDropdown(
     'shirtSize',
     <div>
-      We will be handing out t-shirts and other fun swag at the event. What is your t-shirt size?{' '}
-      <i>All sizes are unisex.</i>
+      What is your t-shirt size? (Note: All sizes are unisex, 
+      and measurements are across the widest part of the chest!){' '}
     </div>,
     Object.values(ShirtSize),
     true,
@@ -341,7 +351,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
   ),
   makeDropdown(
     'csClassesTaken',
-    'How many CS classes have you taken?',
+    'How many CS classes have you taken or are currently taking?',
     [NumberOf.Zero, NumberOf.OneToTwo, NumberOf.ThreeToFive, NumberOf.SixOrAbove],
     true,
     'Count'
@@ -351,6 +361,9 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     <i>
       For each of the following CS disciplines, please rate your familiarity from (completely
       unfamiliar, very basic knowledge, proficient, expert)
+      <br/>
+      Disclaimer: This is just for data collection and workshop ideation purposes and will 
+      NOT impact your application (so be honest)!
     </i>
   ),
   makeRadioGroup(
@@ -494,47 +507,19 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     Object.values(InterestLevel),
     true
   ),
-  makeCheckbox(
-    'interestedWorkshops',
-    <div>
-      Which of the following workshops are you excited for?
-    </div>,
-    [
-      Workshop.Git,
-      Workshop.WebDev,
-      Workshop.IntermediateWebDev,
-      Workshop.React,
-      Workshop.Apis,
-      Workshop.GameDev,
-      Workshop.HBPPanel,
-      Workshop.ResumesAndInternships,
-      Workshop.Backend,
-      Workshop.MobileAppDev,
-      Workshop.MachineLearning,
-      Workshop.Docker,
-      Workshop.Go,
-      Workshop.DemoAProject,
-      Workshop.CareersInTech,
-      Workshop.DiversityInTech,
-      Workshop.TechForSocialGood,
-      Workshop.None,
-    ],
-    true,
-    17
-  ),
   makeShortText(
     'unlistedWorkshops',
-    'Were there any workshops not listed that you’d be interested in?',
+    'Were there any disciplines not listed that you’d be interested in?',
     false
   ),
   makeLongText(
     'hackBeanGoals',
     <div>
       <p>
-        At HackBeanpot 2025, we aim to create a welcoming environment by focusing on trekking into the unknown and bonding with your fellow hikers! A 3-day roadtrip relies on perseverance, teamwork, innovation and a sense of adventure! 
+        At HackBeanpot 2025, we aim to create a welcoming environment by focusing on exploration into the unknown, community, and growth! Heading out on a hike means embracing every climb, every twist in the trail, and all the unexpected moments that make the journey unforgettable.
       </p>
       <p>
-        Whether you journey along the mountain trails alone or with a team, what do you hope to get out of HackBeanpot? Do you have a specific project you’d like to pursue? What do you want to walk away having learned or experienced from this weekend?
+      Whether you’re hiking solo or traveling with friends, each step brings you closer to new discoveries and deeper connections. What do you hope to get out of HackBeanpot? Do you have a specific project you’d like to pursue? What do you want to walk away having learned or experienced from this weekend?
       </p>
       {characterRecommendationMessage}
     </div>,
@@ -552,7 +537,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
   ),
   makeLongText(
     'prevHackathonFeedback',
-    `Have you attended HackBeanpot previously? If you’ve attended a hackathon (in person or virtual) previously, what did you like or dislike about it? If this is your first hackathon, what would you like to see at HackBeanpot? `,
+    `Have you attended HackBeanpot previously? If you’ve attended a hackathon previously, what did you like or dislike about it? If this is your first hackathon, what would you like to see at HackBeanpot? `,
     false
   ),
   makeSection(
@@ -561,19 +546,27 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
       *Note: This question does not get factored into how your application is read! This question is
       for us to plan ahead for team formation; applicants are accepted on an individual basis, and
       it is not guaranteed that everyone in a premade team will be accepted. <br></br>
-      *To connect with your fellow prospective hackers and potentially form teams(it's not guaranteed everyone on the team will be accepted), please join the Discord: https://discord.gg/QypjXeYb
+      To connect with your fellow prospective hackers, please join the{' '}
+      <a 
+        href="https://discord.gg/QypjXeYb" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        style={{ color: '#1890ff', textDecoration: 'underline' }}
+      >
+        Discord! 
+      </a>
     </i>
   ),
   makeLongText(
     'premadeTeam',
     <p>
       Do you plan on attending HackBeanpot with a premade team? If yes,
-      <b> If yes, please list the first and last name and email of your team captain (captain is just for application purpose!).</b> If not, write &quot;N/A&quot;. Please note,
-      team formations will not be finalized until the day of the event!
+      <b> please list the first and last name and email of your team captain (captain is just for application purpose!). </b> 
+      Please note, team formations will not be finalized until the day of the event!
     </p>,
     true
   ),
-  makeShortText(
+  makeLongText(
     'plannedProjectIdea',
     `What are you planning to work on?
   This doesn't have to be a final idea! We just want to know what you're thinking of working on. This can include a specific API you want to work with, an idea for a new app you want to build, or a general area of tech you're looking to learn more about.`,
@@ -640,14 +633,55 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
   makeSection(<>Code of Conduct and Policy</>),
   makeDropdown(
     'mlhCodeOfConduct',
-    'I have read and agree to the MLH Code of Conduct(https://static.mlh.io/docs/mlh-code-of-conduct.pdf)',
+    <p>
+      I have read and agree to the{' '}
+      <a 
+        href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        style={{ color: '#1890ff', textDecoration: 'underline' }}
+      >
+        MLH Code of Conduct
+      </a>
+    </p>,
     [YesOrNo.Yes, YesOrNo.No],
     true
   ),
   makeDropdown(
     'mlhApplicationSharingAuthorization',
-    mlhAuthorizeShareApplicationText,
-    [YesOrNo.Yes, YesOrNo.No],
+   <p>
+      I authorize you to share my application/registration information with Major League Hacking for event administration, ranking, and MLH administration in-line with the{' '}
+      <a 
+        href="https://mlh.io/privacy" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        style={{ color: '#1890ff', textDecoration: 'underline' }}
+      >
+        MLH Privacy Policy
+      </a>
+
+      . I further agree to the terms of both the{' '}
+      <a 
+        href="https://github.com/MLH/mlh-policies/blob/main/contest-terms.md" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        style={{ color: '#1890ff', textDecoration: 'underline' }}
+      >
+        MLH Contest Terms and Conditions
+      </a>
+      
+      {' '}and the{' '}
+      <a 
+        href="https://mlh.io/privacy" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        style={{ color: '#1890ff', textDecoration: 'underline' }}
+      >
+        MLH Privacy Policy
+      </a>
+    </p>
+   , 
+   [YesOrNo.Yes, YesOrNo.No],
     true
   ),
   makeDropdown(

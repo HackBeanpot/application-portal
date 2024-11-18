@@ -45,8 +45,10 @@ export interface ApplicationResponses extends SharedResponses {
   homeTown?: string;
   linkedIn?: string;
   github?: string;
+  personalWebsite?: string;
   unlistedGender?: string;
   lgbtq?: Lgbtq;
+  lgbtqIdentity?: string;
   school?: School;
   unlistedSchool?: string;
   races?: Array<Race>;
@@ -147,11 +149,11 @@ export interface PortalState {
 
 
 export enum Gender {
-  Nonbinary = 'Nonbinary',
+  Nonbinary = 'Non-binary',
   Female = 'Female',
   Male = 'Male',
   Genderqueer = 'Genderqueer',
-  Unlisted = 'Unspecified',
+  Unlisted = 'Unlisted',
   PreferNotToSay = 'Prefer not to say',
 }
 
@@ -172,11 +174,11 @@ export enum YearOfEducation {
 }
 
 export enum Race {
-  IndigenousAlaskaNative = 'Indigenous / Alaska Native',
+  IndigenousAlaskaNative = 'Indigenous American or Alaska Native',
   Asian = 'Asian (East, Southeast, South)',
   BlackAfricanAmerican = 'Black or African American',
   HispanicLatinx = 'Hispanic or Latinx',
-  NativeHawaiianPacificIslander = 'Native Hawaiian or Pacific Islander',
+  NativeHawaiianPacificIslander = 'Native Hawaiian or Other Pacific Islander',
   White = 'White',
   Unlisted = 'Unlisted',
   PreferNotToSay = 'Prefer not to say',
@@ -2647,8 +2649,10 @@ export const applicationResponsesSchema = SharedResponsesSchema.extend({
   homeTown: z.string().optional(),
   linkedIn: z.string().optional(),
   github: z.string().optional(),
+  personalWebsite: z.string().optional(),
   unlistedGender: z.string().optional(),
   lgbtq: LgbtqSchema.optional(),
+  lgbtqIdentity: z.string().optional(),
   school: SchoolSchema.optional(),
   unlistedSchool: z.string().optional(),
   races: z.array(RaceSchema).optional(),
