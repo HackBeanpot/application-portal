@@ -34,28 +34,30 @@ const FileUploadQuestion: FC<FileUploadProps> = ({ disabled, question, form, sub
   };
 
   return (
-    <Form.Item
-      data-testid="fileUpload-question"
-      className="question"
-      name={question.id}
-      label={<div>{question.content}</div>}
-      rules={[{ required: question.required, message: 'This question is required' }]}
-      extra={submitted ? <div className="file-upload-label">{question.submittedText}</div> : ''}
-    >
-      <Upload
-        data-testid="upload"
-        accept={question.accept}
-        listType="picture"
-        multiple={question.multiple}
-        onChange={handleUpload}
-        fileList={fileList}
-        action={'api/noop'} // see pages/api/noop.tsx
+    <div>
+      <div>{question.content}</div>
+      <Form.Item
+        data-testid="fileUpload-question"
+        className="question"
+        name={question.id}
+        rules={[{ required: question.required, message: 'This question is required' }]}
+        extra={submitted ? <div className="file-upload-label">{question.submittedText}</div> : ''}
       >
-        <Button data-testid="button" disabled={disabled} icon={<UploadOutlined />}>
-          Upload
-        </Button>
-      </Upload>
-    </Form.Item>
+        <Upload
+          data-testid="upload"
+          accept={question.accept}
+          listType="picture"
+          multiple={question.multiple}
+          onChange={handleUpload}
+          fileList={fileList}
+          action={'api/noop'} // see pages/api/noop.tsx
+        >
+          <Button data-testid="button" disabled={disabled} icon={<UploadOutlined />}>
+            Upload
+          </Button>
+        </Upload>
+      </Form.Item>
+    </div>
   );
 };
 
