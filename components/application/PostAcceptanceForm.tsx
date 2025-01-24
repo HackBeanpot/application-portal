@@ -193,7 +193,7 @@ const error = (data: string) => {
   });
 };
 
-function formatDate(date: Date): string {
+export function formatDate(date: Date): string {
   const weekday = new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(date);
   const month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(date);
   const day = date.getDate();
@@ -211,22 +211,4 @@ function getOrdinalSuffix(day: number): string {
     case 3: return 'rd';
     default: return 'th';
   }
-}
-
-function getWeekendRange(date: Date): { start: Date; end: Date } {
-  const dayOfWeek = date.getDay();
-  const saturday = new Date(date);
-  const sunday = new Date(date);
-
-  // Adjust to the nearest Saturday (start of the weekend)
-  saturday.setDate(date.getDate() - ((dayOfWeek + 1) % 7));
-  
-  // Set Sunday as the day after Saturday
-  sunday.setDate(saturday.getDate() + 1);
-
-  // Set times to midnight
-  saturday.setHours(0, 0, 0, 0);
-  sunday.setHours(23, 59, 59, 999);
-
-  return { start: saturday, end: sunday };
 }
