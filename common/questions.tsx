@@ -26,23 +26,11 @@ import {
   School,
   ShirtSize,
   ShortText,
-  Workshop,
   YearOfEducation,
   YesOrNo,
   Lgbtq,
   RadioGroup,
 } from './types';
-import {
-  HangingWithFriends,
-  ZombieApocalypse,
-  TakeOverNation,
-  Aspirations,
-  Study,
-  Club,
-  SocialMedia,
-  DuringClass,
-  StuckInElevator,
-} from './postAcceptanceTypes';
 
 let questionCount = 0;
 // constants for min/max length of q + others
@@ -757,131 +745,6 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
     'Guardian: I acknowledge that I am above 18 years of age. I have read and agreed to the terms and conditions stated in the Participant Waiver and will make sure the attendee follows the platform usage defined in the Media & Platform Release.',
     true,
     'First Last'
-  ),
-  makeSection(
-    <>Sea Cabin Sorting!</>,
-    <div>
-      <p>
-        Under the sea explorers, prepare your diving gear and navigation charts, and embark on an
-        aquatic odyssey!
-      </p>
-      Embracing our new under the sea theme, each participant will join a fictional sea cabin with other hackers!
-      These fictional cabins will serve as a hub for hackers to connect and mingle with fellow
-      attendees amidst the wonders of the ocean depths. Over the course of the event, you{"'"}ll
-      have opportunities to earn points for your underwater realm in various workshops/activities
-      and vie for victory in the Undersea Expedition across the vast ocean floor.
-    </div>
-  ),
-  makeDropdown(
-    'hangingWithFriends',
-    'You’re hanging out with your friends. You are likely...',
-    [
-      HangingWithFriends.RockClimbing,
-      HangingWithFriends.Book,
-      HangingWithFriends.Conversational,
-      HangingWithFriends.Listening,
-      HangingWithFriends.Discord,
-    ],
-    true,
-    'Select an option'
-  ),
-  makeDropdown(
-    'zombieApocalypse',
-    'In the event of a zombie apocalypse, you need to get to safe territory. What’s one item you are definitely packing with you?',
-    [
-      ZombieApocalypse.Laptop,
-      ZombieApocalypse.Survival,
-      ZombieApocalypse.GoPro,
-      ZombieApocalypse.WaterBottle,
-      ZombieApocalypse.Backpack,
-    ],
-    true,
-    'Select an option'
-  ),
-  makeDropdown(
-    'takeOverNation',
-    'If you were given the task to take over a nation, how would you approach it?',
-    [
-      TakeOverNation.Exploit,
-      TakeOverNation.Hopeless,
-      TakeOverNation.CyberAttack,
-      TakeOverNation.SurpriseAttack,
-      TakeOverNation.Marry,
-    ],
-    true,
-    'Select an option'
-  ),
-  makeDropdown(
-    'aspirations',
-    'What are your long-term aspirations?',
-    [
-      Aspirations.WellLiked,
-      Aspirations.Boss,
-      Aspirations.Wise,
-      Aspirations.RiskTaker,
-      Aspirations.Remembered,
-    ],
-    true,
-    'Select an option'
-  ),
-  makeDropdown(
-    'study',
-    'How would you typically study for exams?',
-    [
-      Study.Upperclassmen,
-      Study.DrillPass,
-      Study.StudyGroup,
-      Study.OfficeHours,
-      Study.TrickProfessor,
-    ],
-    true,
-    'Select an option'
-  ),
-  makeDropdown(
-    'stuckInElevator',
-    'If you get stuck in an elevator in your dorm(the door doesn’t open) with your friends, what would you do? ',
-    [
-      StuckInElevator.CallRA,
-      StuckInElevator.Debug,
-      StuckInElevator.Brainstorm,
-      StuckInElevator.KickDoor,
-      StuckInElevator.Game,
-    ],
-    true,
-    'Select an option'
-  ),
-  makeDropdown(
-    'club',
-    'What club would you be most likely to join!',
-    [Club.Gardening, Club.Debate, Club.Book, Club.Adventure, Club.Gaming],
-    true,
-    'Select an option'
-  ),
-  makeDropdown(
-    'socialMedia',
-    'Pick a social media platform! ',
-    [
-      SocialMedia.None,
-      SocialMedia.Instagram,
-      SocialMedia.Pinterest,
-      SocialMedia.Tiktok,
-      SocialMedia.Twitch,
-    ],
-    true,
-    'Select an option'
-  ),
-  makeDropdown(
-    'duringClass',
-    'What do you do during class? (a really hard class, not a joke class)',
-    [
-      DuringClass.Game,
-      DuringClass.AskQuestions,
-      DuringClass.Listening,
-      DuringClass.OtherHomework,
-      DuringClass.NotInClass,
-    ],
-    true,
-    'Select an option'
   ),
 ];
 
