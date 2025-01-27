@@ -2,8 +2,8 @@ import { ConfirmByState, DecisionStatus } from '../../../common/types';
 import React from 'react';
 import { assertUnreachable } from '../../../common/utils/utils';
 import { Alert, Button } from 'antd';
-import { format } from '../status-dialogue/StatusDialogue';
 import Link from 'next/link';
+import { formatDate } from '../../application/PostAcceptanceForm';
 
 type DecisionStatusDialogueProps = {
   decisionStatus: Exclude<DecisionStatus, DecisionStatus.Undecided>;
@@ -58,7 +58,7 @@ export const Admitted: React.FC<AdmittedProps> = ({ confirmBy }) => {
           <div data-testid="admitted-dialog-text">
             Congratulations, we would love to have you attend this year{"'"}s event! Please navigate
             to the <strong>Application</strong> tab to mark your RSVP status. The deadline to
-            confirm your attendance is <strong>Friday, February 16th by 11:59pm</strong>.
+            confirm your attendance is <strong>{formatDate(confirmBy)}</strong>.
           </div>
         }
       />
