@@ -32,7 +32,7 @@ const QuestionResponseSchemas = makeQuestionResponseSchemas(PostAcceptanceFormQu
 const postHandler: NextApiHandler = async (req, res) => {
   const confirmBy = await queryDate(SingletonType.ConfirmBy);
   if (!confirmBy) return res.status(500).json('confirm by not set');
-  const confirmByState = getConfirmByState(new Date(JSON.parse(confirmBy)));
+  const confirmByState = getConfirmByState(new Date(confirmBy));
   if (confirmByState === ConfirmByState.After) {
     return res.status(400).json('Confirm by date has passed; post acceptance form is now closed.');
   }
