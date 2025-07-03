@@ -189,11 +189,12 @@ const Applicants: React.FC = () => {
 
   return (
     <div className={'applicants'}>
-      <div className="title-container">
-        <h3 className="title">{ADMIN_TABS.VIEW_AND_MODIFY_APPLICANTS}</h3>
-        <ExportButton cb={downloadApplicationCsv} text="Export Application Responses" />
-        <ExportButton cb={downloadPostAcceptanceCsv} text="Export Post-Acceptance Responses" />
-      </div>
+    <div className="title-container">
+      <h3 className="title">{ADMIN_TABS.VIEW_AND_MODIFY_APPLICANTS}</h3>
+      <ExportButton cb={downloadApplicationCsv} text="Export Application Responses" />
+      <ExportButton cb={downloadPostAcceptanceCsv} text="Export Post-Acceptance Responses" />
+    </div>
+    <Button className="clear-button">Clear Applicant Data</Button>
       <Table
         size={'small'}
         className={'applicants'}
