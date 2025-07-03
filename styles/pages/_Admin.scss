@@ -13,16 +13,27 @@
     .title-container {
       display: flex;
       flex-direction: row;
-
+ 
+ 
       .title {
         margin-right: auto;
       }
-
+ 
+ 
       .export-button {
         margin-left: 10px;
       }
     }
-  }
+      .clear-button {
+        background-color: red;
+        color:white;
+        margin-left: 1045px;
+      }
+      .clear-button:hover {
+        background-color: lightcoral;
+      }
+    }
+ 
 
   .ant-select-dropdown {
     zoom: 1 !important;
