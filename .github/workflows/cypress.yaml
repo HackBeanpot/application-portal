@@ -39,7 +39,7 @@ jobs:
       # after the test run completes, store videos and any screenshots
       # NOTE: screenshots will be generated only if E2E test failed
       - name: Upload Screenshots
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: cypress-screenshots
