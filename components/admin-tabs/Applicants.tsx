@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ADMIN_TABS } from '../../common/constants';
 import { getAllApplicants } from '../../common/apiClient';
 import useSWR from 'swr';
-import { Button, Table, TablePaginationConfig, TableProps, Tooltip } from 'antd';
+import { Button, Table, TablePaginationConfig, TableProps, Tooltip, Input } from 'antd';
 import {
   ApplicantsApiResponse,
   ApplicationResponses,
@@ -19,6 +19,8 @@ import { PostAcceptanceFormQuestions, Questions } from '../../common/questions';
 import { saveAs } from 'file-saver';
 import { EditableRow } from './table/EditableRow';
 import { EditableCell, EditableCellProps } from './table/EditableCell';
+// import Input from 'antd/lib/input/Input';
+import { SearchOutlined } from '@ant-design/icons';
 
 // add other Question fields not defined in User type in intersection here
 export type SingleRecordType = ApplicantsApiResponse['data'][number];
@@ -191,6 +193,8 @@ const Applicants: React.FC = () => {
     <div className={'applicants'}>
       <div className="title-container">
         <h3 className="title">{ADMIN_TABS.VIEW_AND_MODIFY_APPLICANTS}</h3>
+        <SearchOutlined className="search-icon" />
+        <Input className="search-bar" placeholder="Search..."/>
         <ExportButton cb={downloadApplicationCsv} text="Export Application Responses" />
         <ExportButton cb={downloadPostAcceptanceCsv} text="Export Post-Acceptance Responses" />
       </div>

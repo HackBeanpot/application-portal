@@ -21,6 +21,17 @@
       .export-button {
         margin-left: 10px;
       }
+
+      .search-bar {
+        display: flex;
+        flex-direction: row;
+        width: 20%;
+        margin-right: 70px;
+      }
+
+      .search-icon {
+        margin-right: 8px;
+      }
     }
   }
 
