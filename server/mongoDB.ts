@@ -105,4 +105,3 @@ export async function connectToDatabase(): Promise<MongoCtx> {
   cached.conn = await cached.promise;
   return cached.conn;
 }
-
