@@ -61,12 +61,12 @@ if (process.env.NODE_ENV === "development") {
   // In development mode, use a global variable so that the value
   // is preserved across module reloads caused by HMR (Hot Module Replacement).
   if (!g.mongo.client) {
-    g.mongo.client = new MongoClient(uri)
+    g.mongo.client = new MongoClient(uri, options)
   }
   client = g.mongo.client
 } else {
   // In production mode, it's best to not use a global variable.
-  client = new MongoClient(uri)
+  client = new MongoClient(uri, options)
 }
  
 // Export a module-scoped MongoClient. By doing this in a
@@ -84,7 +84,7 @@ export async function connectToDatabase(): Promise<MongoCtx> {
 
   // instantiate to a promise resolved with the context
   if (!cached.promise) {
-    const newClient = new MongoClient(uri)
+    const newClient = new MongoClient(uri, options)
     cached.client = newClient;
     cached.promise = cached.client.connect().then((client) => {
       const db = client.db(dbName);
