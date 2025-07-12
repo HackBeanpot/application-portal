@@ -220,19 +220,12 @@ export type StatusApiResponse = {
 
 export type DatesApiResponse = string;
 
-export interface SearchMetadata {
-  query: string;
-  totalResults: number;
-  searchTime: number;
-  isSearchResult: boolean;
-}
-
 export type ApplicantsApiResponse = {
   data: Array<User & { _id: string }>;
   totalCount: number;
   page: number;
   pageSize: number;
-  searchMetadata?: SearchMetadata;
+  searchQuery?: string;
 };
 
 export type SingleApplicantApiResponse = {
