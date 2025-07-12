@@ -12,30 +12,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4  # Updated from v2
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          cache: 'yarn'
-      
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-      
-      - name: Setup environment
-        run: cp .env.example .env
-      
+        uses: actions/checkout@v2
+      - name: Install
+        uses: bahmutov/npm-install@v1
+      - run: cp .env.example .env
       - name: Start Containers
         run: yarn dev:db:up
-      
-      - name: Build application
+      - name: Build
         run: yarn build
-        env:
-          NODE_OPTIONS: "--openssl-legacy-provider"  # Added for Node.js compatibility
-      
       - name: Cypress run
-        uses: cypress-io/github-action@v6  # Updated from v2
+        uses: cypress-io/github-action@v2
         with:
           start: yarn start
           wait-on: "http://localhost:3000"
@@ -46,25 +32,22 @@ jobs:
           EMAIL_SERVER_PASSWORD: ${{ secrets.EMAIL_SERVER_PASSWORD }}
           EMAIL_SERVER_HOST: ${{ secrets.EMAIL_SERVER_HOST }}
           EMAIL_SERVER_PORT: ${{ secrets.EMAIL_SERVER_PORT }}
-          NODE_OPTIONS: "--openssl-legacy-provider"  # Added for Node.js compatibility
           # CYPRESS_USE_LIVE_API: true
           # CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           # PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
           # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
-      # Store videos and screenshots after test run
+      # after the test run completes, store videos and any screenshots
+      # NOTE: screenshots will be generated only if E2E test failed
       - name: Upload Screenshots
-        uses: actions/upload-artifact@v4  # Updated from v2
+        uses: actions/upload-artifact@v2
         if: failure()
         with:
           name: cypress-screenshots
           path: cypress/screenshots
-          retention-days: 7
-      
+      # Test run video was always captured, so always upload (implicit means only on success)
       - name: Upload Videos
-        uses: actions/upload-artifact@v4  # Updated from v2
+        uses: actions/upload-artifact@v2
         if: always()
         with:
           name: cypress-videos
           path: cypress/videos
-          retention-days: 7
