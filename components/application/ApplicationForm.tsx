@@ -6,7 +6,6 @@ import {
   getRegistrationClosed,
   getRegistrationOpen,
   getStatus,
-  saveApplicantResponses,
   updateApplicantResponses,
 } from '../../common/apiClient';
 import { Questions, Sections } from '../../common/questions';
@@ -91,7 +90,7 @@ export const ApplicationForm = (): ReactElement => {
     const responses = Questions.map((q) => values[q.id] ?? null);
 
     try {
-      await saveApplicantResponses({ fields, responses });
+      await addApplicantResponses({ fields, responses });
       const now = new Date().toLocaleString();
       setLastSaved(now);
       notification.success({
