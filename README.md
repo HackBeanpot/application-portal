@@ -5,7 +5,7 @@ quick guide to start developing locally.
 
 # Prerequisites:
 
-- Node version 14 installed
+- Node version 25 installed
 - Yarn 1.22.xx installed; if you don't have it already installed, `npm install -g yarn`
 
 # Installation instructions:

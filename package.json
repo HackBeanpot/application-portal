@@ -10,10 +10,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky install",
-    "test:unit": "jest --testMatch='**/*.test.ts(x)?'",
+    "test:unit": "jest --testMatch=\"**/*.test.ts?(x)\"",
     "test:integration": "cypress run --browser chrome",
-    "test:dev": "cypress open"
+    "test:dev": "cypress open",
+    "prepare": "husky"
   },
   "dependencies": {
     "-": "^0.0.1",
@@ -88,6 +88,6 @@
     }
   },
   "engines": {
-    "node": "^18.12.0"
+    "node": "^25.0.0"
   }
 }
