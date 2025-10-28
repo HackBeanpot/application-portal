@@ -19,7 +19,7 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 describe('FileUploadQuestion component', () => {
-  const questionText = 'Upload File Please';
+  const questionText = 'Upload';
   const fileUploadExample: FileUpload = {
     type: QuestionType.FileUpload,
     accept: '',
@@ -52,6 +52,6 @@ describe('FileUploadQuestion component', () => {
     render(<FileUploadQuestionWrapper />);
     const confirmedDialogText = screen.getByTestId('fileUpload-question');
     expect(confirmedDialogText.textContent).toContain(questionText);
-    expect(confirmedDialogText.textContent).toContain('Upload File Please');
+    expect(confirmedDialogText.textContent).toContain('Upload');
   });
 });
