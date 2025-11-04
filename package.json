@@ -10,10 +10,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky install",
-    "test:unit": "jest --testMatch='**/*.test.ts(x)?'",
+    "test:unit": "jest --testMatch=\"**/*.test.ts?(x)\"",
     "test:integration": "cypress run --browser chrome",
-    "test:dev": "cypress open"
+    "test:dev": "cypress open",
+    "prepare": "husky"
   },
   "dependencies": {
     "-": "^0.0.1",
@@ -68,26 +68,7 @@
     "*.{js,jsx,ts,tsx}": "eslint --cache --fix",
     "*.{js,jsx,ts,tsx,css,md}": "prettier --write"
   },
-  "jest": {
-    "testEnvironment": "node",
-    "preset": "ts-jest",
-    "globals": {
-      "ts-jest": {
-        "tsconfig": {
-          "skipLibCheck": true,
-          "strict": true,
-          "noEmit": true,
-          "esModuleInterop": true,
-          "module": "esnext",
-          "moduleResolution": "node",
-          "resolveJsonModule": true,
-          "isolatedModules": true,
-          "jsx": "react-jsx"
-        }
-      }
-    }
-  },
   "engines": {
-    "node": "^18.12.0"
+    "node": "22"
   }
 }
