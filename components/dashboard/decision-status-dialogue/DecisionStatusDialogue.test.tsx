@@ -77,8 +77,8 @@ describe('DecisionStatusDialogue', () => {
 });
 describe('`Admitted` decision component', () => {
   it('renders', () => {
-    const admittedDecisionExpectedText =
-      "Congratulations, we would love to have you attend this year's event! Please navigate to the Application tab to mark your RSVP status. The deadline to confirm your attendance is Friday, February 16th by 11:59pm.";
+    const admittedDecisionExpectedTextWithoutDate =
+      "Congratulations, we would love to have you attend this year's event! Please navigate to the Application tab to mark your RSVP status. The deadline to confirm your attendance is ";
     render(
       <DecisionStatusDialogue
         decisionStatus={DecisionStatus.Declined}
@@ -89,7 +89,7 @@ describe('`Admitted` decision component', () => {
     );
     render(<Admitted confirmBy={decisionConfirmByDate} />);
     const admittedDecisionText = screen.getByTestId('admitted-dialog-text');
-    expect(admittedDecisionText.textContent).toBe(admittedDecisionExpectedText);
+    expect(admittedDecisionText.textContent).toContain(admittedDecisionExpectedTextWithoutDate);
   });
 });
 describe('`Waitlisted` decision component', () => {

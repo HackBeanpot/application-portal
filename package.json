@@ -68,25 +68,6 @@
     "*.{js,jsx,ts,tsx}": "eslint --cache --fix",
     "*.{js,jsx,ts,tsx,css,md}": "prettier --write"
   },
-  "jest": {
-    "testEnvironment": "node",
-    "preset": "ts-jest",
-    "globals": {
-      "ts-jest": {
-        "tsconfig": {
-          "skipLibCheck": true,
-          "strict": true,
-          "noEmit": true,
-          "esModuleInterop": true,
-          "module": "esnext",
-          "moduleResolution": "node",
-          "resolveJsonModule": true,
-          "isolatedModules": true,
-          "jsx": "react-jsx"
-        }
-      }
-    }
-  },
   "engines": {
     "node": "^25.0.0"
   }
