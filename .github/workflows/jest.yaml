@@ -21,3 +21,7 @@ jobs:
       - name: Install dependencies
         run: yarn --frozen-lockfile
       - run: yarn test:unit
+      - name: 'notify vercel'
+        uses: 'vercel/repository-dispatch/actions/status@v1'
+        with:
+          name: Vercel - application-portal: lint
