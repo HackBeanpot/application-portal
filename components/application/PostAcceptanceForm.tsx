@@ -70,14 +70,14 @@ const AttendingForm: React.FC<AttendingFormProps> = ({ setAttendingState }) => {
     <>
       <p style={{ textAlign: 'center' }}>
         Please select if you will be attending HackBeanpot on the weekend of{' '}
-        <strong>
-          February 7 - 9th, 2025 at Northeastern University Campus in Boston, MA
-        </strong>{' '}
-        . Please keep in mind, the event this year is <strong>NOT</strong> overnight. Northeastern University Campus is available for use from <strong>8:00 am - 11:00 pm</strong>.  
-        As such, please arrange for appropriate accomodations during the event. 
+        <strong>February 7 - 9th, 2025 at Northeastern University Campus in Boston, MA</strong> .
+        Please keep in mind, the event this year is <strong>NOT</strong> overnight. Northeastern
+        University Campus is available for use from <strong>8:00 am - 11:00 pm</strong>. As such,
+        please arrange for appropriate accomodations during the event.
       </p>
       <p>
-      If you cannot make it, please select {'"No"'} so that we can admit others on the wait list instead.
+        If you cannot make it, please select {'"No"'} so that we can admit others on the wait list
+        instead.
       </p>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Popconfirm
@@ -198,7 +198,11 @@ export function formatDate(date: Date): string {
   const month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(date);
   const day = date.getDate();
   const ordinal = getOrdinalSuffix(day);
-  const time = new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }).format(date);
+  const time = new Intl.DateTimeFormat('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  }).format(date);
 
   return `${weekday}, ${month} ${day}${ordinal} by ${time.toLowerCase()}`;
 }
@@ -206,9 +210,13 @@ export function formatDate(date: Date): string {
 function getOrdinalSuffix(day: number): string {
   if (day > 3 && day < 21) return 'th';
   switch (day % 10) {
-    case 1: return 'st';
-    case 2: return 'nd';
-    case 3: return 'rd';
-    default: return 'th';
+    case 1:
+      return 'st';
+    case 2:
+      return 'nd';
+    case 3:
+      return 'rd';
+    default:
+      return 'th';
   }
 }
