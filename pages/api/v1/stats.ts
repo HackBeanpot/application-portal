@@ -2,7 +2,7 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { connectToDatabase } from '../../../server/mongoDB';
 import { isAdmin, protect } from '../../../server/protect';
 import { Collection, Document } from 'mongodb';
-import { Race, User, Workshop } from '../../../common/types';
+import { Race, User } from '../../../common/types';
 
 const statsHandler: NextApiHandler = async (req, res) => {
   switch (req.method) {
@@ -92,33 +92,11 @@ const getStats: NextApiHandler = async (req: NextApiRequest, res: NextApiRespons
     };
   });
 
-  const mappedWorkshopData = Object.values(Workshop)
-    .map((workshop) => {
-      let workshopCount = 0;
-      total.forEach((user) => {
-        if (user.applicationResponses?.interestedWorkshops?.includes(workshop)) {
-          workshopCount++;
-        }
-      });
-      return {
-        _id: `Interested in workshop: ${workshop}`,
-        count: workshopCount,
-      };
-    })
-    .filter((workshopData) => workshopData.count > 0);
-
   const statsData: Record<string, number> = {};
   statsData['Total applicants'] = total.length;
 
   const resData = convertData(
-    [
-      statusData,
-      shirtData,
-      decisionStatusData,
-      mappedRaceData,
-      mappedWorkshopData,
-      ...aggregatedData,
-    ],
+    [statusData, shirtData, decisionStatusData, mappedRaceData, ...aggregatedData],
     statsData
   );
 
