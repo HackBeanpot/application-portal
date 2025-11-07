@@ -223,7 +223,7 @@ export const ApplicationForm = (): ReactElement => {
                 type="primary"
                 htmlType="button"
                 onClick={onSave}
-                // loading={isSubmitting}
+                loading={isSubmitting}
                 size="large"
               >
                 Save Responses
