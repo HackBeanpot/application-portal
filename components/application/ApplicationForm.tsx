@@ -86,10 +86,10 @@ export const ApplicationForm = (): ReactElement => {
   const onSave = async () => {
     const values = form.getFieldsValue();
     const fields = Questions.map((q) => q.field) as Array<keyof ApplicationResponsesType>;
-    const responses = Questions.map((q) => values[q.id] ?? null);
+    const responses = Questions.map((q) => values[q.id] ?? undefined);
 
     try {
-      await addApplicantResponses({ fields, responses });
+      await updateApplicantResponses({ fields, responses });
       const now = new Date().toLocaleString();
       setLastSaved(now);
       notification.success({
@@ -110,7 +110,7 @@ export const ApplicationForm = (): ReactElement => {
     const fields: Array<keyof ApplicationResponsesType> = Questions.filter(isApplicationField).map(
       (q) => q.field
     );
-    const responses = Questions.map((q) => values[q.id] ?? null);
+    const responses = Questions.map((q) => values[q.id] ?? undefined);
     setIsSubmitting(true);
     const response = alreadySubmitted
       ? await updateApplicantResponses({ fields, responses })
@@ -223,7 +223,7 @@ export const ApplicationForm = (): ReactElement => {
                 type="primary"
                 htmlType="button"
                 onClick={onSave}
-                loading={isSubmitting}
+                // loading={isSubmitting}
                 size="large"
               >
                 Save Responses

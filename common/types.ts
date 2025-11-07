@@ -270,7 +270,7 @@ export enum AttendingState {
 /**
  * is a single string for text responses, and an array of the choices for multi-select responses
  */
-export type QuestionResponse = string | Array<string> | null;
+export type QuestionResponse = string | Array<string> | undefined;
 
 /**
  * @param responses mapping from question id to response value
