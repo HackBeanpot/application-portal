@@ -27,7 +27,7 @@ const postAcceptanceHandler: NextApiHandler = async (req, res) => {
   }
 };
 
-const QuestionResponseSchemas = makeQuestionResponseSchemas(PostAcceptanceFormQuestions);
+const QuestionResponseSchemas = makeQuestionResponseSchemas(PostAcceptanceFormQuestions, true);
 
 const postHandler: NextApiHandler = async (req, res) => {
   const confirmBy = await queryDate(SingletonType.ConfirmBy);
