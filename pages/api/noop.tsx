@@ -9,5 +9,5 @@ import { NextApiRequest, NextApiResponse } from 'next';
  * See Stack Overflow post: https://stackoverflow.com/questions/60414352/next-js-ant-design-dragger-file-upload-fails-on-deployed-instance
  */
 export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
-  res.status(200).send(undefined);
+  return res.status(200).send(undefined);
 }

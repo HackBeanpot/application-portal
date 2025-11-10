@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react';
-import { ApplicationResponses, ApplicationStatus, QuestionResponse } from '../../common/types';
+import { ApplicationResponsesType, ApplicationStatus, QuestionResponse } from '../../common/types';
 import {
   addApplicantResponses,
   getApplicantResponses,
@@ -8,7 +8,7 @@ import {
   getStatus,
   updateApplicantResponses,
 } from '../../common/apiClient';
-import { Questions, Sections } from '../../common/questions';
+import { isApplicationField, Questions, Sections } from '../../common/questions';
 import { Alert, Button, Form, notification } from 'antd';
 import useSWR from 'swr';
 import { format } from '../dashboard/status-dialogue/StatusDialogue';
@@ -79,18 +79,17 @@ export const ApplicationForm = (): ReactElement => {
 
   useEffect(() => {
     form.setFieldsValue(submittedFormData);
-  }, [submittedFormData]);
+  }, [submittedFormData, form]);
 
   useWarnIfUnsavedChanges(isEditing || appStatus === ApplicationStatus.Incomplete);
 
-
   const onSave = async () => {
     const values = form.getFieldsValue();
-    const fields = Questions.map((q) => q.field) as Array<keyof ApplicationResponses>;
-    const responses = Questions.map((q) => values[q.id] ?? null);
+    const fields = Questions.map((q) => q.field) as Array<keyof ApplicationResponsesType>;
+    const responses = Questions.map((q) => values[q.id] ?? undefined);
 
     try {
-      await addApplicantResponses({ fields, responses });
+      await updateApplicantResponses({ fields, responses });
       const now = new Date().toLocaleString();
       setLastSaved(now);
       notification.success({
@@ -105,11 +104,13 @@ export const ApplicationForm = (): ReactElement => {
         duration: 5,
       });
     }
-  }
+  };
 
   const onSubmit = async (values: Record<string, QuestionResponse>) => {
-    const fields = Questions.map((q) => q.field) as Array<keyof ApplicationResponses>;
-    const responses = Questions.map((q) => values[q.id] ?? null);
+    const fields: Array<keyof ApplicationResponsesType> = Questions.filter(isApplicationField).map(
+      (q) => q.field
+    );
+    const responses = Questions.map((q) => values[q.id] ?? undefined);
     setIsSubmitting(true);
     const response = alreadySubmitted
       ? await updateApplicantResponses({ fields, responses })
@@ -142,8 +143,14 @@ export const ApplicationForm = (): ReactElement => {
       <h1 className="app-header">Application Page</h1>
       <div>
         <ul>
-          <li>HackBeanpot 2025 is tentatively planned to be on February 7 - February 9, 2025 in Boston.</li>
-          <li>Follow us at @HackBeanpot on Instagram to stay up to date! To connect with your fellow prospective hackers, join our Discord! https://discord.gg/QypjXeYb</li>
+          <li>
+            HackBeanpot 2025 is tentatively planned to be on February 7 - February 9, 2025 in
+            Boston.
+          </li>
+          <li>
+            Follow us at @HackBeanpot on Instagram to stay up to date! To connect with your fellow
+            prospective hackers, join our Discord! https://discord.gg/QypjXeYb
+          </li>
           <li>The application itself takes around 15-20 mins to complete.</li>
           <li>You can save changes throughout, so feel free to come back to it whenever.</li>
           <li>
@@ -210,7 +217,7 @@ export const ApplicationForm = (): ReactElement => {
         />
         <Form.Item noStyle>
           <div className="submit-container">
-            {!alreadySubmitted &&
+            {!alreadySubmitted && (
               <Button
                 className="button"
                 type="primary"
@@ -220,7 +227,8 @@ export const ApplicationForm = (): ReactElement => {
                 size="large"
               >
                 Save Responses
-              </Button>}
+              </Button>
+            )}
 
             <Button
               className="button"
@@ -233,11 +241,7 @@ export const ApplicationForm = (): ReactElement => {
             </Button>
           </div>
           <br />
-          {lastSaved && (
-            <div>
-              Last saved: {lastSaved}
-            </div>
-          )}
+          {lastSaved && <div>Last saved: {lastSaved}</div>}
         </Form.Item>
       </Form>
     </>

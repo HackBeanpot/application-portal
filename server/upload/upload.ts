@@ -11,24 +11,32 @@ async function uploadFile(
   bucketName: string,
   content: Buffer,
   fileOptions: SaveOptions,
-  destinationFileName: string,
-  deployed: boolean
+  destinationFileName: string
 ): Promise<void> {
-  let storage = new Storage();
-  if (deployed) {
-    storage = new Storage({
-      projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
-      credentials: {
-        client_email: process.env.GOOGLE_CLOUD_EMAIL,
-        private_key: (process.env.GOOGLE_CLOUD_PRIVATE_KEY as string).replace(/\\n/g, '\n'),
-      },
-    });
+  const { GOOGLE_CLOUD_EMAIL, GOOGLE_CLOUD_PROJECT_ID, GOOGLE_CLOUD_PRIVATE_KEY } = process.env;
+
+  if (!GOOGLE_CLOUD_EMAIL || !GOOGLE_CLOUD_PROJECT_ID || !GOOGLE_CLOUD_PRIVATE_KEY) {
+    console.error(
+      'Missing ENV variables for GOOGLE_CLOUD_EMAIL or GOOGLE_CLOUD_PROJECT_ID or GOOGLE_CLOUD_PRIVATE_KEY'
+    );
+    return;
   }
+
+  const storage = new Storage({
+    projectId: GOOGLE_CLOUD_PROJECT_ID,
+    credentials: {
+      client_email: GOOGLE_CLOUD_EMAIL,
+      private_key: GOOGLE_CLOUD_PRIVATE_KEY.replace(/\\n/g, '\n'),
+    },
+  });
+
   await storage
     .bucket(bucketName)
     .file(destinationFileName)
     .save(content, fileOptions)
     .catch((e) => console.error('Error while uploading to google cloud storage:', e));
+
+  await storage.bucket(bucketName).file(destinationFileName).makePublic();
 }
 
 /**
@@ -37,11 +45,12 @@ async function uploadFile(
  * @param destinationFileName id for file in google cloud storage
  * @returns a URL to the uploaded pdf, if upload was successful
  */
-export function uploadApplicantResume(
+export async function uploadApplicantResume(
   content: Buffer,
   destinationFileName: string
-): string | undefined {
+): Promise<string | undefined> {
   const deployed = process.env.NODE_ENV === 'production';
+
   let bucketName = process.env.GOOGLE_CLOUD_STORAGE_RESUME_BUCKET_TEST;
   if (deployed) {
     bucketName = process.env.GOOGLE_CLOUD_STORAGE_RESUME_BUCKET;
@@ -57,7 +66,7 @@ export function uploadApplicantResume(
       },
       public: true,
     };
-    uploadFile(bucketName, content, fileOptions, destinationFileName, deployed);
-    return `http://${bucketName}.storage.googleapis.com/${destinationFileName}`;
+    await uploadFile(bucketName, content, fileOptions, destinationFileName);
+    return `https://${bucketName}.storage.googleapis.com/${destinationFileName}`;
   }
 }

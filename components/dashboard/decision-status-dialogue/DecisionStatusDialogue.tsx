@@ -105,7 +105,7 @@ export const Declined: React.FC = () => {
   );
 };
 
-export const FailedToConfirm: React.FC<AdmittedProps> = ({ confirmBy }) => {
+export const FailedToConfirm: React.FC<AdmittedProps> = () => {
   return (
     <Alert
       type={'warning'}

@@ -39,7 +39,7 @@ export const addApplicantResponses = (
 export const updateApplicantResponses = (
   responses: RegistrationApiRequest
 ): Promise<AxiosResponse<string | null>> =>
-  Axios.patch(`/api/v1/registration`, responses, { validateStatus: () => true });
+  Axios.put(`/api/v1/registration`, responses, { validateStatus: () => true });
 
 export function getAllApplicants(
   pagination: TablePaginationConfig,

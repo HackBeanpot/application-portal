@@ -5,7 +5,7 @@ import useSWR from 'swr';
 import { Button, Table, TablePaginationConfig, TableProps, Tooltip, Input } from 'antd';
 import {
   ApplicantsApiResponse,
-  ApplicationResponses,
+  ApplicationResponsesType,
   ApplicationStatus,
   DecisionStatus,
   Dropdown as DropdownQuestionType,
@@ -194,7 +194,7 @@ const Applicants: React.FC = () => {
       <div className="title-container">
         <h3 className="title">{ADMIN_TABS.VIEW_AND_MODIFY_APPLICANTS}</h3>
         <SearchOutlined className="search-icon" />
-        <Input className="search-bar" placeholder="Search..."/>
+        <Input className="search-bar" placeholder="Search..." />
         <ExportButton cb={downloadApplicationCsv} text="Export Application Responses" />
         <ExportButton cb={downloadPostAcceptanceCsv} text="Export Post-Acceptance Responses" />
       </div>
@@ -284,7 +284,7 @@ const downloadFileAbstract = async (
   { totalCount, filters, sorter }: DownloadProps,
   fields: Array<keyof User>,
   questions: QuestionDefinition[],
-  responseGetter: (u: User) => ApplicationResponses | QuestionResponse[] | undefined,
+  responseGetter: (u: User) => ApplicationResponsesType | QuestionResponse[] | undefined,
   fileName: string
 ): Promise<null> => {
   const pagination: TablePaginationConfig = {

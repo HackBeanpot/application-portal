@@ -62,8 +62,8 @@ const st = (d?: Partial<ShortText>): ShortText => {
 describe('registration endpoint schema tests', () => {
   const dd1 = dd();
   const dd2 = dd({ required: false });
-  const dds1 = convertDropdownToJoiSchema(dd1);
-  const ddsNotRequired = convertDropdownToJoiSchema(dd2);
+  const dds1 = convertDropdownToJoiSchema(dd1, true);
+  const ddsNotRequired = convertDropdownToJoiSchema(dd2, true);
 
   describe('required', () => {
     it('throws when a required response is null/undefined', () => {
@@ -86,7 +86,7 @@ describe('registration endpoint schema tests', () => {
   });
 
   const cb1 = cb();
-  const cbs1 = convertCheckboxesToJoiSchema(cb1);
+  const cbs1 = convertCheckboxesToJoiSchema(cb1, true);
 
   // checkboxes-specific tests
   describe('checkboxes', () => {
@@ -111,7 +111,7 @@ describe('registration endpoint schema tests', () => {
   });
 
   const lt1 = lt();
-  const lts1 = convertLongTextToJoiSchema(lt());
+  const lts1 = convertLongTextToJoiSchema(lt(), true);
 
   describe('longtext', () => {
     const zero = '';
@@ -128,16 +128,4 @@ describe('registration endpoint schema tests', () => {
       expect(() => Joi.assert("some normal length that's in the middle", lts1)).not.toThrow();
     });
   });
-
-  const st1 = st();
-  const questions = [dd1, cb1, st1, lt1];
-  const questionSchemas = makeQuestionResponseSchemas(questions);
-
-  // describe("general question schema converter", () => {
-  //   it("basic example", () => {
-  //     expect(() => Joi.assert([
-  //       ""
-  //     ], questionSchemas))
-  //   })
-  // })
 });

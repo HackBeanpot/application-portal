@@ -12,56 +12,69 @@ import {
 } from '../../common/types';
 import Joi from 'joi';
 import { Questions } from '../../common/questions';
+import { z } from 'zod';
 
 export const convertQuestionDefinitionToJoiSchema = (
-  question: QuestionDefinition
+  question: QuestionDefinition,
+  required: boolean
 ): Joi.Schema<QuestionResponse> => {
   if (question.type === QuestionType.Checkboxes) {
-    return convertCheckboxesToJoiSchema(question);
+    return convertCheckboxesToJoiSchema(question, required);
   } else if (question.type === QuestionType.Dropdown) {
-    return convertDropdownToJoiSchema(question);
+    return convertDropdownToJoiSchema(question, required);
   } else if (question.type === QuestionType.LongText) {
-    return convertLongTextToJoiSchema(question);
+    return convertLongTextToJoiSchema(question, required);
   } else if (question.type === QuestionType.ShortText) {
-    return convertShortTextToJoiSchema(question);
+    return convertShortTextToJoiSchema(question, required);
   } else if (question.type === QuestionType.FileUpload) {
-    return convertFileUploadToJoiSchema(question);
-  }
-  else if (question.type === QuestionType.RadioGroup) {
-    return convertRadioGroupToJoiSchema(question);
+    return convertFileUploadToJoiSchema(question, required);
+  } else if (question.type === QuestionType.RadioGroup) {
+    return convertRadioGroupToJoiSchema(question, required);
   }
   throw new Error(`unexpected question type on question: ${question}`);
 };
 
 // joi documentation is pretty good: checkout joi.dev/api
-export const makeRequiredIfNeeded = (question: QuestionDefinition, schema: Joi.Schema): Joi.Schema => {
-  // by default, joi allows undefined, but not null.
-  if (question.required) {
-    // required means don't allow undefined
-    return schema.required();
+export const makeRequiredIfNeeded = (
+  question: QuestionDefinition,
+  schema: Joi.Schema,
+  required: boolean
+): Joi.Schema => {
+  if (!required || !question.required) {
+    return schema.allow(null);
   }
-  // if not required, then allow undefined (implicitly), and null
-  return schema.allow(null);
+  // by default, joi allows undefined, but not null.
+  return schema.required();
 };
-export const convertCheckboxesToJoiSchema = (question: Checkboxes): Joi.Schema => {
+export const convertCheckboxesToJoiSchema = (
+  question: Checkboxes,
+  required: boolean
+): Joi.Schema => {
   // checkboxes expects an array of strings back
   const itemSchema = Joi.valid(...question.options.map((s) => s.name));
-  const arraySchema = Joi.array().items(itemSchema).unique().min(question.minNumber).max(question.maxNumber);
-  return makeRequiredIfNeeded(question, arraySchema);
+  const arraySchema = Joi.array()
+    .items(itemSchema)
+    .unique()
+    .min(question.minNumber)
+    .max(question.maxNumber);
+  return makeRequiredIfNeeded(question, arraySchema, required);
 };
-export const convertDropdownToJoiSchema = (question: Dropdown): Joi.Schema => {
+export const convertDropdownToJoiSchema = (question: Dropdown, required: boolean): Joi.Schema => {
   // dropdown expects a single string
   const answerSchema = Joi.valid(...question.options.map((s) => s.name));
-  return makeRequiredIfNeeded(question, answerSchema);
+  return makeRequiredIfNeeded(question, answerSchema, required);
 };
 
-export const convertRadioGroupToJoiSchema = (question: RadioGroup): Joi.Schema => {
+export const convertRadioGroupToJoiSchema = (
+  question: RadioGroup,
+  required: boolean
+): Joi.Schema => {
   // dropdown expects a single string
   const answerSchema = Joi.valid(...question.options.map((s) => s.name));
-  return makeRequiredIfNeeded(question, answerSchema);
+  return makeRequiredIfNeeded(question, answerSchema, required);
 };
 
-export const convertLongTextToJoiSchema = (question: LongText): Joi.Schema => {
+export const convertLongTextToJoiSchema = (question: LongText, required: boolean): Joi.Schema => {
   // expects a long text response
   let answerSchema;
   if (question.required) {
@@ -69,9 +82,9 @@ export const convertLongTextToJoiSchema = (question: LongText): Joi.Schema => {
   } else {
     answerSchema = Joi.string().trim().min(question.minLength).max(question.maxLength);
   }
-  return makeRequiredIfNeeded(question, answerSchema);
+  return makeRequiredIfNeeded(question, answerSchema, required);
 };
-export const convertShortTextToJoiSchema = (question: ShortText): Joi.Schema => {
+export const convertShortTextToJoiSchema = (question: ShortText, required: boolean): Joi.Schema => {
   // expects a long text response
   let answerSchema;
   if (question.required) {
@@ -79,16 +92,22 @@ export const convertShortTextToJoiSchema = (question: ShortText): Joi.Schema => 
   } else {
     answerSchema = Joi.string().trim().min(question.minLength).max(question.maxLength);
   }
-  return makeRequiredIfNeeded(question, answerSchema);
+  return makeRequiredIfNeeded(question, answerSchema, required);
 };
 
-export const convertFileUploadToJoiSchema = (question: FileUpload): Joi.Schema => {
+export const convertFileUploadToJoiSchema = (
+  question: FileUpload,
+  required: boolean
+): Joi.Schema => {
   const answerSchema = Joi.string();
-  return makeRequiredIfNeeded(question, answerSchema);
+  return makeRequiredIfNeeded(question, answerSchema, required);
 };
 
-export const makeQuestionResponseSchemas = (questions: QuestionDefinition[]): Joi.Schema[] =>
-  questions.map(convertQuestionDefinitionToJoiSchema);
+export const makeQuestionResponseSchemas = (
+  questions: QuestionDefinition[],
+  required: boolean
+): Joi.Schema[] =>
+  questions.map((question) => convertQuestionDefinitionToJoiSchema(question, required));
 export const makeRegistrationApiRequestSchema = (questions: QuestionDefinition[]): Joi.Schema =>
   Joi.object<RegistrationApiRequest>({
     fields: Joi.array().sparse().length(questions.length).required(),
@@ -96,20 +115,29 @@ export const makeRegistrationApiRequestSchema = (questions: QuestionDefinition[]
   });
 
 // an array of the schema for each question in order
-const QuestionResponseSchemas = makeQuestionResponseSchemas(Questions);
+const QuestionResponseSchemas = makeQuestionResponseSchemas(Questions, true);
+const OptionalQuestionResponseSchemas = makeQuestionResponseSchemas(Questions, false);
 const RegistrationApiRequestSchema = makeRegistrationApiRequestSchema(Questions);
 
 /**
  * attempts to validate a registration api request body. will throw if the request is invalid.
  * @param body the request body
  */
-export const attemptToValidateRegistrationApiRequest = (body: unknown): RegistrationApiRequest => {
+export const attemptToValidateRegistrationApiRequest = (
+  body: unknown,
+  required: boolean
+): RegistrationApiRequest => {
   const { fields, responses }: RegistrationApiRequest = Joi.attempt(
     body,
     RegistrationApiRequestSchema
   );
   return {
     fields,
-    responses: responses.map((response, i) => Joi.attempt(response, QuestionResponseSchemas[i])),
+    responses: responses.map((response, i) =>
+      Joi.attempt(
+        response,
+        required ? QuestionResponseSchemas[i] : OptionalQuestionResponseSchemas[i]
+      )
+    ),
   };
 };
