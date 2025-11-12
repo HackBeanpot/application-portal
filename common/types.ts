@@ -384,7 +384,6 @@ export const applicationResponsesSchema = SharedResponsesSchema.extend({
   hackBeanGoals: z.string().optional(),
   tedTalkTopic: z.string().optional(),
   prevHackathonFeedback: z.string().optional(),
-  interestedInTeamFormation: YesOrNoSchema.optional(),
   referrers: z.array(ReferrerSchema).optional(),
   unListedReferrer: z.string().optional(),
   NewFriends: InterestLevelSchema.optional(),

@@ -82,6 +82,7 @@ const postHandler: NextApiHandler = async (req, res) => {
 
   const { userDataCollection } = await connectToDatabase();
   // upsert = update, or if object doesn't exist, insert
+  console.log(userResponses);
   await userDataCollection.updateOne(
     { email },
     {

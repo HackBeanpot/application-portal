@@ -74,6 +74,7 @@ export const ApplicationForm = (): ReactElement => {
     if (Object.entries(submittedFormData.current).length) {
       return;
     }
+
     const newFormData: Record<string, QuestionResponse> = {};
     userResponses?.data?.responses?.forEach((response, index) => {
       // get index of question with corresponding field, in case we added a question in the middle of the application
@@ -87,6 +88,7 @@ export const ApplicationForm = (): ReactElement => {
       newFormData[String(questionIndex + 1)] = response;
       submittedFormData.current = newFormData;
     });
+    console.log('setting', newFormData);
     form.setFieldsValue(newFormData);
   }, [userResponses]);
 
@@ -124,9 +126,7 @@ export const ApplicationForm = (): ReactElement => {
     );
     const responses = Questions.map((q) => values[q.id] ?? undefined);
     setIsSubmitting(true);
-    const response = alreadySubmitted
-      ? await updateApplicantResponses({ fields, responses })
-      : await addApplicantResponses({ fields, responses });
+    const response = await addApplicantResponses({ fields, responses });
     setIsSubmitting(false);
     if (200 <= response.status && response.status < 300) {
       getStatusData().then((status) => {
@@ -181,6 +181,13 @@ export const ApplicationForm = (): ReactElement => {
             We do not consider level of experience in our application but rather level of effort +
             interest so please keep this in mind as you&apos;re filling out the application, thanks
             :)
+          </li>
+          <li>
+            Hackers are encouraged to organize in teams before the event starts. However, this is an
+            individual application and being on a team does not increase your chances of acceptance,
+            nor does it guarantee everyone on your team is accepted. Please don&apos;t worry if you
+            don&apos;t have a team prior to the start of the event; there will be opportunities to
+            form teams at the the beginning of the event.
           </li>
           <li>If you have questions please reach out to core@hackbeanpot.com.</li>
         </ul>
