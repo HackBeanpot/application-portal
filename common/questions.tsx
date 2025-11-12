@@ -37,7 +37,7 @@ let questionCount = 0;
 const checkboxMinSelectedCount = 0;
 const shortTextMinLength = 0;
 const shortTextMaxLength = 500;
-const longTextMinLength = 0;
+const longTextMinLength = 1;
 const longTextMaxLength = 3000;
 
 // convenience constructors for questions (constructors in java)
