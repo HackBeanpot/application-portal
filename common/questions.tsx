@@ -8,7 +8,6 @@ import React, { ReactNode } from 'react';
 import {
   Checkboxes,
   Dropdown,
-  Education,
   Gender,
   InterestLevel,
   FileUpload,
@@ -262,13 +261,6 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     'unlistedSchool',
     'If your school was not listed in the previous question, list it here! (Please input full name of university)',
     false
-  ),
-  makeDropdown(
-    'education',
-    'What level of education are you currently pursuing?',
-    Object.values(Education),
-    true,
-    'Level'
   ),
   makeDropdown(
     'yearOfEducation',
@@ -528,7 +520,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     false
   ),
   makeSection(<>Code of Conduct and Policy</>),
-  makeDropdown(
+  makeCheckbox(
     'mlhCodeOfConduct',
     <p>
       I have read and agree to the{' '}
@@ -541,10 +533,11 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
         MLH Code of Conduct
       </a>
     </p>,
-    [YesOrNo.Yes, YesOrNo.No],
-    true
+    [YesOrNo.Yes],
+    true,
+    1
   ),
-  makeDropdown(
+  makeCheckbox(
     'mlhApplicationSharingAuthorization',
     <p>
       I authorize you to share my application/registration information with Major League Hacking for
@@ -576,14 +569,16 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
         MLH Privacy Policy
       </a>
     </p>,
-    [YesOrNo.Yes, YesOrNo.No],
-    true
+    [YesOrNo.Yes],
+    true,
+    1
   ),
-  makeDropdown(
+  makeCheckbox(
     'mlhMarketingAuthorization',
     'I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements.',
-    Object.values(YesOrNo),
-    false
+    [YesOrNo.Yes],
+    true,
+    1
   ),
 ];
 

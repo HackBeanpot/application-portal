@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useRef, useState } from 'react';
 import { ApplicationResponsesType, ApplicationStatus, QuestionResponse } from '../../common/types';
 import {
   addApplicantResponses,
@@ -37,17 +37,8 @@ export const ApplicationForm = (): ReactElement => {
   const [form] = Form.useForm<Record<string, QuestionResponse>>();
   const [appStatus, setAppStatus] = useState(status?.data?.applicationStatus);
   const [lastSaved, setLastSaved] = useState<string | null>(null);
+  const submittedFormData = useRef<Record<string, QuestionResponse>>({});
 
-  const submittedFormData: Record<string, QuestionResponse> = {};
-  userResponses?.data?.responses?.forEach((response, index) => {
-    // get index of question with corresponding field, in case we added a question in the middle of the application
-    let questionIndex = Questions.findIndex((q) => q.field === userResponses?.data?.fields[index]);
-    if (questionIndex === -1) {
-      questionIndex = index;
-    }
-    // use question index in submittedFormData
-    submittedFormData[String(questionIndex + 1)] = response;
-  });
   // observations
   const alreadySubmitted =
     status?.data.applicationStatus === ApplicationStatus.Submitted &&
@@ -67,6 +58,7 @@ export const ApplicationForm = (): ReactElement => {
 
   // effects
   const resetFields = form.resetFields;
+
   useEffect(() => {
     if (alreadySubmitted || isBeforeRegistration || isAfterRegistration) {
       setDisabled(true);
@@ -75,11 +67,28 @@ export const ApplicationForm = (): ReactElement => {
     getStatusData().then((status) => {
       setAppStatus(status?.applicationStatus);
     });
-  }, [alreadySubmitted, isAfterRegistration, isBeforeRegistration, resetFields]);
+  }, []);
 
+  // when first mounting values on page, set the form data. Othersize, don't do anything
   useEffect(() => {
-    form.setFieldsValue(submittedFormData);
-  }, [submittedFormData, form]);
+    if (Object.entries(submittedFormData.current).length) {
+      return;
+    }
+    const newFormData: Record<string, QuestionResponse> = {};
+    userResponses?.data?.responses?.forEach((response, index) => {
+      // get index of question with corresponding field, in case we added a question in the middle of the application
+      let questionIndex = Questions.findIndex(
+        (q) => q.field === userResponses?.data?.fields[index]
+      );
+      if (questionIndex === -1) {
+        questionIndex = index;
+      }
+      // use question index in submittedFormData
+      newFormData[String(questionIndex + 1)] = response;
+      submittedFormData.current = newFormData;
+    });
+    form.setFieldsValue(newFormData);
+  }, [userResponses]);
 
   useWarnIfUnsavedChanges(isEditing || appStatus === ApplicationStatus.Incomplete);
 
@@ -89,7 +98,10 @@ export const ApplicationForm = (): ReactElement => {
     const responses = Questions.map((q) => values[q.id] ?? undefined);
 
     try {
-      await updateApplicantResponses({ fields, responses });
+      const result = await updateApplicantResponses({ fields, responses });
+      if (result.status !== 200) {
+        throw new Error();
+      }
       const now = new Date().toLocaleString();
       setLastSaved(now);
       notification.success({
@@ -144,12 +156,19 @@ export const ApplicationForm = (): ReactElement => {
       <div>
         <ul>
           <li>
-            HackBeanpot 2025 is tentatively planned to be on February 7 - February 9, 2025 in
+            HackBeanpot 2026 is tentatively planned to be on February 13 - February 15, 2026 in
             Boston.
           </li>
           <li>
             Follow us at @HackBeanpot on Instagram to stay up to date! To connect with your fellow
-            prospective hackers, join our Discord! https://discord.gg/QypjXeYb
+            prospective hackers, join our Discord!{' '}
+            <a
+              href="https://discord.gg/npnA28B8uN"
+              target="_blank"
+              style={{ textDecoration: 'underline' }}
+            >
+              https://discord.gg/npnA28B8uN
+            </a>
           </li>
           <li>The application itself takes around 15-20 mins to complete.</li>
           <li>You can save changes throughout, so feel free to come back to it whenever.</li>
