@@ -7,16 +7,14 @@ type DropdownProps = {
   question: DropdownType;
   form: FormInstance<Record<string, QuestionResponse>>;
 };
+
 const DropdownQuestion: FC<DropdownProps> = ({ question, form, disabled }) => {
   return (
     <Form.Item
       className="question"
       name={question.id}
-      wrapperCol={{ span: 8 }}
       label={question.content}
-      rules={[
-        { required: question.required, message: 'This question is required' },
-      ]}
+      rules={[{ required: question.required, message: 'This question is required' }]}
     >
       <Select
         disabled={disabled}
@@ -24,6 +22,12 @@ const DropdownQuestion: FC<DropdownProps> = ({ question, form, disabled }) => {
         allowClear
         onChange={(e) => form.setFieldsValue({ [question.id]: e as string })}
         dropdownMatchSelectWidth={false}
+        dropdownStyle={{
+          overflowY: 'auto',
+          zIndex: 2000,
+        }}
+        getPopupContainer={(triggerNode) => triggerNode.parentNode as HTMLElement}
+        listHeight={256}
       >
         {question.options.map(({ name }) => (
           <Select.Option key={name} value={name}>
@@ -34,4 +38,5 @@ const DropdownQuestion: FC<DropdownProps> = ({ question, form, disabled }) => {
     </Form.Item>
   );
 };
+
 export default DropdownQuestion;
