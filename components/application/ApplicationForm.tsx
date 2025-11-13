@@ -67,7 +67,7 @@ export const ApplicationForm = (): ReactElement => {
     getStatusData().then((status) => {
       setAppStatus(status?.applicationStatus);
     });
-  }, []);
+  }, [alreadySubmitted, isAfterRegistration, isBeforeRegistration, resetFields]);
 
   // when first mounting values on page, set the form data. Othersize, don't do anything
   useEffect(() => {
