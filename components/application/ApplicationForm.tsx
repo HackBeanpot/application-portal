@@ -58,9 +58,6 @@ export const ApplicationForm = (): ReactElement => {
 
   // effects
   const resetFields = form.resetFields;
-
-  console.log(form.getFieldsValue());
-
   useEffect(() => {
     if (alreadySubmitted || isBeforeRegistration || isAfterRegistration) {
       setDisabled(true);
@@ -216,8 +213,7 @@ export const ApplicationForm = (): ReactElement => {
                     className="cancel-edit-button"
                     onClick={() => {
                       setDisabled(true);
-                      console.log(form.getFieldsValue());
-                      form.resetFields();
+                      form.setFieldsValue(submittedFormData.current);
                     }}
                   >
                     Cancel editing
