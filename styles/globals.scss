@@ -23,8 +23,3 @@ h1 {
   @include h1-text;
   font-weight: 400;
 }
-
-.ant-select-dropdown {
-  position: fixed !important;
-  top: auto !important;
-}
