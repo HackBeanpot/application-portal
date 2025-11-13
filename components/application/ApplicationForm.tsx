@@ -59,10 +59,12 @@ export const ApplicationForm = (): ReactElement => {
   // effects
   const resetFields = form.resetFields;
 
+  console.log(form.getFieldsValue());
+
   useEffect(() => {
     if (alreadySubmitted || isBeforeRegistration || isAfterRegistration) {
       setDisabled(true);
-      resetFields();
+      form.setFieldsValue(submittedFormData.current);
     }
     getStatusData().then((status) => {
       setAppStatus(status?.applicationStatus);
@@ -88,7 +90,6 @@ export const ApplicationForm = (): ReactElement => {
       newFormData[String(questionIndex + 1)] = response;
       submittedFormData.current = newFormData;
     });
-    console.log('setting', newFormData);
     form.setFieldsValue(newFormData);
   }, [userResponses]);
 
@@ -215,6 +216,7 @@ export const ApplicationForm = (): ReactElement => {
                     className="cancel-edit-button"
                     onClick={() => {
                       setDisabled(true);
+                      console.log(form.getFieldsValue());
                       form.resetFields();
                     }}
                   >
