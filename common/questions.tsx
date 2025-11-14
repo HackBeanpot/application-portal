@@ -8,7 +8,6 @@ import React, { ReactNode } from 'react';
 import {
   Checkboxes,
   Dropdown,
-  Education,
   Gender,
   InterestLevel,
   FileUpload,
@@ -38,7 +37,7 @@ let questionCount = 0;
 const checkboxMinSelectedCount = 0;
 const shortTextMinLength = 0;
 const shortTextMaxLength = 500;
-const longTextMinLength = 0;
+const longTextMinLength = 1;
 const longTextMaxLength = 3000;
 
 // convenience constructors for questions (constructors in java)
@@ -264,13 +263,6 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     false
   ),
   makeDropdown(
-    'education',
-    'What level of education are you currently pursuing?',
-    Object.values(Education),
-    true,
-    'Level'
-  ),
-  makeDropdown(
     'yearOfEducation',
     'What year in your current education are you?',
     Object.values(YearOfEducation),
@@ -316,8 +308,17 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
   makeDropdown(
     'shirtSize',
     <div>
-      What is your t-shirt size? (Note: All sizes are unisex, and measurements are across the widest
-      part of the chest!){' '}
+      What is your t-shirt size? (Note: All sizes are unisex, and{' '}
+      <a
+        href="https://www.bellacanvas.com/product/3001/Unisex-Jersey-Short-Sleeve-Tee.html#pills-size"
+        target="_blank"
+        style={{
+          textDecoration: 'underline',
+        }}
+      >
+        measurements
+      </a>{' '}
+      are across the widest part of the chest!){' '}
     </div>,
     Object.values(ShirtSize),
     true,
@@ -417,36 +418,6 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     `Have you attended HackBeanpot previously? If you've attended a hackathon previously, what did you like or dislike about it? If this is your first hackathon, what would you like to see at HackBeanpot? `,
     true
   ),
-  makeSection(
-    <>Team Formation</>,
-    <i>
-      *Note: This question does not get factored into how your application is read! This question is
-      for us to plan ahead for team formation; applicants are accepted on an individual basis, and
-      it is not guaranteed that everyone in a premade team will be accepted.
-    </i>
-  ),
-  makeDropdown(
-    'interestedInTeamFormation',
-    <p>
-      Do you plan on attending HackBeanpot with a premade team? If yes,
-      <b>
-        {' '}
-        please list the first and last name and email of your team captain (captain is just for
-        application purpose!).{' '}
-      </b>
-      Please note, team formations will not be finalized until the day of the event! Also, there is
-      a limit of 5 members per team.
-      <br />
-      <i>
-        If you don&apos;t have a team or would like to add more members to your team, we will have a
-        team formation activity during the hackathon and a Discord channel that will open in
-        advance!
-      </i>
-    </p>,
-    [YesOrNo.Yes, YesOrNo.No],
-    true
-  ),
-
   makeSection(<>Outreach</>),
   makeCheckbox(
     'referrers',
@@ -482,12 +453,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
   ),
 
   makeDropdown('NewFriends', CabinGroupings.NewFriends, Object.values(InterestLevel), true),
-  makeDropdown(
-    'workshopTopics',
-    CabinGroupings.NetworkingOpportunities,
-    Object.values(InterestLevel),
-    true
-  ),
+
   makeDropdown(
     'TechnicalWorkshops',
     CabinGroupings.TechnicalWorkshops,
@@ -528,7 +494,7 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
     false
   ),
   makeSection(<>Code of Conduct and Policy</>),
-  makeDropdown(
+  makeCheckbox(
     'mlhCodeOfConduct',
     <p>
       I have read and agree to the{' '}
@@ -541,10 +507,11 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
         MLH Code of Conduct
       </a>
     </p>,
-    [YesOrNo.Yes, YesOrNo.No],
-    true
+    [YesOrNo.Yes],
+    true,
+    1
   ),
-  makeDropdown(
+  makeCheckbox(
     'mlhApplicationSharingAuthorization',
     <p>
       I authorize you to share my application/registration information with Major League Hacking for
@@ -576,14 +543,16 @@ export const Sections: Array<QuestionSection | QuestionDefinition> = [
         MLH Privacy Policy
       </a>
     </p>,
-    [YesOrNo.Yes, YesOrNo.No],
-    true
+    [YesOrNo.Yes],
+    true,
+    1
   ),
-  makeDropdown(
+  makeCheckbox(
     'mlhMarketingAuthorization',
     'I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements.',
-    Object.values(YesOrNo),
-    false
+    [YesOrNo.Yes],
+    true,
+    1
   ),
 ];
 
