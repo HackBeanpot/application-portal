@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useRef, useState } from 'react';
 import { ApplicationResponsesType, ApplicationStatus, QuestionResponse } from '../../common/types';
 import {
   addApplicantResponses,
@@ -37,17 +37,8 @@ export const ApplicationForm = (): ReactElement => {
   const [form] = Form.useForm<Record<string, QuestionResponse>>();
   const [appStatus, setAppStatus] = useState(status?.data?.applicationStatus);
   const [lastSaved, setLastSaved] = useState<string | null>(null);
+  const submittedFormData = useRef<Record<string, QuestionResponse>>({});
 
-  const submittedFormData: Record<string, QuestionResponse> = {};
-  userResponses?.data?.responses?.forEach((response, index) => {
-    // get index of question with corresponding field, in case we added a question in the middle of the application
-    let questionIndex = Questions.findIndex((q) => q.field === userResponses?.data?.fields[index]);
-    if (questionIndex === -1) {
-      questionIndex = index;
-    }
-    // use question index in submittedFormData
-    submittedFormData[String(questionIndex + 1)] = response;
-  });
   // observations
   const alreadySubmitted =
     status?.data.applicationStatus === ApplicationStatus.Submitted &&
@@ -70,16 +61,34 @@ export const ApplicationForm = (): ReactElement => {
   useEffect(() => {
     if (alreadySubmitted || isBeforeRegistration || isAfterRegistration) {
       setDisabled(true);
-      resetFields();
+      form.setFieldsValue(submittedFormData.current);
     }
     getStatusData().then((status) => {
       setAppStatus(status?.applicationStatus);
     });
   }, [alreadySubmitted, isAfterRegistration, isBeforeRegistration, resetFields]);
 
+  // when first mounting values on page, set the form data. Othersize, don't do anything
   useEffect(() => {
-    form.setFieldsValue(submittedFormData);
-  }, [submittedFormData, form]);
+    if (Object.entries(submittedFormData.current).length) {
+      return;
+    }
+
+    const newFormData: Record<string, QuestionResponse> = {};
+    userResponses?.data?.responses?.forEach((response, index) => {
+      // get index of question with corresponding field, in case we added a question in the middle of the application
+      let questionIndex = Questions.findIndex(
+        (q) => q.field === userResponses?.data?.fields[index]
+      );
+      if (questionIndex === -1) {
+        questionIndex = index;
+      }
+      // use question index in submittedFormData
+      newFormData[String(questionIndex + 1)] = response;
+      submittedFormData.current = newFormData;
+    });
+    form.setFieldsValue(newFormData);
+  }, [userResponses]);
 
   useWarnIfUnsavedChanges(isEditing || appStatus === ApplicationStatus.Incomplete);
 
@@ -89,7 +98,10 @@ export const ApplicationForm = (): ReactElement => {
     const responses = Questions.map((q) => values[q.id] ?? undefined);
 
     try {
-      await updateApplicantResponses({ fields, responses });
+      const result = await updateApplicantResponses({ fields, responses });
+      if (result.status !== 200) {
+        throw new Error();
+      }
       const now = new Date().toLocaleString();
       setLastSaved(now);
       notification.success({
@@ -112,9 +124,7 @@ export const ApplicationForm = (): ReactElement => {
     );
     const responses = Questions.map((q) => values[q.id] ?? undefined);
     setIsSubmitting(true);
-    const response = alreadySubmitted
-      ? await updateApplicantResponses({ fields, responses })
-      : await addApplicantResponses({ fields, responses });
+    const response = await addApplicantResponses({ fields, responses });
     setIsSubmitting(false);
     if (200 <= response.status && response.status < 300) {
       getStatusData().then((status) => {
@@ -144,7 +154,7 @@ export const ApplicationForm = (): ReactElement => {
       <div>
         <ul>
           <li>
-            HackBeanpot 2025 is tentatively planned to be on February 7 - February 9, 2025 in
+            HackBeanpot 2026 is tentatively planned to be on February 13 - February 15, 2026 in
             Boston.
           </li>
           <li>Follow us at @HackBeanpot on Instagram to stay up to date!</li>
@@ -159,6 +169,13 @@ export const ApplicationForm = (): ReactElement => {
             We do not consider level of experience in our application but rather level of effort +
             interest so please keep this in mind as you&apos;re filling out the application, thanks
             :)
+          </li>
+          <li>
+            Hackers are encouraged to organize in teams before the event starts. However, this is an
+            individual application and being on a team does not increase your chances of acceptance,
+            nor does it guarantee everyone on your team is accepted. Please don&apos;t worry if you
+            don&apos;t have a team prior to the start of the event; there will be opportunities to
+            form teams at the the beginning of the event.
           </li>
           <li>If you have questions please reach out to core@hackbeanpot.com.</li>
         </ul>
@@ -186,7 +203,7 @@ export const ApplicationForm = (): ReactElement => {
                     className="cancel-edit-button"
                     onClick={() => {
                       setDisabled(true);
-                      form.resetFields();
+                      form.setFieldsValue(submittedFormData.current);
                     }}
                   >
                     Cancel editing

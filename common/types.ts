@@ -89,11 +89,6 @@ export enum Gender {
   PreferNotToSay = 'Prefer not to say',
 }
 
-export enum Education {
-  Undergraduate = 'Undergraduate',
-  Graduate = 'Graduate',
-}
-
 export enum YearOfEducation {
   first = '1st year',
   second = '2nd year',
@@ -348,7 +343,6 @@ const GenderSchema = z.nativeEnum(Gender);
 const LgbtqSchema = z.nativeEnum(Lgbtq);
 const SchoolSchema = z.nativeEnum(School);
 const RaceSchema = z.nativeEnum(Race);
-const EducationSchema = z.nativeEnum(Education);
 const YearOfEducationSchema = z.nativeEnum(YearOfEducation);
 const ShirtSizeSchema = z.nativeEnum(ShirtSize);
 const NumberOfSchema = z.nativeEnum(NumberOf);
@@ -375,7 +369,6 @@ export const applicationResponsesSchema = SharedResponsesSchema.extend({
   unlistedRace: z.string().optional(),
   school: SchoolSchema.optional(),
   unlistedSchool: z.string().optional(),
-  education: EducationSchema.optional(),
   yearOfEducation: YearOfEducationSchema.optional(),
   majors: z.string().optional(),
   minors: z.string().optional(),
@@ -391,7 +384,6 @@ export const applicationResponsesSchema = SharedResponsesSchema.extend({
   hackBeanGoals: z.string().optional(),
   tedTalkTopic: z.string().optional(),
   prevHackathonFeedback: z.string().optional(),
-  interestedInTeamFormation: YesOrNoSchema.optional(),
   referrers: z.array(ReferrerSchema).optional(),
   unListedReferrer: z.string().optional(),
   NewFriends: InterestLevelSchema.optional(),

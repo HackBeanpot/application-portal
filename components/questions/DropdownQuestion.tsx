@@ -14,9 +14,7 @@ const DropdownQuestion: FC<DropdownProps> = ({ question, form, disabled }) => {
       name={question.id}
       wrapperCol={{ span: 8 }}
       label={question.content}
-      rules={[
-        { required: question.required, message: 'This question is required' },
-      ]}
+      rules={[{ required: question.required, message: 'This question is required' }]}
     >
       <Select
         disabled={disabled}

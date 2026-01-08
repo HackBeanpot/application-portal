@@ -70,7 +70,8 @@ const AttendingForm: React.FC<AttendingFormProps> = ({ setAttendingState }) => {
     <>
       <p style={{ textAlign: 'center' }}>
         Please select if you will be attending HackBeanpot on the weekend of{' '}
-        <strong>February 7 - 9th, 2025 at Northeastern University Campus in Boston, MA</strong> .
+        {/* TODO update location */}
+        <strong>February 13 - 15th, 2026 at Northeastern University Campus in Boston, MA</strong> .
         Please keep in mind, the event this year is <strong>NOT</strong> overnight. Northeastern
         University Campus is available for use from <strong>8:00 am - 11:00 pm</strong>. As such,
         please arrange for appropriate accomodations during the event.

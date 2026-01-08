@@ -1,5 +1,4 @@
 .application {
-
   .app-header {
     font-size: clamp(23px, 6vw, 30px);
   }
@@ -23,10 +22,10 @@
   .submit-container {
     display: flex;
     justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 5px;
     .button {
-      height: max-content;
-      width: 100%;
-      margin: 0 5vw;
+      min-width: 350px;
     }
   }
 }
