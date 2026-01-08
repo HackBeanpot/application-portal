@@ -147,10 +147,7 @@ export const ApplicationForm = (): ReactElement => {
             HackBeanpot 2025 is tentatively planned to be on February 7 - February 9, 2025 in
             Boston.
           </li>
-          <li>
-            Follow us at @HackBeanpot on Instagram to stay up to date! To connect with your fellow
-            prospective hackers, join our Discord! https://discord.gg/QypjXeYb
-          </li>
+          <li>Follow us at @HackBeanpot on Instagram to stay up to date!</li>
           <li>The application itself takes around 15-20 mins to complete.</li>
           <li>You can save changes throughout, so feel free to come back to it whenever.</li>
           <li>
