@@ -157,17 +157,7 @@ export const ApplicationForm = (): ReactElement => {
             HackBeanpot 2026 is tentatively planned to be on February 13 - February 15, 2026 in
             Boston.
           </li>
-          <li>
-            Follow us at @HackBeanpot on Instagram to stay up to date! To connect with your fellow
-            prospective hackers, join our Discord!{' '}
-            <a
-              href="https://discord.gg/npnA28B8uN"
-              target="_blank"
-              style={{ textDecoration: 'underline' }}
-            >
-              https://discord.gg/npnA28B8uN
-            </a>
-          </li>
+          <li>Follow us at @HackBeanpot on Instagram to stay up to date!</li>
           <li>The application itself takes around 15-20 mins to complete.</li>
           <li>You can save changes throughout, so feel free to come back to it whenever.</li>
           <li>
