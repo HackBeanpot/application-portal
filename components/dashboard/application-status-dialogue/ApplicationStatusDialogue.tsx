@@ -39,7 +39,11 @@ type IncompleteProps = {
   registrationClosed: Date;
 };
 export const Incomplete: React.FC<IncompleteProps> = ({ registrationClosed }) => {
-  const date = format(registrationClosed);
+  // const date = format(registrationClosed);
+  const date = registrationClosed.toLocaleString('en-US', {
+    timeZone: 'America/New_York',
+    dateStyle: 'full',
+  });
   return (
     <>
       <Alert
