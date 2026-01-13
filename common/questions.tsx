@@ -630,6 +630,92 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
     true,
     'First Last'
   ),
+  makeShortText('email', 'Email', true, 'email@example.com'),
+  makeShortText('phoneNumber', 'Phone Number', true, 'Phone Number'),
+  makeShortText('age', 'Age', true, 'Enter your age'),
+  makeDropdown(
+    'school',
+    'School',
+    Object.values(School).sort((a, b) => {
+      if (a === School['Northeastern University']) return -1;
+      if (b === School['Northeastern University']) return 1;
+
+      if (a === School['Other']) return 1;
+      if (b === School['Other']) return -1;
+      return a.localeCompare(b);
+    }),
+    true,
+    'School'
+  ),
+  makeDropdown(
+    'levelOfStudy',
+    'Level of Study',
+    Object.values(YearOfEducation),
+    true,
+    'Level of Study'
+  ),
+  makeShortText('countryOfResidence', 'Country of Residence', true, 'Country of Residence'),
+  makeSection(<>MLH Policies</>),
+  makeCheckbox(
+    'mlhCodeOfConduct',
+    <p>
+      I have read and agree to the{' '}
+      <a
+        href="https://github.com/MLH/mlh-policies/blob/main/code-of-conduct.md"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ color: '#1890ff', textDecoration: 'underline' }}
+      >
+        MLH Code of Conduct
+      </a>
+    </p>,
+    [YesOrNo.Yes],
+    true,
+    1
+  ),
+  makeCheckbox(
+    'mlhApplicationSharingAuthorization',
+    <p>
+      I authorize you to share my application/registration information with Major League Hacking for
+      event administration, ranking, and MLH administration in-line with the{' '}
+      <a
+        href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ color: '#1890ff', textDecoration: 'underline' }}
+      >
+        MLH Privacy Policy
+      </a>
+      . I further agree to the terms of both the{' '}
+      <a
+        href="https://github.com/MLH/mlh-policies/blob/main/contest-terms.md"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ color: '#1890ff', textDecoration: 'underline' }}
+      >
+        MLH Contest Terms and Conditions
+      </a>{' '}
+      and the{' '}
+      <a
+        href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ color: '#1890ff', textDecoration: 'underline' }}
+      >
+        MLH Privacy Policy
+      </a>
+    </p>,
+    [YesOrNo.Yes],
+    true,
+    1
+  ),
+  makeCheckbox(
+    'mlhMarketingAuthorization',
+    'I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements.',
+    [YesOrNo.Yes],
+    true,
+    1
+  ),
 ];
 
 export const PostAcceptanceFormQuestions = PostAcceptanceFormSections.filter(filterQuestion);
