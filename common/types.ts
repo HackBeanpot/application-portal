@@ -41,6 +41,15 @@ export interface PostAcceptanceResponses extends SharedResponses {
   minorSignature?: string;
   guardianSignature?: string;
   hangingWithFriends?: HangingWithFriends;
+  email?: string;
+  phoneNumber?: string;
+  age?: string;
+  school?: School;
+  levelOfStudy?: YearOfEducation;
+  countryOfResidence?: string;
+  mlhCodeOfConduct?: Array<string>;
+  mlhApplicationSharingAuthorization?: Array<string>;
+  mlhMarketingAuthorization?: Array<string>;
   zombieApocalypse?: ZombieApocalypse;
   takeOverNation?: TakeOverNation;
   aspirations?: Aspirations;

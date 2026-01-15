@@ -9,6 +9,7 @@ type ShortTextProps = {
 };
 
 const ShortTextQuestion: FC<ShortTextProps> = ({ question, form, disabled }) => {
+  const isNumberInput = question.field === 'age';
   return (
     <Form.Item
       data-testid="shortText-question"
@@ -22,6 +23,7 @@ const ShortTextQuestion: FC<ShortTextProps> = ({ question, form, disabled }) => 
         data-testid="inputText3"
         disabled={disabled}
         placeholder={question.placeholder}
+        type={isNumberInput ? 'number' : 'text'}
         onChange={(e) => form.setFieldsValue({ [question.id]: e.target.value as string })}
       />
     </Form.Item>
