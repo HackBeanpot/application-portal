@@ -617,8 +617,8 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
         conditions stated in the Participant Waiver.
       </p>
       PARTICIPANT WAIVER:{' '}
-      <a href="http://bit.ly/3XjlJEz" target="_blank" rel="noreferrer">
-        bit.ly/3XjlJEz
+      <a href="https://bit.ly/45hPv2G" target="_blank" rel="noreferrer">
+        bit.ly/45hPv2G
       </a>
     </div>,
     true,
