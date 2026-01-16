@@ -41,14 +41,15 @@ export interface PostAcceptanceResponses extends SharedResponses {
   minorSignature?: string;
   guardianSignature?: string;
   hangingWithFriends?: HangingWithFriends;
-  zombieApocalypse?: ZombieApocalypse;
-  takeOverNation?: TakeOverNation;
-  aspirations?: Aspirations;
-  study?: Study;
-  stuckInElevator?: StuckInElevator;
-  club?: Club;
-  socialMedia?: SocialMedia;
-  duringClass?: DuringClass;
+  email?: string;
+  phoneNumber?: string;
+  age?: string;
+  school?: School;
+  levelOfStudy?: YearOfEducation;
+  countryOfResidence?: string;
+  mlhCodeOfConduct?: YesOrNo.Yes | undefined;
+  mlhApplicationSharingAuthorization?: YesOrNo.Yes | undefined;
+  mlhMarketingAuthorization?: YesOrNo.Yes | undefined;
 }
 
 export type QuestionResponseField = keyof ApplicationResponsesType | keyof PostAcceptanceResponses;

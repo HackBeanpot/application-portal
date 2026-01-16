@@ -584,31 +584,31 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
   ),
   makeShortText('firstName', 'First name', true, 'First name'),
   makeShortText('lastName', 'Last name', true, 'Last name'),
-  makeDropdown('adult', 'Are you 18 years of age or older?', ['Yes', 'No'], true, 'Yes'),
-  makeSection(
-    <>Above 18 Signature</>,
-    'Complete this section only if you are above 18 years of age. If you are not, type in "N/A" and complete the following section accompanied by a parent or guardian.'
-  ),
-  makeShortText(
-    'adultSignature',
-    <div>
-      <p>
-        By typing my full legal name below, I acknowledge that this represents my legal signature
-        and that I have read and agreed to the terms and conditions stated in the Participant
-        Waiver.
-      </p>
-      PARTICIPANT WAIVER:{' '}
-      <a href="http://bit.ly/3XjlJEz" target="_blank" rel="noreferrer">
-        bit.ly/3XjlJEz
-      </a>
-    </div>,
-    true,
-    'First Last'
-  ),
-  makeSection(
-    <>Under 18 Signature</>,
-    'Complete this section only if you are under 18 years of age. If you are 18 years of age or over, mark "N/A" for both fields.'
-  ),
+  // makeDropdown('adult', 'Are you 18 years of age or older?', ['Yes', 'No'], true, 'Yes'),
+  // makeSection(
+  //   <>Above 18 Signature</>,
+  //   'Complete this section only if you are above 18 years of age. If you are not, type in "N/A" and complete the following section accompanied by a parent or guardian.'
+  // ),
+  // makeShortText(
+  //   'adultSignature',
+  //   <div>
+  //     <p>
+  //       By typing my full legal name below, I acknowledge that this represents my legal signature
+  //       and that I have read and agreed to the terms and conditions stated in the Participant
+  //       Waiver.
+  //     </p>
+  //     PARTICIPANT WAIVER:{' '}
+  //     <a href="http://bit.ly/3XjlJEz" target="_blank" rel="noreferrer">
+  //       bit.ly/3XjlJEz
+  //     </a>
+  //   </div>,
+  //   true,
+  //   'First Last'
+  // ),
+  // makeSection(
+  //   <>Under 18 Signature</>,
+  //   'Complete this section only if you are under 18 years of age. If you are 18 years of age or over, mark "N/A" for both fields.'
+  // ),
   makeShortText(
     'minorSignature',
     <div>
@@ -617,18 +617,104 @@ export const PostAcceptanceFormSections: Array<QuestionSection | QuestionDefinit
         conditions stated in the Participant Waiver.
       </p>
       PARTICIPANT WAIVER:{' '}
-      <a href="http://bit.ly/3XjlJEz" target="_blank" rel="noreferrer">
-        bit.ly/3XjlJEz
+      <a href="https://bit.ly/45hPv2G" target="_blank" rel="noreferrer">
+        bit.ly/45hPv2G
       </a>
     </div>,
     true,
     'First Last'
   ),
-  makeShortText(
-    'guardianSignature',
-    'Guardian: I acknowledge that I am above 18 years of age. I have read and agreed to the terms and conditions stated in the Participant Waiver and will make sure the attendee follows the platform usage defined in the Media & Platform Release.',
+  // makeShortText(
+  //   'guardianSignature',
+  //   'Guardian: I acknowledge that I am above 18 years of age. I have read and agreed to the terms and conditions stated in the Participant Waiver and will make sure the attendee follows the platform usage defined in the Media & Platform Release.',
+  //   true,
+  //   'First Last'
+  // ),
+  makeShortText('email', 'Email', true, 'email@example.com'),
+  makeShortText('phoneNumber', 'Phone Number', true, 'Phone Number'),
+  makeShortText('age', 'Age', true, 'Enter your age'),
+  makeDropdown(
+    'school',
+    'School',
+    Object.values(School).sort((a, b) => {
+      if (a === School['Northeastern University']) return -1;
+      if (b === School['Northeastern University']) return 1;
+
+      if (a === School['Other']) return 1;
+      if (b === School['Other']) return -1;
+      return a.localeCompare(b);
+    }),
     true,
-    'First Last'
+    'School'
+  ),
+  makeDropdown(
+    'levelOfStudy',
+    'Level of Study',
+    Object.values(YearOfEducation),
+    true,
+    'Level of Study'
+  ),
+  makeShortText('countryOfResidence', 'Country of Residence', true, 'Country of Residence'),
+  makeSection(<>MLH Policies</>),
+  makeCheckbox(
+    'mlhCodeOfConduct',
+    <p>
+      I have read and agree to the{' '}
+      <a
+        href="https://github.com/MLH/mlh-policies/blob/main/code-of-conduct.md"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ color: '#1890ff', textDecoration: 'underline' }}
+      >
+        MLH Code of Conduct
+      </a>
+    </p>,
+    [YesOrNo.Yes],
+    true,
+    1
+  ),
+  makeCheckbox(
+    'mlhApplicationSharingAuthorization',
+    <p>
+      I authorize you to share my application/registration information with Major League Hacking for
+      event administration, ranking, and MLH administration in-line with the{' '}
+      <a
+        href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ color: '#1890ff', textDecoration: 'underline' }}
+      >
+        MLH Privacy Policy
+      </a>
+      . I further agree to the terms of both the{' '}
+      <a
+        href="https://github.com/MLH/mlh-policies/blob/main/contest-terms.md"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ color: '#1890ff', textDecoration: 'underline' }}
+      >
+        MLH Contest Terms and Conditions
+      </a>{' '}
+      and the{' '}
+      <a
+        href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ color: '#1890ff', textDecoration: 'underline' }}
+      >
+        MLH Privacy Policy
+      </a>
+    </p>,
+    [YesOrNo.Yes],
+    true,
+    1
+  ),
+  makeCheckbox(
+    'mlhMarketingAuthorization',
+    'I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements.',
+    [YesOrNo.Yes],
+    true,
+    1
   ),
 ];
 

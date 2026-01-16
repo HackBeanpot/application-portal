@@ -19,6 +19,12 @@ export const PostAcceptanceForm: React.FC = () => {
   const { data: confirmByData } = useSWR('/api/v1/dates/confirm-by', getConfirmBy);
   const { data: submitted } = useSWR('/api/v1/status', getStatus);
 
+  const confirmBy = confirmByData?.data
+    ? new Date(confirmByData.data)
+    : new Date(2026, 0, 20, 23, 59, 59, 999);
+
+  confirmBy.setHours(confirmBy.getHours() - 5);
+
   return (
     <>
       <h1 className="app-header">Application Page</h1>
@@ -30,7 +36,7 @@ export const PostAcceptanceForm: React.FC = () => {
           <Form.Item noStyle>
             {confirmByData && (
               <p>
-                This RSVP form is DUE <strong>{formatDate(new Date(confirmByData.data))}</strong>.
+                This RSVP form is DUE <strong>{formatDate(new Date(confirmBy))}</strong>.
               </p>
             )}
           </Form.Item>
@@ -71,10 +77,10 @@ const AttendingForm: React.FC<AttendingFormProps> = ({ setAttendingState }) => {
       <p style={{ textAlign: 'center' }}>
         Please select if you will be attending HackBeanpot on the weekend of{' '}
         {/* TODO update location */}
-        <strong>February 13 - 15th, 2026 at Northeastern University Campus in Boston, MA</strong> .
-        Please keep in mind, the event this year is <strong>NOT</strong> overnight. Northeastern
-        University Campus is available for use from <strong>8:00 am - 11:00 pm</strong>. As such,
-        please arrange for appropriate accomodations during the event.
+        <strong>February 13 - 15th, 2026 at the Maven AGI office in Boston, MA</strong> . Please
+        keep in mind, the event this year is <strong>NOT</strong> overnight. The Maven AGI office is
+        available for use from <strong>8:00 am - 10:00 pm</strong>. As such, please arrange for
+        appropriate accomodations during the event.
       </p>
       <p>
         If you cannot make it, please select {'"No"'} so that we can admit others on the wait list
