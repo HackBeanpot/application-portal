@@ -19,7 +19,10 @@ export const PostAcceptanceForm: React.FC = () => {
   const { data: confirmByData } = useSWR('/api/v1/dates/confirm-by', getConfirmBy);
   const { data: submitted } = useSWR('/api/v1/status', getStatus);
 
-  const confirmBy = new Date(confirmByData.data);
+  const confirmBy = confirmByData?.data
+    ? new Date(confirmByData.data)
+    : new Date(2026, 0, 20, 23, 59, 59, 999);
+
   confirmBy.setHours(confirmBy.getHours() - 5);
 
   return (
