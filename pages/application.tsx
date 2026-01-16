@@ -86,11 +86,10 @@ const FormDecider: React.FC<FormDeciderProps> = ({
   }
 
   if (
-    // confirmByState === ConfirmByState.Before &&
-    // decisionStatus === DecisionStatus.Admitted &&
-    // rsvpStatus === RSVPStatus.Unconfirmed &&
-    // showDecisionState
-    true
+    confirmByState === ConfirmByState.Before &&
+    decisionStatus === DecisionStatus.Admitted &&
+    rsvpStatus === RSVPStatus.Unconfirmed &&
+    showDecisionState
   ) {
     return <PostAcceptanceForm />;
   }
