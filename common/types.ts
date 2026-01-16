@@ -47,17 +47,9 @@ export interface PostAcceptanceResponses extends SharedResponses {
   school?: School;
   levelOfStudy?: YearOfEducation;
   countryOfResidence?: string;
-  mlhCodeOfConduct?: Array<string>;
-  mlhApplicationSharingAuthorization?: Array<string>;
-  mlhMarketingAuthorization?: Array<string>;
-  zombieApocalypse?: ZombieApocalypse;
-  takeOverNation?: TakeOverNation;
-  aspirations?: Aspirations;
-  study?: Study;
-  stuckInElevator?: StuckInElevator;
-  club?: Club;
-  socialMedia?: SocialMedia;
-  duringClass?: DuringClass;
+  mlhCodeOfConduct?: YesOrNo.Yes | undefined;
+  mlhApplicationSharingAuthorization?: YesOrNo.Yes | undefined;
+  mlhMarketingAuthorization?: YesOrNo.Yes | undefined;
 }
 
 export type QuestionResponseField = keyof ApplicationResponsesType | keyof PostAcceptanceResponses;
